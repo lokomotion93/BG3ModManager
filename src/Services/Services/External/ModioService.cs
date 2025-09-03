@@ -23,7 +23,7 @@ public class ModioService : ReactiveObject, IModioService
 	private static readonly uint GAME_ID = 6715;
 	private Client? _client;
 
-	[Reactive] public string ApiKey { get; set; }
+	[Reactive] public string? ApiKey { get; set; }
 	[Reactive] public bool LimitExceeded { get; set; }
 	[Reactive] public bool IsInitialized { get; private set; }
 	[Reactive] public bool CanFetchData { get; private set; }
@@ -192,5 +192,8 @@ public class ModioService : ReactiveObject, IModioService
 			}
 		});
 
+#if DEBUG
+		ApiKey = Environment.GetEnvironmentVariable("BG3_MODIO_KEY", EnvironmentVariableTarget.User);
+#endif
 	}
 }

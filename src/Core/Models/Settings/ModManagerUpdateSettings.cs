@@ -49,5 +49,9 @@ public class ModManagerUpdateSettings : ReactiveObject
 		this.SetToDefault();
 
 		IsAssociatedWithNXM = RegistryHelper.IsAssociatedWithNXMProtocol(DivinityApp.GetExePath());
+
+#if DEBUG
+		NexusModsAPIKey = Environment.GetEnvironmentVariable("NEXUSMODS_API_KEY", EnvironmentVariableTarget.User);
+#endif
 	}
 }
