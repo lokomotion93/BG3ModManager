@@ -30,6 +30,7 @@ public class ModListViewModel : ReactiveObject
 
 	[Reactive] public bool IsFocused { get; set; }
 	[Reactive] public bool IsKeyboardFocusWithin { get; set; }
+	[Reactive] public bool IsActiveList { get; set; }
 
 	[Reactive] public IModEntry? SelectedItem { get; set; }
 

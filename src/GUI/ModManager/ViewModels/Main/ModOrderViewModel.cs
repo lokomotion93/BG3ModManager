@@ -1571,7 +1571,10 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
 			},
-		}, ActiveMods, readonlyActiveMods, activeModsConnection, "Active");
+		}, ActiveMods, readonlyActiveMods, activeModsConnection, "Active")
+		{
+			IsActiveList = true
+		};
 
 		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyOverrideMods)
 		{
