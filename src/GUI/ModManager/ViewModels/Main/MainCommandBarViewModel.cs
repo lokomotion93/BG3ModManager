@@ -245,6 +245,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Reactive] public IModOrderViewModel? ModOrder { get; protected set; }
 	[Reactive] public bool HighlightExtenderDownload { get; private set; }
 	[Reactive] public bool HasDopus { get; private set; }
+	[Reactive] public bool IsDeveloperMode { get; private set; }
 
 	public MainCommandBarViewModel()
 	{
@@ -358,9 +359,16 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		{
 			ToggleWindow<SettingsWindow>(true);
 			var settingsWindow = AppServices.Get<SettingsWindow>();
-			settingsWindow.ViewModel!.SelectedTabIndex = SettingsWindowTab.Default;
-			settingsWindow.GeneralSettingsView.GameExecutablePathTextBox.Focus();
-			settingsWindow.GeneralSettingsView.GameExecutablePathTextBox.SelectAll();
+			var vm = AppServices.Get<SettingsWindowViewModel>();
+			if(settingsWindow != null && vm != null)
+			{
+				vm.SelectedTabIndex = SettingsWindowTab.Default;
+				settingsWindow.GeneralSettingsView.GameExecutablePathTextBox.Focus();
+				RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), () =>
+				{
+					settingsWindow.GeneralSettingsView.GameExecutablePathTextBox.SelectAll();
+				});
+			}
 		}, canExecuteCommands);
 		OpenGameFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, main.Settings.GameExecutablePath), canOpenExecutablePath);
 		CopyGameFolderPathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(fs.Path.GetDirectoryName(main.Settings.GameExecutablePath)), canOpenExecutablePath);
@@ -700,6 +708,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		var whenModOrderPath = canExecuteModOrderCommands.CombineLatest(modOrder.WhenAnyValue(x => x.SelectedModOrderFilePath, Validators.IsExistingFile)).AllTrue();
 
 		dopus.WhenAnyValue(x => x.IsEnabled).BindTo(this, x => x.HasDopus);
+		main.WhenAnyValue(x => x.DeveloperModeVisibility).BindTo(this, x => x.IsDeveloperMode);
 
 		OpenSelectedProfileFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfilePath), whenProfilePath);
 		CopySelectedProfileFilePathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(modOrder.SelectedProfilePath), whenProfilePath);
