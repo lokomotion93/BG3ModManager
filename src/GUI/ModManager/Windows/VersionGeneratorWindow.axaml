@@ -83,7 +83,7 @@
 					    Grid.Row="1"
 					    Width="248"
 					    Margin="48,0"
-					    Text="{Binding Text}" />
+					    Text="{Binding Text, UpdateSourceTrigger=LostFocus}" />
 				</Grid>
 				<StackPanel Grid.Row="2"
 				    Margin="10"

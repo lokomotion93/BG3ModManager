@@ -42,7 +42,7 @@
 		<controls:EnhancedTextBox Name="InputTextBox"
 		    Grid.Row="3"
 		    IsVisible="{Binding IsInput}"
-		    Text="{Binding InputText, Mode=TwoWay}" />
+		    Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
 		<UniformGrid Grid.Row="4"
 		    HorizontalAlignment="Center"

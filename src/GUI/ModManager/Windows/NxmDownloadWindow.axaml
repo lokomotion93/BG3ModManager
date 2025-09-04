@@ -33,7 +33,7 @@
 				    VerticalAlignment="Center"
 				    AcceptsReturn="False"
 				    AcceptsTab="False"
-				    Text="{Binding Url}"
+				    Text="{Binding Url, UpdateSourceTrigger=LostFocus}"
 				    TextWrapping="Wrap" />
 				<Button Name="DownloadButton"
 				    Grid.Row="2"
