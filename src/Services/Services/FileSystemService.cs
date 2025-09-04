@@ -19,7 +19,7 @@ public class FileSystemService(IFileSystem fileSystemService) : IFileSystemServi
 	public IFileVersionInfoFactory FileVersionInfo => fileSystemService.FileVersionInfo;
 
 	/// <inheritdoc />
-	public virtual void EnsureDirectoryExists(string path)
+	public virtual void EnsureParentDirectoryExists(string path)
 	{
 		ArgumentNullException.ThrowIfNullOrEmpty(path);
 		if (_fileSystem.Path.IsPathRooted(path))

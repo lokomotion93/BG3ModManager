@@ -1225,7 +1225,7 @@ Directory the zip will be extracted to:
 
 			if (renameFile.Success)
 			{
-				AppServices.Get<IFileSystemService>()!.EnsureDirectoryExists(rootFolder);
+				AppServices.Get<IFileSystemService>()!.Directory.CreateDirectory(rootFolder);
 
 				rootFolder = Path.GetDirectoryName(renameFile.File);
 				PathwayData.LastSaveFilePath = rootFolder;

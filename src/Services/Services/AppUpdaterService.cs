@@ -30,7 +30,7 @@ public class AppUpdaterService(IFileSystemService fs, IGitHubService githubServi
 		{
 			tempDir = _fs.Path.Join(_fs.Path.GetTempPath(), AppTitle);
 		}
-		_fs.EnsureDirectoryExists(tempDir);
+		_fs.Directory.CreateDirectory(tempDir);
 		var tempFile = _fs.Path.Join(tempDir, TempFileName);
 
 		var result = await UpdateTools.CheckDownloadNewVersionAsync(GitHubUser, GitHubRepo, CurrentVersion, tempFile);

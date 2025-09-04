@@ -8,12 +8,12 @@ namespace ModManager.Services;
 public interface IFileSystemService : IFileSystem
 {
 	/// <summary>
-	/// Creates the directory of a path if it doesn't exist.
+	/// Ensures a path's parent directory exists.
 	/// </summary>
 	/// <param name="path">A given file path.</param>
 	/// <exception cref="ArgumentNullException">Thrown if the path is null.</exception>
 	/// <exception cref="ArgumentException">Thrown if the path is empty.</exception>
-	void EnsureDirectoryExists(string path);
+	void EnsureParentDirectoryExists(string path);
 
 	/// <summary>
 	/// Returns a file path without its file extension. This returns the full path, intead of just the file name.

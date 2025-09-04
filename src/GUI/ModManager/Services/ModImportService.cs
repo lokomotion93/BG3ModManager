@@ -197,11 +197,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 					{
 						var sysFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.Replace("/", "-");
 						var errorOutputPath = DivinityApp.GetAppDirectory("_Logs", $"ImportOrderFromArchive_{DateTime.Now.ToString(sysFormat + "_HH-mm-ss")}_Errors.log");
-						var logsDir = _fs.Path.GetDirectoryName(errorOutputPath);
-						if (logsDir.IsValid() && !_fs.Directory.Exists(logsDir))
-						{
-							_fs.EnsureDirectoryExists(logsDir);
-						}
+						_fs.EnsureParentDirectoryExists(errorOutputPath);
 						_fs.File.WriteAllText(errorOutputPath, string.Join("\n", result.Errors.Select(x => $"File: {x.File}\nError:\n{x.Exception}")));
 					}
 
@@ -435,8 +431,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				{
 					var sysFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.Replace("/", "-");
 					var errorOutputPath = DivinityApp.GetAppDirectory("_Logs", $"ImportMods_{DateTime.Now.ToString(sysFormat + "_HH-mm-ss")}_Errors.log");
-					var logsDir = _fs.Path.GetDirectoryName(errorOutputPath);
-					_fs.EnsureDirectoryExists(logsDir);
+					_fs.EnsureParentDirectoryExists(errorOutputPath);
 					_fs.File.WriteAllText(errorOutputPath, string.Join("\n", result.Errors.Select(x => $"File: {x.File}\nError:\n{x.Exception}")));
 				}
 
@@ -533,8 +528,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 					{
 						var sysFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.Replace("/", "-");
 						var errorOutputPath = DivinityApp.GetAppDirectory("_Logs", $"ImportNexusModsModIds_{DateTime.Now.ToString(sysFormat + "_HH-mm-ss")}_Errors.log");
-						var logsDir = _fs.Path.GetDirectoryName(errorOutputPath);
-						_fs.EnsureDirectoryExists(logsDir);
+						_fs.EnsureParentDirectoryExists(errorOutputPath);
 						_fs.File.WriteAllText(errorOutputPath, string.Join("\n", result.Errors.Select(x => $"File: {x.File}\nError:\n{x.Exception}")));
 					}
 
@@ -613,7 +607,6 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 			var sysFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.Replace("/", "-");
 			var gameDataFolder = _fs.Path.GetFullPath(Settings.GameDataPath);
 			var tempDir = DivinityApp.GetAppDirectory("Temp");
-			_fs.EnsureDirectoryExists(tempDir);
 
 			if (!outputPath.IsValid())
 			{
@@ -623,7 +616,6 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 					baseOrderName = $"{selectedProfile.Name}_{selectedModOrder.Name}";
 				}
 				var outputDir = DivinityApp.GetAppDirectory("Export");
-				_fs.EnsureDirectoryExists(outputDir);
 				outputPath = _fs.Path.Join(outputDir, $"{baseOrderName}-{DateTime.Now.ToString(sysFormat + "_HH-mm-ss")}.zip");
 			}
 
@@ -636,6 +628,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 			try
 			{
+				_fs.EnsureParentDirectoryExists(outputPath);
 				using var stream = _fs.File.OpenWrite(outputPath);
 				using var zipWriter = WriterFactory.Open(stream, ArchiveType.Zip, _exportWriterOptions);
 
@@ -681,6 +674,8 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 						if (_fs.Directory.Exists(publicFolder)) sourceFolders.Add(publicFolder);
 
 						DivinityApp.Log($"Creating package for editor mod '{mod.Name}' - '{outputPackage}'.");
+
+						_fs.EnsureParentDirectoryExists(outputPackage);
 
 						if (await FileUtils.CreatePackageAsync(gameDataFolder, sourceFolders, outputPackage, token, FileUtils.IgnoredPackageFiles))
 						{
