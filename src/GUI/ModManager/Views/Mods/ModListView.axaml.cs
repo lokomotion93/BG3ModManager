@@ -10,6 +10,7 @@ using Avalonia.VisualTree;
 using DynamicData;
 
 using ModManager.Models.Mod;
+using ModManager.Services;
 using ModManager.ViewModels.Mods;
 
 using System.Reflection;
@@ -125,7 +126,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
-	private void OnDrag(TreeDataGridRowDragEventArgs e)
+	private void OnTreeDataGridDrag(TreeDataGridRowDragEventArgs e)
 	{
 		MaybeRedirectDrop(e);
 		if (e.Inner.Data.Get(DragInfo.DataFormat) is DragInfo di && di.Source.Selection is ITreeDataGridRowSelectionModel<IModEntry> selection)
@@ -139,13 +140,15 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
-	private void OnDrop(TreeDataGridRowDragEventArgs e)
+	private void OnTreeDataGridDrop(TreeDataGridRowDragEventArgs e)
 	{
 		_isDragging = false;
 		MaybeRedirectDrop(e);
 
+		var dragData = e.Inner.Data.Get(DragInfo.DataFormat);
+
 		//List to List
-		if (e.Inner.Data.Get(DragInfo.DataFormat) is DragInfo di
+		if (dragData is DragInfo di
 			&& di.Source is HierarchicalTreeDataGridSource<IModEntry> listSource
 			&& ModsTreeDataGrid.Source is HierarchicalTreeDataGridSource<IModEntry> target)
 		{
@@ -172,7 +175,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	private bool _isSingleSelect = false;
 	private bool _isDragging = false;
 
-	private void OnDragStarted(TreeDataGridRowDragStartedEventArgs e)
+	private void OnTreeDataGridDragStarted(TreeDataGridRowDragStartedEventArgs e)
 	{
 		_isDragging = true;
 	}
@@ -265,6 +268,49 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
+	private void OnDrop(object? sender, DragEventArgs e)
+	{
+		if (e.DragEffects.HasFlag(DragDropEffects.Copy))
+		{
+			var droppedFiles = e.Data.GetFiles();
+			if (droppedFiles != null)
+			{
+				List<string> files = [];
+				foreach (var file in droppedFiles)
+				{
+					var ext = Path.GetExtension(file.Name);
+					if (ModImportService.IsImportableFile(ext))
+					{
+						files.Add(file.Path.LocalPath);
+					}
+				}
+				AppServices.ModImporter.ImportMods(files, files.Count, ViewModel?.IsActiveList == true);
+			}
+		}
+	}
+
+	private void OnDragOver(object? sender, DragEventArgs e)
+	{
+		var canImport = false;
+		var files = e.Data.GetFiles();
+		if (files != null)
+		{
+			foreach (var file in files)
+			{
+				var ext = Path.GetExtension(file.Name);
+				if(ModImportService.IsImportableFile(ext))
+				{
+					canImport = true;
+				}
+			}
+		}
+		
+		if (canImport)
+		{
+			e.DragEffects = DragDropEffects.Copy;
+		}
+	}
+
 	public ModListView()
 	{
 		InitializeComponent();
@@ -279,6 +325,9 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		AddHandler(InputElement.PointerWheelChangedEvent, OnPointerWheelChanged, RoutingStrategies.Tunnel);
 		ToolTip.IsOpenProperty.Changed.Subscribe(OnToolTipOpenedChanged);
+
+		AddHandler(DragDrop.DragOverEvent, OnDragOver);
+		AddHandler(DragDrop.DropEvent, OnDrop);
 
 		this.WhenActivated(d =>
 		{
@@ -311,19 +360,19 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					h => (sender, e) => h(e),
 					h => ModsTreeDataGrid.RowDragOver += h,
 					h => ModsTreeDataGrid.RowDragOver -= h
-				).Subscribe(OnDrag, OnError));
+				).Subscribe(OnTreeDataGridDrag, OnError));
 
 				d(Observable.FromEvent<EventHandler<TreeDataGridRowDragEventArgs>, TreeDataGridRowDragEventArgs>(
 					h => (sender, e) => h(e),
 					h => ModsTreeDataGrid.RowDrop += h,
 					h => ModsTreeDataGrid.RowDrop -= h
-				).Subscribe(OnDrop, OnError));
+				).Subscribe(OnTreeDataGridDrop, OnError));
 
 				d(Observable.FromEvent<EventHandler<TreeDataGridRowDragStartedEventArgs>, TreeDataGridRowDragStartedEventArgs>(
 					h => (sender, e) => h(e),
 					h => ModsTreeDataGrid.RowDragStarted += h,
 					h => ModsTreeDataGrid.RowDragStarted -= h
-				).Subscribe(OnDragStarted, OnError));
+				).Subscribe(OnTreeDataGridDragStarted, OnError));
 
 				d(Observable.FromEvent<EventHandler<TreeDataGridRowEventArgs>, TreeDataGridRowEventArgs>(
 					h => (sender, e) => h(e),
