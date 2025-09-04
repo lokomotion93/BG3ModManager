@@ -223,7 +223,8 @@
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
 					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="Campaign" />
-					<ComboBox MaxWidth="150"
+					<ComboBox x:Name="CampaignComboBox"
+					    MaxWidth="150"
 					    ItemsSource="{Binding ModOrder.AdventureMods}"
 					    SelectedIndex="{Binding ModOrder.SelectedAdventureModIndex, FallbackValue=0}"
 					    SelectedItem="{Binding ModOrder.SelectedAdventureMod}">
@@ -278,7 +279,7 @@
 							</MenuFlyout>
 						</Button.ContextFlyout>
 					</Button>
-					<ComboBox Name="CampaignComboBox"
+					<ComboBox Name="PostLaunchGameComboBox"
 					    AutoScrollToSelectedItem="False"
 					    SelectedIndex="0"
 					    ToolTip.Tip="When launching the game, performed this action on this window">

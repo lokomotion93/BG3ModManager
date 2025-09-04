@@ -16,6 +16,8 @@ namespace ModManager.Views.Main
         internal global::ModManager.Controls.ComboBoxWithRightClick OrdersComboBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.ComboBox CampaignComboBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.ComboBox PostLaunchGameComboBox;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -36,6 +38,7 @@ namespace ModManager.Views.Main
             ProfileComboBox = __thisNameScope__?.Find<global::ModManager.Controls.ComboBoxWithRightClick>("ProfileComboBox");
             OrdersComboBox = __thisNameScope__?.Find<global::ModManager.Controls.ComboBoxWithRightClick>("OrdersComboBox");
             CampaignComboBox = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBox>("CampaignComboBox");
+            PostLaunchGameComboBox = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBox>("PostLaunchGameComboBox");
         }
     }
 }
