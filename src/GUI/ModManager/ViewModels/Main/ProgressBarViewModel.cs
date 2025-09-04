@@ -21,7 +21,7 @@ public interface IProgressBarViewModel : IRoutableViewModel
 
 	RxCommandUnit CancelCommand { get; }
 
-	void Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null);
+	Task Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null);
 	Task CancelAsync();
 
 	void IncreaseValue(double amount, string? workText = null);
@@ -59,7 +59,7 @@ public class ProgressBarViewModel : ReactiveObject, IProgressBarViewModel
 		return Unit.Default;
 	}
 
-	public async void Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null)
+	public async Task Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null)
 	{
 		await Dispatcher.UIThread.InvokeAsync(async () =>
 		{
@@ -68,14 +68,17 @@ public class ProgressBarViewModel : ReactiveObject, IProgressBarViewModel
 			CanCancel = canCancel;
 			Value = 0d;
 
-			NextView = switchToViewOnFinish ?? await HostScreen.Router.CurrentViewModel;
+			NextView = switchToViewOnFinish;
 			await HostScreen.Router.Navigate.Execute(this);
 		}, DispatcherPriority.Background);
 
 		RxApp.TaskpoolScheduler.ScheduleAsync(async (_, _) =>
 		{
 			await RunCommand.Execute(asyncTask);
-			await FinishAsync(NextView);
+			RxApp.MainThreadScheduler.ScheduleAsync(async (_, _) =>
+			{
+				await FinishAsync(NextView);
+			});
 		});
 	}
 
@@ -100,20 +103,21 @@ public class ProgressBarViewModel : ReactiveObject, IProgressBarViewModel
 		});
 	}
 
-	private async Task FinishAsync(IRoutableViewModel? lastView)
+	private async Task FinishAsync(IRoutableViewModel? switchToView)
 	{
-		await Observable.StartAsync(async () =>
+		Finish();
+		if (switchToView != null)
 		{
-			Finish();
-			if (lastView != null)
+			await Task.Delay(500);
+			await Dispatcher.UIThread.InvokeAsync(async () =>
 			{
-				await Task.Delay(500);
-				await Dispatcher.UIThread.InvokeAsync(async () =>
-				{
-					await HostScreen.Router.Navigate.Execute(lastView);
-				}, DispatcherPriority.Background);
-			}
-		}, RxApp.MainThreadScheduler);
+				await HostScreen.Router.NavigateAndReset.Execute(switchToView);
+			}, DispatcherPriority.Background);
+		}
+		else
+		{
+			await HostScreen.Router.NavigateBack.Execute();
+		}
 	}
 
 	public ProgressBarViewModel(IScreen? host = null)
