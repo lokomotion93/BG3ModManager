@@ -164,7 +164,7 @@ public readonly record struct SettingsViewToGenerate
 					controlText = $"<CheckBox x:Name=\"{controlName}CheckBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" IsChecked =\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 					break;
 				case "String":
-					controlText = $"<TextBox x:Name=\"{controlName}TextBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"compact\" Text=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<controls:EnhancedTextBox x:Name=\"{controlName}TextBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"compact\" Text=\"{{Binding {bindTo}, UpdateSourceTrigger=LostFocus}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 					break;
 				case "TimeSpan":
 					controlText = $"<controls:TimeSpanUpDown x:Name=\"{controlName}TimeSpanUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";

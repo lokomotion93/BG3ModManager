@@ -11,15 +11,15 @@ namespace ModManager.Views.Generated
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.TextBlock CustomProfileTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
-        internal global::Avalonia.Controls.TextBox CustomProfileTextBox;
+        internal global::ModManager.Controls.EnhancedTextBox CustomProfileTextBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.TextBlock LogDirectoryTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
-        internal global::Avalonia.Controls.TextBox LogDirectoryTextBox;
+        internal global::ModManager.Controls.EnhancedTextBox LogDirectoryTextBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.TextBlock LuaBuiltinResourceDirectoryTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
-        internal global::Avalonia.Controls.TextBox LuaBuiltinResourceDirectoryTextBox;
+        internal global::ModManager.Controls.EnhancedTextBox LuaBuiltinResourceDirectoryTextBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.TextBlock ClearOnResetTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
@@ -129,11 +129,11 @@ namespace ModManager.Views.Generated
 
             var __thisNameScope__ = this.FindNameScope();
             CustomProfileTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("CustomProfileTextBlock");
-            CustomProfileTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("CustomProfileTextBox");
+            CustomProfileTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("CustomProfileTextBox");
             LogDirectoryTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LogDirectoryTextBlock");
-            LogDirectoryTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("LogDirectoryTextBox");
+            LogDirectoryTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("LogDirectoryTextBox");
             LuaBuiltinResourceDirectoryTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LuaBuiltinResourceDirectoryTextBlock");
-            LuaBuiltinResourceDirectoryTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("LuaBuiltinResourceDirectoryTextBox");
+            LuaBuiltinResourceDirectoryTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("LuaBuiltinResourceDirectoryTextBox");
             ClearOnResetTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ClearOnResetTextBlock");
             ClearOnResetCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("ClearOnResetCheckBox");
             CreateConsoleTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("CreateConsoleTextBlock");

@@ -13,10 +13,10 @@
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 		<TextBlock x:Name="ModioAPIKeyTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="mod.io API Key" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io" />
-		<TextBox x:Name="ModioAPIKeyTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding ModioAPIKey}" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io"/>
+		<controls:EnhancedTextBox x:Name="ModioAPIKeyTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding ModioAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io"/>
 		
 		<TextBlock x:Name="NexusModsAPIKeyTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="NexusMods API Key" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information" />
-		<TextBox x:Name="NexusModsAPIKeyTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding NexusModsAPIKey}" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information"/>
+		<controls:EnhancedTextBox x:Name="NexusModsAPIKeyTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding NexusModsAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information"/>
 		
 		<TextBlock x:Name="AllowAdultContentTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Allow Adult Content" ToolTip.Tip="Allow adult content when downloading collections from NexusMods" />
 		<CheckBox x:Name="AllowAdultContentCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding AllowAdultContent}" ToolTip.Tip="Allow adult content when downloading collections from NexusMods"/>

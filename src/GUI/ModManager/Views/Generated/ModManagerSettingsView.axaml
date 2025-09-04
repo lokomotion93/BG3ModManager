@@ -13,16 +13,16 @@
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 		<TextBlock x:Name="GameDataPathTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="Game Data Path" ToolTip.Tip="The path to the Data folder&#x0a;Example: Baldur's Gate 3/Data" />
-		<TextBox x:Name="GameDataPathTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding GameDataPath}" ToolTip.Tip="The path to the Data folder&#x0a;Example: Baldur's Gate 3/Data"/>
+		<controls:EnhancedTextBox x:Name="GameDataPathTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding GameDataPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="The path to the Data folder&#x0a;Example: Baldur's Gate 3/Data"/>
 		
 		<TextBlock x:Name="GameExecutablePathTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="Game Executable Path" ToolTip.Tip="The path to bg3.exe" />
-		<TextBox x:Name="GameExecutablePathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding GameExecutablePath}" ToolTip.Tip="The path to bg3.exe"/>
+		<controls:EnhancedTextBox x:Name="GameExecutablePathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding GameExecutablePath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="The path to bg3.exe"/>
 		
 		<TextBlock x:Name="LoadOrderPathTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Load Orders Path" ToolTip.Tip="The folder containing mod load order .json files" />
-		<TextBox x:Name="LoadOrderPathTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding LoadOrderPath}" ToolTip.Tip="The folder containing mod load order .json files"/>
+		<controls:EnhancedTextBox x:Name="LoadOrderPathTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding LoadOrderPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="The folder containing mod load order .json files"/>
 		
 		<TextBlock x:Name="DocumentsFolderPathOverrideTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="Override AppData Path" ToolTip.Tip="[EXPERIMENTAL]&#x0a;Override the default location to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3&#x0a;This folder is used when exporting load orders, loading profiles, and loading mods." />
-		<TextBox x:Name="DocumentsFolderPathOverrideTextBox" Grid.Row="3" Grid.Column="1" Classes="compact" Text="{Binding DocumentsFolderPathOverride}" ToolTip.Tip="[EXPERIMENTAL]&#x0a;Override the default location to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3&#x0a;This folder is used when exporting load orders, loading profiles, and loading mods."/>
+		<controls:EnhancedTextBox x:Name="DocumentsFolderPathOverrideTextBox" Grid.Row="3" Grid.Column="1" Classes="compact" Text="{Binding DocumentsFolderPathOverride, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="[EXPERIMENTAL]&#x0a;Override the default location to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3&#x0a;This folder is used when exporting load orders, loading profiles, and loading mods."/>
 		
 		<TextBlock x:Name="AutoAddDependenciesWhenExportingTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="Add Missing Dependencies When Exporting" ToolTip.Tip="Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order" />
 		<CheckBox x:Name="AutoAddDependenciesWhenExportingCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding AutoAddDependenciesWhenExporting}" ToolTip.Tip="Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order"/>
@@ -47,10 +47,10 @@
 		</ComboBox>
 		
 		<TextBlock x:Name="CustomLaunchActionTextBlock" Grid.Row="10" Grid.Column="0" Classes="left" Text="Launch Game - Custom Action" ToolTip.Tip="A file path, protocol, or custom process shell command to run" IsVisible="{Binding IsCustomLaunchEnabled}" />
-		<TextBox x:Name="CustomLaunchActionTextBox" Grid.Row="10" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchAction}" ToolTip.Tip="A file path, protocol, or custom process shell command to run" IsVisible="{Binding IsCustomLaunchEnabled}"/>
+		<controls:EnhancedTextBox x:Name="CustomLaunchActionTextBox" Grid.Row="10" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchAction, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="A file path, protocol, or custom process shell command to run" IsVisible="{Binding IsCustomLaunchEnabled}"/>
 		
 		<TextBlock x:Name="CustomLaunchArgsTextBlock" Grid.Row="11" Grid.Column="0" Classes="left" Text="Launch Game - Custom Arguments" ToolTip.Tip="Optional additional arguments to path to the custom launch command" IsVisible="{Binding IsCustomLaunchEnabled}" />
-		<TextBox x:Name="CustomLaunchArgsTextBox" Grid.Row="11" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchArgs}" ToolTip.Tip="Optional additional arguments to path to the custom launch command" IsVisible="{Binding IsCustomLaunchEnabled}"/>
+		<controls:EnhancedTextBox x:Name="CustomLaunchArgsTextBox" Grid.Row="11" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchArgs, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Optional additional arguments to path to the custom launch command" IsVisible="{Binding IsCustomLaunchEnabled}"/>
 		
 		<TextBlock x:Name="DisableLauncherTelemetryTextBlock" Grid.Row="12" Grid.Column="0" Classes="left" Text="Launcher - Disable Telemetry" ToolTip.Tip="Disable the telemetry options in the launcher&#x0a;Telemetry is always disabled if mods are active" />
 		<CheckBox x:Name="DisableLauncherTelemetryCheckBox" Grid.Row="12" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableLauncherTelemetry}" ToolTip.Tip="Disable the telemetry options in the launcher&#x0a;Telemetry is always disabled if mods are active"/>

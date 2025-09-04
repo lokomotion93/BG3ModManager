@@ -20,7 +20,7 @@
 		</ComboBox>
 		
 		<TextBlock x:Name="CachePathTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="CachePath" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
-		<TextBox x:Name="CachePathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding CachePath}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
+		<controls:EnhancedTextBox x:Name="CachePathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding CachePath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
 		
 		<TextBlock x:Name="DebugTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Debug" ToolTip.Tip="Enable debug mode in the extender updater, which prints more messages to the console window" />
 		<CheckBox x:Name="DebugCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding Debug}" ToolTip.Tip="Enable debug mode in the extender updater, which prints more messages to the console window"/>
@@ -32,16 +32,16 @@
 		<CheckBox x:Name="IPv4OnlyCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding IPv4Only}" ToolTip.Tip="Use only IPv4 when fetching the latest update"/>
 		
 		<TextBlock x:Name="ManifestNameTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="Manifest Name" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
-		<TextBox x:Name="ManifestNameTextBox" Grid.Row="5" Grid.Column="1" Classes="compact" Text="{Binding ManifestName}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
+		<controls:EnhancedTextBox x:Name="ManifestNameTextBox" Grid.Row="5" Grid.Column="1" Classes="compact" Text="{Binding ManifestName, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
 		
 		<TextBlock x:Name="ManifestURLTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="Manifest URL" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
-		<TextBox x:Name="ManifestURLTextBox" Grid.Row="6" Grid.Column="1" Classes="compact" Text="{Binding ManifestURL}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
+		<controls:EnhancedTextBox x:Name="ManifestURLTextBox" Grid.Row="6" Grid.Column="1" Classes="compact" Text="{Binding ManifestURL, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
 		
 		<TextBlock x:Name="TargetResourceDigestTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="Target Resource Digest" ToolTip.Tip="Use a specific Digest for the target update" IsVisible="{Binding DevOptionsEnabled}" />
-		<TextBox x:Name="TargetResourceDigestTextBox" Grid.Row="7" Grid.Column="1" Classes="compact" Text="{Binding TargetResourceDigest}" ToolTip.Tip="Use a specific Digest for the target update" IsVisible="{Binding DevOptionsEnabled}"/>
+		<controls:EnhancedTextBox x:Name="TargetResourceDigestTextBox" Grid.Row="7" Grid.Column="1" Classes="compact" Text="{Binding TargetResourceDigest, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Use a specific Digest for the target update" IsVisible="{Binding DevOptionsEnabled}"/>
 		
 		<TextBlock x:Name="TargetVersionTextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="Target Version" ToolTip.Tip="Update to a specific version of the script extender (ex. '5.0.0.0')" />
-		<TextBox x:Name="TargetVersionTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding TargetVersion}" ToolTip.Tip="Update to a specific version of the script extender (ex. '5.0.0.0')"/>
+		<controls:EnhancedTextBox x:Name="TargetVersionTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding TargetVersion, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Update to a specific version of the script extender (ex. '5.0.0.0')"/>
 		
 		<TextBlock x:Name="ValidateSignatureTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="Validate Signature" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
 		<CheckBox x:Name="ValidateSignatureCheckBox" Grid.Row="9" Grid.Column="1" Classes="right" IsChecked ="{Binding ValidateSignature}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>

@@ -11,11 +11,11 @@ namespace ModManager.Views.Generated
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.TextBlock ModioAPIKeyTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
-        internal global::Avalonia.Controls.TextBox ModioAPIKeyTextBox;
+        internal global::ModManager.Controls.EnhancedTextBox ModioAPIKeyTextBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.TextBlock NexusModsAPIKeyTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
-        internal global::Avalonia.Controls.TextBox NexusModsAPIKeyTextBox;
+        internal global::ModManager.Controls.EnhancedTextBox NexusModsAPIKeyTextBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
         internal global::Avalonia.Controls.TextBlock AllowAdultContentTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
@@ -57,9 +57,9 @@ namespace ModManager.Views.Generated
 
             var __thisNameScope__ = this.FindNameScope();
             ModioAPIKeyTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ModioAPIKeyTextBlock");
-            ModioAPIKeyTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("ModioAPIKeyTextBox");
+            ModioAPIKeyTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("ModioAPIKeyTextBox");
             NexusModsAPIKeyTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("NexusModsAPIKeyTextBlock");
-            NexusModsAPIKeyTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("NexusModsAPIKeyTextBox");
+            NexusModsAPIKeyTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("NexusModsAPIKeyTextBox");
             AllowAdultContentTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("AllowAdultContentTextBlock");
             AllowAdultContentCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("AllowAdultContentCheckBox");
             MinimumUpdateTimePeriodTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("MinimumUpdateTimePeriodTextBlock");

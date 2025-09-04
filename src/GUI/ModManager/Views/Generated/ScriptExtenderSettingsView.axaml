@@ -13,13 +13,13 @@
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 		<TextBlock x:Name="CustomProfileTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="Custom Profile" ToolTip.Tip="Use a profile other than Public&#x0a;This should be the profile folder name" />
-		<TextBox x:Name="CustomProfileTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding CustomProfile}" ToolTip.Tip="Use a profile other than Public&#x0a;This should be the profile folder name"/>
+		<controls:EnhancedTextBox x:Name="CustomProfileTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding CustomProfile, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Use a profile other than Public&#x0a;This should be the profile folder name"/>
 		
 		<TextBlock x:Name="LogDirectoryTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="Log Directory" ToolTip.Tip="Directory where the generated Osiris logs will be stored&#x0a;Default is Documents\OsirisLogs" />
-		<TextBox x:Name="LogDirectoryTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding LogDirectory}" ToolTip.Tip="Directory where the generated Osiris logs will be stored&#x0a;Default is Documents\OsirisLogs"/>
+		<controls:EnhancedTextBox x:Name="LogDirectoryTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding LogDirectory, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Directory where the generated Osiris logs will be stored&#x0a;Default is Documents\OsirisLogs"/>
 		
 		<TextBlock x:Name="LuaBuiltinResourceDirectoryTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Lua Builtin Directory" ToolTip.Tip="An additional directory where the Script Extender will check for builtin scripts&#x0a;This setting is meant for developers, to make it easier to test builtin script changes" IsVisible="{Binding DevOptionsEnabled}" />
-		<TextBox x:Name="LuaBuiltinResourceDirectoryTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding LuaBuiltinResourceDirectory}" ToolTip.Tip="An additional directory where the Script Extender will check for builtin scripts&#x0a;This setting is meant for developers, to make it easier to test builtin script changes" IsVisible="{Binding DevOptionsEnabled}"/>
+		<controls:EnhancedTextBox x:Name="LuaBuiltinResourceDirectoryTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding LuaBuiltinResourceDirectory, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="An additional directory where the Script Extender will check for builtin scripts&#x0a;This setting is meant for developers, to make it easier to test builtin script changes" IsVisible="{Binding DevOptionsEnabled}"/>
 		
 		<TextBlock x:Name="ClearOnResetTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="Clear Console On Reset" ToolTip.Tip="Clears the extender console when the reset command is used" IsVisible="{Binding DevOptionsEnabled}" />
 		<CheckBox x:Name="ClearOnResetCheckBox" Grid.Row="3" Grid.Column="1" Classes="right" IsChecked ="{Binding ClearOnReset}" ToolTip.Tip="Clears the extender console when the reset command is used" IsVisible="{Binding DevOptionsEnabled}"/>
