@@ -8,7 +8,7 @@ public interface IGlobalCommandsService
 	bool HasAnySelectedMods { get; set; }
 
 	ReactiveCommand<string?, Unit> OpenFileCommand { get; }
-	ReactiveCommand<string?, Unit> OpenInFileExplorerCommand { get; }
+	ReactiveCommand<string?, bool> OpenInFileExplorerCommand { get; }
 	ReactiveCommand<ModData?, Unit> ToggleNameDisplayCommand { get; }
 	ReactiveCommand<object?, Unit> CopyToClipboardCommand { get; }
 	ReactiveCommand<object?, Unit> DeleteModCommand { get; }
@@ -25,7 +25,7 @@ public interface IGlobalCommandsService
 	RxCommandUnit ExploreSelectedModFilesCommand { get; }
 
 	void OpenURL(string? url);
-	void OpenInFileExplorer(string? path);
+	bool OpenInFileExplorer(string? path);
 	void OpenFile(string? path);
 	void CopyToClipboard(object? obj);
 

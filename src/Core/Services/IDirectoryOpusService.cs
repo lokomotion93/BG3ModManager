@@ -15,5 +15,5 @@ public interface IDirectoryOpusService
 	/// <param name="filePath">The path to the file/directory to open.</param>
 	/// <param name="focus">Focus the DirectoryOpus lister window.</param>
 	/// <param name="exePath">The path to dopusrt.exe. Fetched from the registry if not set.</param>
-	void OpenInDirectoryOpus(string? filePath, bool focus = true, string? exePath = null);
+	bool OpenInDirectoryOpus(string? filePath, bool focus = true, string? exePath = null);
 }

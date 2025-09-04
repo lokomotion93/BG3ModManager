@@ -22,7 +22,7 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 	[Reactive] public bool HasAnySelectedMods { get; set; }
 
 	public ReactiveCommand<string?, Unit> OpenFileCommand { get; }
-	public ReactiveCommand<string?, Unit> OpenInFileExplorerCommand { get; }
+	public ReactiveCommand<string?, bool> OpenInFileExplorerCommand { get; }
 	public ReactiveCommand<ModData?, Unit> ToggleNameDisplayCommand { get; }
 	public ReactiveCommand<object?, Unit> CopyToClipboardCommand { get; }
 	public ReactiveCommand<object?, Unit> DeleteModCommand { get; }
@@ -61,22 +61,23 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 		}
 	}
 
-	public void OpenInFileExplorer(string? path)
+	public bool OpenInFileExplorer(string? path)
 	{
 		if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path), "path is null or empty");
 
 		if (_fs.File.Exists(path))
 		{
-			ProcessHelper.TryRunCommand("explorer.exe", $"/select, \"{_fs.Path.GetFullPath(path)}\"");
+			return ProcessHelper.TryRunCommand("explorer.exe", $"/select, \"{_fs.Path.GetFullPath(path)}\"");
 		}
 		else if (_fs.Directory.Exists(path))
 		{
-			ProcessHelper.TryRunCommand("explorer.exe", $"\"{_fs.Path.GetFullPath(path)}\"");
+			return ProcessHelper.TryRunCommand("explorer.exe", $"\"{_fs.Path.GetFullPath(path)}\"");
 		}
 		else
 		{
 			ShowAlert($"Error opening '{path}': File does not exist!", AlertType.Danger, 10);
 		}
+		return false;
 	}
 
 	public void CopyToClipboard(object? obj)
@@ -234,7 +235,7 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 		var canExecuteSelected = canExecuteCommands.CombineLatest(anySelected).AllTrue();
 
 		OpenFileCommand = ReactiveCommand.Create<string?>(OpenFile, canExecuteCommands);
-		OpenInFileExplorerCommand = ReactiveCommand.Create<string?>(OpenInFileExplorer, canExecuteCommands);
+		OpenInFileExplorerCommand = ReactiveCommand.Create<string?, bool>(OpenInFileExplorer, canExecuteCommands);
 
 		ToggleNameDisplayCommand = ReactiveCommand.Create<ModData?>(ToggleNameDisplay, canExecuteCommands);
 

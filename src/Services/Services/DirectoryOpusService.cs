@@ -42,9 +42,9 @@ public class DirectoryOpusService : ReactiveObject, IDirectoryOpusService
 	}
 
 	/// <inheritdoc />
-	public void OpenInDirectoryOpus(string? filePath, bool focus = true, string? exePath = null)
+	public bool OpenInDirectoryOpus(string? filePath, bool focus = true, string? exePath = null)
 	{
-		if (!filePath.IsValid()) return;
+		if (!filePath.IsValid()) return false;
 
 		exePath ??= GetExecutablePath();
 
@@ -58,6 +58,7 @@ public class DirectoryOpusService : ReactiveObject, IDirectoryOpusService
 				Arguments = $"/cmd {args}",
 				UseShellExecute = true
 			});
+			return true;
 		}
 		else
 		{
