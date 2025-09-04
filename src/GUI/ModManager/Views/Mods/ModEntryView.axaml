@@ -9,7 +9,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="mod:ModEntry"
-    ContextFlyout="{StaticResource ModContextFlyout}"
     IsHitTestVisible="True"
     ToolTip.Placement="RightEdgeAlignedTop"
     ToolTip.ShowDelay="100"

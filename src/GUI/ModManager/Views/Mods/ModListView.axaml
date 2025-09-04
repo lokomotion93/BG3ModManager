@@ -66,9 +66,8 @@
 				<Setter Property="Background" Value="{Binding PointerOverColor, Converter={StaticResource ModBackgroundColorConverter}, ConverterParameter='ModListHoveredCellBackground'}" />
 			</Style>
 
-			<!--<Setter Property="ContextFlyout" Value="{StaticResource ModContextFlyout}" />-->
+			<Setter Property="ContextFlyout" Value="{StaticResource ModContextFlyout}" />
 		</Style>
-
 	</UserControl.Styles>
 	<Grid RowDefinitions="auto,*">
 		<Grid ColumnDefinitions="auto,auto,auto,*">
