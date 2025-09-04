@@ -12,28 +12,28 @@
     d:DesignWidth="1600"
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-		<TextBlock Grid.Row="0" Grid.Column="0" Classes="left" Text="mod.io API Key" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io" />
-		<TextBox Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding ModioAPIKey}" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io"/>
+		<TextBlock x:Name="ModioAPIKeyTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="mod.io API Key" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io" />
+		<TextBox x:Name="ModioAPIKeyTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding ModioAPIKey}" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io"/>
 		
-		<TextBlock Grid.Row="1" Grid.Column="0" Classes="left" Text="NexusMods API Key" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information" />
-		<TextBox Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding NexusModsAPIKey}" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information"/>
+		<TextBlock x:Name="NexusModsAPIKeyTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="NexusMods API Key" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information" />
+		<TextBox x:Name="NexusModsAPIKeyTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding NexusModsAPIKey}" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information"/>
 		
-		<TextBlock Grid.Row="2" Grid.Column="0" Classes="left" Text="Allow Adult Content" ToolTip.Tip="Allow adult content when downloading collections from NexusMods" />
-		<CheckBox Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding AllowAdultContent}" ToolTip.Tip="Allow adult content when downloading collections from NexusMods"/>
+		<TextBlock x:Name="AllowAdultContentTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Allow Adult Content" ToolTip.Tip="Allow adult content when downloading collections from NexusMods" />
+		<CheckBox x:Name="AllowAdultContentCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding AllowAdultContent}" ToolTip.Tip="Allow adult content when downloading collections from NexusMods"/>
 		
-		<TextBlock Grid.Row="3" Grid.Column="0" Classes="left" Text="Minimum Update Time Period" ToolTip.Tip="Prevent checking for updates for individual mods until this amount of time has passed since the last check&#x0a;This is to prevent hitting API limits too quickly" />
-		<controls:TimeSpanUpDown Grid.Row="3" Grid.Column="1" Classes="right" Value="{Binding MinimumUpdateTimePeriod}" ToolTip.Tip="Prevent checking for updates for individual mods until this amount of time has passed since the last check&#x0a;This is to prevent hitting API limits too quickly"/>
+		<TextBlock x:Name="MinimumUpdateTimePeriodTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="Minimum Update Time Period" ToolTip.Tip="Prevent checking for updates for individual mods until this amount of time has passed since the last check&#x0a;This is to prevent hitting API limits too quickly" />
+		<controls:TimeSpanUpDown x:Name="MinimumUpdateTimePeriodTimeSpanUpDown" Grid.Row="3" Grid.Column="1" Classes="right" Value="{Binding MinimumUpdateTimePeriod}" ToolTip.Tip="Prevent checking for updates for individual mods until this amount of time has passed since the last check&#x0a;This is to prevent hitting API limits too quickly"/>
 		
-		<TextBlock Grid.Row="4" Grid.Column="0" Classes="left" Text="Update GitHub Mods" ToolTip.Tip="Automatically check for updates for mods configured with GitHub repository releases" />
-		<CheckBox Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateGitHubMods}" ToolTip.Tip="Automatically check for updates for mods configured with GitHub repository releases"/>
+		<TextBlock x:Name="UpdateGitHubModsTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="Update GitHub Mods" ToolTip.Tip="Automatically check for updates for mods configured with GitHub repository releases" />
+		<CheckBox x:Name="UpdateGitHubModsCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateGitHubMods}" ToolTip.Tip="Automatically check for updates for mods configured with GitHub repository releases"/>
 		
-		<TextBlock Grid.Row="5" Grid.Column="0" Classes="left" Text="Update mod.io Mods" ToolTip.Tip="Automatically check for updates for mods configured with mod.io releases" />
-		<CheckBox Grid.Row="5" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateModioMods}" ToolTip.Tip="Automatically check for updates for mods configured with mod.io releases"/>
+		<TextBlock x:Name="UpdateModioModsTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="Update mod.io Mods" ToolTip.Tip="Automatically check for updates for mods configured with mod.io releases" />
+		<CheckBox x:Name="UpdateModioModsCheckBox" Grid.Row="5" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateModioMods}" ToolTip.Tip="Automatically check for updates for mods configured with mod.io releases"/>
 		
-		<TextBlock Grid.Row="6" Grid.Column="0" Classes="left" Text="Update NexusMods Mods" ToolTip.Tip="Automatically check for updates for mods configured with NexusMods releases" />
-		<CheckBox Grid.Row="6" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateNexusMods}" ToolTip.Tip="Automatically check for updates for mods configured with NexusMods releases"/>
+		<TextBlock x:Name="UpdateNexusModsTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="Update NexusMods Mods" ToolTip.Tip="Automatically check for updates for mods configured with NexusMods releases" />
+		<CheckBox x:Name="UpdateNexusModsCheckBox" Grid.Row="6" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateNexusMods}" ToolTip.Tip="Automatically check for updates for mods configured with NexusMods releases"/>
 		
-		<TextBlock Grid.Row="7" Grid.Column="0" Classes="left" Text="Update the Script Extender" ToolTip.Tip="If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe" />
-		<CheckBox Grid.Row="7" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateScriptExtender}" ToolTip.Tip="If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe"/>
+		<TextBlock x:Name="UpdateScriptExtenderTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="Update the Script Extender" ToolTip.Tip="If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe" />
+		<CheckBox x:Name="UpdateScriptExtenderCheckBox" Grid.Row="7" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateScriptExtender}" ToolTip.Tip="If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe"/>
 	</Grid>
 </UserControl>

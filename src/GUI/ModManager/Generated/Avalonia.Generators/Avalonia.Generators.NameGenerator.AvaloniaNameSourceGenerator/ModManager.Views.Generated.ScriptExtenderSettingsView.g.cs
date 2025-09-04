@@ -8,7 +8,110 @@ namespace ModManager.Views.Generated
 {
     partial class ScriptExtenderSettingsView
     {
-
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock CustomProfileTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox CustomProfileTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock LogDirectoryTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox LogDirectoryTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock LuaBuiltinResourceDirectoryTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox LuaBuiltinResourceDirectoryTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock ClearOnResetTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox ClearOnResetCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock CreateConsoleTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox CreateConsoleCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DefaultToClientConsoleTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DefaultToClientConsoleCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DisableLauncherTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DisableLauncherCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DisableModValidationTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DisableModValidationCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock InsanityCheckTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox InsanityCheckCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DisableStoryMergeTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DisableStoryMergeCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DisableStoryPatchingTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DisableStoryPatchingCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DumpNetworkStringsTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DumpNetworkStringsCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock EnableAchievementsTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox EnableAchievementsCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DeveloperModeTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DeveloperModeCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock EnableExtensionsTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox EnableExtensionsCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock EnableLuaDebuggerTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox EnableLuaDebuggerCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock EnableDebuggerTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox EnableDebuggerCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock EnableLoggingTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox EnableLoggingCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock ExportDefaultExtenderSettingsTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox ExportDefaultExtenderSettingsCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock LogRuntimeTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox LogRuntimeCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock LogCompileTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox LogCompileCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock LogFailedCompileTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox LogFailedCompileCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DebuggerFlagsTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.NumericUpDown DebuggerFlagsNumericUpDown;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DebuggerPortTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.NumericUpDown DebuggerPortNumericUpDown;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock SendCrashReportsTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox SendCrashReportsCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock ShowPerfWarningsTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox ShowPerfWarningsCheckBox;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -24,7 +127,59 @@ namespace ModManager.Views.Generated
                 AvaloniaXamlLoader.Load(this);
             }
 
-
+            var __thisNameScope__ = this.FindNameScope();
+            CustomProfileTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("CustomProfileTextBlock");
+            CustomProfileTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("CustomProfileTextBox");
+            LogDirectoryTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LogDirectoryTextBlock");
+            LogDirectoryTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("LogDirectoryTextBox");
+            LuaBuiltinResourceDirectoryTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LuaBuiltinResourceDirectoryTextBlock");
+            LuaBuiltinResourceDirectoryTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("LuaBuiltinResourceDirectoryTextBox");
+            ClearOnResetTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ClearOnResetTextBlock");
+            ClearOnResetCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("ClearOnResetCheckBox");
+            CreateConsoleTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("CreateConsoleTextBlock");
+            CreateConsoleCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("CreateConsoleCheckBox");
+            DefaultToClientConsoleTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DefaultToClientConsoleTextBlock");
+            DefaultToClientConsoleCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DefaultToClientConsoleCheckBox");
+            DisableLauncherTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DisableLauncherTextBlock");
+            DisableLauncherCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DisableLauncherCheckBox");
+            DisableModValidationTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DisableModValidationTextBlock");
+            DisableModValidationCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DisableModValidationCheckBox");
+            InsanityCheckTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("InsanityCheckTextBlock");
+            InsanityCheckCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("InsanityCheckCheckBox");
+            DisableStoryMergeTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DisableStoryMergeTextBlock");
+            DisableStoryMergeCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DisableStoryMergeCheckBox");
+            DisableStoryPatchingTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DisableStoryPatchingTextBlock");
+            DisableStoryPatchingCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DisableStoryPatchingCheckBox");
+            DumpNetworkStringsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DumpNetworkStringsTextBlock");
+            DumpNetworkStringsCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DumpNetworkStringsCheckBox");
+            EnableAchievementsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("EnableAchievementsTextBlock");
+            EnableAchievementsCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("EnableAchievementsCheckBox");
+            DeveloperModeTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DeveloperModeTextBlock");
+            DeveloperModeCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DeveloperModeCheckBox");
+            EnableExtensionsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("EnableExtensionsTextBlock");
+            EnableExtensionsCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("EnableExtensionsCheckBox");
+            EnableLuaDebuggerTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("EnableLuaDebuggerTextBlock");
+            EnableLuaDebuggerCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("EnableLuaDebuggerCheckBox");
+            EnableDebuggerTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("EnableDebuggerTextBlock");
+            EnableDebuggerCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("EnableDebuggerCheckBox");
+            EnableLoggingTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("EnableLoggingTextBlock");
+            EnableLoggingCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("EnableLoggingCheckBox");
+            ExportDefaultExtenderSettingsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ExportDefaultExtenderSettingsTextBlock");
+            ExportDefaultExtenderSettingsCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("ExportDefaultExtenderSettingsCheckBox");
+            LogRuntimeTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LogRuntimeTextBlock");
+            LogRuntimeCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("LogRuntimeCheckBox");
+            LogCompileTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LogCompileTextBlock");
+            LogCompileCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("LogCompileCheckBox");
+            LogFailedCompileTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LogFailedCompileTextBlock");
+            LogFailedCompileCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("LogFailedCompileCheckBox");
+            DebuggerFlagsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DebuggerFlagsTextBlock");
+            DebuggerFlagsNumericUpDown = __thisNameScope__?.Find<global::Avalonia.Controls.NumericUpDown>("DebuggerFlagsNumericUpDown");
+            DebuggerPortTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DebuggerPortTextBlock");
+            DebuggerPortNumericUpDown = __thisNameScope__?.Find<global::Avalonia.Controls.NumericUpDown>("DebuggerPortNumericUpDown");
+            SendCrashReportsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("SendCrashReportsTextBlock");
+            SendCrashReportsCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("SendCrashReportsCheckBox");
+            ShowPerfWarningsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ShowPerfWarningsTextBlock");
+            ShowPerfWarningsCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("ShowPerfWarningsCheckBox");
         }
     }
 }

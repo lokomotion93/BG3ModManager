@@ -154,21 +154,23 @@ public readonly record struct SettingsViewToGenerate
 			var addedRightColumn = true;
 			var isMultiLine = false;
 
+			var controlName = entry.PropertyName.Replace(" ", "");
+
 			//code.AppendLine($"<!--{entry.PropertyName},{entry.DisplayName},{entry.PropertyTypeName},{entry.PropertyType.TypeKind}-->");
 
 			switch (entry.PropertyTypeName)
 			{
 				case "Boolean":
-					controlText = $"<CheckBox Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" IsChecked =\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<CheckBox x:Name=\"{controlName}CheckBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" IsChecked =\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 					break;
 				case "String":
-					controlText = $"<TextBox Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"compact\" Text=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<TextBox x:Name=\"{controlName}TextBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"compact\" Text=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 					break;
 				case "TimeSpan":
-					controlText = $"<controls:TimeSpanUpDown Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<controls:TimeSpanUpDown x:Name=\"{controlName}TimeSpanUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 					break;
 				case nameof(Int32):
-					controlText = $"<NumericUpDown Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<NumericUpDown x:Name=\"{controlName}NumericUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 					break;
 				default:
 					if (entry.PropertyType.TypeKind == TypeKind.Enum)
@@ -178,7 +180,7 @@ public readonly record struct SettingsViewToGenerate
 						comboCode.StartScope("");
 
 						isSingleLine = false;
-						var comboText = $"<ComboBox Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" SelectedIndex=\"{{Binding {bindTo}, FallbackValue=0}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+						var comboText = $"<ComboBox x:Name=\"{controlName}ComboBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" SelectedIndex=\"{{Binding {bindTo}, FallbackValue=0}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 						if (!string.IsNullOrEmpty(entry.BindVisibilityTo))
 						{
 							comboText += $" IsVisible=\"{{Binding {entry.BindVisibilityTo}}}\"";
@@ -206,7 +208,7 @@ public readonly record struct SettingsViewToGenerate
 									entryToolTip = _replaceLineBreaksPattern.Replace(entryToolTip, "&#x0a;");
 								}
 								if (!string.IsNullOrWhiteSpace(comment)) comboCode.AppendLine($"<!-- {comment} -->");
-								comboCode.AppendLine($"<ComboBoxItem Content=\"{entryName}\" ToolTip.Tip=\"{entryToolTip}\" />");
+								comboCode.AppendLine($"<ComboBoxItem x:Name=\"{member.Name.Replace(" ", "")}ComboBoxItem\" Content=\"{entryName}\" ToolTip.Tip=\"{entryToolTip}\" />");
 							}
 						}
 
@@ -226,7 +228,7 @@ public readonly record struct SettingsViewToGenerate
 
 			if (!string.IsNullOrWhiteSpace(controlText))
 			{
-				var labelLine = $"<TextBlock Grid.Row=\"{totalRows}\" Grid.Column=\"0\" Classes=\"left\" Text=\"{entry.DisplayName}\" ToolTip.Tip=\"{tooltip}\"";
+				var labelLine = $"<TextBlock x:Name=\"{controlName}TextBlock\" Grid.Row=\"{totalRows}\" Grid.Column=\"0\" Classes=\"left\" Text=\"{entry.DisplayName}\" ToolTip.Tip=\"{tooltip}\"";
 				if (!string.IsNullOrEmpty(entry.BindVisibilityTo))
 				{
 					labelLine += $" IsVisible=\"{{Binding {entry.BindVisibilityTo}}}\"";

@@ -8,7 +8,52 @@ namespace ModManager.Views.Generated
 {
     partial class ScriptExtenderUpdateConfigView
     {
-
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock UpdateChannelTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.ComboBox UpdateChannelComboBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.ComboBoxItem ReleaseComboBoxItem;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.ComboBoxItem DevelComboBoxItem;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.ComboBoxItem NightlyComboBoxItem;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock CachePathTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox CachePathTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DebugTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DebugCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock DisableUpdatesTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox DisableUpdatesCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock IPv4OnlyTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox IPv4OnlyCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock ManifestNameTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox ManifestNameTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock ManifestURLTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox ManifestURLTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock TargetResourceDigestTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox TargetResourceDigestTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock TargetVersionTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBox TargetVersionTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.TextBlock ValidateSignatureTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        internal global::Avalonia.Controls.CheckBox ValidateSignatureCheckBox;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -24,7 +69,30 @@ namespace ModManager.Views.Generated
                 AvaloniaXamlLoader.Load(this);
             }
 
-
+            var __thisNameScope__ = this.FindNameScope();
+            UpdateChannelTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("UpdateChannelTextBlock");
+            UpdateChannelComboBox = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBox>("UpdateChannelComboBox");
+            ReleaseComboBoxItem = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBoxItem>("ReleaseComboBoxItem");
+            DevelComboBoxItem = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBoxItem>("DevelComboBoxItem");
+            NightlyComboBoxItem = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBoxItem>("NightlyComboBoxItem");
+            CachePathTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("CachePathTextBlock");
+            CachePathTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("CachePathTextBox");
+            DebugTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DebugTextBlock");
+            DebugCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DebugCheckBox");
+            DisableUpdatesTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DisableUpdatesTextBlock");
+            DisableUpdatesCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("DisableUpdatesCheckBox");
+            IPv4OnlyTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("IPv4OnlyTextBlock");
+            IPv4OnlyCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("IPv4OnlyCheckBox");
+            ManifestNameTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ManifestNameTextBlock");
+            ManifestNameTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("ManifestNameTextBox");
+            ManifestURLTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ManifestURLTextBlock");
+            ManifestURLTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("ManifestURLTextBox");
+            TargetResourceDigestTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("TargetResourceDigestTextBlock");
+            TargetResourceDigestTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("TargetResourceDigestTextBox");
+            TargetVersionTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("TargetVersionTextBlock");
+            TargetVersionTextBox = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("TargetVersionTextBox");
+            ValidateSignatureTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ValidateSignatureTextBlock");
+            ValidateSignatureCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("ValidateSignatureCheckBox");
         }
     }
 }
