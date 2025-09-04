@@ -239,15 +239,45 @@
 					<Button Command="{Binding OpenModsFolderCommand}"
 					    Content="{materialIcons:MaterialIconExt Kind=FolderOpen}"
 					    Foreground="RoyalBlue"
-					    ToolTip.Tip="Open Mods Folder..." />
+					    ToolTip.Tip="Open Mods Folder...">
+						<Button.ContextFlyout>
+							<MenuFlyout>
+								<MenuItem Command="{Binding CopyModsDirectoryPathToClipboardCommand}" Header="Copy Path to Clipboard" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
+							</MenuFlyout>
+						</Button.ContextFlyout>
+					</Button>
 					<Button Command="{Binding OpenLogsFolderCommand}"
 					    Content="{materialIcons:MaterialIconExt Kind=Contract}"
 					    Foreground="Teal"
-					    ToolTip.Tip="Open Script Extender Logs Folder..." />
+					    ToolTip.Tip="Open Script Extender Logs Folder...">
+						<Button.ContextFlyout>
+							<MenuFlyout>
+								<MenuItem Command="{Binding CopyExtenderLogsDirectoryPathToClipboardCommand}" Header="Copy Path to Clipboard" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
+							</MenuFlyout>
+						</Button.ContextFlyout>
+					</Button>
 					<Button Command="{Binding LaunchGameCommand}"
 					    Content="{materialIcons:MaterialIconExt Kind=Launch}"
 					    Foreground="Red"
-					    ToolTip.Tip="Launch Game..." />
+					    ToolTip.Tip="Launch Game...">
+						<Button.ContextFlyout>
+							<MenuFlyout>
+								<MenuItem Command="{Binding EditExecutablePathCommand}" Header="Edit Executable Path..." Icon="{materialIcons:MaterialIconExt Kind=FileEdit}" />
+								<MenuItem Header="Open..." Icon="{materialIcons:MaterialIconExt Kind=FolderOpen}">
+									<MenuItem Command="{Binding OpenGameFolderCommand}" Header="Open Parent Folder in File Explorer..." Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
+									<MenuItem Command="{Binding OpenGameFolderCommand}"
+									    CommandParameter="dopus"
+									    Header="Open Parent Folder in Directory Opus..."
+									    Icon="{materialIcons:MaterialIconExt Kind=WhiteBalanceSunny, Classes=Yellow}"
+									    IsVisible="{Binding HasDopus}" />
+								</MenuItem>
+								<MenuItem Header="Copy to Clipboard..." Icon="{materialIcons:MaterialIconExt Kind=Clipboard}">
+									<MenuItem Command="{Binding CopyGameExecutablePathToClipboardCommand}" Header="Executable Path" Icon="{materialIcons:MaterialIconExt Kind=File}" />
+									<MenuItem Command="{Binding CopyGameFolderPathToClipboardCommand}" Header="Parent Folder Path" Icon="{materialIcons:MaterialIconExt Kind=Folder}" />
+								</MenuItem>
+							</MenuFlyout>
+						</Button.ContextFlyout>
+					</Button>
 					<ComboBox Name="CampaignComboBox"
 					    AutoScrollToSelectedItem="False"
 					    SelectedIndex="0"

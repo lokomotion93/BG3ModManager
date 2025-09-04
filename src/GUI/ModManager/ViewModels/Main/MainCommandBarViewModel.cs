@@ -62,10 +62,10 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	public RxCommandUnit? OpenGitHubRepoCommand { get; private set; }
 
 	[Keybinding("Open Mods Folder", Key.D1, KeyModifiers.Control, "", "Go")]
-	public RxBoolCommandUnit? OpenModsFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenModsFolderCommand { get; private set; }
 
 	[Keybinding("Open Logs Folder", Key.D2, KeyModifiers.Control, "", "Go")]
-	public RxBoolCommandUnit? OpenLogsFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenLogsFolderCommand { get; private set; }
 
 	[Keybinding("Open Nexus Mods Website", Key.D3, KeyModifiers.Control, "", "Go")]
 	public RxBoolCommandUnit? OpenNexusModsCommand { get; private set; }
@@ -173,23 +173,17 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding("Delete Selected Mods...", Key.Delete, KeyModifiers.None, "", "Edit")]
 	public RxCommandUnit? DeleteSelectedModsCommand { get; private set; }
 
-	[Keybinding("Open Preferences", Key.P, KeyModifiers.Control, "", "Settings")]
-	public RxCommandUnit? OpenPreferencesCommand { get; private set; }
-
-	[Keybinding("Open Keyboard Shortcuts", Key.K, KeyModifiers.Control, "", "Settings")]
-	public RxCommandUnit? OpenKeybindingsCommand { get; private set; }
-
 	[Keybinding("Toggle Light/Dark Mode", Key.L, KeyModifiers.Control, "", "Settings")]
 	public RxCommandUnit? ToggleViewThemeCommand { get; private set; } //Key.L, ModifierKeys.Control);
 
 	[Keybinding("Open Game Folder", Key.D2, KeyModifiers.Control, "", "Go")]
-	public RxBoolCommandUnit? OpenGameFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenGameFolderCommand { get; private set; }
 
 	[Keybinding("Open Saves Folder", Key.D3, KeyModifiers.Control, "", "Go")]
-	public RxBoolCommandUnit? OpenSavesFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSavesFolderCommand { get; private set; }
 
 	[Keybinding("Open Script Extender Data Folder", Key.D4, KeyModifiers.Control, "", "Go")]
-	public RxCommandUnit? OpenExtenderDataFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenExtenderDataFolderCommand { get; private set; }
 
 	[Keybinding("Download & Extract the Script Extender...", Key.None, KeyModifiers.None, "", "Download")]
 	public RxCommandUnit? DownloadScriptExtenderCommand { get; private set; }
@@ -227,15 +221,21 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding("Open Repository Page...", Key.F11, KeyModifiers.None, "", "Help")]
 	public RxCommandUnit? OpenRepositoryPageCommand { get; private set; }
 
+	//Context Menu commands
 
-	public ReactiveCommand<string?, Unit>? OpenSelectedProfileFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSelectedProfileFolderCommand { get; private set; }
 	public RxCommandUnit? CopySelectedProfileFilePathToClipboardCommand { get; private set; }
 
-	public ReactiveCommand<string?, Unit>? OpenSelectedProfileSavesFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSelectedProfileSavesFolderCommand { get; private set; }
 	public RxCommandUnit? CopySelectedProfileSavesPathToClipboardCommand { get; private set; }
 
-	public ReactiveCommand<string?, Unit>? OpenSelectedModOrderFilePathCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSelectedModOrderFilePathCommand { get; private set; }
 	public RxCommandUnit? CopySelectedModOrderFilePathToClipboardCommand { get; private set; }
+	public RxCommandUnit? CopyModsDirectoryPathToClipboardCommand { get; private set; }
+	public RxCommandUnit? CopyExtenderLogsDirectoryPathToClipboardCommand { get; private set; }
+	public RxCommandUnit? CopyGameExecutablePathToClipboardCommand { get; private set; }
+	public RxCommandUnit? CopyGameFolderPathToClipboardCommand { get; private set; }
+	public RxCommandUnit? EditExecutablePathCommand { get; private set; }
 
 	private readonly ObservableCollectionExtended<IMenuEntry> _menuEntries = [];
 
@@ -292,15 +292,15 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		});
 	}
 
-	private static void OpenInExplorerOrOther(string? mode, string? path)
+	private static bool OpenInExplorerOrOther(string? mode, string? path)
 	{
 		if(mode == "dopus")
 		{
-			AppServices.Dopus.OpenInDirectoryOpus(path);
+			return AppServices.Dopus.OpenInDirectoryOpus(path);
 		}
 		else
 		{
-			AppServices.Commands.OpenInFileExplorer(path);
+			return AppServices.Commands.OpenInFileExplorer(path);
 		}
 	}
 
@@ -337,40 +337,38 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		OpenGitHubRepoCommand = ReactiveCommand.Create(() => AppServices.Commands.OpenURL(DivinityApp.URL_REPO), canExecuteCommands);
 		OpenDonationPageCommand = ReactiveCommand.Create(() => AppServices.Commands.OpenURL(DivinityApp.URL_DONATION), canExecuteCommands);
-		OpenModsFolderCommand = ReactiveCommand.Create(() => ProcessHelper.TryOpenPath(main.PathwayData.AppDataModsPath, fs.Directory.Exists), canExecuteCommands);
 
+		var canOpenModsDirectory = main.PathwayData.WhenAnyValue(x => x.AppDataModsPath, fs.Directory.Exists).CombineLatest(canExecuteCommands).AllTrue();
 		var gameExecutableExists = main.Settings.WhenAnyValue(x => x.GameExecutablePath, fs.File.Exists);
 		var logFolderExists = main.Settings.WhenAnyValue(x => x.ExtenderLogDirectory).Select(fs.Directory.Exists);
 		var canOpenLogsFolder = canExecuteCommands.CombineLatest(gameExecutableExists, logFolderExists).AllTrue();
-
-		OpenLogsFolderCommand = ReactiveCommand.Create(() =>
-		{
-			if(fs.File.Exists(main.Settings.GameExecutablePath))
-			{
-				return ProcessHelper.TryOpenPath(fs.Path.GetDirectoryName(main.Settings.GameExecutablePath), fs.Directory.Exists);
-			}
-			return false;
-		}, canOpenLogsFolder);
-
-		OpenGameFolderCommand = ReactiveCommand.Create(() =>
-		{
-			if(fs.File.Exists(main.Settings.GameExecutablePath))
-			{
-				return ProcessHelper.TryOpenPath(fs.Path.GetDirectoryName(main.Settings.GameExecutablePath));
-			}
-			return false;
-		}, canExecuteCommands.CombineLatest(gameExecutableExists).AllTrue());
+		var canOpenExecutablePath = canExecuteCommands.CombineLatest(gameExecutableExists).AllTrue();
 
 		//Savegames\Story
 		var canOpenProfileSaves = modOrder.WhenAnyValue(x => x.SelectedProfileSavesPath, fs.Directory.Exists).CombineLatest(canExecuteCommands).AllTrue();
-		OpenSavesFolderCommand = ReactiveCommand.Create(() => ProcessHelper.TryOpenPath(modOrder.SelectedProfileSavesPath), canOpenProfileSaves);
-
 		var canOpenExtenderDirectory = main.PathwayData.WhenAnyValue(x => x.AppDataGameFolder).Select(x => fs.Directory.Exists(fs.Path.Join(x, "Script Extender")));
-		OpenExtenderDataFolderCommand = ReactiveCommand.Create(() =>
+
+		OpenModsFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, main.PathwayData.AppDataModsPath), canOpenModsDirectory);
+		CopyModsDirectoryPathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(main.PathwayData.AppDataModsPath), canOpenModsDirectory);
+
+		OpenLogsFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, main.Settings.ExtenderLogDirectory), canOpenLogsFolder);
+		CopyExtenderLogsDirectoryPathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(main.Settings.ExtenderLogDirectory), canOpenLogsFolder);
+
+		EditExecutablePathCommand = ReactiveCommand.Create(() =>
 		{
-			var extenderDirectory = fs.Path.Join(main.PathwayData.AppDataGameFolder, "Script Extender");
-			ProcessHelper.TryOpenPath(extenderDirectory);
-		}, canOpenExtenderDirectory);
+			ToggleWindow<SettingsWindow>(true);
+			var settingsWindow = AppServices.Get<SettingsWindow>();
+			settingsWindow.ViewModel!.SelectedTabIndex = SettingsWindowTab.Default;
+			settingsWindow.GeneralSettingsView.GameExecutablePathTextBox.Focus();
+			settingsWindow.GeneralSettingsView.GameExecutablePathTextBox.SelectAll();
+		}, canExecuteCommands);
+		OpenGameFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, main.Settings.GameExecutablePath), canOpenExecutablePath);
+		CopyGameFolderPathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(fs.Path.GetDirectoryName(main.Settings.GameExecutablePath)), canOpenExecutablePath);
+		CopyGameExecutablePathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(main.Settings.GameExecutablePath), canOpenExecutablePath);
+
+		OpenSavesFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfileSavesPath), canOpenProfileSaves);
+		
+		OpenExtenderDataFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, fs.Path.Join(main.PathwayData.AppDataGameFolder, "Script Extender")), canOpenExtenderDirectory);
 
 		OpenNexusModsCommand = ReactiveCommand.Create(() => ProcessHelper.TryOpenPath(DivinityApp.URL_NEXUSMODS), canExecuteCommands);
 		OpenSteamPageCommand = ReactiveCommand.Create(() => ProcessHelper.TryOpenPath(DivinityApp.URL_STEAM), canExecuteCommands);
@@ -703,13 +701,13 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		dopus.WhenAnyValue(x => x.IsEnabled).BindTo(this, x => x.HasDopus);
 
-		OpenSelectedProfileFolderCommand = ReactiveCommand.Create<string?>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfilePath), whenProfilePath);
+		OpenSelectedProfileFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfilePath), whenProfilePath);
 		CopySelectedProfileFilePathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(modOrder.SelectedProfilePath), whenProfilePath);
 
-		OpenSelectedProfileSavesFolderCommand = ReactiveCommand.Create<string?>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfileSavesPath), whenProfileSavesPath);
+		OpenSelectedProfileSavesFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfileSavesPath), whenProfileSavesPath);
 		CopySelectedProfileSavesPathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(modOrder.SelectedProfileSavesPath), whenProfileSavesPath);
 
-		OpenSelectedModOrderFilePathCommand = ReactiveCommand.Create<string?>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedModOrderFilePath), whenModOrderPath);
+		OpenSelectedModOrderFilePathCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedModOrderFilePath), whenModOrderPath);
 		CopySelectedModOrderFilePathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(modOrder.SelectedModOrderFilePath), whenModOrderPath);
 
 		//MenuEntry.FromKeybinding(ImportNexusModsIdsCommand, nameof(ImportNexusModsIdsCommand), keybindings),
