@@ -121,9 +121,8 @@ public static class ImportUtils
 							using var entryStream = file.OpenEntryStream();
 							try
 							{
-								var entryBuffer = new byte[entryStream.Length];
-								await entryStream.ReadAsync(entryBuffer.AsMemory(0, buffer.Length), options.Token);
-								var text = Encoding.UTF8.GetString(entryBuffer);
+								using var sr = new StreamReader(entryStream, Encoding.UTF8);
+								var text = sr.ReadToEnd();
 								if (text.IsValid())
 								{
 									options.ImportedJsonFiles.Add(new ImportedJsonFile { FileName = Path.GetFileNameWithoutExtension(file.Key), Text = text });
