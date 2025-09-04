@@ -74,17 +74,18 @@ public class ModSettingsExportService(IFileSystemService fileSystemService) : IM
 
 	public void SetGameVersion(string exePath)
 	{
-		var info = _fs.FileVersionInfo.GetVersionInfo(exePath);
-		if (info != null && info.ProductVersion.IsValid())
+		if(_fs.File.Exists(exePath))
 		{
-			//info.FileVersion is wrong for some reason, but the individual parts should be correct
-			//Whereas info.ProductVersion is correct, but the individual parts may be incorrect
-			SetGameVersion(new Version(info.ProductVersion));
+			var info = _fs.FileVersionInfo.GetVersionInfo(exePath);
+			if (info != null && info.ProductVersion.IsValid())
+			{
+				//info.FileVersion is wrong for some reason, but the individual parts should be correct
+				//Whereas info.ProductVersion is correct, but the individual parts may be incorrect
+				SetGameVersion(new Version(info.ProductVersion));
+				return;
+			}
 		}
-		else
-		{
-			DivinityApp.Log($"Failed to get file version from path '{exePath}'");
-		}
+		DivinityApp.Log($"Failed to get file version from path '{exePath}'");
 	}
 
 	public string GenerateModSettingsFile(IEnumerable<ModData> orderList)
