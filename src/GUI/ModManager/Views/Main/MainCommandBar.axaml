@@ -221,7 +221,7 @@
 					    Foreground="Red"
 					    ToolTip.Tip="Refresh Mods" />
 				</StackPanel>
-				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+				<StackPanel VerticalAlignment="Center" IsVisible="{Binding IsDeveloperMode}" Orientation="Horizontal">
 					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="Campaign" />
 					<ComboBox x:Name="CampaignComboBox"
 					    MaxWidth="150"
