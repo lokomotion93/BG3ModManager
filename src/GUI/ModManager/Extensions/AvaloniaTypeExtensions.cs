@@ -16,7 +16,7 @@ public static class AvaloniaTypeExtensions
 
 		return new FilePickerFileType(filter.GetDisplayName())
 		{
-			Patterns = filter.Extensions,
+			Patterns = [.. filter.Extensions.Select(x => "*" + x)],
 			AppleUniformTypeIdentifiers = ["public.item"],
 			MimeTypes = ["*/*"]
 		};
