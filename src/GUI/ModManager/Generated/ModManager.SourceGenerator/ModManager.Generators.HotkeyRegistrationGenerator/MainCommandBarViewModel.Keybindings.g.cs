@@ -60,8 +60,6 @@ public partial class MainCommandBarViewModel
 		keys.RegisterCommand("MainCommandBarViewModel_ToggleFilterFocusCommand", "Toggle Focus Filter for Current List", ToggleFilterFocusCommand, Avalonia.Input.Key.F, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_ToggleFileNameDisplayCommand", "Show File Names for Mods", ToggleFileNameDisplayCommand);
 		keys.RegisterCommand("MainCommandBarViewModel_DeleteSelectedModsCommand", "Delete Selected Mods...", DeleteSelectedModsCommand, Avalonia.Input.Key.Delete);
-		keys.RegisterCommand("MainCommandBarViewModel_OpenPreferencesCommand", "Open Preferences", OpenPreferencesCommand, Avalonia.Input.Key.P, Avalonia.Input.KeyModifiers.Control);
-		keys.RegisterCommand("MainCommandBarViewModel_OpenKeybindingsCommand", "Open Keyboard Shortcuts", OpenKeybindingsCommand, Avalonia.Input.Key.K, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_ToggleViewThemeCommand", "Toggle Light/Dark Mode", ToggleViewThemeCommand, Avalonia.Input.Key.L, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_OpenGameFolderCommand", "Open Game Folder", OpenGameFolderCommand, Avalonia.Input.Key.D2, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_OpenSavesFolderCommand", "Open Saves Folder", OpenSavesFolderCommand, Avalonia.Input.Key.D3, Avalonia.Input.KeyModifiers.Control);
