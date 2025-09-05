@@ -147,6 +147,16 @@
 				    Header="Validate Stats"
 				    Icon="{icons:MaterialIconExt Kind=FileCheck}"
 				    ToolTip.Tip="Run lslib's stats validator on this specific mod" />
+				<MenuItem Command="{Binding Path=ExploreModFilesCommand, Source={x:Static manager:AppServices.Commands}}"
+				    CommandParameter="{Binding Data}"
+				    Header="View Mod Files"
+				    Icon="{icons:MaterialIconExt Kind=FileTree}"
+				    ToolTip.Tip="View this mod's files in the 'Mod File Explorer' window" />
+				<MenuItem Command="{Binding Path=ExploreSelectedModFilesCommand, Source={x:Static manager:AppServices.Commands}}"
+				    Header="View Files For All Selected Mods"
+				    Icon="{icons:MaterialIconExt Kind=FileMultiple}"
+				    IsVisible="{Binding Path=HasMultipleSelectedMods, Source={x:Static manager:AppServices.Commands}}"
+				    ToolTip.Tip="View all selected mods in the 'Mod File Explorer' window" />
 			</MenuItem.Items>
 		</MenuItem>
 
