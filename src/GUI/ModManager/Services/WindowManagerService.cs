@@ -190,5 +190,32 @@ public class WindowManagerService
 				context.SetOutput(false);
 			}
 		});
+
+		interactions.OpenUpdatesWindow.RegisterHandler(context =>
+		{
+			var window = AppServices.Get<AppUpdateWindow>();
+			if (window != null)
+			{
+				if (context.Input && !window.IsVisible)
+				{
+					RxApp.MainThreadScheduler.Schedule(() =>
+					{
+						window.Show(MainWindow);
+					});
+				}
+				else if(!context.Input && window.IsVisible)
+				{
+					RxApp.MainThreadScheduler.Schedule(() =>
+					{
+						window.Hide();
+					});
+				}
+				context.SetOutput(true);
+			}
+			else
+			{
+				context.SetOutput(false);
+			}
+		});
 	}
 }

@@ -22,6 +22,8 @@ public class InteractionsService : IInteractionsService
 	/// <inheritdoc/>
 	public Interaction<ModData, bool> OpenModProperties { get; }
 	/// <inheritdoc/>
+	public Interaction<bool, bool> OpenUpdatesWindow { get; }
+	/// <inheritdoc/>
 	public Interaction<NexusGraphCollectionRevision, bool> OpenDownloadCollectionView { get; }
 	/// <inheritdoc/>
 	public Interaction<OpenFileBrowserDialogRequest, OpenFileBrowserDialogResults> OpenFileBrowserDialog { get; }
@@ -50,6 +52,7 @@ public class InteractionsService : IInteractionsService
 		OpenFolderBrowserDialog = new();
 		OpenModProperties = new();
 		OpenValidateStatsResults = new();
+		OpenUpdatesWindow = new();
 		ShowAlert = new();
 		ShowMessageBox = new();
 		PickMods = new();

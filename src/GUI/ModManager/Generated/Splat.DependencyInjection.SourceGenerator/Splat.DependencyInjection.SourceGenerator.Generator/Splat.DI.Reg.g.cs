@@ -147,6 +147,11 @@ namespace Splat
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Windows.SettingsWindow));
             }
             {
+                global::System.Lazy<ModManager.AppUpdateWindow> lazy = new global::System.Lazy<ModManager.AppUpdateWindow>(() => new global::ModManager.AppUpdateWindow());
+                Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.AppUpdateWindow>));
+                Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.AppUpdateWindow));
+            }
+            {
                 global::System.Lazy<ModManager.Windows.ModPropertiesWindow> lazy = new global::System.Lazy<ModManager.Windows.ModPropertiesWindow>(() => new global::ModManager.Windows.ModPropertiesWindow());
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.Windows.ModPropertiesWindow>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Windows.ModPropertiesWindow));

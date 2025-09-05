@@ -22,7 +22,8 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 	[Reactive] public bool CanSkip { get; set; }
 	[Reactive] public string? SkipButtonText { get; set; }
 	[Reactive] public string? UpdateDescription { get; set; }
-	[Reactive] public string? UpdateChangelogView { get; set; }
+	[Reactive] public string? ChangelogMarkdownText { get; set; }
+	[Reactive] public double ScrollViewerWidth { get; set; }
 
 	public RxCommandUnit ConfirmCommand { get; private set; }
 	public RxCommandUnit SkipCommand { get; private set; }
@@ -48,7 +49,7 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 			if (markdownText.IsValid())
 			{
 				markdownText = RemoveEmptyLinesPattern.Replace(markdownText, string.Empty);
-				UpdateChangelogView = markdownText;
+				ChangelogMarkdownText = markdownText;
 			}
 
 			if (result.IsAvailable)
@@ -58,7 +59,6 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 				CanConfirm = true;
 				SkipButtonText = "Skip";
 				CanSkip = true;
-				IsVisible = true;
 			}
 			else
 			{
@@ -68,7 +68,7 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 				SkipButtonText = "Close";
 				if(_openAfterUpdateCheck)
 				{
-					IsVisible = true;
+					AppServices.Interactions.OpenUpdatesWindow.Handle(true).Subscribe();
 				}
 			}
 			_openAfterUpdateCheck = false;
@@ -95,6 +95,8 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
+		ScrollViewerWidth = 1000;
+
 		CanSkip = true;
 		SkipButtonText = "Close";
 
@@ -104,7 +106,36 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 		var canSkip = this.WhenAnyValue(x => x.CanSkip);
 		SkipCommand = ReactiveCommand.Create(() =>
 		{
-			IsVisible = false;
+			AppServices.Interactions.OpenUpdatesWindow.Handle(false).Subscribe();
 		}, canSkip);
+	}
+}
+
+public class DesignAppUpdateWindowViewModel : AppUpdateWindowViewModel
+{
+	public DesignAppUpdateWindowViewModel() : base()
+	{
+		ChangelogMarkdownText = """
+# 1.0.12.3 
+
+## Changes 
+
+* Reworked script extender requirement checks. This should be more informative now.
+* Added new icons/highlights for various mod issues:
+  * Invalid UUID
+  * Missing dependencies
+  * Toolkit projects / loose mods (if colorblind support is enabled)
+* Added a colorblind support option, to display icons where otherwise a color would be used (toolkit projects).
+* Settings are now sorted alphabetically, with path settings sorted to the top.
+* When auto-sizing the Name column, icon padding is now included in the estimated width.
+* Singularly-selected mods can now be deselected with a left click (before it required CTRL + Left Click).
+* Missing dependencies now display the mods that require them.
+* Reworked the `Steam - Skip Launcher` setting to instead create a `steam_appid.txt`, which allows you to run bg3 directly.
+  * Disabling this option will also delete `steam_appid.txt`, if the settings window is open.
+* Added a new `Delete ModCrashSanityCheck` option (enabled by default), which deletes the `%LOCALAPPDATA%\Larian Studios\Baldur's Gate 3\ModCrashSanityCheck` directory.
+  * This is a workaround for what appears to be a Hotfix 30 (a.k.a. Patch 8 Hotfix 1) bug, where the presence of this folder makes the game deactivate mods that appear in the in-game mod manager, despite being activated externally.
+  * If enabled, this folder will be deleted when exporting your load order.
+* Path settings now only trigger saving when you unfocus the textbox (hit the Return/Enter key, or the Escape key, or click outside of the box).
+""";
 	}
 }

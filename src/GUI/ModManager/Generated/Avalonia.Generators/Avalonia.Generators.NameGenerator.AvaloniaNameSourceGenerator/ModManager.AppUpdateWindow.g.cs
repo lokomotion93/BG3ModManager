@@ -6,9 +6,10 @@ using Avalonia.Markup.Xaml;
 
 namespace ModManager
 {
-    partial class NexusModsCollectionDownloadWindow
+    partial class AppUpdateWindow
     {
-
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
+        internal global::Avalonia.Controls.ScrollViewer MarkdownScrollViewer;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -32,7 +33,8 @@ namespace ModManager
             }
 #endif
 
-
+            var __thisNameScope__ = this.FindNameScope();
+            MarkdownScrollViewer = __thisNameScope__?.Find<global::Avalonia.Controls.ScrollViewer>("MarkdownScrollViewer");
         }
     }
 }

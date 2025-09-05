@@ -78,6 +78,7 @@ public static class AppServices
 		SplatRegistrations.RegisterLazySingleton<ProgressBarView>();
 
 		SplatRegistrations.RegisterLazySingleton<SettingsWindow>();
+		SplatRegistrations.RegisterLazySingleton<AppUpdateWindow>();
 		SplatRegistrations.RegisterLazySingleton<ModPropertiesWindow>();
 		SplatRegistrations.RegisterLazySingleton<PakFileExplorerWindow>();
 		SplatRegistrations.RegisterLazySingleton<StatsValidatorWindow>();
@@ -86,7 +87,6 @@ public static class AppServices
 		SplatRegistrations.RegisterLazySingleton<AboutWindow>();
 		SplatRegistrations.RegisterLazySingleton<NexusModsCollectionDownloadWindow>();
 		/*
-		SplatRegistrations.RegisterLazySingleton<AppUpdateWindow>();
 		SplatRegistrations.RegisterLazySingleton<HelpWindow>();
 
 		SplatRegistrations.RegisterLazySingleton<DeleteFilesConfirmationView>();

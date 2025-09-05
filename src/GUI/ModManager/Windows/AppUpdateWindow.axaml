@@ -1,0 +1,84 @@
+<Window x:Class="ModManager.AppUpdateWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="using:ModManager"
+    xmlns:controls="using:ModManager.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="using:MarkdownViewer.Core.Controls"
+    xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+    xmlns:vm="using:ModManager.ViewModels"
+    Title="Updates"
+    Width="1200"
+    Height="600"
+    x:DataType="vm:AppUpdateWindowViewModel"
+    Focusable="True"
+    Icon="avares://ModManager/Assets/BG3ModManager.ico"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+	<Design.DataContext>
+		<vm:DesignAppUpdateWindowViewModel />
+	</Design.DataContext>
+	<Window.Styles>
+		<Style Selector="md|MarkdownViewer TextBlock">
+			<Setter Property="TextWrapping" Value="Wrap" />
+			<Setter Property="MaxWidth" Value="{Binding ScrollViewerWidth}" />
+		</Style>
+	</Window.Styles>
+	<Panel>
+		<suki:SukiBackground IsHitTestVisible="False" />
+		<suki:GlassCard CornerRadius="0" IsOpaque="True">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+				<Separator Grid.Row="1"
+				    Margin="0,18,0,4"
+				    HorizontalAlignment="Stretch"
+				    VerticalAlignment="Stretch" />
+				<TextBlock Grid.Row="2"
+				    Padding="4"
+				    FontSize="24"
+				    Text="Changelog"
+				    TextAlignment="Center" />
+				<ScrollViewer x:Name="MarkdownScrollViewer"
+				    Grid.Row="3"
+				    HorizontalScrollBarVisibility="Disabled"
+				    VerticalScrollBarVisibility="Auto">
+					<md:MarkdownViewer MarkdownText="{Binding ChangelogMarkdownText}" />
+				</ScrollViewer>
+				<Grid Grid.Row="0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="4*" />
+					</Grid.RowDefinitions>
+					<TextBlock Padding="0,10"
+					    FontSize="18"
+					    Text="{Binding UpdateDescription}"
+					    TextAlignment="Center" />
+					<StackPanel Grid.Row="1"
+					    Margin="4,0,4,0"
+					    HorizontalAlignment="Center"
+					    VerticalAlignment="Center"
+					    Orientation="Horizontal">
+						<Button Width="120"
+						    Margin="10,0"
+						    HorizontalAlignment="Center"
+						    Background="#FF267E26"
+						    Command="{Binding ConfirmCommand}"
+						    Content="Download"
+						    ToolTip.Tip="Download Update" />
+						<Button Width="120"
+						    Margin="10,0"
+						    HorizontalAlignment="Center"
+						    Command="{Binding SkipCommand}"
+						    Content="{Binding SkipButtonText}" />
+					</StackPanel>
+				</Grid>
+			</Grid>
+		</suki:GlassCard>
+	</Panel>
+</Window>

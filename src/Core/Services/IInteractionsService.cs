@@ -75,4 +75,9 @@ public interface IInteractionsService
 	/// View files for given mods.
 	/// </summary>
 	Interaction<ViewModFilesRequest, bool> ViewModFiles { get; }
+
+	/// <summary>
+	/// Open the app updates window.
+	/// </summary>
+	Interaction<bool, bool> OpenUpdatesWindow { get; }
 }
