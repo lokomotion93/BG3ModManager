@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using DynamicData.Binding;
 
 using ModManager.Models.Mod;
 using ModManager.Util;
@@ -34,12 +35,12 @@ public class ModManagerService : ReactiveObject, IModManagerService
 	//GustavX, as of patch 8
 	[Reactive] public string MainCampaignGuid { get; set; } = "cb555efe-2d9e-131f-8195-a89329d218ea";
 
-	[ObservableAsProperty] public int ActiveSelected { get; }
-	[ObservableAsProperty] public int InactiveSelected { get; }
-	[ObservableAsProperty] public int OverrideModsSelected { get; }
+	[Reactive] public int ActiveSelected { get; private set; }
+	[Reactive] public int InactiveSelected { get; private set; }
+	[Reactive] public int OverrideModsSelected { get; private set; }
 
-	private readonly System.Reactive.Subjects.IConnectableObservable<IChangeSet<ModData, string>> _modsConnection;
-	public System.Reactive.Subjects.IConnectableObservable<IChangeSet<ModData, string>> ModsConnection => _modsConnection;
+	private readonly IObservable<IChangeSet<ModData, string>> _modsConnection;
+	public IObservable<IChangeSet<ModData, string>> ModsConnection => _modsConnection;
 
 	public bool ModExists(string? uuid) => uuid.IsValid() && mods.Lookup(uuid).HasValue;
 
@@ -258,7 +259,7 @@ public class ModManagerService : ReactiveObject, IModManagerService
 		_interactions = interactions;
 		_commands = commands;
 
-		_modsConnection = mods.Connect().Publish();
+		_modsConnection = mods.Connect();
 
 		_modsConnection.Filter(x => x.IsUserMod).Bind(out _userMods).Subscribe();
 		_modsConnection.AutoRefresh(x => x.CanAddToLoadOrder).Filter(x => x.CanAddToLoadOrder).Bind(out _addonMods).Subscribe();
@@ -269,14 +270,41 @@ public class ModManagerService : ReactiveObject, IModManagerService
 			.ObserveOn(RxApp.MainThreadScheduler);
 		forceLoadedObs.Bind(out _forceLoadedMods).Subscribe();
 
-		var selectedModsConnection = _modsConnection.AutoRefresh(x => x.IsSelected, TimeSpan.FromMilliseconds(25)).AutoRefresh(x => x.IsActive, TimeSpan.FromMilliseconds(25)).Filter(x => x.IsSelected);
+		var selectedModsConnection = _modsConnection.AutoRefresh(x => x.IsSelected, TimeSpan.FromMilliseconds(100))
+			.AutoRefresh(x => x.IsActive, TimeSpan.FromMilliseconds(25));
 
 		selectedModsConnection.Filter(x => x.IsSelected && !x.IsLooseMod && File.Exists(x.FilePath)).Bind(out _selectedPakMods).Subscribe();
-		selectedModsConnection.Filter(x => x.IsActive).Count().ToUIProperty(this, x => x.ActiveSelected);
-		selectedModsConnection.Filter(x => !x.IsActive).Count().ToUIProperty(this, x => x.InactiveSelected);
-		forceLoadedObs.AutoRefresh(x => x.IsSelected).Filter(x => x.IsSelected).Count().ToUIProperty(this, x => x.OverrideModsSelected);
 
-		_modsConnection.Connect();
+		selectedModsConnection.Subscribe(_ =>
+		{
+			var totalActive = 0;
+			var totalInactive = 0;
+			var totalOverride = 0;
+			foreach(var mod in mods.Items)
+			{
+				if(mod.IsSelected)
+				{
+					if(mod.IsForceLoaded && !mod.IsForceLoadedMergedMod && !mod.ForceAllowInLoadOrder)
+					{
+						totalOverride += 1;
+					}
+					else
+					{
+						if (mod.IsActive)
+						{
+							totalActive += 1;
+						}
+						else
+						{
+							totalInactive += 1;
+						}
+					}
+				}
+			}
+			ActiveSelected = totalActive;
+			InactiveSelected = totalInactive;
+			OverrideModsSelected = totalOverride;
+		});
 
 		_interactions.ToggleModFileNameDisplay.RegisterHandler(interaction =>
 		{
@@ -288,5 +316,6 @@ public class ModManagerService : ReactiveObject, IModManagerService
 		});
 
 		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, x => x.OverrideModsSelected, (a, b, c) => a > 0 || b > 0 || c > 0).BindTo(_commands, x => x.HasAnySelectedMods);
+		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, x => x.OverrideModsSelected, (a, b, c) => (a + b + c) > 1).BindTo(_commands, x => x.HasMultipleSelectedMods);
 	}
 }

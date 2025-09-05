@@ -20,7 +20,7 @@ public interface IModManagerService
 	int ActiveSelected { get; }
 	int InactiveSelected { get; }
 	int OverrideModsSelected { get; }
-	IConnectableObservable<IChangeSet<ModData, string>> ModsConnection { get; }
+	IObservable<IChangeSet<ModData, string>> ModsConnection { get; }
 	bool ModExists(string uuid);
 	void Add(ModData mod);
 	void RemoveByUUID(string uuid);

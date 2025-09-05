@@ -6,6 +6,7 @@ public interface IGlobalCommandsService
 {
 	bool CanExecuteCommands { get; set; }
 	bool HasAnySelectedMods { get; set; }
+	bool HasMultipleSelectedMods { get; set; }
 
 	ReactiveCommand<string?, Unit> OpenFileCommand { get; }
 	ReactiveCommand<string?, bool> OpenInFileExplorerCommand { get; }

@@ -20,6 +20,7 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 
 	[Reactive] public bool CanExecuteCommands { get; set; }
 	[Reactive] public bool HasAnySelectedMods { get; set; }
+	[Reactive] public bool HasMultipleSelectedMods { get; set; }
 
 	public ReactiveCommand<string?, Unit> OpenFileCommand { get; }
 	public ReactiveCommand<string?, bool> OpenInFileExplorerCommand { get; }
@@ -253,7 +254,7 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 		OpenModPropertiesCommand = ReactiveCommand.Create<ModData?>(OpenModProperties, canExecuteCommands);
 		ValidateStatsCommand = ReactiveCommand.Create<ModData?>(StartValidateModStats, canExecuteCommands);
 
-		ExploreModFilesCommand = ReactiveCommand.CreateFromTask<ModData?>(ExploreModFiles, canExecuteCommands);
-		ExploreSelectedModFilesCommand = ReactiveCommand.CreateFromTask(ExploreSelectedModFiles, canExecuteSelected);
+		ExploreModFilesCommand = ReactiveCommand.CreateFromTask<ModData?>(ExploreModFiles, canExecuteCommands, RxApp.MainThreadScheduler);
+		ExploreSelectedModFilesCommand = ReactiveCommand.CreateFromTask(ExploreSelectedModFiles, canExecuteSelected, RxApp.MainThreadScheduler);
 	}
 }
