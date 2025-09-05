@@ -401,6 +401,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					{
 						//var index = ModsTreeDataGrid.Rows!.RowIndexToModelIndex(e.Index);
 						mod.Index = e.Index;
+						mod.IsActive = ViewModel.IsActiveList;
 					}
 				}));
 

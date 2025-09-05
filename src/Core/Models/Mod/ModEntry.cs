@@ -56,12 +56,29 @@ public class ModEntry : ReactiveObject, IModEntry
 
 		this.WhenAnyValue(x => x.IsHidden).Subscribe(b =>
 		{
-			if (!b) IsSelected = false;
+			if (b) IsSelected = false;
+		});
+
+		this.WhenAnyValue(x => x.IsSelected).Subscribe(b =>
+		{
+			if(Data != null)
+			{
+				Data.IsSelected = b;
+			}
+		});
+
+		this.WhenAnyValue(x => x.IsActive).Subscribe(b =>
+		{
+			if(Data != null)
+			{
+				Data.IsActive = b;
+			}
 		});
 	}
 
 	public ModEntry(ModData modData) : this(modData.UUID)
 	{
 		Data = modData;
+		IsSelected = false;
 	}
 }

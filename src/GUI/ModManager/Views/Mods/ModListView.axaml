@@ -67,6 +67,7 @@
 			</Style>
 
 			<Setter Property="ContextFlyout" Value="{StaticResource ModContextFlyout}" />
+			<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWayToSource}" />
 		</Style>
 	</UserControl.Styles>
 	<Grid RowDefinitions="auto,*">
