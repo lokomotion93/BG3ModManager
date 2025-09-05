@@ -74,7 +74,6 @@ public partial class MainCommandBarViewModel
 		keys.RegisterCommand("MainCommandBarViewModel_SpeakActiveModOrderCommand", "Speak Active Order", SpeakActiveModOrderCommand, Avalonia.Input.Key.Home, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_StopSpeakingCommand", "Stop Speaking", StopSpeakingCommand, Avalonia.Input.Key.Home, Avalonia.Input.KeyModifiers.None | Avalonia.Input.KeyModifiers.Control | Avalonia.Input.KeyModifiers.Shift);
 		keys.RegisterCommand("MainCommandBarViewModel_CheckForUpdatesCommand", "Check for Updates...", CheckForUpdatesCommand, Avalonia.Input.Key.F7);
-		keys.RegisterCommand("MainCommandBarViewModel_OpenDonationLinkCommand", "Donate a Coffee...", OpenDonationLinkCommand, Avalonia.Input.Key.F10);
 		keys.RegisterCommand("MainCommandBarViewModel_OpenRepositoryPageCommand", "Open Repository Page...", OpenRepositoryPageCommand, Avalonia.Input.Key.F11);
 	}
 }

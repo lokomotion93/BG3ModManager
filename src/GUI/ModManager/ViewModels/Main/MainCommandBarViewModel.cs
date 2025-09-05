@@ -215,9 +215,6 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding("Check for Updates...", Key.F7, KeyModifiers.None, "", "Help")]
 	public RxCommandUnit? CheckForUpdatesCommand { get; private set; }
 
-	[Keybinding("Donate a Coffee...", Key.F10, KeyModifiers.None, "", "Help")]
-	public RxCommandUnit? OpenDonationLinkCommand { get; private set; }
-
 	[Keybinding("Open Repository Page...", Key.F11, KeyModifiers.None, "", "Help")]
 	public RxCommandUnit? OpenRepositoryPageCommand { get; private set; }
 
@@ -436,17 +433,14 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		ToggleKeybindingsCommand = ReactiveCommand.Create(() =>
 		{
-			var result = false;
-			ToggleSettingsWindowCommand.Execute().Subscribe(isVisible =>
+			ToggleWindow<SettingsWindow>(true);
+			var vm = AppServices.Get<SettingsWindowViewModel>();
+			if (vm != null)
 			{
-				if (isVisible)
-				{
-					var vm = AppServices.Get<SettingsWindowViewModel>();
-					vm.SelectedTabIndex = SettingsWindowTab.Keybindings;
-					result = true;
-				}
-			});
-			return result;
+				vm.SelectedTabIndex = SettingsWindowTab.Keybindings;
+				return true;
+			}
+			return false;
 		}, canExecuteCommands);
 
 		ToggleNXMLinkDownloaderCommand = ReactiveCommand.Create(ToggleWindow<NxmDownloadWindow>, canExecuteCommands);
@@ -539,24 +533,29 @@ public partial class MainCommandBarViewModel : ReactiveObject
 					if (mod != null) mod.PreserveSelection = true;
 				}
 
-				var targetIndex = targetList.Mods.RowSelection.SelectedIndex;
-				//Clear the previous selection, so only the dropped items are selected
-				targetList.Mods.RowSelection!.Clear();
-
-				ModListView.DragDropRows(sourceList.Mods, targetList.Mods,
-					sourceList.Mods.RowSelection!.SelectedIndexes,
-					targetIndex,
-					TreeDataGridRowDropPosition.After, DragDropEffects.Move);
-
-				string countSuffix = selectedMods.Count > 1 ? "mods" : "mod";
-				string text = $"Moved {selectedMods.Count} {countSuffix} to the {targetListName} mods list.";
-				if (DivinityApp.IsScreenReaderActive()) AppServices.ScreenReader.Speak(text);
-				AppServices.Commands.ShowAlert(text, AlertType.Info, 10);
-				modOrder.CanMoveSelectedMods = false;
-
-				if (main.Settings.ShiftListFocusOnSwap)
+				var rowSelection = targetList.Mods.RowSelection;
+				var sourceSelectedIndexes = sourceList.Mods.RowSelection?.SelectedIndexes;
+				if (rowSelection != null && sourceSelectedIndexes != null)
 				{
-					targetList.FocusCommand.Execute().Subscribe();
+					var targetIndex = rowSelection.SelectedIndex;
+					//Clear the previous selection, so only the dropped items are selected
+					rowSelection.Clear();
+
+					ModListView.DragDropRows(sourceList.Mods, targetList.Mods,
+						sourceSelectedIndexes,
+						targetIndex,
+						TreeDataGridRowDropPosition.After, DragDropEffects.Move);
+
+					string countSuffix = selectedMods.Count > 1 ? "mods" : "mod";
+					string text = $"Moved {selectedMods.Count} {countSuffix} to the {targetListName} mods list.";
+					if (DivinityApp.IsScreenReaderActive()) AppServices.ScreenReader.Speak(text);
+					AppServices.Commands.ShowAlert(text, AlertType.Info, 10);
+					modOrder.CanMoveSelectedMods = false;
+
+					if (main.Settings.ShiftListFocusOnSwap)
+					{
+						targetList.FocusCommand.Execute().Subscribe();
+					}
 				}
 			}
 		}, canExecuteModOrderCommands);
@@ -705,8 +704,10 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		{
 			AppServices.Get<IScreenReaderService>()?.Silence();
 		}, canExecuteCommands);
-		CheckForUpdatesCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
-		OpenDonationLinkCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
+		CheckForUpdatesCommand = ReactiveCommand.Create(() =>
+		{
+			main.CheckForUpdates(true);
+		}, canExecuteCommands);
 
 		var whenProfilePath = canExecuteModOrderCommands.CombineLatest(modOrder.WhenAnyValue(x => x.SelectedProfilePath, Validators.IsExistingDirectory)).AllTrue();
 		var whenProfileSavesPath = canExecuteModOrderCommands.CombineLatest(modOrder.WhenAnyValue(x => x.SelectedProfileSavesPath, Validators.IsExistingDirectory)).AllTrue();
@@ -832,7 +833,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 					new MenuSeparator(),
 					MenuEntry.FromKeybinding(CheckForUpdatesCommand, nameof(CheckForUpdatesCommand), keybindings),
 					new MenuSeparator(),
-					MenuEntry.FromKeybinding(OpenDonationLinkCommand, nameof(OpenDonationLinkCommand), keybindings),
+					MenuEntry.FromKeybinding(OpenDonationPageCommand, nameof(OpenDonationPageCommand), keybindings),
 				]},
 		]);
 
