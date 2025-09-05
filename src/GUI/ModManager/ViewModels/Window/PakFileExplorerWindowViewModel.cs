@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Controls.Selection;
 
 using DynamicData;
 using DynamicData.Binding;
@@ -403,7 +404,12 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 
 		SelectedItems = [];
 
-		FileTreeSource.RowSelection!.SelectionChanged += (o, e) =>
+		Observable.FromEvent<EventHandler<TreeSelectionModelSelectionChangedEventArgs<ModFileEntry>>?, TreeSelectionModelSelectionChangedEventArgs<ModFileEntry>>(
+			h => (sender, e) => h(e),
+			h => FileTreeSource.RowSelection!.SelectionChanged += h,
+			h => FileTreeSource.RowSelection!.SelectionChanged -= h
+		).ObserveOn(RxApp.MainThreadScheduler)
+		.Subscribe((e) =>
 		{
 			SelectedItems.Clear();
 			if (FileTreeSource.RowSelection!.SelectedItems != null && FileTreeSource.RowSelection!.SelectedItems.Count > 0)
@@ -411,7 +417,7 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 				SelectedItems.AddRange(FileTreeSource.RowSelection!.SelectedItems);
 			}
 			SelectedItem = FileTreeSource.RowSelection!.SelectedItem;
-		};
+		});
 
 		Title = "Mod File Explorer";
 

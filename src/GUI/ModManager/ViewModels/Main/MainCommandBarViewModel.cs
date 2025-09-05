@@ -97,7 +97,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding("Toggle Updates View", Key.U, KeyModifiers.Control | KeyModifiers.Alt, "", "View")]
 	public RxCommandUnit? ToggleUpdatesViewCommand { get; private set; }
 
-	[Keybinding("Toggle Pak File Explorer Window", Key.P, KeyModifiers.Control | KeyModifiers.Alt, "", "View")]
+	[Keybinding("Toggle Mod Files Explorer Window", Key.P, KeyModifiers.Control | KeyModifiers.Alt, "", "View")]
 	public RxBoolCommandUnit? TogglePakFileExplorerWindowCommand { get; private set; }
 
 	[Keybinding("Toggle Stats Validator Window", Key.OemBackslash, KeyModifiers.Control | KeyModifiers.Alt, "", "View")]
@@ -409,19 +409,24 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		TogglePakFileExplorerWindowCommand = ReactiveCommand.Create(ToggleWindow<PakFileExplorerWindow>, canExecuteCommands);
 
-		interactions.ViewModFiles.RegisterHandler(input =>
+		interactions.ViewModFiles.RegisterHandler(async input =>
 		{
 			var mods = input.Input.Mods;
+			var result = false;
 			if (mods != null)
 			{
-				RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, token) =>
+				var pakFileExplorer = ViewModelLocator.PakFileExplorer;
+				await Observable.StartAsync(async () =>
 				{
-					await ViewModelLocator.PakFileExplorer.LoadModsAsync(mods, token);
+					await pakFileExplorer.LoadModsAsync(mods, CancellationToken.None);
+				}, RxApp.TaskpoolScheduler);
+				await Observable.Start(() =>
+				{
 					ToggleWindow<PakFileExplorerWindow>(true);
-				});
-				input.SetOutput(true);
+				}, RxApp.MainThreadScheduler);
+				result = true;
 			}
-			input.SetOutput(false);
+			input.SetOutput(result);
 		});
 
 		ToggleVersionGeneratorWindowCommand = ReactiveCommand.Create(ToggleWindow<VersionGeneratorWindow>, canExecuteCommands);
