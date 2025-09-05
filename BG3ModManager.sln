@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSLibStats", "External\lsli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossSpeak", "External\CrossSpeak\CrossSpeak\CrossSpeak.csproj", "{D037EFFC-DC1B-DE2F-BF32-7409AE4E9545}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownViewer.Core", "External\Avalonia.MarkdownViewer\MarkdownViewer.Core\MarkdownViewer.Core.csproj", "{555BF95B-11BA-CFFB-D328-0262718F9A7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -315,6 +317,22 @@ Global
 		{D037EFFC-DC1B-DE2F-BF32-7409AE4E9545}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D037EFFC-DC1B-DE2F-BF32-7409AE4E9545}.Release|x64.ActiveCfg = Release|Any CPU
 		{D037EFFC-DC1B-DE2F-BF32-7409AE4E9545}.Release|x64.Build.0 = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Debug|x64.Build.0 = Debug|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Publish|x64.ActiveCfg = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Publish|x64.Build.0 = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.PublishTest|Any CPU.ActiveCfg = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.PublishTest|Any CPU.Build.0 = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.PublishTest|x64.ActiveCfg = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.PublishTest|x64.Build.0 = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Release|x64.ActiveCfg = Release|Any CPU
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -338,6 +356,7 @@ Global
 		{AECA3534-CDA3-4E32-926B-86F0C332B6D5} = {97DFC101-8AFC-4AED-ADDC-39E5FEC4D415}
 		{69233C61-6491-48F8-9D43-680D4FD57947} = {AECA3534-CDA3-4E32-926B-86F0C332B6D5}
 		{D037EFFC-DC1B-DE2F-BF32-7409AE4E9545} = {97DFC101-8AFC-4AED-ADDC-39E5FEC4D415}
+		{555BF95B-11BA-CFFB-D328-0262718F9A7A} = {97DFC101-8AFC-4AED-ADDC-39E5FEC4D415}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D06B5DA3-3018-43F3-B9F0-2D9D89DB489E}

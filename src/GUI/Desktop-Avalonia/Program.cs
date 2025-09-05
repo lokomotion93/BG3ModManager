@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
-using Avalonia.Svg.Skia;
 
 using System;
 
@@ -17,7 +16,8 @@ internal class Program
 	public static AppBuilder BuildAvaloniaApp()
 	{
 #if DEBUG
-		GC.KeepAlive(typeof(SvgImageExtension).Assembly);
+		//Avalonia Previewer fix
+		GC.KeepAlive(typeof(Avalonia.Svg.Skia.SvgImageExtension).Assembly);
 		GC.KeepAlive(typeof(Avalonia.Svg.Skia.Svg).Assembly);
 #endif
 		return AppBuilder.Configure<App>()

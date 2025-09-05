@@ -16,3 +16,6 @@
 [submodule "CrossSpeak"]
 	path = External/CrossSpeak
 	url = https://github.com/LaughingLeader/CrossSpeak
+[submodule "Avalonia.MarkdownViewer"]
+	path = External/Avalonia.MarkdownViewer
+	url = https://github.com/LITTOMA/Avalonia.MarkdownViewer.git

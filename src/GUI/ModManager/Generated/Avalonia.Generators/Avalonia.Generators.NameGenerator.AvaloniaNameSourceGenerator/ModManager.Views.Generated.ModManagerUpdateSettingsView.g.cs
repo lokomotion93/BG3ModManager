@@ -8,37 +8,37 @@ namespace ModManager.Views.Generated
 {
     partial class ModManagerUpdateSettingsView
     {
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock ModioAPIKeyTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::ModManager.Controls.EnhancedTextBox ModioAPIKeyTextBox;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock NexusModsAPIKeyTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::ModManager.Controls.EnhancedTextBox NexusModsAPIKeyTextBox;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock AllowAdultContentTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.CheckBox AllowAdultContentCheckBox;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock MinimumUpdateTimePeriodTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::ModManager.Controls.TimeSpanUpDown MinimumUpdateTimePeriodTimeSpanUpDown;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock UpdateGitHubModsTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.CheckBox UpdateGitHubModsCheckBox;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock UpdateModioModsTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.CheckBox UpdateModioModsCheckBox;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock UpdateNexusModsTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.CheckBox UpdateNexusModsCheckBox;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock UpdateScriptExtenderTextBlock;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.CheckBox UpdateScriptExtenderCheckBox;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace ModManager.Views.Generated
         /// </summary>
         /// <param name="loadXaml">Should the XAML be loaded into the component.</param>
 
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public void InitializeComponent(bool loadXaml = true)
         {

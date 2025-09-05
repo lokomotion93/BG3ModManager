@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\External\Avalonia.Controls.TreeDataGrid\src\Avalonia.Controls.TreeDataGrid\Avalonia.Controls.TreeDataGrid.csproj" />
+		<ProjectReference Include="..\..\..\External\Avalonia.MarkdownViewer\MarkdownViewer.Core\MarkdownViewer.Core.csproj" />
 		<ProjectReference Include="..\..\..\External\lslib\LSLibNative\LSLibNative.vcxproj" />
 		<ProjectReference Include="..\..\..\External\lslib\LSLib\LSLib.csproj" />
 		<ProjectReference Include="..\..\..\External\lslib\LSLibStats\LSLibStats.csproj" />
@@ -29,10 +30,10 @@
 		<PackageReference Include="Avalonia.Desktop" />
 		<PackageReference Include="Avalonia.Fonts.Inter" />
 		<PackageReference Include="Avalonia.ReactiveUI" />
-		<PackageReference Include="Avalonia.Svg.Skia" />
+		<PackageReference Include="Svg.Controls.Skia.Avalonia" />
 		<PackageReference Include="Avalonia.Themes.Fluent" />
-		<PackageReference Include="Avalonia.Xaml.Behaviors" />
-		<PackageReference Include="Avalonia.Xaml.Interactions" />
+		<PackageReference Include="Xaml.Behaviors.Avalonia" />
+		<PackageReference Include="Xaml.Behaviors.Interactions" />
 		<PackageReference Include="Avalonia.Labs.Controls" />
 		<PackageReference Include="Material.Icons.Avalonia" />
 		<PackageReference Include="AsyncImageLoader.Avalonia" />
