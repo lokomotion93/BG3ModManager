@@ -115,10 +115,16 @@ Mod commissioned by Spell&amp;Shield</TextBlock.Text>
 			<Color x:Key="SukiControlTouchBackground">#0c0c0c</Color>
 			<Color x:Key="SukiDialogBackground">#000000</Color>
 
+			<!--<Color x:Key="SukiBorderBrush">#353535</Color>
+			<Color x:Key="SukiControlBorderBrush">#606060</Color>
+			<Color x:Key="SukiMediumBorderBrush">#555555</Color>
+			<Color x:Key="SukiLightBorderBrush">#454545</Color>
+			<Color x:Key="SukiMenuBorderBrush">#454545</Color>-->
+
 			<Color x:Key="SukiBorderBrush">#523c28</Color>
-			<Color x:Key="SukiControlBorderBrush">#523c28</Color>
-			<Color x:Key="SukiMediumBorderBrush">#523c28</Color>
-			<Color x:Key="SukiLightBorderBrush">#523c28</Color>
+			<Color x:Key="SukiControlBorderBrush">#5C4632</Color>
+			<Color x:Key="SukiMediumBorderBrush">#523C28</Color>
+			<Color x:Key="SukiLightBorderBrush">#4B3725</Color>
 			<Color x:Key="SukiMenuBorderBrush">#523c28</Color>
 			<Color x:Key="GlassBorderBrush">#523c28</Color>
 

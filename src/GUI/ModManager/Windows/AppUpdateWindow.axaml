@@ -24,37 +24,19 @@
 			<Setter Property="TextWrapping" Value="Wrap" />
 			<Setter Property="MaxWidth" Value="{Binding ScrollViewerWidth}" />
 		</Style>
+		<Style Selector="ScrollBar:vertical /template/ Border">
+			<Setter Property="HorizontalAlignment" Value="Right" />
+		</Style>
+		<Style Selector="ScrollBar[AllowAutoHide=True] Border#ThumbBarVertical">
+			<Setter Property="Background" Value="{DynamicResource HighlightColor}" />
+			<Setter Property="Width" Value="4" />
+		</Style>
 	</Window.Styles>
 	<Panel>
 		<suki:SukiBackground IsHitTestVisible="False" />
 		<suki:GlassCard CornerRadius="0" IsOpaque="True">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="*" />
-				</Grid.RowDefinitions>
-				<Separator Grid.Row="1"
-				    Margin="0,18,0,4"
-				    HorizontalAlignment="Stretch"
-				    VerticalAlignment="Stretch" />
-				<TextBlock Grid.Row="2"
-				    Padding="4"
-				    FontSize="24"
-				    Text="Changelog"
-				    TextAlignment="Center" />
-				<ScrollViewer x:Name="MarkdownScrollViewer"
-				    Grid.Row="3"
-				    HorizontalScrollBarVisibility="Disabled"
-				    VerticalScrollBarVisibility="Auto">
-					<md:MarkdownViewer MarkdownText="{Binding ChangelogMarkdownText}" />
-				</ScrollViewer>
-				<Grid Grid.Row="0">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="*" />
-						<RowDefinition Height="4*" />
-					</Grid.RowDefinitions>
+			<Grid RowDefinitions="auto,auto,*">
+				<Grid RowDefinitions="*,4*">
 					<TextBlock Padding="0,10"
 					    FontSize="18"
 					    Text="{Binding UpdateDescription}"
@@ -78,6 +60,25 @@
 						    Content="{Binding SkipButtonText}" />
 					</StackPanel>
 				</Grid>
+				<Border Grid.Row="1"
+				    Margin="0,18,0,0"
+				    Padding="4"
+				    BorderBrush="{DynamicResource SukiControlBorderBrush}"
+				    BorderThickness="1">
+					<TextBlock VerticalAlignment="Center"
+					    FontSize="24"
+					    Text="Changelog"
+					    TextAlignment="Center" />
+				</Border>
+				<Border Grid.Row="2" BorderBrush="{DynamicResource SukiControlBorderBrush}" BorderThickness="1,0,1,1">
+					<ScrollViewer x:Name="MarkdownScrollViewer"
+					    Margin="0"
+					    Padding="0"
+					    HorizontalScrollBarVisibility="Disabled"
+					    VerticalScrollBarVisibility="Auto">
+						<md:MarkdownViewer MarkdownText="{Binding ChangelogMarkdownText}" />
+					</ScrollViewer>
+				</Border>
 			</Grid>
 		</suki:GlassCard>
 	</Panel>
