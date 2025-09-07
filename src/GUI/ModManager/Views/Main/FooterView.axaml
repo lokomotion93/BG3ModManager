@@ -4,6 +4,7 @@
     xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:locale="using:ModManager.Locale"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="using:SukiUI.Controls"
     xmlns:vm="using:ModManager.ViewModels.Main"
@@ -20,7 +21,7 @@
 					    BorderThickness="0"
 					    ExpandDirection="Left"
 					    IsExpanded="{Binding IsNexusModsSectionExpanded}"
-					    ToolTip.Tip="Nexus Mods API Limits">
+					    ToolTip.Tip="{x:Static locale:Resources.Footer_NexusModsAPILimit_ToolTip}">
 						<controls:IconExpander.Icon>
 							<Image Width="16" Height="16" Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />
 						</controls:IconExpander.Icon>

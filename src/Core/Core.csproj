@@ -22,6 +22,7 @@
 		<ProjectReference Include="..\..\External\lslib\LSLibNative\LSLibNative.vcxproj" />
 		<ProjectReference Include="..\..\External\lslib\LSLib\LSLib.csproj" />
 		<ProjectReference Include="..\..\External\lslib\LSLibStats\LSLibStats.csproj" />
+		<ProjectReference Include="..\GUI\Locale\Locale.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>

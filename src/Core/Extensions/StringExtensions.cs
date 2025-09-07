@@ -38,4 +38,18 @@ public static class StringExtensions
 	}
 
 	public static string ThisOrFallback(this string? str, string fallback) => str ?? fallback;
+
+	public static string SafeFormat(this string? format, string fallback, params object?[] args)
+	{
+		if (!format.IsValid()) return fallback;
+		try
+		{
+			return string.Format(format, args);
+		}
+		catch(FormatException ex)
+		{
+			DivinityApp.Log($"Format error:\n{ex}");
+		}
+		return fallback;
+	}
 }
