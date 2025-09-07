@@ -77,5 +77,266 @@ namespace ModManager.Locale {
                 return ResourceManager.GetString("Footer_NexusModsAPILimit_ToolTip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Larian Studios.
+        /// </summary>
+        public static string LarianStudios {
+            get {
+                return ResourceManager.GetString("LarianStudios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Mod Display Name.
+        /// </summary>
+        public static string Mod_Command_DisplayFileForName_Disable {
+            get {
+                return ResourceManager.GetString("Mod_Command_DisplayFileForName_Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show File Name.
+        /// </summary>
+        public static string Mod_Command_DisplayFileForName_Enable {
+            get {
+                return ResourceManager.GetString("Mod_Command_DisplayFileForName_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from Load Order.
+        /// </summary>
+        public static string Mod_Command_ForceAllowInLoadOrder_Disable {
+            get {
+                return ResourceManager.GetString("Mod_Command_ForceAllowInLoadOrder_Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow in Load Order.
+        /// </summary>
+        public static string Mod_Command_ForceAllowInLoadOrder_Enable {
+            get {
+                return ResourceManager.GetString("Mod_Command_ForceAllowInLoadOrder_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1}.
+        /// </summary>
+        public static string Mod_DisplayName_FileView_Pattern {
+            get {
+                return ResourceManager.GetString("Mod_DisplayName_FileView_Pattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Loose Mod].
+        /// </summary>
+        public static string Mod_DisplayName_FileView_Type_Loose {
+            get {
+                return ResourceManager.GetString("Mod_DisplayName_FileView_Type_Loose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Toolkit Project].
+        /// </summary>
+        public static string Mod_DisplayName_FileView_Type_Toolkit {
+            get {
+                return ResourceManager.GetString("Mod_DisplayName_FileView_Type_Toolkit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Enable Extensions in the Script Extender Settings).
+        /// </summary>
+        public static string Mod_ExtenderStatus_DisabledFromConfig {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_DisabledFromConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently installed version is v{0}.
+        /// </summary>
+        public static string Mod_ExtenderStatus_InstalledVersion {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_InstalledVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Missing %LOCALAPPDATA%\\..\\{0}).
+        /// </summary>
+        public static string Mod_ExtenderStatus_MissingAppData {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_MissingAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (The installed SE version is older).
+        /// </summary>
+        public static string Mod_ExtenderStatus_MissingRequiredVersion {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_MissingRequiredVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Missing {0}).
+        /// </summary>
+        public static string Mod_ExtenderStatus_MissingUpdater {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_MissingUpdater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are missing the Script Extender updater (DWrite.dll), which is required.
+        /// </summary>
+        public static string Mod_ExtenderStatus_MissingUpdaterInfo {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_MissingUpdaterInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No installed Script Extender version found\nIf you&apos;ve already downloaded it, try opening the game once to complete the installation process.
+        /// </summary>
+        public static string Mod_ExtenderStatus_NotFoundInfo {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_NotFoundInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requires the Script Extender.
+        /// </summary>
+        public static string Mod_ExtenderStatus_RequiresDefault {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_RequiresDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requires Script Extender v{0} or Higher.
+        /// </summary>
+        public static string Mod_ExtenderStatus_RequiresVersion {
+            get {
+                return ResourceManager.GetString("Mod_ExtenderStatus_RequiresVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Dependencies:\n{0}.
+        /// </summary>
+        public static string Mod_MissingDependenciesToolTip {
+            get {
+                return ResourceManager.GetString("Mod_MissingDependenciesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created on {0}.
+        /// </summary>
+        public static string Mod_NexusModsToolTip_CreatedOn {
+            get {
+                return ResourceManager.GetString("Mod_NexusModsToolTip_CreatedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Endorsements: {0}.
+        /// </summary>
+        public static string Mod_NexusModsToolTip_Endorsements {
+            get {
+                return ResourceManager.GetString("Mod_NexusModsToolTip_Endorsements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last updated on {0}.
+        /// </summary>
+        public static string Mod_NexusModsToolTip_UpdatedOn {
+            get {
+                return ResourceManager.GetString("Mod_NexusModsToolTip_UpdatedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has Mod Fixer.
+        /// </summary>
+        public static string Mod_OsirisStatus_HasModFixer {
+            get {
+                return ResourceManager.GetString("Mod_OsirisStatus_HasModFixer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has Osiris Scripting.
+        /// </summary>
+        public static string Mod_OsirisStatus_HasScripts {
+            get {
+                return ResourceManager.GetString("Mod_OsirisStatus_HasScripts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name({0}) Version({1}) Author({2}) UUID({3}) File({4}).
+        /// </summary>
+        public static string Mod_StringFormatPattern {
+            get {
+                return ResourceManager.GetString("Mod_StringFormatPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add-on.
+        /// </summary>
+        public static string Mod_Type_Addon {
+            get {
+                return ResourceManager.GetString("Mod_Type_Addon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adventure.
+        /// </summary>
+        public static string Mod_Type_Adventure {
+            get {
+                return ResourceManager.GetString("Mod_Type_Adventure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loose Mod.
+        /// </summary>
+        public static string Mod_Type_LooseMod {
+            get {
+                return ResourceManager.GetString("Mod_Type_LooseMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Override.
+        /// </summary>
+        public static string Mod_Type_Override {
+            get {
+                return ResourceManager.GetString("Mod_Type_Override", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toolkit Project.
+        /// </summary>
+        public static string Mod_Type_ToolkitProject {
+            get {
+                return ResourceManager.GetString("Mod_Type_ToolkitProject", resourceCulture);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ using ModManager.Util;
 
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace ModManager.Models.Mod;
 
@@ -196,11 +197,11 @@ public class ModData : ReactiveObject, IModuleShortDesc
 			{
 				if(isToolkitProject)
 				{
-					return folder + " [Toolkit Project]";
+					return Loca.Mod_DisplayName_FileView_Pattern.SafeFormat(folder, folder, Loca.Mod_DisplayName_FileView_Type_Toolkit);
 				}
 				else
 				{
-					return folder + " [Loose Mod]";
+					return Loca.Mod_DisplayName_FileView_Pattern.SafeFormat(folder, folder, Loca.Mod_DisplayName_FileView_Type_Loose);
 				}
 			}
 		}
@@ -219,55 +220,50 @@ public class ModData : ReactiveObject, IModuleShortDesc
 
 	private static string ExtenderStatusToToolTipText(ModExtenderStatus status, int requiredVersion, int currentVersion)
 	{
-		var result = "";
+		var result = new StringBuilder();
 
 		if (requiredVersion > -1)
 		{
-			result += $"Requires Script Extender v{requiredVersion} or Higher";
+			result.AppendLine(Loca.Mod_ExtenderStatus_RequiresVersion.SafeFormat($"Requires Script Extender v{requiredVersion} or Higher", requiredVersion));
 		}
 		else
 		{
-			result += "Requires the Script Extender";
+			result.AppendLine(Loca.Mod_ExtenderStatus_RequiresDefault);
 		}
 
 		if (status.HasFlag(ModExtenderStatus.DisabledFromConfig))
 		{
-			result += "\n(Enable Extensions in the Script Extender Settings)";
+			result.AppendLine(Loca.Mod_ExtenderStatus_DisabledFromConfig);
 		}
 		else if (status.HasFlag(ModExtenderStatus.MissingAppData))
 		{
-			result += $"\n(Missing %LOCALAPPDATA%\\..\\{DivinityApp.EXTENDER_APPDATA_DLL})";
+			result.AppendLine(Loca.Mod_ExtenderStatus_MissingAppData.SafeFormat($"(Missing %LOCALAPPDATA%\\..\\{DivinityApp.EXTENDER_APPDATA_DLL})", DivinityApp.EXTENDER_APPDATA_DLL));
 		}
 		else if (status.HasFlag(ModExtenderStatus.MissingUpdater))
 		{
-			result += $"\n(Missing {DivinityApp.EXTENDER_UPDATER_FILE})";
+			result.AppendLine(Loca.Mod_ExtenderStatus_MissingUpdater.SafeFormat($"(Missing {DivinityApp.EXTENDER_UPDATER_FILE})", DivinityApp.EXTENDER_UPDATER_FILE));
 		}
 		else if (status.HasFlag(ModExtenderStatus.MissingRequiredVersion))
 		{
-			result += "\n(The installed SE version is older)";
-		}
-
-		if (result != "")
-		{
-			result += Environment.NewLine;
+			result.AppendLine(Loca.Mod_ExtenderStatus_MissingRequiredVersion);
 		}
 
 		if (currentVersion > -1)
 		{
 			if (status.HasFlag(ModExtenderStatus.MissingUpdater))
 			{
-				result += $"You are missing the Script Extender updater (DWrite.dll), which is required";
+				result.AppendLine(Loca.Mod_ExtenderStatus_MissingUpdaterInfo);
 			}
 			else
 			{
-				result += $"Currently installed version is v{currentVersion}";
+				result.AppendLine(Loca.Mod_ExtenderStatus_InstalledVersion.SafeFormat($"Currently installed version is v{currentVersion}", currentVersion));
 			}
 		}
 		else
 		{
-			result += "No installed Script Extender version found\nIf you've already downloaded it, try opening the game once to complete the installation process";
+			result.AppendLine(Loca.Mod_ExtenderStatus_NotFoundInfo);
 		}
-		return result;
+		return result.ToString();
 	}
 
 	private static ScriptExtenderIconType ExtenderModStatusToIcon(ModExtenderStatus status)
@@ -403,7 +399,7 @@ public class ModData : ReactiveObject, IModuleShortDesc
 
 	public override string ToString()
 	{
-		return $"Name({Name}) Version({Version?.Version}) Author({Author}) UUID({UUID}) File({FilePath})";
+		return Loca.Mod_StringFormatPattern.SafeFormat($"Name({Name}) Version({Version?.Version}) Author({Author}) UUID({UUID}) File({FilePath})", Name, Version?.Version ?? string.Empty, Author, UUID, FilePath);
 	}
 
 	public ModuleShortDesc ToModuleShortDesc()
@@ -427,8 +423,8 @@ public class ModData : ReactiveObject, IModuleShortDesc
 	{
 		return status switch
 		{
-			DivinityOsirisModStatus.SCRIPTS => "Has Osiris Scripting",
-			DivinityOsirisModStatus.MODFIXER => "Has Mod Fixer",
+			DivinityOsirisModStatus.SCRIPTS => Loca.Mod_OsirisStatus_HasScripts,
+			DivinityOsirisModStatus.MODFIXER => Loca.Mod_OsirisStatus_HasModFixer,
 			_ => "",
 		};
 	}
@@ -440,24 +436,26 @@ public class ModData : ReactiveObject, IModuleShortDesc
 
 	private static string NexusModsInfoToTooltip(DateTime createdDate, DateTime updatedDate, long endorsements)
 	{
-		var lines = new List<string>();
+		var lines = new StringBuilder();
 
 		if (endorsements > 0)
 		{
-			lines.Add($"Endorsements: {endorsements}");
+			lines.Append(Loca.Mod_NexusModsToolTip_Endorsements.SafeFormat($"Endorsements: {endorsements}", endorsements));
 		}
 
 		if (createdDate != DateTime.MinValue)
 		{
-			lines.Add($"Created on {createdDate.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture)}");
+			var createdDateStr = createdDate.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture);
+			lines.AppendLine(Loca.Mod_NexusModsToolTip_Endorsements.SafeFormat($"Created on {createdDateStr}", createdDateStr));
 		}
 
 		if (updatedDate != DateTime.MinValue)
 		{
-			lines.Add($"Last updated on {createdDate.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture)}");
+			var updatedDateStr = updatedDate.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture);
+			lines.AppendLine(Loca.Mod_NexusModsToolTip_Endorsements.SafeFormat($"Last updated on {updatedDateStr}", updatedDateStr));
 		}
 
-		return string.Join("\n", lines);
+		return lines.ToString();
 	}
 
 	private CompositeDisposable? _modConfigDisposables;
@@ -520,7 +518,7 @@ public class ModData : ReactiveObject, IModuleShortDesc
 		if (nexusAuthor.IsValid()) return nexusAuthor;
 		if (githubAuthor.IsValid()) return githubAuthor;
 
-		if (isLarianMod) return "Larian Studios";
+		if (isLarianMod) return Loca.LarianStudios;
 
 		return string.Empty;
 	}
@@ -584,7 +582,8 @@ public class ModData : ReactiveObject, IModuleShortDesc
 
 	private string BuildMissingDependencyToolTip()
 	{
-		return $"Missing Dependencies:\n{string.Join(Environment.NewLine, MissingDependencies.Items.Select(x => x.Name).Order())}";
+		var missingDependenciesText = string.Join(Environment.NewLine, MissingDependencies.Items.Select(x => x.Name).Order());
+		return Loca.Mod_MissingDependenciesToolTip.SafeFormat($"Missing Dependencies:\n{missingDependenciesText}", missingDependenciesText);
 	}
 
 	private static string ModToXml(string? pattern, ModData mod, bool isFixedString = false)
@@ -617,10 +616,10 @@ public class ModData : ReactiveObject, IModuleShortDesc
 	{
 		(bool isLooseMod, bool IsToolkitProject, bool isForceLoaded, string? modType) = x;
 
-		if (IsToolkitProject) return "Toolkit Project";
-		if (isLooseMod) return "Loose Mod";
-		if (isForceLoaded) return "Override";
-		return modType != "Adventure" ? "Add-on" : "Adventure";
+		if (IsToolkitProject) return Loca.Mod_Type_ToolkitProject;
+		if (isLooseMod) return Loca.Mod_Type_LooseMod;
+		if (isForceLoaded) return Loca.Mod_Type_Override;
+		return modType != "Adventure" ? Loca.Mod_Type_Addon : Loca.Mod_Type_Adventure;
 	}
 
 	private static string GetModDisplayTypeForeground(ValueTuple<bool, bool, bool, string?> x)
@@ -762,7 +761,7 @@ public class ModData : ReactiveObject, IModuleShortDesc
 
 		var whenModDisplayType = this.WhenAnyValue(x => x.IsLooseMod, x => x.IsToolkitProject, x => x.IsForceLoaded, x => x.ModType);
 		whenModDisplayType.Select(GetModDisplayTypeName)
-			.ToUIProperty(this, x => x.ModDisplayTypeName, "Add-on");
+			.ToUIProperty(this, x => x.ModDisplayTypeName, Loca.Mod_Type_Addon);
 
 		whenModDisplayType.Select(GetModDisplayTypeForeground)
 			.ToUIProperty(this, x => x.ModDisplayTypeForeground, string.Empty);
@@ -794,8 +793,8 @@ public class ModData : ReactiveObject, IModuleShortDesc
 		this.WhenAnyValue(x => x.FilePath).Select(Validators.IsValid).ToUIProperty(this, x => x.HasFilePath);
 		this.WhenAnyValue(x => x.Version.Version).ToUIProperty(this, x => x.DisplayVersion, "0.0.0.0");
 
-		this.WhenAnyValue(x => x.DisplayFileForName).Select(x => x ? "Show Mod Display Name" : "Show File Name").ToUIProperty(this, x => x.ToggleModNameLabel);
-		this.WhenAnyValue(x => x.ForceAllowInLoadOrder).Select(x => x ? "Remove from Load Order" : "Allow in Load Order").ToUIProperty(this, x => x.ForceAllowInLoadOrderLabel);
+		this.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
+		this.WhenAnyValue(x => x.ForceAllowInLoadOrder).Select(b => b ? Loca.Mod_Command_ForceAllowInLoadOrder_Disable : Loca.Mod_Command_ForceAllowInLoadOrder_Enable).ToUIProperty(this, x => x.ForceAllowInLoadOrderLabel);
 
 		this.WhenAnyValue(x => x.ModioData.Description).Subscribe(desc =>
 		{

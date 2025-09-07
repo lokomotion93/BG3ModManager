@@ -122,5 +122,94 @@
   </data>
   <data name="Footer_NexusModsAPILimit_Text" xml:space="preserve">
     <value>NexusMods API Limit [Hourly ({0}/{1}) Daily ({2}/{3})]</value>
+    <comment>Needs 4 placeholders for Hourly Remaining/Limit and Daily Remaining/Limit</comment>
+  </data>
+  <data name="Mod_DisplayName_FileView_Type_Toolkit" xml:space="preserve">
+    <value>[Toolkit Project]</value>
+  </data>
+  <data name="Mod_DisplayName_FileView_Type_Loose" xml:space="preserve">
+    <value>[Loose Mod]</value>
+  </data>
+  <data name="Mod_DisplayName_FileView_Pattern" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>Folder +FileView text (toolkit or loose)</comment>
+  </data>
+  <data name="Mod_ExtenderStatus_RequiresVersion" xml:space="preserve">
+    <value>Requires Script Extender v{0} or Higher</value>
+  </data>
+  <data name="Mod_ExtenderStatus_RequiresDefault" xml:space="preserve">
+    <value>Requires the Script Extender</value>
+  </data>
+  <data name="Mod_ExtenderStatus_DisabledFromConfig" xml:space="preserve">
+    <value>(Enable Extensions in the Script Extender Settings)</value>
+  </data>
+  <data name="Mod_ExtenderStatus_MissingAppData" xml:space="preserve">
+    <value>(Missing %LOCALAPPDATA%\\..\\{0})</value>
+  </data>
+  <data name="Mod_ExtenderStatus_MissingUpdater" xml:space="preserve">
+    <value>(Missing {0})</value>
+  </data>
+  <data name="Mod_ExtenderStatus_MissingRequiredVersion" xml:space="preserve">
+    <value>(The installed SE version is older)</value>
+  </data>
+  <data name="Mod_ExtenderStatus_MissingUpdaterInfo" xml:space="preserve">
+    <value>You are missing the Script Extender updater (DWrite.dll), which is required</value>
+  </data>
+  <data name="Mod_ExtenderStatus_InstalledVersion" xml:space="preserve">
+    <value>Currently installed version is v{0}</value>
+  </data>
+  <data name="Mod_ExtenderStatus_NotFoundInfo" xml:space="preserve">
+    <value>No installed Script Extender version found\nIf you've already downloaded it, try opening the game once to complete the installation process</value>
+  </data>
+  <data name="Mod_StringFormatPattern" xml:space="preserve">
+    <value>Name({0}) Version({1}) Author({2}) UUID({3}) File({4})</value>
+  </data>
+  <data name="Mod_OsirisStatus_HasScripts" xml:space="preserve">
+    <value>Has Osiris Scripting</value>
+  </data>
+  <data name="Mod_OsirisStatus_HasModFixer" xml:space="preserve">
+    <value>Has Mod Fixer</value>
+  </data>
+  <data name="Mod_NexusModsToolTip_Endorsements" xml:space="preserve">
+    <value>Endorsements: {0}</value>
+  </data>
+  <data name="Mod_NexusModsToolTip_CreatedOn" xml:space="preserve">
+    <value>Created on {0}</value>
+  </data>
+  <data name="Mod_NexusModsToolTip_UpdatedOn" xml:space="preserve">
+    <value>Last updated on {0}</value>
+  </data>
+  <data name="LarianStudios" xml:space="preserve">
+    <value>Larian Studios</value>
+  </data>
+  <data name="Mod_MissingDependenciesToolTip" xml:space="preserve">
+    <value>Missing Dependencies:\n{0}</value>
+  </data>
+  <data name="Mod_Type_ToolkitProject" xml:space="preserve">
+    <value>Toolkit Project</value>
+  </data>
+  <data name="Mod_Type_LooseMod" xml:space="preserve">
+    <value>Loose Mod</value>
+  </data>
+  <data name="Mod_Type_Override" xml:space="preserve">
+    <value>Override</value>
+  </data>
+  <data name="Mod_Type_Adventure" xml:space="preserve">
+    <value>Adventure</value>
+  </data>
+  <data name="Mod_Type_Addon" xml:space="preserve">
+    <value>Add-on</value>
+  </data>
+  <data name="Mod_Command_DisplayFileForName_Disable" xml:space="preserve">
+    <value>Show Mod Display Name</value>
+  </data>
+  <data name="Mod_Command_DisplayFileForName_Enable" xml:space="preserve">
+    <value>Show File Name</value>
+  </data>
+  <data name="Mod_Command_ForceAllowInLoadOrder_Disable" xml:space="preserve">
+    <value>Remove from Load Order</value>
+  </data>
+  <data name="Mod_Command_ForceAllowInLoadOrder_Enable" xml:space="preserve">
+    <value>Allow in Load Order</value>
   </data>
 </root>

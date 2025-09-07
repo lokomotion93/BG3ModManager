@@ -22,7 +22,7 @@ public class NexusModsObservableApiLimits : ReactiveObject, INexusApiLimits
 	}
 
 	private string FallbackFormat() => $"NexusMods API Limit [Hourly ({HourlyRemaining}/{HourlyLimit}) Daily ({DailyRemaining}/{DailyLimit})]";
-	public override string ToString() => Locale.Resources.Footer_NexusModsAPILimit_Text.SafeFormat(FallbackFormat(), HourlyRemaining, HourlyLimit, DailyRemaining, DailyLimit);
+	public override string ToString() => Loca.Footer_NexusModsAPILimit_Text.SafeFormat(FallbackFormat(), HourlyRemaining, HourlyLimit, DailyRemaining, DailyLimit);
 
 	public NexusModsObservableApiLimits()
 	{

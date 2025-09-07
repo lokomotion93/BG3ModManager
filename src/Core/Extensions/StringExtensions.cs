@@ -52,4 +52,18 @@ public static class StringExtensions
 		}
 		return fallback;
 	}
+
+	public static string SafeFormat(this string? format, string param)
+	{
+		if (!format.IsValid()) return param;
+		try
+		{
+			return string.Format(format, param);
+		}
+		catch (FormatException ex)
+		{
+			DivinityApp.Log($"Format error:\n{ex}");
+		}
+		return param;
+	}
 }
