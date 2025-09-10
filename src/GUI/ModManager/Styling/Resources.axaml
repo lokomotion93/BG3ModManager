@@ -15,6 +15,9 @@
 	<conv:StringToBrushConverter x:Key="StringToBrushConverter" />
 	<conv:ModBackgroundColorConverter x:Key="ModBackgroundColorConverter" />
 
+	<Color x:Key="HyperlinkForegroundColor">#0075C7</Color>
+	<SolidColorBrush x:Key="HyperlinkForegroundBrush" Color="{DynamicResource HyperlinkForegroundColor}" />
+
 	<ControlTemplate x:Key="CompactTextBox" TargetType="TextBox">
 		<Border>
 			<Border Name="border"
