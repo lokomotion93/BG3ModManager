@@ -4,10 +4,11 @@
     xmlns:app="using:ModManager"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:loca="using:ModManager.Locale"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:vm="using:ModManager.ViewModels"
-    Title="About"
+    Title="{x:Static loca:Resources.Window_About_Title}"
     Width="600"
     Height="300"
     x:DataType="vm:AboutWindowViewModel"
@@ -31,7 +32,7 @@
 				    HorizontalAlignment="Center"
 				    ColumnDefinitions="1*,3*"
 				    RowDefinitions="Auto,Auto,Auto">
-					<TextBlock HorizontalAlignment="Right" Text="Home Page:" />
+					<TextBlock HorizontalAlignment="Right" Text="{x:Static loca:Resources.Window_About_Title_HomePage}" />
 					<controls:Hyperlink Grid.Column="1"
 					    Margin="10,0,0,4"
 					    HorizontalAlignment="Left"
@@ -40,7 +41,7 @@
 					<TextBlock Grid.Row="1"
 					    Margin="0,0,0,4"
 					    HorizontalAlignment="Right"
-					    Text="Author:"
+					    Text="{x:Static loca:Resources.Window_About_Title_Author}"
 					    TextAlignment="Left" />
 					<controls:Hyperlink Grid.Row="1"
 					    Grid.Column="1"
@@ -49,7 +50,7 @@
 					    DisplayText="LaughingLeader"
 					    Url="{Binding AuthorUrl}" />
 
-					<TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="License" />
+					<TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="{x:Static loca:Resources.Window_About_Title_License}" />
 					<controls:Hyperlink Grid.Row="2"
 					    Grid.Column="1"
 					    Margin="10,0,0,4"
@@ -61,26 +62,26 @@
 					<Separator Margin="0,4" />
 					<TextBlock HorizontalAlignment="Center"
 					    FontSize="16"
-					    Text="Support Links"
+					    Text="{x:Static loca:Resources.Window_About_Title_SupportLinks}"
 					    TextAlignment="Center" />
 					<Separator Margin="0,4" />
 				</StackPanel>
 				<StackPanel Grid.Row="4" Orientation="Vertical">
 					<Grid HorizontalAlignment="Center" ColumnDefinitions="1*,3*" RowDefinitions="Auto,Auto,Auto">
-						<TextBlock HorizontalAlignment="Right" Text="Donate a Coffee:" />
+						<TextBlock HorizontalAlignment="Right" Text="{x:Static loca:Resources.Window_About_Title_Donate}" />
 						<controls:Hyperlink Grid.Column="1"
 						    Margin="10,0,0,4"
 						    HorizontalAlignment="Left"
 						    Url="{Binding DonationUrl}" />
 
-						<TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="Report an Issue:" />
+						<TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="{x:Static loca:Resources.Window_About_Title_Issues}" />
 						<controls:Hyperlink Grid.Row="1"
 						    Grid.Column="1"
 						    Margin="10,0,0,4"
 						    HorizontalAlignment="Left"
 						    Url="{Binding IssuesUrl}" />
 
-						<TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="Changelog:" />
+						<TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="{x:Static loca:Resources.Window_About_Title_Changelog}" />
 						<controls:Hyperlink Grid.Row="2"
 						    Grid.Column="1"
 						    Margin="10,0,0,4"

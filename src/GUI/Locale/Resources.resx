@@ -212,4 +212,54 @@
   <data name="Mod_Command_ForceAllowInLoadOrder_Enable" xml:space="preserve">
     <value>Allow in Load Order</value>
   </data>
+  <data name="Window_AppUpdate_Title" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Button_Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="Window_AppUpdate_Available" xml:space="preserve">
+    <value>{0} {1} is now available.\nYou have version {2} installed.</value>
+    <comment>AppTitle, Version, CurrentVersion</comment>
+  </data>
+  <data name="Window_AppUpdate_UpToDate" xml:space="preserve">
+    <value>[0] is up-to-date.</value>
+    <comment>AppTitle</comment>
+  </data>
+  <data name="Window_AppUpdate_ChangelogTitle" xml:space="preserve">
+    <value>Changelog</value>
+  </data>
+  <data name="Button_Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Window_AppUpdate_DownloadToolTip" xml:space="preserve">
+    <value>Download and install the latest update.</value>
+  </data>
+  <data name="Window_About_Title_HomePage" xml:space="preserve">
+    <value>Home Page:</value>
+  </data>
+  <data name="Window_About_Title_License" xml:space="preserve">
+    <value>License:</value>
+  </data>
+  <data name="Window_About_Title_Author" xml:space="preserve">
+    <value>Author:</value>
+  </data>
+  <data name="Window_About_Title_SupportLinks" xml:space="preserve">
+    <value>Support Links</value>
+  </data>
+  <data name="Window_About_Title_Donate" xml:space="preserve">
+    <value>Donate a Coffee:</value>
+  </data>
+  <data name="Window_About_Title_Issues" xml:space="preserve">
+    <value>Report an Issue:</value>
+  </data>
+  <data name="Window_About_Title_Changelog" xml:space="preserve">
+    <value>Changelog:</value>
+  </data>
+  <data name="Window_About_Title" xml:space="preserve">
+    <value>About</value>
+  </data>
 </root>

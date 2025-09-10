@@ -4,11 +4,12 @@
     xmlns:app="using:ModManager"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:loca="using:ModManager.Locale"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="using:MarkdownViewer.Core.Controls"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:vm="using:ModManager.ViewModels"
-    Title="Updates"
+    Title="{Binding Title}"
     Width="1200"
     Height="600"
     x:DataType="vm:AppUpdateWindowViewModel"
@@ -51,8 +52,8 @@
 						    HorizontalAlignment="Center"
 						    Background="#FF267E26"
 						    Command="{Binding ConfirmCommand}"
-						    Content="Download"
-						    ToolTip.Tip="Download Update" />
+						    Content="{x:Static loca:Resources.Button_Download}"
+						    ToolTip.Tip="{x:Static loca:Resources.Window_AppUpdate_DownloadToolTip}" />
 						<Button Width="120"
 						    Margin="10,0"
 						    HorizontalAlignment="Center"
@@ -67,7 +68,7 @@
 				    BorderThickness="1">
 					<TextBlock VerticalAlignment="Center"
 					    FontSize="24"
-					    Text="Changelog"
+					    Text="{x:Static loca:Resources.Window_AppUpdate_ChangelogTitle}"
 					    TextAlignment="Center" />
 				</Border>
 				<Border Grid.Row="2" BorderBrush="{DynamicResource SukiControlBorderBrush}" BorderThickness="1,0,1,1">

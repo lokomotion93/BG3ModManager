@@ -61,6 +61,33 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Button_Close {
+            get {
+                return ResourceManager.GetString("Button_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Button_Download {
+            get {
+                return ResourceManager.GetString("Button_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip.
+        /// </summary>
+        public static string Button_Skip {
+            get {
+                return ResourceManager.GetString("Button_Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NexusMods API Limit [Hourly ({0}/{1}) Daily ({2}/{3})].
         /// </summary>
         public static string Footer_NexusModsAPILimit_Text {
@@ -336,6 +363,123 @@ namespace ModManager.Locale {
         public static string Mod_Type_ToolkitProject {
             get {
                 return ResourceManager.GetString("Mod_Type_ToolkitProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string Window_About_Title {
+            get {
+                return ResourceManager.GetString("Window_About_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author:.
+        /// </summary>
+        public static string Window_About_Title_Author {
+            get {
+                return ResourceManager.GetString("Window_About_Title_Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changelog:.
+        /// </summary>
+        public static string Window_About_Title_Changelog {
+            get {
+                return ResourceManager.GetString("Window_About_Title_Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donate a Coffee:.
+        /// </summary>
+        public static string Window_About_Title_Donate {
+            get {
+                return ResourceManager.GetString("Window_About_Title_Donate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home Page:.
+        /// </summary>
+        public static string Window_About_Title_HomePage {
+            get {
+                return ResourceManager.GetString("Window_About_Title_HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report an Issue:.
+        /// </summary>
+        public static string Window_About_Title_Issues {
+            get {
+                return ResourceManager.GetString("Window_About_Title_Issues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License:.
+        /// </summary>
+        public static string Window_About_Title_License {
+            get {
+                return ResourceManager.GetString("Window_About_Title_License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support Links.
+        /// </summary>
+        public static string Window_About_Title_SupportLinks {
+            get {
+                return ResourceManager.GetString("Window_About_Title_SupportLinks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1} is now available.\nYou have version {2} installed..
+        /// </summary>
+        public static string Window_AppUpdate_Available {
+            get {
+                return ResourceManager.GetString("Window_AppUpdate_Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changelog.
+        /// </summary>
+        public static string Window_AppUpdate_ChangelogTitle {
+            get {
+                return ResourceManager.GetString("Window_AppUpdate_ChangelogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download and install the latest update..
+        /// </summary>
+        public static string Window_AppUpdate_DownloadToolTip {
+            get {
+                return ResourceManager.GetString("Window_AppUpdate_DownloadToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        public static string Window_AppUpdate_Title {
+            get {
+                return ResourceManager.GetString("Window_AppUpdate_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [0] is up-to-date..
+        /// </summary>
+        public static string Window_AppUpdate_UpToDate {
+            get {
+                return ResourceManager.GetString("Window_AppUpdate_UpToDate", resourceCulture);
             }
         }
     }
