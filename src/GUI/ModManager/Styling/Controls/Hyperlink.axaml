@@ -19,7 +19,7 @@
 							    Icon="{icons:MaterialIconExt Kind=Clipboard}" />
 						</MenuFlyout>
 					</Panel.ContextFlyout>
-					<TextBlock Name="PART_HyperlinkTextBlock" />
+					<TextBlock Name="PART_HyperlinkTextBlock" Foreground="{StaticResource HyperlinkForegroundBrush}" />
 				</Panel>
 			</ControlTemplate>
 		</Setter>

@@ -4,6 +4,8 @@ using Avalonia.Markup.Xaml;
 using ModManager.Services;
 using ModManager.Windows;
 
+using System.Globalization;
+
 namespace ModManager;
 public partial class App : Application
 {
@@ -20,6 +22,7 @@ public partial class App : Application
 
 	public override void OnFrameworkInitializationCompleted()
 	{
+		//Locale.Resources.Culture = new CultureInfo("en-US");
 #if DEBUG
 		if (Design.IsDesignMode)
 		{
