@@ -35,7 +35,7 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 	public RxCommandUnit CancelCommand { get; }
 	public RxCommandUnit ApplyCommand { get; }
 
-	public long NexusModsIDMinimum => DivinityApp.NEXUSMODS_MOD_ID_START;
+	public static long NexusModsIDMinimum => DivinityApp.NEXUSMODS_MOD_ID_START;
 
 	public void SetMod(ModData mod)
 	{
@@ -99,11 +99,11 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 	{
 		var (b, mod) = x;
 		var result = b ? "*" : string.Empty;
-		result += mod != null ? $"{mod.Name} Properties" : "Mod Properties";
+		result += mod != null ? Loca.Window_ModProperties_TitleWithMod.SafeFormat($"{mod.Name} Properties", mod.Name) : Loca.Window_ModProperties_Title;
 		return result;
 	}
-	private static string GetModType(ModData mod) => mod?.IsLooseMod == true ? "Toolkit Project" : "Pak";
-	private static string GetModFilePath(ModData mod) => StringUtils.ReplaceSpecialPathways(mod.FilePath);
+	private static string GetModType(ModData mod) => mod?.IsLooseMod == true ? Loca.Mod_Type_ToolkitProject : Loca.Mod_Type_Pak;
+	private static string GetModFilePath(ModData mod) => StringUtils.ReplaceSpecialPathways(mod.FilePath) ?? string.Empty;
 
 	private static string GetModSize(ModData mod)
 	{
@@ -136,7 +136,7 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 
 	public ModPropertiesWindowViewModel()
 	{
-		Title = "Mod Properties";
+		Title = Loca.Window_ModProperties_Title;
 
 		var whenModSet = this.WhenAnyValue(x => x.Mod).WhereNotNull();
 

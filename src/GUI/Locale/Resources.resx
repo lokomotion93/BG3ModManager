@@ -262,4 +262,142 @@
   <data name="Window_About_Title" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="Window_ModProperties_Title" xml:space="preserve">
+    <value>Mod Properties</value>
+  </data>
+  <data name="Window_ModProperties_Section_ModType" xml:space="preserve">
+    <value>Mod type:</value>
+  </data>
+  <data name="Window_ModProperties_Section_Name" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Window_ModProperties_Section_Description" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="Window_ModProperties_Section_Location" xml:space="preserve">
+    <value>Location:</value>
+  </data>
+  <data name="Window_ModProperties_Section_Size" xml:space="preserve">
+    <value>Size:</value>
+  </data>
+  <data name="Window_ModProperties_Tab_General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Button_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Window_ModProperties_Tab_Config" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="Window_ModProperties_Tab_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Window_ModProperties_TitleWithMod" xml:space="preserve">
+    <value>{0} Properties</value>
+  </data>
+  <data name="Mod_Type_Pak" xml:space="preserve">
+    <value>Pak</value>
+  </data>
+  <data name="Window_CollectionDownloader_Title" xml:space="preserve">
+    <value>NexusMods Collection Downloader</value>
+  </data>
+  <data name="Window_CollectionDownloader_Heading_ModOnly" xml:space="preserve">
+    <value>Download {0}</value>
+  </data>
+  <data name="Window_CollectionDownloader_Heading_Unknown" xml:space="preserve">
+    <value>Download Collection</value>
+  </data>
+  <data name="Window_CollectionDownloader_Button_ListView_ToolTip" xml:space="preserve">
+    <value>View as List</value>
+  </data>
+  <data name="Window_CollectionDownloader_Button_CardView_ToolTip" xml:space="preserve">
+    <value>View as Cards</value>
+  </data>
+  <data name="Window_CollectionDownloader_Button_EnableAll_ToolTip" xml:space="preserve">
+    <value>Enable All</value>
+  </data>
+  <data name="Window_CollectionDownloader_Button_DisableAll_ToolTip" xml:space="preserve">
+    <value>Disable All</value>
+  </data>
+  <data name="Window_CollectionDownloader_Section_Mods" xml:space="preserve">
+    <value>Mods</value>
+  </data>
+  <data name="Window_CollectionDownloader_Heading_WithAuthor" xml:space="preserve">
+    <value>Download {0} by {1}</value>
+  </data>
+  <data name="Window_NXMDownload_Title" xml:space="preserve">
+    <value>NXM Downloader</value>
+  </data>
+  <data name="Window_NXMDownload_Instructions" xml:space="preserve">
+    <value>Enter a nxm:\\ url below:</value>
+  </data>
+  <data name="Window_PakFileExplorer_Title" xml:space="preserve">
+    <value>Mod File Explorer</value>
+  </data>
+  <data name="Window_PakFileExplorer_MenuItem_ExtractTo" xml:space="preserve">
+    <value>Extract To...</value>
+  </data>
+  <data name="Window_PakFileExplorer_MenuItem_ExtractAllTo" xml:space="preserve">
+    <value>Extract All Selected To...</value>
+  </data>
+  <data name="Window_PakFileExplorer_MenuItem_CopyPathToClipboard" xml:space="preserve">
+    <value>Copy Path to Clipboard...</value>
+  </data>
+  <data name="Window_PakFileExplorer_MenuItem_AddMods_ToolTip" xml:space="preserve">
+    <value>Add Mod(s)...</value>
+  </data>
+  <data name="Window_PakFileExplorer_MenuItem_AddPak_ToolTip" xml:space="preserve">
+    <value>Add Pak...</value>
+  </data>
+  <data name="Window_PakFileExplorer_MenuItem_ClearAll_ToolTip" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="Window_PakFileExplorer_Picker_AddMod_Title" xml:space="preserve">
+    <value>Pick Mods to View...</value>
+  </data>
+  <data name="Window_PakFileExplorer_Picker_AddPak_Title" xml:space="preserve">
+    <value>Open Pak File...</value>
+  </data>
+  <data name="Window_PakFileExplorer_Picker_ExtractFiles_Title" xml:space="preserve">
+    <value>Extract File(s) To...</value>
+  </data>
+  <data name="Window_StatsValidator_Title" xml:space="preserve">
+    <value>Stats Validator</value>
+  </data>
+  <data name="Window_StatsValidator_Button_Validate_ToolTip" xml:space="preserve">
+    <value>Validate Again</value>
+  </data>
+  <data name="Window_StatsValidator_Section_Results" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="Window_StatsValidator_Section_TimeTaken" xml:space="preserve">
+    <value>Time Taken:</value>
+  </data>
+  <data name="Window_StatsValidator_LockScreen_Text" xml:space="preserve">
+    <value>Validating...</value>
+  </data>
+  <data name="Window_StatsValidator_Output_NoIssues" xml:space="preserve">
+    <value>No issues found!</value>
+  </data>
+  <data name="Window_StatsValidator_Output_Issues" xml:space="preserve">
+    <value>{0} issue(s):</value>
+  </data>
+  <data name="Window_StatsValidator_FileUnknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Window_StatsValidator_Alert_Init" xml:space="preserve">
+    <value>Initializing base data...</value>
+  </data>
+  <data name="Window_StatsValidator_Alert_Validating" xml:space="preserve">
+    <value>Validating mod stats...</value>
+  </data>
+  <data name="Window_StatsValidator_Alert_Done" xml:space="preserve">
+    <value>Validation complete for {0}</value>
+  </data>
 </root>

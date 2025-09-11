@@ -104,18 +104,18 @@ public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel,
 
 			if (result.Errors.Count == 0)
 			{
-				OutputText = "No issues found!";
+				OutputText = Loca.Window_StatsValidator_Output_NoIssues;
 			}
 			else
 			{
-				OutputText = $"{result.Errors.Count} issue(s):";
+				OutputText = Loca.Window_StatsValidator_Output_Issues.SafeFormat($"{result.Errors.Count} issue(s):", result.Errors.Count);
 			}
 
 			var entries = result.Errors.GroupBy(x => x.Location?.FileName);
 			foreach (var fileGroup in entries)
 			{
 				var name = fileGroup.Key;
-				if (!name.IsValid()) name = "Unknown";
+				if (!name.IsValid()) name = Loca.Window_StatsValidator_FileUnknown;
 				StatsValidatorFileResults fileResults = new() { FilePath = name };
 				foreach (var entry in fileGroup)
 				{
@@ -132,9 +132,9 @@ public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel,
 
 		var startTime = DateTimeOffset.Now;
 
-		if (_validator.GameDataPath != gameDataPath)
+		if (gameDataPath.IsValid() && _validator.GameDataPath != gameDataPath)
 		{
-			await AppServices.Commands.ShowAlertAsync("Initializing base data...", AlertType.Info, 10);
+			await AppServices.Commands.ShowAlertAsync(Loca.Window_StatsValidator_Alert_Init, AlertType.Info, 10);
 			await Task.Run(() =>
 			{
 				_validator.Initialize(gameDataPath);
@@ -142,7 +142,7 @@ public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel,
 		}
 		else
 		{
-			await AppServices.Commands.ShowAlertAsync("Validating mod stats...", AlertType.Info, 60);
+			await AppServices.Commands.ShowAlertAsync(Loca.Window_StatsValidator_Alert_Validating, AlertType.Info, 60);
 		}
 
 		var results = await Observable.StartAsync(async () =>
@@ -154,7 +154,8 @@ public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel,
 		await Observable.Start(() =>
 		{
 			TimeTaken = DateTimeOffset.Now - startTime;
-			AppServices.Commands.ShowAlert($"Validation complete for {string.Join(";", data.Mods.Select(x => x.DisplayName))}", AlertType.Success, 30);
+			var modsStr = string.Join(";", data.Mods.Select(x => x.DisplayName));
+			AppServices.Commands.ShowAlert(Loca.Window_StatsValidator_Alert_Done.SafeFormat($"Validation complete for {modsStr}", modsStr), AlertType.Success, 30);
 		}, RxApp.MainThreadScheduler);
 
 		await _interactions.OpenValidateStatsResults.Handle(results);
@@ -176,6 +177,10 @@ public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel,
 
 	internal StatsValidatorWindowViewModel()
 	{
+		_interactions ??= AppServices.Interactions;
+		_validator ??= AppServices.Get<IStatsValidatorService>();
+		HostScreen ??= AppServices.Get<IScreen>()!;
+
 		CloseCommand = this.CreateCloseCommand();
 
 		Entries = [];

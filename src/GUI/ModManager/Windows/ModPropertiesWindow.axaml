@@ -3,11 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:loca="using:ModManager.Locale"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:vm="using:ModManager.ViewModels"
-    Title="Mod Properties"
+    Title="{Binding Title}"
     Width="419"
     Height="550"
     x:DataType="vm:ModPropertiesWindowViewModel"
@@ -32,7 +33,7 @@
 
 			<Panel Background="{DynamicResource ModPropertiesBackground}">
 				<TabControl>
-					<TabItem Header="General">
+					<TabItem Header="{x:Static loca:Resources.Window_ModProperties_Tab_General}">
 						<controls:AutoGrid Margin="10,0" RowCount="8" RowHeight="auto">
 							<controls:AutoGrid.ColumnDefinitions>
 								<ColumnDefinition Width="auto" />
@@ -59,13 +60,13 @@
 
 							<Separator Grid.ColumnSpan="2" Margin="0,8,0,8" />
 
-							<TextBlock Classes="left" Text="Mod type:" />
+							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_ModType}" />
 							<TextBlock Classes="right" Text="{Binding ModType}" />
 
-							<TextBlock Classes="left" Text="Name:" />
+							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Name}" />
 							<TextBox Classes="readonly-selectable" Text="{Binding ModName}" TextWrapping="Wrap" />
 
-							<TextBlock Classes="left" Text="Description:" />
+							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Description}" />
 							<TextBox MaxHeight="128"
 							    Classes="readonly-selectable"
 							    FontSize="12"
@@ -74,15 +75,15 @@
 
 							<Separator Grid.ColumnSpan="2" />
 
-							<TextBlock Classes="left" Text="Location:" />
+							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Location}" />
 							<TextBox Classes="readonly-selectable" Text="{Binding ModFilePath}" TextWrapping="NoWrap" />
 
-							<TextBlock Classes="left" Text="Size:" />
+							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Size}" />
 							<TextBlock Classes="right" Text="{Binding ModSizeText}" TextWrapping="NoWrap" />
 						</controls:AutoGrid>
 					</TabItem>
-					<TabItem Header="Config" />
-					<TabItem Header="Notes" />
+					<TabItem Header="{x:Static loca:Resources.Window_ModProperties_Tab_Config}" />
+					<TabItem Header="{x:Static loca:Resources.Window_ModProperties_Tab_Notes}" />
 				</TabControl>
 			</Panel>
 			<UniformGrid Grid.Row="1"
@@ -99,16 +100,16 @@
 				<Button Name="OKButton"
 				    Classes="Flat"
 				    Command="{Binding OKCommand}"
-				    Content="OK" />
+				    Content="{x:Static loca:Resources.Button_OK}" />
 				<Button Name="CancelButton"
 				    Classes="Flat"
 				    Command="{Binding CancelCommand}"
-				    Content="Cancel" />
+				    Content="{x:Static loca:Resources.Button_Cancel}" />
 				<Button Name="ApplyButton"
 				    Margin="4,0,0,0"
 				    Classes="Flat"
 				    Command="{Binding ApplyCommand}"
-				    Content="Apply" />
+				    Content="{x:Static loca:Resources.Button_Apply}" />
 			</UniformGrid>
 		</Grid>
 	</Border>

@@ -71,8 +71,6 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 	private readonly IGlobalCommandsService _commands;
 	private readonly IFileSystemService _fs;
 
-	[Reactive] public string Title { get; set; }
-
 	private readonly SourceCache<ModFileEntry, string> _files = new(x => x.FilePath);
 	protected SourceCache<ModFileEntry, string> Files => _files;
 	public HierarchicalTreeDataGridSource<ModFileEntry> FileTreeSource { get; }
@@ -238,7 +236,7 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 		var pathways = AppServices.Pathways.Data;
 
 		var dialogResult = await _dialogService.OpenFolderAsync(new OpenFolderBrowserDialogRequest(
-			"Extract File(s) To...",
+			Loca.Window_PakFileExplorer_Picker_ExtractFiles_Title,
 			_dialogService.GetInitialStartingDirectory(settings.ManagerSettings.LastExtractOutputPath),
 			null,
 			null,
@@ -419,20 +417,11 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 			SelectedItem = FileTreeSource.RowSelection!.SelectedItem;
 		});
 
-		Title = "Mod File Explorer";
-
-		if (_commands != null)
-		{
-			CopyToClipboardCommand = _commands.CopyToClipboardCommand;
-		}
-		else
-		{
-			CopyToClipboardCommand = ReactiveCommand.Create<object?>(str => { });
-		}
+		CopyToClipboardCommand = _commands.CopyToClipboardCommand;
 
 		AddModCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
-			var results = await AppServices.Interactions.PickMods.Handle(new("Pick Mods to View..."));
+			var results = await AppServices.Interactions.PickMods.Handle(new(Loca.Window_PakFileExplorer_Picker_AddMod_Title));
 			if(results.Confirmed)
 			{
 				await LoadModsAsync(results.Mods, CancellationToken.None);
@@ -447,7 +436,7 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 				var pathways = AppServices.Pathways.Data;
 
 				var dialogResult = await _dialogService.OpenFileAsync(new OpenFileBrowserDialogRequest(
-					"Open Pak File...",
+					Loca.Window_PakFileExplorer_Picker_AddPak_Title,
 					_dialogService.GetInitialStartingDirectory(settings.ManagerSettings.LastImportDirectoryPath),
 					[CommonFileTypes.ModPak],
 					window: AppServices.Get<PakFileExplorerWindow>()

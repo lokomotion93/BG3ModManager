@@ -61,6 +61,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string Button_Apply {
+            get {
+                return ResourceManager.GetString("Button_Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Button_Cancel {
+            get {
+                return ResourceManager.GetString("Button_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Button_Close {
@@ -75,6 +93,15 @@ namespace ModManager.Locale {
         public static string Button_Download {
             get {
                 return ResourceManager.GetString("Button_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string Button_OK {
+            get {
+                return ResourceManager.GetString("Button_OK", resourceCulture);
             }
         }
         
@@ -358,6 +385,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pak.
+        /// </summary>
+        public static string Mod_Type_Pak {
+            get {
+                return ResourceManager.GetString("Mod_Type_Pak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toolkit Project.
         /// </summary>
         public static string Mod_Type_ToolkitProject {
@@ -480,6 +516,384 @@ namespace ModManager.Locale {
         public static string Window_AppUpdate_UpToDate {
             get {
                 return ResourceManager.GetString("Window_AppUpdate_UpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View as Cards.
+        /// </summary>
+        public static string Window_CollectionDownloader_Button_CardView_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Button_CardView_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable All.
+        /// </summary>
+        public static string Window_CollectionDownloader_Button_DisableAll_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Button_DisableAll_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable All.
+        /// </summary>
+        public static string Window_CollectionDownloader_Button_EnableAll_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Button_EnableAll_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View as List.
+        /// </summary>
+        public static string Window_CollectionDownloader_Button_ListView_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Button_ListView_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download {0}.
+        /// </summary>
+        public static string Window_CollectionDownloader_Heading_ModOnly {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Heading_ModOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Collection.
+        /// </summary>
+        public static string Window_CollectionDownloader_Heading_Unknown {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Heading_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download {0} by {1}.
+        /// </summary>
+        public static string Window_CollectionDownloader_Heading_WithAuthor {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Heading_WithAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mods.
+        /// </summary>
+        public static string Window_CollectionDownloader_Section_Mods {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Section_Mods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NexusMods Collection Downloader.
+        /// </summary>
+        public static string Window_CollectionDownloader_Title {
+            get {
+                return ResourceManager.GetString("Window_CollectionDownloader_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description:.
+        /// </summary>
+        public static string Window_ModProperties_Section_Description {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Section_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location:.
+        /// </summary>
+        public static string Window_ModProperties_Section_Location {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Section_Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod type:.
+        /// </summary>
+        public static string Window_ModProperties_Section_ModType {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Section_ModType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string Window_ModProperties_Section_Name {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Section_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size:.
+        /// </summary>
+        public static string Window_ModProperties_Section_Size {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Section_Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Config.
+        /// </summary>
+        public static string Window_ModProperties_Tab_Config {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Tab_Config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string Window_ModProperties_Tab_General {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Tab_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string Window_ModProperties_Tab_Notes {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Tab_Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod Properties.
+        /// </summary>
+        public static string Window_ModProperties_Title {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Properties.
+        /// </summary>
+        public static string Window_ModProperties_TitleWithMod {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_TitleWithMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a nxm:\\ url below:.
+        /// </summary>
+        public static string Window_NXMDownload_Instructions {
+            get {
+                return ResourceManager.GetString("Window_NXMDownload_Instructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NXM Downloader.
+        /// </summary>
+        public static string Window_NXMDownload_Title {
+            get {
+                return ResourceManager.GetString("Window_NXMDownload_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Mod(s)....
+        /// </summary>
+        public static string Window_PakFileExplorer_MenuItem_AddMods_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_AddMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Pak....
+        /// </summary>
+        public static string Window_PakFileExplorer_MenuItem_AddPak_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_AddPak_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear All.
+        /// </summary>
+        public static string Window_PakFileExplorer_MenuItem_ClearAll_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_ClearAll_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Path to Clipboard....
+        /// </summary>
+        public static string Window_PakFileExplorer_MenuItem_CopyPathToClipboard {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_CopyPathToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract All Selected To....
+        /// </summary>
+        public static string Window_PakFileExplorer_MenuItem_ExtractAllTo {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_ExtractAllTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract To....
+        /// </summary>
+        public static string Window_PakFileExplorer_MenuItem_ExtractTo {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_ExtractTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Mods to View....
+        /// </summary>
+        public static string Window_PakFileExplorer_Picker_AddMod_Title {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_Picker_AddMod_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Pak File....
+        /// </summary>
+        public static string Window_PakFileExplorer_Picker_AddPak_Title {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_Picker_AddPak_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract File(s) To....
+        /// </summary>
+        public static string Window_PakFileExplorer_Picker_ExtractFiles_Title {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_Picker_ExtractFiles_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod File Explorer.
+        /// </summary>
+        public static string Window_PakFileExplorer_Title {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation complete for {0}.
+        /// </summary>
+        public static string Window_StatsValidator_Alert_Done {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Alert_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing base data....
+        /// </summary>
+        public static string Window_StatsValidator_Alert_Init {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Alert_Init", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating mod stats....
+        /// </summary>
+        public static string Window_StatsValidator_Alert_Validating {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Alert_Validating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate Again.
+        /// </summary>
+        public static string Window_StatsValidator_Button_Validate_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Button_Validate_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Window_StatsValidator_FileUnknown {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_FileUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating....
+        /// </summary>
+        public static string Window_StatsValidator_LockScreen_Text {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_LockScreen_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} issue(s):.
+        /// </summary>
+        public static string Window_StatsValidator_Output_Issues {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Output_Issues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No issues found!.
+        /// </summary>
+        public static string Window_StatsValidator_Output_NoIssues {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Output_NoIssues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Results.
+        /// </summary>
+        public static string Window_StatsValidator_Section_Results {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Section_Results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Taken:.
+        /// </summary>
+        public static string Window_StatsValidator_Section_TimeTaken {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Section_TimeTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stats Validator.
+        /// </summary>
+        public static string Window_StatsValidator_Title {
+            get {
+                return ResourceManager.GetString("Window_StatsValidator_Title", resourceCulture);
             }
         }
     }

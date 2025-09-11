@@ -21,7 +21,7 @@ public class NexusModsCollectionDownloadWindowViewModel : ReactiveObject, IClosa
 
 	public ObservableCollectionExtended<NexusModsCollectionModData> Mods { get; }
 
-	[ObservableAsProperty] public string Title { get; }
+	[ObservableAsProperty] public string? Heading { get; }
 	[ObservableAsProperty] public Uri? AuthorAvatarUri { get; }
 	[ObservableAsProperty] public bool HasAuthorAvatar { get; }
 	[ObservableAsProperty] public bool IsGridView { get; }
@@ -47,17 +47,20 @@ public class NexusModsCollectionDownloadWindowViewModel : ReactiveObject, IClosa
 			Mods.AddRange(Data.Mods.Items);
 		}
 
-		this.RaisePropertyChanged("Mods");
+		this.RaisePropertyChanged(nameof(Mods));
 	}
 
-	private static string ToTitleText(string? name, string? author)
+	private static string ToHeadingText(string? name, string? author)
 	{
-		var text = name ?? string.Empty;
-		if (author.IsValid())
+		if(name.IsValid())
 		{
-			text += " by " + author;
+			if (author.IsValid())
+			{
+				return Loca.Window_CollectionDownloader_Heading_WithAuthor.SafeFormat($"Download {name} by {author}", name, author);
+			}
+			return Loca.Window_CollectionDownloader_Heading_ModOnly.SafeFormat($"Download {name}", name);
 		}
-		return text;
+		return Loca.Window_CollectionDownloader_Heading_Unknown;
 	}
 
 	private void SelectAll(bool b)
@@ -72,12 +75,11 @@ public class NexusModsCollectionDownloadWindowViewModel : ReactiveObject, IClosa
 	{
 		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
-		Title = "Collection Downloader";
 
 		Mods = [];
 
 		var whenData = this.WhenAnyValue(x => x.Data).WhereNotNull();
-		whenData.Select(x => ToTitleText(x.Name, x.Author)).ToUIProperty(this, x => x.Title);
+		whenData.Select(x => ToHeadingText(x.Name, x.Author)).ToUIProperty(this, x => x.Heading, Loca.Window_CollectionDownloader_Heading_Unknown);
 		whenData.Select(x => x.AuthorAvatarUrl).ToUIProperty(this, x => x.AuthorAvatarUri);
 		this.WhenAnyValue(x => x.AuthorAvatarUri).Select(x => x.IsValid()).ToUIProperty(this, x => x.HasAuthorAvatar);
 
