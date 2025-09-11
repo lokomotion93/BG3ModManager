@@ -1,0 +1,4 @@
+[*.resx]
+vs_command_after = Build.BuildSelection
+ext_command_timeout = 12
+output_end = $(File) changed - compiled $(ProjectDir)
