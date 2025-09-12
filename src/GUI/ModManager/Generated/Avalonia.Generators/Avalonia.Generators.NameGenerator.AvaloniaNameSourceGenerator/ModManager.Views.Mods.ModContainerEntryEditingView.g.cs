@@ -7,7 +7,7 @@ using Avalonia.Markup.Xaml;
 namespace ModManager.Views.Mods
 {
     partial class ModContainerEntryEditingView
-	{
+    {
 
 
         /// <summary>

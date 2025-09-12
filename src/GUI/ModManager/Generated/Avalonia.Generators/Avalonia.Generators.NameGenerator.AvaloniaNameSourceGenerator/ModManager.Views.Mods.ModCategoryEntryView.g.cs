@@ -6,8 +6,8 @@ using Avalonia.Markup.Xaml;
 
 namespace ModManager.Views.Mods
 {
-    partial class ModCategoryEntryView
-    {
+    partial class ModContainerEntryView
+	{
 
 
         /// <summary>

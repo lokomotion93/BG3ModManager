@@ -39,6 +39,10 @@ public class ModListViewModel : ReactiveObject
 	[ObservableAsProperty] public bool HasAnyFocus { get; }
 
 	public RxCommandUnit FocusCommand { get; }
+	public RxCommandUnit AddContainerCommand { get; }
+	public ReactiveCommand<ModContainer, Unit> DeleteContainerCommand { get; }
+	public ReactiveCommand<ModContainer, Unit> DeleteContainerModsCommand { get; }
+	public ReactiveCommand<ModContainer, Unit> RenameContainerCommand { get; }
 
 	private static string ToFilterResultText(ValueTuple<int, int, int, string?, bool> x)
 	{
@@ -152,6 +156,35 @@ public class ModListViewModel : ReactiveObject
 		this.WhenAnyValue(x => x.IsFocused, x => x.IsKeyboardFocusWithin).Select(x => x.Item1 || x.Item2).ToUIPropertyImmediate(this, x => x.HasAnyFocus);
 
 		FocusCommand = ReactiveCommand.Create(() => { });
+
+		AddContainerCommand = ReactiveCommand.CreateFromTask(async () => {
+			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Add Container", "Enter container name...", InteractionMessageBoxType.Input, "Container1"));
+			if(result.Result)
+			{
+				_mods.Add(new ModContainer(Guid.NewGuid().ToString()) {
+					DisplayName = result.Input ?? string.Empty,
+					IsActive = IsActiveList
+				});
+			}
+		});
+
+		RenameContainerCommand = ReactiveCommand.CreateFromTask<ModContainer>(async modContainer => {
+			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Rename Container", "Enter container name...", InteractionMessageBoxType.Input, modContainer.DisplayName));
+			if (result.Result)
+			{
+				modContainer.DisplayName = result.Input ?? string.Empty;
+			}
+		});
+
+		DeleteContainerCommand = ReactiveCommand.CreateFromTask<ModContainer>(async modContainer =>
+		{
+			//await AppServices.Interactions.DeleteMods.Handle(new(modContainer.Mods));
+		});
+
+		DeleteContainerModsCommand = ReactiveCommand.CreateFromTask<ModContainer>(async modContainer =>
+		{
+			await AppServices.Interactions.DeleteMods.Handle(new(modContainer.Mods));
+		});
 	}
 }
 

@@ -2,5 +2,5 @@
 public enum ModEntryType
 {
 	Mod,
-	Category
+	Container
 }

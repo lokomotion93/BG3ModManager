@@ -170,12 +170,12 @@
 		    Icon="{icons:MaterialIconExt Kind=FileEdit}" />
 	</MenuFlyout>
 
-	<DataTemplate x:Key="ModCategoryEntryTemplate" DataType="mod:ModCategory">
-		<modView:ModCategoryEntryView />
+	<DataTemplate x:Key="ModContainerEntryTemplate" DataType="mod:ModContainer">
+		<modView:ModContainerEntryView />
 	</DataTemplate>
 
-	<DataTemplate x:Key="ModCategoryEntryEditingTemplate" DataType="mod:ModCategory">
-		<modView:ModCategoryEntryEditingView />
+	<DataTemplate x:Key="ModContainerEntryEditingTemplate" DataType="mod:ModContainer">
+		<modView:ModContainerEntryEditingView />
 	</DataTemplate>
 
 	<DataTemplate x:Key="ModEntryTemplate" DataType="mod:ModEntry">

@@ -403,6 +403,42 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Container....
+        /// </summary>
+        public static string ModListView_AddContainer {
+            get {
+                return ResourceManager.GetString("ModListView_AddContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Container....
+        /// </summary>
+        public static string ModListView_DeleteContainer {
+            get {
+                return ResourceManager.GetString("ModListView_DeleteContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Container Mods....
+        /// </summary>
+        public static string ModListView_DeleteContainerMods {
+            get {
+                return ResourceManager.GetString("ModListView_DeleteContainerMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename....
+        /// </summary>
+        public static string ModListView_RenameContainer {
+            get {
+                return ResourceManager.GetString("ModListView_RenameContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string Window_About_Title {

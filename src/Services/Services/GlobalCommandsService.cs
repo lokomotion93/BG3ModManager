@@ -28,6 +28,7 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 	public ReactiveCommand<object?, Unit> CopyToClipboardCommand { get; }
 	public ReactiveCommand<object?, Unit> DeleteModCommand { get; }
 	public RxCommandUnit DeleteSelectedModsCommand { get; }
+	public ReactiveCommand<object?, Unit> RenameContainerCommand { get; }
 	public ReactiveCommand<ModData?, Unit> OpenGitHubPageCommand { get; }
 	public ReactiveCommand<ModData?, Unit> OpenNexusModsPageCommand { get; }
 	public ReactiveCommand<ModData?, Unit> OpenModioPageCommand { get; }
@@ -166,17 +167,22 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 		_interactions.ValidateModStats.Handle(new([mod], CancellationToken.None)).Subscribe();
 	}
 
-	private void ToggleNameDisplay(ModData? mod)
+	private void ToggleNameDisplay(object? obj)
 	{
-		if (mod == null) throw new ArgumentNullException(nameof(mod));
-		mod.DisplayFileForName = !mod.DisplayFileForName;
-		//var b = !mod.DisplayFileForName;
-		//_interactions.ToggleModFileNameDisplay.Handle(b).Subscribe();
+		ArgumentNullException.ThrowIfNull(obj);
+		if (obj is ModEntry modEntry && modEntry.Data != null)
+		{
+			modEntry.Data.DisplayFileForName = !modEntry.Data.DisplayFileForName;
+		}
+		else
+		{
+			throw new ArgumentException($"Wrong parameter type: {obj}({obj?.GetType()})");
+		}
 	}
 
 	private void DeleteMod(object? obj)
 	{
-		if (obj == null) throw new ArgumentNullException(nameof(obj));
+		ArgumentNullException.ThrowIfNull(obj);
 		if (obj is IModEntry modEntry)
 		{
 			_interactions.DeleteMods.Handle(new([modEntry])).Subscribe();

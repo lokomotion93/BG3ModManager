@@ -119,7 +119,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	/// <param name="e"></param>
 	private static void MaybeRedirectDrop(TreeDataGridRowDragEventArgs e)
 	{
-		if (e.Position == TreeDataGridRowDropPosition.Inside && e.TargetRow.Model is not ModCategory)
+		if (e.Position == TreeDataGridRowDropPosition.Inside && e.TargetRow.Model is not ModContainer)
 		{
 			//e.Inner.DragEffects = DragDropEffects.None;
 			e.Position = GetDropPosition(false, e.Inner, e.TargetRow);
@@ -134,7 +134,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			//List to List
 			if (e.Position == TreeDataGridRowDropPosition.None && di.Source != ModsTreeDataGrid.Source)
 			{
-				e.Position = GetDropPosition(e.TargetRow.Model is ModCategory, e.Inner, e.TargetRow);
+				e.Position = GetDropPosition(e.TargetRow.Model is ModContainer, e.Inner, e.TargetRow);
 				e.Inner.DragEffects = DragDropEffects.Move;
 			}
 		}
@@ -162,7 +162,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			{
 				if (e.Position == TreeDataGridRowDropPosition.None)
 				{
-					e.Position = GetDropPosition(e.TargetRow.Model is ModCategory, e.Inner, e.TargetRow);
+					e.Position = GetDropPosition(e.TargetRow.Model is ModContainer, e.Inner, e.TargetRow);
 				}
 				//Clear the previous selection, so only the dropped items are selected
 				target.RowSelection!.Clear();

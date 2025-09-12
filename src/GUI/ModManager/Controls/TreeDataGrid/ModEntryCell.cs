@@ -10,7 +10,7 @@ public class ModEntryCell(IModEntry value) : ITemplateCell, ICell
 
 	public object? Value => _value;
 
-	public bool CanEdit => _value.EntryType == ModEntryType.Category;
+	public bool CanEdit => _value.EntryType == ModEntryType.Container;
 
 	public BeginEditGestures EditGestures { get; }
 
@@ -39,8 +39,8 @@ public class ModEntryCell(IModEntry value) : ITemplateCell, ICell
 		{
 			switch (modEntryType)
 			{
-				case ModEntryType.Category:
-					template = GetDataTemplate("ModCategoryEntryTemplate");
+				case ModEntryType.Container:
+					template = GetDataTemplate("ModContainerEntryTemplate");
 					break;
 				case ModEntryType.Mod:
 				default:
@@ -48,9 +48,9 @@ public class ModEntryCell(IModEntry value) : ITemplateCell, ICell
 					break;
 			}
 		}
-		else if(modEntryType == ModEntryType.Category)
+		else if(modEntryType == ModEntryType.Container)
 		{
-			template = GetDataTemplate("ModCategoryEntryEditingTemplate");
+			template = GetDataTemplate("ModContainerEntryEditingTemplate");
 		}
 
 		return template as IDataTemplate;

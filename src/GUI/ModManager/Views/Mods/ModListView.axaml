@@ -4,7 +4,10 @@
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+    xmlns:loca="using:ModManager.Locale"
+    xmlns:local="using:ModManager.Views.Mods"
     xmlns:m="using:ModManager.Models.Mod"
+    xmlns:manager="using:ModManager"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mod="using:ModManager.Models.Mod"
@@ -66,10 +69,62 @@
 				<Setter Property="Background" Value="{Binding PointerOverColor, Converter={StaticResource ModBackgroundColorConverter}, ConverterParameter='ModListHoveredCellBackground'}" />
 			</Style>
 
-			<Setter Property="ContextFlyout" Value="{StaticResource ModContextFlyout}" />
 			<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWayToSource}" />
 		</Style>
+
+		<Style x:DataType="mod:ModData" Selector="TreeDataGridRow">
+			<Setter Property="ContextFlyout" Value="{StaticResource ModContextFlyout}" />
+		</Style>
+
+		<Style x:DataType="mod:ModContainer" Selector="TreeDataGridRow">
+			<Setter Property="ContextFlyout">
+				<Setter.Value>
+					<MenuFlyout x:DataType="mod:ModContainer" Placement="Bottom">
+						<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.RenameContainerCommand}"
+						    CommandParameter="{Binding}"
+						    Header="{x:Static loca:Resources.ModListView_RenameContainer}"
+						    Icon="{materialIcons:MaterialIconExt Kind=Rename}" />
+
+						<Separator IsVisible="{Binding CanForceAllowInLoadOrder}" />
+						<MenuItem Command="{Binding ToggleForceAllowInLoadOrderCommand}" IsVisible="{Binding CanForceAllowInLoadOrder}">
+							<MenuItem.Header>
+								<TextBlock Text="{Binding ForceAllowInLoadOrderLabel}" />
+							</MenuItem.Header>
+							<MenuItem.Icon>
+								<materialIcons:MaterialIcon Kind="{Binding ForceAllowInLoadOrder, Converter={StaticResource ForceAllowInLoadOrderIconConverter}}" />
+							</MenuItem.Icon>
+						</MenuItem>
+
+						<Separator />
+
+						<MenuItem Header="Delete..." Icon="{materialIcons:MaterialIconExt Kind=Delete}">
+							<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerCommand}"
+							    CommandParameter="{Binding}"
+							    Header="{x:Static loca:Resources.ModListView_DeleteContainer}"
+							    Icon="{materialIcons:MaterialIconExt Kind=FolderRemove}" />
+							<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerModsCommand}"
+							    CommandParameter="{Binding}"
+							    Header="{x:Static loca:Resources.ModListView_DeleteContainerMods}"
+							    Icon="{materialIcons:MaterialIconExt Kind=FileRemove}" />
+							<MenuItem Command="{Binding Path=DeleteSelectedModsCommand, Source={x:Static manager:AppServices.Commands}}" Header="Selected Mods..." Icon="{materialIcons:MaterialIconExt Kind=Files}" />
+						</MenuItem>
+
+						<Separator />
+						<MenuItem Command="{Binding ToggleNameDisplayCommand}" Icon="{materialIcons:MaterialIconExt Kind=Rename}">
+							<MenuItem.Header>
+								<TextBlock Text="{Binding ToggleModNameLabel}" />
+							</MenuItem.Header>
+						</MenuItem>
+					</MenuFlyout>
+				</Setter.Value>
+			</Setter>
+		</Style>
 	</UserControl.Styles>
+	<UserControl.ContextFlyout>
+		<MenuFlyout>
+			<MenuItem Command="{Binding AddContainerCommand}" Header="{x:Static loca:Resources.ModListView_AddContainer}" />
+		</MenuFlyout>
+	</UserControl.ContextFlyout>
 	<Grid RowDefinitions="auto,*">
 		<Grid ColumnDefinitions="auto,auto,auto,*">
 			<TextBlock Padding="4"

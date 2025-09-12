@@ -997,7 +997,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		if (SelectedModOrder != null)
 		{
 			SelectedModOrder.Order.Clear();
-			SelectedModOrder.AddRange(ActiveMods, true);
+			SelectedModOrder.AddRange(ActiveMods.Where(x => x.EntryType == ModEntryType.Mod), true);
 		}
 	}
 

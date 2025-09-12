@@ -400,4 +400,16 @@
   <data name="Window_StatsValidator_Alert_Done" xml:space="preserve">
     <value>Validation complete for {0}</value>
   </data>
+  <data name="ModListView_AddContainer" xml:space="preserve">
+    <value>Add Container...</value>
+  </data>
+  <data name="ModListView_DeleteContainer" xml:space="preserve">
+    <value>Container...</value>
+  </data>
+  <data name="ModListView_DeleteContainerMods" xml:space="preserve">
+    <value>Container Mods...</value>
+  </data>
+  <data name="ModListView_RenameContainer" xml:space="preserve">
+    <value>Rename...</value>
+  </data>
 </root>
