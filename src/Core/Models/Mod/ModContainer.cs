@@ -18,6 +18,7 @@ public class ModContainer : ReactiveObject, IModEntry
 	[Reactive] public string? SelectedColor { get; set; }
 	[Reactive] public string? ListColor { get; set; }
 	[Reactive] public string? PointerOverColor { get; set; }
+	[Reactive] public bool IsDirty { get; set; }
 
 	public string? Version => string.Empty;
 	public string? Author => string.Empty;
@@ -53,6 +54,7 @@ public class ModContainer : ReactiveObject, IModEntry
 				SetProperty(mod, propertyName, value);
 			}
 		}
+		entry.RaisePropertyChanged(nameof(IModEntry.IsDirty));
 	}
 
 	private static bool PropertyMatches<T>(IModEntry entry, string propertyName, T value)
@@ -80,23 +82,17 @@ public class ModContainer : ReactiveObject, IModEntry
 			if (!b) IsSelected = false;
 		});
 
+		var modsConn = this.Mods.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
 
-		var modsConn = this.Mods.ToObservableChangeSet().ToCollection();
+		var hasChildren = modsConn.CountChanged().Select(_ => Mods.Count > 0);
 
-		var hasChildren = modsConn.Select(_ => Mods.Count > 0);
-
-		modsConn.Select(x => x.All(AllCanForceAllowInLoadOrder)).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
-		modsConn.Select(x => x.All(AllForceLoadedInLoadOrder)).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
-		modsConn.Select(x => x.All(AllDisplayFileForName)).ToUIProperty(this, x => x.DisplayFileForName);
+		modsConn.Select(_ => Mods.All(AllCanForceAllowInLoadOrder)).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
+		modsConn.Select(_ => Mods.All(AllForceLoadedInLoadOrder)).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
+		modsConn.Select(_ => Mods.All(AllDisplayFileForName)).ToUIProperty(this, x => x.DisplayFileForName);
 
 		this.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
 
 		this.WhenAnyValue(x => x.ForceAllowInLoadOrder).Select(b => b ? Loca.Mod_Command_ForceAllowInLoadOrder_Disable : Loca.Mod_Command_ForceAllowInLoadOrder_Enable).ToUIProperty(this, x => x.ForceAllowInLoadOrderLabel);
-
-		this.WhenAnyValue(x => x.DisplayFileForName).Subscribe(b =>
-		{
-			DivinityApp.Log($"DisplayFileForName: {b}");
-		});
 
 		var canForceAllowInLoadOrder = this.WhenAnyValue(x => x.CanForceAllowInLoadOrder);
 		ToggleForceAllowInLoadOrderCommand = ReactiveCommand.Create(() =>

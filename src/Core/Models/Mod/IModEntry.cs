@@ -2,7 +2,7 @@
 
 namespace ModManager.Models.Mod;
 
-public interface IModEntry : ISelectable
+public interface IModEntry : ISelectable, IReactiveObject
 {
 	ModEntryType EntryType { get; }
 
@@ -21,6 +21,7 @@ public interface IModEntry : ISelectable
 	bool IsExpanded { get; set; }
 	bool CanDelete { get; }
 	bool PreserveSelection { get; set; }
+	bool IsDirty { get; set; }
 
 	IObservableCollection<IModEntry>? Children { get; }
 
