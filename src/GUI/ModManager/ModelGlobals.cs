@@ -33,11 +33,36 @@ namespace ModManager
 			return $"C:\\Users\\TestUser\\AppData\\Local\\Larian Studios\\Baldur's Gate 3\\Mods\\{modFolder}.pak";
 		}
 
+		private static void RecalculateIndexes(IModEntry entry, ref int index)
+		{
+			entry.Index = index;
+			index += 1;
+			if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer)
+			{
+				foreach(var child in modContainer.Mods)
+				{
+					RecalculateIndexes(child, ref index);
+				}
+			}
+		}
+
 		static ModelGlobals()
 		{
 			TestMods = [];
 
 			var ran = new Random(1337);
+
+			var containers = new List<ModContainer>();
+
+			for(var i = 0; i < 4; i++)
+			{
+				var container = new ModContainer(Guid.NewGuid().ToString())
+				{
+					DisplayName = $"Container{i}"
+				};
+				containers.Add(container);
+				TestMods.Add(container);
+			}
 
 			for (var i = 0; i < 30; i++)
 			{
@@ -46,9 +71,9 @@ namespace ModManager
 				var modName = $"Mod {modNum}";
 				var uuid = Guid.NewGuid().ToString();
 				var modFolder = $"Mod{modNum}_{uuid}";
-				TestMods.Add(new ModEntry(new ModData(uuid)
-				{ 
-					Index = i, 
+
+				var mod = new ModEntry(new ModData(uuid)
+				{
 					Name = modName,
 					Folder = modFolder,
 					Description = $"Random mod {modNum}",
@@ -58,7 +83,22 @@ namespace ModManager
 					IsLooseMod = isToolkitProject,
 					LastModified = DateTimeOffset.Now,
 					Version = new LarianVersion((ulong)ran.Next(0, 24), (ulong)ran.Next(0, 48), (ulong)ran.Next(0, 128), (ulong)ran.Next(0, 256))
-				}));
+				});
+
+				if (ran.Next(100) <= 60)
+				{
+					containers[ran.Next(0, containers.Count-1)].Mods.Add(mod);
+				}
+				else
+				{
+					TestMods.Add(mod);
+				}
+
+				var index = 0;
+				foreach(var entry in TestMods)
+				{
+					RecalculateIndexes(entry, ref index);
+				}
 			}
 		}
 	}
