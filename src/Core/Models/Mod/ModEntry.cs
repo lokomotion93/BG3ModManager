@@ -17,6 +17,7 @@ public class ModEntry : ReactiveObject, IModEntry
 	[Reactive] public bool IsDraggable { get; set; }
 	[Reactive] public bool PreserveSelection { get; set; }
 	[Reactive] public bool IsDirty { get; set; }
+	[Reactive] public object? ContextMenu { get; set; }
 
 	[ObservableAsProperty] public string? DisplayName { get; }
 	[ObservableAsProperty] public string? FilePath { get; }

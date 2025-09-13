@@ -143,6 +143,20 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	private void OnTreeDataGridDrop(TreeDataGridRowDragEventArgs e)
 	{
 		_isDragging = false;
+		var allowInside = false;
+		if (e.TargetRow.Model is ModContainer modContainer)
+		{
+			if(!modContainer.IsExpanded)
+			{
+				//Need to delay by a few frames since the expander cell may not be rendered yet
+				RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(10), () =>
+				{
+					modContainer.IsExpanded = true;
+				});
+			}
+			allowInside = true;
+		}
+
 		MaybeRedirectDrop(e);
 
 		var dragData = e.Inner.Data.Get(DragInfo.DataFormat);
@@ -162,7 +176,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			{
 				if (e.Position == TreeDataGridRowDropPosition.None)
 				{
-					e.Position = GetDropPosition(e.TargetRow.Model is ModContainer, e.Inner, e.TargetRow);
+					e.Position = GetDropPosition(allowInside, e.Inner, e.TargetRow);
 				}
 				//Clear the previous selection, so only the dropped items are selected
 				target.RowSelection!.Clear();
@@ -373,6 +387,11 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					h => ModsTreeDataGrid.RowDragStarted += h,
 					h => ModsTreeDataGrid.RowDragStarted -= h
 				).Subscribe(OnTreeDataGridDragStarted, OnError));
+				
+				var modContext = this.FindResource("ModContextFlyout");
+				var modContainerContext = this.FindResource("ModContainerMenuFlyout");
+				var modThickness = new Thickness(0);
+				var modContainerThickness = new Thickness(0, 0, 0, 1);
 
 				d(Observable.FromEvent<EventHandler<TreeDataGridRowEventArgs>, TreeDataGridRowEventArgs>(
 					h => (sender, e) => h(e),
@@ -380,14 +399,27 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					h => ModsTreeDataGrid.RowPrepared -= h
 				).Subscribe(e =>
 				{
-					if (e.Row.Model is IModEntry mod && mod.PreserveSelection)
+					if (e.Row.Model is IModEntry entry)
 					{
-						/*ModEntryTreeDataGridRowSelectionModel preserves the selection after drag + drop visually,
-						while this makes sure the backing data stays selected.
-						If this isn't set here, then the next drag + drop will only move the directly selected item.
-						*/
-						ModsTreeDataGrid.RowSelection!.Select(e.RowIndex);
-						mod.PreserveSelection = false;
+						if (entry.PreserveSelection)
+						{
+							/*ModEntryTreeDataGridRowSelectionModel preserves the selection after drag + drop visually,
+							while this makes sure the backing data stays selected.
+							If this isn't set here, then the next drag + drop will only move the directly selected item.
+							*/
+							ModsTreeDataGrid.RowSelection!.Select(e.RowIndex);
+							entry.PreserveSelection = false;
+						}
+						if(entry.EntryType == ModEntryType.Mod)
+						{
+							entry.ContextMenu = modContext;
+							e.Row.BorderThickness = modThickness;
+						}
+						else if (entry.EntryType == ModEntryType.Container)
+						{
+							entry.ContextMenu = modContainerContext;
+							e.Row.BorderThickness = modContainerThickness;
+						}
 					}
 				}));
 

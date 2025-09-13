@@ -23,6 +23,8 @@ public interface IModEntry : ISelectable, IReactiveObject
 	bool PreserveSelection { get; set; }
 	bool IsDirty { get; set; }
 
+	object? ContextMenu { get; set; }
+
 	IObservableCollection<IModEntry>? Children { get; }
 
 	string? Export(ModExportType exportType);

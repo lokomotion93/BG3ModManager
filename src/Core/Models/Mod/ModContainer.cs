@@ -19,6 +19,7 @@ public class ModContainer : ReactiveObject, IModEntry
 	[Reactive] public string? ListColor { get; set; }
 	[Reactive] public string? PointerOverColor { get; set; }
 	[Reactive] public bool IsDirty { get; set; }
+	[Reactive] public object? ContextMenu { get; set; }
 
 	public string? Version => string.Empty;
 	public string? Author => string.Empty;

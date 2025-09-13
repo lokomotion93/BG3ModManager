@@ -70,56 +70,51 @@
 			</Style>
 
 			<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWayToSource}" />
-		</Style>
 
-		<Style x:DataType="mod:ModData" Selector="TreeDataGridRow">
-			<Setter Property="ContextFlyout" Value="{StaticResource ModContextFlyout}" />
-		</Style>
-
-		<Style x:DataType="mod:ModContainer" Selector="TreeDataGridRow">
-			<Setter Property="ContextFlyout">
-				<Setter.Value>
-					<MenuFlyout x:DataType="mod:ModContainer" Placement="Bottom">
-						<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.RenameContainerCommand}"
-						    CommandParameter="{Binding}"
-						    Header="{x:Static loca:Resources.ModListView_RenameContainer}"
-						    Icon="{materialIcons:MaterialIconExt Kind=Rename}" />
-
-						<Separator IsVisible="{Binding CanForceAllowInLoadOrder}" />
-						<MenuItem Command="{Binding ToggleForceAllowInLoadOrderCommand}" IsVisible="{Binding CanForceAllowInLoadOrder}">
-							<MenuItem.Header>
-								<TextBlock Text="{Binding ForceAllowInLoadOrderLabel}" />
-							</MenuItem.Header>
-							<MenuItem.Icon>
-								<materialIcons:MaterialIcon Kind="{Binding ForceAllowInLoadOrder, Converter={StaticResource ForceAllowInLoadOrderIconConverter}}" />
-							</MenuItem.Icon>
-						</MenuItem>
-
-						<Separator />
-
-						<MenuItem Header="Delete..." Icon="{materialIcons:MaterialIconExt Kind=Delete}">
-							<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerCommand}"
-							    CommandParameter="{Binding}"
-							    Header="{x:Static loca:Resources.ModListView_DeleteContainer}"
-							    Icon="{materialIcons:MaterialIconExt Kind=FolderRemove}" />
-							<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerModsCommand}"
-							    CommandParameter="{Binding}"
-							    Header="{x:Static loca:Resources.ModListView_DeleteContainerMods}"
-							    Icon="{materialIcons:MaterialIconExt Kind=FileRemove}" />
-							<MenuItem Command="{Binding Path=DeleteSelectedModsCommand, Source={x:Static manager:AppServices.Commands}}" Header="Selected Mods..." Icon="{materialIcons:MaterialIconExt Kind=Files}" />
-						</MenuItem>
-
-						<Separator />
-						<MenuItem Command="{Binding ToggleNameDisplayCommand}" Icon="{materialIcons:MaterialIconExt Kind=Rename}">
-							<MenuItem.Header>
-								<TextBlock Text="{Binding ToggleModNameLabel}" />
-							</MenuItem.Header>
-						</MenuItem>
-					</MenuFlyout>
-				</Setter.Value>
-			</Setter>
+			<Setter Property="ContextFlyout" Value="{Binding ContextMenu}" />
+			<!--<Setter Property="BorderThickness" Value="0 0 0 1" />-->
+			<Setter Property="BorderBrush" Value="{DynamicResource SukiMediumBorderBrush}" />
 		</Style>
 	</UserControl.Styles>
+	<UserControl.Resources>
+		<MenuFlyout x:Key="ModContainerMenuFlyout" x:DataType="mod:ModContainer" Placement="Bottom">
+			<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.RenameContainerCommand}"
+			    CommandParameter="{Binding}"
+			    Header="{x:Static loca:Resources.ModListView_RenameContainer}"
+			    Icon="{materialIcons:MaterialIconExt Kind=Rename}" />
+
+			<Separator IsVisible="{Binding CanForceAllowInLoadOrder}" />
+			<MenuItem Command="{Binding ToggleForceAllowInLoadOrderCommand}" IsVisible="{Binding CanForceAllowInLoadOrder}">
+				<MenuItem.Header>
+					<TextBlock Text="{Binding ForceAllowInLoadOrderLabel}" />
+				</MenuItem.Header>
+				<MenuItem.Icon>
+					<materialIcons:MaterialIcon Kind="{Binding ForceAllowInLoadOrder, Converter={StaticResource ForceAllowInLoadOrderIconConverter}}" />
+				</MenuItem.Icon>
+			</MenuItem>
+
+			<Separator />
+
+			<MenuItem Header="Delete..." Icon="{materialIcons:MaterialIconExt Kind=Delete}">
+				<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerCommand}"
+				    CommandParameter="{Binding}"
+				    Header="{x:Static loca:Resources.ModListView_DeleteContainer}"
+				    Icon="{materialIcons:MaterialIconExt Kind=FolderRemove}" />
+				<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerModsCommand}"
+				    CommandParameter="{Binding}"
+				    Header="{x:Static loca:Resources.ModListView_DeleteContainerMods}"
+				    Icon="{materialIcons:MaterialIconExt Kind=FileRemove}" />
+				<MenuItem Command="{Binding Path=DeleteSelectedModsCommand, Source={x:Static manager:AppServices.Commands}}" Header="Selected Mods..." Icon="{materialIcons:MaterialIconExt Kind=Files}" />
+			</MenuItem>
+
+			<Separator />
+			<MenuItem Command="{Binding ToggleNameDisplayCommand}" Icon="{materialIcons:MaterialIconExt Kind=Rename}">
+				<MenuItem.Header>
+					<TextBlock Text="{Binding ToggleModNameLabel}" />
+				</MenuItem.Header>
+			</MenuItem>
+		</MenuFlyout>
+	</UserControl.Resources>
 	<UserControl.ContextFlyout>
 		<MenuFlyout>
 			<MenuItem Command="{Binding AddContainerCommand}" Header="{x:Static loca:Resources.ModListView_AddContainer}" />
