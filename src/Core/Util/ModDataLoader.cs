@@ -58,6 +58,13 @@ public static partial class ModDataLoader
 	private static readonly Regex _modMetaPattern = ModMetaPattern();
 	private static readonly Regex _ModFolderPattern = ModFolderPattern();
 
+	private static readonly IFileSystemService _fs;
+
+	static ModDataLoader()
+	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
+
 	public static bool IgnoreMod([NotNullWhen(true)] string? modUUID)
 	{
 		return modUUID.IsValid() && DivinityApp.IgnoredMods.Lookup(modUUID).HasValue;
@@ -70,12 +77,12 @@ public static partial class ModDataLoader
 
 	public static bool IgnoreModByFolder([NotNullWhen(true)] string? folder)
 	{
-		return folder.IsValid() && DivinityApp.IgnoredMods.Items.Any(m => m.Folder?.Equals(Path.GetFileName(folder.TrimEnd(Path.DirectorySeparatorChar)), SCOMP) == true);
+		return folder.IsValid() && DivinityApp.IgnoredMods.Items.Any(m => m.Folder?.Equals(_fs.Path.GetFileName(folder.TrimEnd(_fs.Path.DirectorySeparatorChar)), SCOMP) == true);
 	}
 
 	public static string MakeSafeFilename(string filename, char replaceChar)
 	{
-		foreach (var c in Path.GetInvalidFileNameChars())
+		foreach (var c in _fs.Path.GetInvalidFileNameChars())
 		{
 			filename = filename.Replace(c, replaceChar);
 		}
@@ -333,14 +340,14 @@ public static partial class ModDataLoader
 		return null;
 	}
 
-	public static async Task TryLoadConfigFilesFromPath(IFileSystemService fs, string modsFolder, ModData modData, CancellationToken token)
+	public static async Task TryLoadConfigFilesFromPath(string modsFolder, ModData modData, CancellationToken token)
 	{
-		var extenderConfigPath = Path.Join(modsFolder, DivinityApp.EXTENDER_MOD_CONFIG);
-		var modManagerConfigPath = fs.Path.Join(modsFolder, ModConfig.FileName);
+		var extenderConfigPath = _fs.Path.Join(modsFolder, DivinityApp.EXTENDER_MOD_CONFIG);
+		var modManagerConfigPath = _fs.Path.Join(modsFolder, ModConfig.FileName);
 		try
 		{
 			
-			if (fs.File.Exists(extenderConfigPath))
+			if (_fs.File.Exists(extenderConfigPath))
 			{
 				var extenderConfig = await JsonUtils.DeserializeFromPathAsync<ModScriptExtenderConfig>(extenderConfigPath, token);
 
@@ -362,7 +369,7 @@ public static partial class ModDataLoader
 
 		try
 		{
-			if (fs.File.Exists(modManagerConfigPath))
+			if (_fs.File.Exists(modManagerConfigPath))
 			{
 				var modManagerConfig = await JsonUtils.DeserializeFromPathAsync<ModConfig>(modManagerConfigPath, token);
 				if (modManagerConfig != null)
@@ -384,7 +391,7 @@ public static partial class ModDataLoader
 
 		try
 		{
-			var extenderConfigPath = Path.Join(modsFolder, DivinityApp.EXTENDER_MOD_CONFIG);
+			var extenderConfigPath = _fs.Path.Join(modsFolder, DivinityApp.EXTENDER_MOD_CONFIG);
 			if (vfs.TryOpen(extenderConfigPath, out extenderConfigStream))
 			{
 				var extenderConfig = await LoadScriptExtenderConfigAsync(extenderConfigStream);
@@ -400,7 +407,7 @@ public static partial class ModDataLoader
 				}
 			}
 
-			var modManagerConfigPath = Path.Join(modsFolder, ModConfig.FileName);
+			var modManagerConfigPath = _fs.Path.Join(modsFolder, ModConfig.FileName);
 			if (vfs.TryOpen(modManagerConfigPath, out modManagerConfigStream))
 			{
 				var modManagerConfig = await JsonUtils.DeserializeFromAbstractAsync<ModConfig>(modManagerConfigStream, token);
@@ -419,7 +426,7 @@ public static partial class ModDataLoader
 
 	private static bool PakIsNotPartial(string path)
 	{
-		var baseName = Path.GetFileNameWithoutExtension(path);
+		var baseName = _fs.Path.GetFileNameWithoutExtension(path);
 		var match = _multiPartPakPatternNoExtension.Match(baseName);
 		if (match.Success)
 		{
@@ -435,7 +442,7 @@ public static partial class ModDataLoader
 
 	private static bool IsModMetaFile(PackagedFileInfo f)
 	{
-		if (Path.GetFileName(f.Name).Equals("meta.lsx", SCOMP))
+		if (_fs.Path.GetFileName(f.Name).Equals("meta.lsx", SCOMP))
 		{
 			return _modMetaPattern.IsMatch(f.Name);
 		}
@@ -467,7 +474,7 @@ public static partial class ModDataLoader
 	private static async Task<List<ModData>> InternalLoadModDataFromPakAsync(Package pak, string pakPath,
 		IDictionary<string, ModData>? builtinFolders, CancellationToken token, bool skipFileParsing = false)
 	{
-		var pakName = Path.GetFileNameWithoutExtension(pakPath);
+		var pakName = _fs.Path.GetFileNameWithoutExtension(pakPath);
 
 		builtinFolders ??= new Dictionary<string, ModData>();
 
@@ -517,7 +524,7 @@ public static partial class ModDataLoader
 					{
 						extenderConfigPath = f;
 					}
-					else if (entryFile.EndsWith(ModConfig.FileName, StringComparison.OrdinalIgnoreCase) && Path.GetDirectoryName(entryFile) == "Mods")
+					else if (entryFile.EndsWith(ModConfig.FileName, StringComparison.OrdinalIgnoreCase) && _fs.Path.GetDirectoryName(entryFile) == "Mods")
 					{
 						modManagerConfigPath = f;
 					}
@@ -531,7 +538,7 @@ public static partial class ModDataLoader
 
 						if (modFolderMatch.Success)
 						{
-							var modFolder = Path.GetFileName(modFolderMatch.Groups[2].Value.TrimEnd(Path.DirectorySeparatorChar));
+							var modFolder = _fs.Path.GetFileName(modFolderMatch.Groups[2].Value.TrimEnd(_fs.Path.DirectorySeparatorChar));
 							if (entryFile.EndsWith($"Mods/{modFolder}/{ModConfig.FileName}", StringComparison.OrdinalIgnoreCase))
 							{
 								modManagerConfigPath = f;
@@ -809,12 +816,12 @@ public static partial class ModDataLoader
 	public static async Task<List<ProfileData>> LoadProfileDataAsync(string profilePath, CancellationToken token)
 	{
 		List<ProfileData> profiles = [];
-		if (Directory.Exists(profilePath))
+		if (_fs.Directory.Exists(profilePath))
 		{
-			var profileDirectories = Directory.EnumerateDirectories(profilePath);
+			var profileDirectories = _fs.Directory.EnumerateDirectories(profilePath);
 			foreach (var folder in profileDirectories)
 			{
-				var folderName = Path.GetFileName(folder);
+				var folderName = _fs.Path.GetFileName(folder);
 				var name = folderName;
 				var displayedName = folderName;
 				var profileUUID = "";
@@ -856,10 +863,10 @@ public static partial class ModDataLoader
 					FolderName = folderName,
 					ProfileName = displayedName,
 					UUID = profileUUID,
-					FilePath = Path.GetFullPath(folder)
+					FilePath = _fs.Path.GetFullPath(folder)
 				};
 
-				var modSettingsFile = Path.Join(folder, "modsettings.lsx");
+				var modSettingsFile = _fs.Path.Join(folder, "modsettings.lsx");
 				var modSettings = await LoadModSettingsFileAsync(modSettingsFile, token);
 				profileData.ActiveMods.AddRange(modSettings.ActiveMods);
 				profiles.Add(profileData);
@@ -921,7 +928,7 @@ public static partial class ModDataLoader
 	{
 		var files = FileUtils.EnumerateFiles(path, null, (f) =>
 		{
-			var name = Path.GetFileName(f);
+			var name = _fs.Path.GetFileName(f);
 			if (name.IndexOf("profile", SCOMP) > -1 && LarianFileTypes.Any(e => name.EndsWith(e, SCOMP)))
 			{
 				return true;
@@ -959,7 +966,7 @@ public static partial class ModDataLoader
 	{
 		var files = FileUtils.EnumerateFiles(path, null, (f) =>
 		{
-			var name = Path.GetFileName(f);
+			var name = _fs.Path.GetFileName(f);
 			if (name.IndexOf("playerprofiles", SCOMP) > -1 && LarianFileTypes.Any(e => name.EndsWith(e, SCOMP)))
 			{
 				return true;
@@ -1027,8 +1034,7 @@ public static partial class ModDataLoader
 
 	public static bool ExportLoadOrderToFile(string outputFilePath, ModLoadOrder order)
 	{
-		var parentDir = Path.GetDirectoryName(outputFilePath);
-		if (!Directory.Exists(parentDir)) Directory.CreateDirectory(parentDir);
+		_fs.EnsureParentDirectoryExists(outputFilePath);
 
 		var contents = JsonSerializer.Serialize(order, JsonUtils.DefaultSerializerSettings);
 
@@ -1041,8 +1047,9 @@ public static partial class ModDataLoader
 
 	public static async Task<bool> ExportLoadOrderToFileAsync(string outputFilePath, ModLoadOrder order, CancellationToken token)
 	{
-		var parentDir = Path.GetDirectoryName(outputFilePath);
-		if (!Directory.Exists(parentDir)) Directory.CreateDirectory(parentDir);
+		_fs.EnsureParentDirectoryExists(outputFilePath);
+
+		order.ModManagerVersion = Locator.Current.GetService<IEnvironmentService>()?.AppVersion;
 
 		var contents = JsonSerializer.Serialize(order, JsonUtils.DefaultSerializerSettings);
 
@@ -1057,7 +1064,7 @@ public static partial class ModDataLoader
 	{
 		List<ModLoadOrder> loadOrders = [];
 
-		if (Directory.Exists(directory))
+		if (_fs.Directory.Exists(directory))
 		{
 			var files = FileUtils.EnumerateFiles(directory, FileUtils.RecursiveOptions, f => f.EndsWith(".json", SCOMP));
 
@@ -1088,7 +1095,7 @@ public static partial class ModDataLoader
 	{
 		List<ModLoadOrder> loadOrders = [];
 
-		if (Directory.Exists(directory))
+		if (_fs.Directory.Exists(directory))
 		{
 			var options = new EnumerationOptions()
 			{
@@ -1105,7 +1112,7 @@ public static partial class ModDataLoader
 					var fileText = await reader.ReadToEndAsync();
 
 					var order = JsonUtils.SafeDeserialize<ModLoadOrder>(fileText);
-					order.Name = Path.GetFileNameWithoutExtension(loadOrderFile);
+					order.Name = _fs.Path.GetFileNameWithoutExtension(loadOrderFile);
 					if (order != null)
 					{
 						order.FilePath = loadOrderFile.NormalizeDirectorySep();
@@ -1148,7 +1155,7 @@ public static partial class ModDataLoader
 
 	public static ModLoadOrder LoadOrderFromFile(string loadOrderFile, IEnumerable<ModData> allMods)
 	{
-		var ext = Path.GetExtension(loadOrderFile).ToLower();
+		var ext = _fs.Path.GetExtension(loadOrderFile).ToLower();
 		ModLoadOrder order = null;
 		switch (ext)
 		{
@@ -1179,7 +1186,7 @@ public static partial class ModDataLoader
 						}
 						DivinityApp.Log(string.Join("\n", order.Order.Select(x => x.UUID)));
 						var modGUIDs = allMods.Select(x => x.UUID).ToHashSet();
-						order.Name = Path.GetFileNameWithoutExtension(loadOrderFile);
+						order.Name = _fs.Path.GetFileNameWithoutExtension(loadOrderFile);
 						return order;
 					}
 				}
@@ -1194,7 +1201,7 @@ public static partial class ModDataLoader
 					if (match.Success)
 					{
 						var isOverride = line.Substring(0, 8) == "Override";
-						var pakName = Path.GetFileName(match.Groups[1].Value.Trim());
+						var pakName = _fs.Path.GetFileName(match.Groups[1].Value.Trim());
 						var mod = allMods.FirstOrDefault(x => x.PakEquals(pakName, SCOMP));
 						DivinityApp.Log($"isOverride({isOverride}) Sub test: [{line.Substring(0, 8)}] pakName({pakName}) mod({mod})");
 						if (mod != null)
@@ -1230,7 +1237,7 @@ public static partial class ModDataLoader
 						if (lineData.Length > fileIndex)
 						{
 							var isOverride = line.Substring(0, 8) == "Override";
-							var fileName = Path.GetFileName(lineData[fileIndex].Trim());
+							var fileName = _fs.Path.GetFileName(lineData[fileIndex].Trim());
 							var mod = allMods.FirstOrDefault(x => x.PakEquals(fileName, SCOMP));
 							if (mod != null)
 							{
@@ -1263,7 +1270,7 @@ public static partial class ModDataLoader
 		if (order != null)
 		{
 			order.IsDecipheredOrder = true;
-			order.Name = Path.GetFileNameWithoutExtension(loadOrderFile);
+			order.Name = _fs.Path.GetFileNameWithoutExtension(loadOrderFile);
 		}
 		return order;
 	}
@@ -1272,8 +1279,8 @@ public static partial class ModDataLoader
 	{
 		Dictionary<string, object>? settings = null;
 		//Patch 7 changes this to "Larian Studios" instead of "LarianStudios"
-		var folderDir = Path.Join(appDataLarianFolder, @"Launcher\Settings");
-		var settingsFilePath = Path.Join(folderDir, "preferences.json");
+		var folderDir = _fs.Path.Join(appDataLarianFolder, @"Launcher\Settings");
+		var settingsFilePath = _fs.Path.Join(folderDir, "preferences.json");
 		if (File.Exists(settingsFilePath))
 		{
 			settings = JsonUtils.SafeDeserializeFromPath<Dictionary<string, object>>(settingsFilePath);
@@ -1473,9 +1480,9 @@ public static partial class ModDataLoader
 					var modList = modListChildrenRoot.Children.Values.FirstOrDefault();
 					if (modList != null && modList.Count > 0)
 					{
-						var fileName = Path.GetFileNameWithoutExtension(file);
+						var fileName = _fs.Path.GetFileNameWithoutExtension(file);
 						var orderName = fileName;
-						var match = PlayerProfilePathPattern().Match(Path.GetFullPath(file));
+						var match = PlayerProfilePathPattern().Match(_fs.Path.GetFullPath(file));
 						if (match.Success)
 						{
 							orderName = $"{match.Groups[1].Value}_{fileName}";
@@ -1483,7 +1490,7 @@ public static partial class ModDataLoader
 						ModLoadOrder loadOrder = new()
 						{
 							Name = orderName,
-							FilePath = Path.Join(ordersFolder, MakeSafeFilename(Path.Join(orderName + ".json"), '_'))
+							FilePath = _fs.Path.Join(ordersFolder, MakeSafeFilename(_fs.Path.Join(orderName + ".json"), '_'))
 						};
 
 						foreach (var c in modList)
@@ -1614,9 +1621,9 @@ public static partial class ModDataLoader
 					modData.FilePath = filePath;
 					var fileTimeFile = filePath;
 
-					if (Path.Equals(filePath, modInfo.ModsPath))
+					if (filePath.Equals(modInfo.ModsPath))
 					{
-						fileTimeFile = Path.GetFullPath(modInfo.Meta, directoryPath);
+						fileTimeFile = _fs.Path.GetFullPath(modInfo.Meta, directoryPath);
 						modData.IsLooseMod = true;
 					}
 
@@ -1665,7 +1672,7 @@ public static partial class ModDataLoader
 
 		ModDirectoryLoadingResults dataDirMods = null!;
 
-		if(Directory.Exists(gameDataPath))
+		if(_fs.Directory.Exists(gameDataPath))
 		{
 			using var dataPakParser = new DirectoryPakParser(gameDataPath, FileUtils.GameDataOptions);
 			dataDirMods = await dataPakParser.ProcessAsync(detectDuplicates: true, parseLooseMetaFiles: true, token);

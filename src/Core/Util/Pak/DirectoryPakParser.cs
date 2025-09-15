@@ -118,7 +118,7 @@ public partial class DirectoryPakParser(string directoryPath, EnumerationOptions
 			}
 
 			var parentFolder = _fs.Path.GetDirectoryName(metaFilePath)!;
-			await ModDataLoader.TryLoadConfigFilesFromPath(_fs, parentFolder, mod, token);
+			await ModDataLoader.TryLoadConfigFilesFromPath(parentFolder, mod, token);
 
 			try
 			{
