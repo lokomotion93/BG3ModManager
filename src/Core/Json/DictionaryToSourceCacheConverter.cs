@@ -7,6 +7,7 @@ public interface IObjectWithId
 	string Id { get; set; }
 }
 
+//Add the TValue type to _defaultSerializerSettings.Converters in JsonUtils
 public class DictionaryToSourceCacheConverter<TValue> : JsonConverter<SourceCache<TValue, string>> where TValue : IObjectWithId
 {
 	private static readonly Type _type = typeof(SourceCache<TValue, string>);
@@ -17,40 +18,22 @@ public class DictionaryToSourceCacheConverter<TValue> : JsonConverter<SourceCach
 	{
 		if (reader.TokenType == JsonTokenType.Null) return default;
 
-		if (reader.TokenType == JsonTokenType.StartObject)
+		//Since we're writing it as a dictionary, deserialize it to one first
+		using var jsonDocument = JsonDocument.ParseValue(ref reader);
+		var dict = JsonSerializer.Deserialize<Dictionary<string, TValue>>(jsonDocument, options);
+		var cache = new SourceCache<TValue, string>(x => x.Id);
+		if(dict != null)
 		{
-			try
+			foreach (var kvp in dict)
 			{
-				reader.Read();
-				var entries = new List<TValue>();
-				while (reader.TokenType == JsonTokenType.PropertyName)
+				if (kvp.Value != null)
 				{
-					if (reader.GetString() is string key)
-					{
-						reader.Read();
-						if (reader.GetString() is string valStr && JsonSerializer.Deserialize<TValue>(valStr, options) is TValue dictValue)
-						{
-							dictValue.Id = key;
-							entries.Add(dictValue);
-						}
-					}
-					reader.Read();
+					kvp.Value.Id = kvp.Key;
+					cache.AddOrUpdate(kvp.Value);
 				}
-				var cache = new SourceCache<TValue, string>(x => x.Id);
-				foreach (var entry in entries)
-				{
-					if (entry != null) cache.AddOrUpdate(entry);
-				}
-
-				return cache;
-			}
-			catch (Exception ex)
-			{
-				throw new Exception($"Error converting dictionary", ex);
 			}
 		}
-
-		throw new Exception($"Unexpected token type ({reader.TokenType})");
+		return cache;
 	}
 
 	public override void Write(Utf8JsonWriter writer, SourceCache<TValue, string>? cache, JsonSerializerOptions options)
@@ -62,7 +45,6 @@ public class DictionaryToSourceCacheConverter<TValue> : JsonConverter<SourceCach
 		else
 		{
 			writer.WriteStartObject();
-
 			foreach (var entry in cache.Items)
 			{
 				writer.WritePropertyName(entry.Id);
