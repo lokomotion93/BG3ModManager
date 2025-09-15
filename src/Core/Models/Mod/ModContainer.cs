@@ -1,13 +1,18 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using ModManager.Json;
+
+using System.Reflection;
+
+using ModManager.Models.Mod.Container;
+
 namespace ModManager.Models.Mod;
 public class ModContainer : ReactiveObject, IModEntry
 {
 	public ModEntryType EntryType => ModEntryType.Container;
 
 	[Reactive] public string UUID { get; set; }
-	[Reactive] public string? DisplayName { get; set; }
 	[Reactive] public int Index { get; set; }
 	[Reactive] public bool IsActive { get; set; }
 	[Reactive] public bool IsHidden { get; set; }
@@ -20,6 +25,8 @@ public class ModContainer : ReactiveObject, IModEntry
 	[Reactive] public string? PointerOverColor { get; set; }
 	[Reactive] public bool IsDirty { get; set; }
 	[Reactive] public object? ContextMenu { get; set; }
+	[Reactive] public ModContainerSettings Settings { get; set; }
+	[Reactive] public bool EnableAutosaving { get; set; }
 
 	public string? Version => string.Empty;
 	public string? Author => string.Empty;
@@ -32,6 +39,7 @@ public class ModContainer : ReactiveObject, IModEntry
 	public RxCommandUnit ToggleForceAllowInLoadOrderCommand { get; }
 	public RxCommandUnit ToggleNameDisplayCommand { get; }
 
+	[ObservableAsProperty] public string? DisplayName { get; }
 	[ObservableAsProperty] public bool CanForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public bool ForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public bool DisplayFileForName { get; }
@@ -75,6 +83,38 @@ public class ModContainer : ReactiveObject, IModEntry
 	private static bool AllForceLoadedInLoadOrder(IModEntry entry) => PropertyMatches(entry, nameof(ModData.ForceAllowInLoadOrder), true);
 	private static bool AllDisplayFileForName(IModEntry entry) => PropertyMatches(entry, nameof(ModData.DisplayFileForName), true);
 
+	private static readonly string[] _settingsProperties = [.. typeof(ModContainerSettings)
+		.GetRuntimeProperties()
+		.Where(prop => Attribute.IsDefined(prop, typeof(DataMemberAttribute)))
+		.Select(prop => prop.Name)];
+
+	private static IDisposable? _autosaveDisp;
+	private IDisposable? _propertyChangeDisp;
+
+	public void ToggleAutosaving(bool b)
+	{
+		if(b)
+		{
+			_propertyChangeDisp?.Dispose();
+			_propertyChangeDisp = Settings.WhenAnyPropertyChanged(_settingsProperties).Skip(1).Throttle(TimeSpan.FromMilliseconds(50)).Subscribe(c =>
+			{
+				_autosaveDisp?.Dispose();
+				_autosaveDisp = RxApp.TaskpoolScheduler.Schedule(TimeSpan.FromMilliseconds(250), () =>
+				{
+					var settings = Locator.Current.GetService<ISettingsService>();
+					if (settings != null)
+					{
+						settings.TrySave(settings.ContainerSettings, out _);
+					}
+				});
+			});
+		}
+		else
+		{
+			_propertyChangeDisp?.Dispose();
+		}
+	}
+
 	public ModContainer(string uuid)
 	{
 		UUID = uuid;
@@ -82,6 +122,9 @@ public class ModContainer : ReactiveObject, IModEntry
 		{
 			if (!b) IsSelected = false;
 		});
+
+		Settings = new(uuid);
+		this.WhenAnyValue(x => x.Settings.DisplayName).BindTo(this, x => x.DisplayName);
 
 		var modsConn = this.Mods.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
 
@@ -107,5 +150,12 @@ public class ModContainer : ReactiveObject, IModEntry
 			var b = !DisplayFileForName;
 			SetProperty(this, nameof(ModData.DisplayFileForName), b);
 		}, hasChildren);
+
+		this.WhenAnyValue(x => x.EnableAutosaving).Subscribe(ToggleAutosaving);
+	}
+
+	public ModContainer(string id, string name) : this(id)
+	{
+		Settings.DisplayName = name;
 	}
 }

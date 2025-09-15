@@ -1,13 +1,14 @@
 ﻿using ModManager.Models.Mod.Game;
+using ModManager.Services;
 
 using System.Runtime.Serialization;
 
 namespace ModManager.Models.Mod;
 
 [DataContract]
-public class SerializedModData : IModuleShortDesc
+public class SerializedModData(string uuid) : IModuleShortDesc
 {
-	[DataMember] public string UUID { get; set; }
+	[DataMember] public string UUID { get; set; } = uuid;
 	[DataMember] public int Index { get; set; }
 	[DataMember] public string? FileName { get; set; }
 	[DataMember] public string? Folder { get; set; }
@@ -16,23 +17,17 @@ public class SerializedModData : IModuleShortDesc
 	[DataMember] public string? Author { get; set; }
 	[DataMember] public ulong PublishHandle { get; set; }
 
-	[DataMember] public LarianVersion Version { get; set; }
+	[DataMember] public LarianVersion Version { get; set; } = new LarianVersion();
 
 	[DataMember] public string? Type { get; set; }
 
 	[DataMember] public ModScriptExtenderConfig? ScriptExtenderData { get; set; }
-	[DataMember] public List<ModuleShortDesc> Dependencies { get; set; }
+	[DataMember] public List<ModuleShortDesc> Dependencies { get; set; } = [];
 
 	[DataMember] public string? MD5 { get; set; }
+	[DataMember] public Version? ModManagerVersion { get; set; }
 
 	public DateTimeOffset? LastModified { get; set; }
-
-	public SerializedModData(string uuid)
-	{
-		UUID = uuid;
-		Dependencies = [];
-		Version = new LarianVersion();
-	}
 
 	[JsonConstructor]
 	public SerializedModData() : this(string.Empty)
@@ -42,6 +37,7 @@ public class SerializedModData : IModuleShortDesc
 
 	public static SerializedModData FromMod(ModData mod)
 	{
+		var version = Locator.Current.GetService<IEnvironmentService>()?.AppVersion;
 		var result = new SerializedModData(mod.UUID)
 		{
 			Author = mod.AuthorDisplayName,
@@ -55,7 +51,8 @@ public class SerializedModData : IModuleShortDesc
 			ScriptExtenderData = mod.ScriptExtenderData,
 			UUID = mod.UUID,
 			MD5 = mod.MD5,
-			LastModified = mod.LastModified
+			LastModified = mod.LastModified,
+			ModManagerVersion = version
 		};
 		result.Dependencies.AddRange(mod.Dependencies.Items);
 		return result;

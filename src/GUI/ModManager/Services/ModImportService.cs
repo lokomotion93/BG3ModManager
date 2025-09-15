@@ -56,6 +56,11 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 	private static readonly ReaderOptions _importReaderOptions = new() { ArchiveEncoding = _archiveEncoding };
 	private static readonly WriterOptions _exportWriterOptions = new(CompressionType.Deflate) { ArchiveEncoding = _archiveEncoding };
 
+	private static readonly JsonSerializerOptions _jsonOptIgnoreNone = new(JsonUtils.DefaultSerializerSettings)
+	{
+		DefaultIgnoreCondition = JsonIgnoreCondition.Never
+	};
+
 	public static bool IsImportableFile(string ext)
 	{
 		return ext == ".pak" || _archiveFormats.Contains(ext) || _compressedFormats.Contains(ext);
@@ -518,7 +523,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				TotalFiles = dialogResult.Total
 			};
 
-			ViewModel.Progress.Start(async token =>
+			await ViewModel.Progress.Start(async token =>
 			{
 				await FetchNexusModsIdFromFilesAsync(dialogResult.Files, result, token);
 
@@ -632,13 +637,8 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				using var stream = _fs.File.OpenWrite(outputPath);
 				using var zipWriter = WriterFactory.Open(stream, ArchiveType.Zip, _exportWriterOptions);
 
-				var serializeOpts = new JsonSerializerOptions(JsonUtils.DefaultSerializerSettings)
-				{
-					DefaultIgnoreCondition = JsonIgnoreCondition.Never
-				};
-
 				var orderFileName = ModDataLoader.MakeSafeFilename(_fs.Path.Join(selectedModOrder.Name + ".json"), '_');
-				var contents = JsonSerializer.Serialize(selectedModOrder, serializeOpts);
+				var contents = JsonSerializer.Serialize(selectedModOrder, _jsonOptIgnoreNone);
 
 				using var ms = new MemoryStream();
 				using var swriter = new StreamWriter(ms);
@@ -726,12 +726,10 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		var outputText = "";
 		if (fileType.Equals(".json", StringComparison.OrdinalIgnoreCase))
 		{
-			var serializeOpts = new JsonSerializerOptions(JsonUtils.DefaultSerializerSettings)
-			{
-				DefaultIgnoreCondition = JsonIgnoreCondition.Never
-			};
-			var serializedMods = exportMods.Where(x => x.EntryType == ModEntryType.Mod).Select(x => SerializedModData.FromMod((ModData)x)).ToList();
-			outputText = JsonSerializer.Serialize(serializedMods, serializeOpts);
+			var serializedMods = exportMods.Where(x => x.EntryType == ModEntryType.Mod)
+				.Select(x => SerializedModData.FromMod((ModData)x))
+				.ToList();
+			outputText = JsonSerializer.Serialize(serializedMods, _jsonOptIgnoreNone);
 		}
 		else if (fileType.Equals(".tsv", StringComparison.OrdinalIgnoreCase))
 		{

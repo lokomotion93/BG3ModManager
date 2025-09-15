@@ -2,6 +2,7 @@
 
 using ModManager.Json;
 using ModManager.Models.Mod;
+using ModManager.Models.Mod.Container;
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -212,6 +213,7 @@ public static class JsonUtils
 	{
 		_defaultSerializerSettings.Converters.Add(new JsonStringEnumConverter());
 		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModConfig>());
+		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModContainerSettings>());
 		_defaultSerializerSettings.Converters.Add(new JsonArrayToSourceListConverter<string>());
 	}
 

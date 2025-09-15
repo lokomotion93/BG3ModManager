@@ -16,6 +16,8 @@ public class ScriptExtenderUpdateConfig : ReactiveObject, ISerializableSettings
 	[Reactive] public bool DevOptionsEnabled { get; set; }
 	[Reactive] public bool UpdaterIsAvailable { get; set; }
 	[Reactive] public int UpdaterVersion { get; set; }
+	public Version? ModManagerVersion { get; set; }
+
 
 	[SettingsEntry("Update Channel", "Use a specific update channel", bindTo: nameof(UpdateChannelIndex))]
 	[DataMember, Reactive]

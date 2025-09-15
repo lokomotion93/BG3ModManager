@@ -56,10 +56,7 @@ namespace ModManager
 
 			for(var i = 0; i < 4; i++)
 			{
-				var container = new ModContainer(Guid.NewGuid().ToString())
-				{
-					DisplayName = $"Container{i}"
-				};
+				var container = new ModContainer(Guid.NewGuid().ToString(), $"Container{i}");
 				containers.Add(container);
 				TestMods.Add(container);
 			}

@@ -604,7 +604,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				}
 				else
 				{
-					result = await ModDataLoader.ExportLoadOrderToFileAsync(outputPath, SelectedModOrder, token);
+					result = await ModDataLoader.ExportLoadOrderToFileAsync(outputPath!, SelectedModOrder, token);
 				}
 			}
 			catch (Exception ex)

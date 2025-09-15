@@ -30,6 +30,7 @@ public static class ModelExtensions
 		AddTypeProperties(typeof(UserModConfig));
 		AddTypeProperties(typeof(ScriptExtenderSettings));
 		AddTypeProperties(typeof(ScriptExtenderUpdateConfig));
+		AddTypeProperties(typeof(ModManagerContainerSettings));
 	}
 
 	private static PropertyInfo[]? GetDataMemberProperties(Type type)
@@ -97,6 +98,7 @@ public static class ModelExtensions
 				if(directory.IsExistingDirectory())
 				{
 					var filePath = Path.Join(directory, data.FileName);
+					data.ModManagerVersion = Locator.Current.GetService<IEnvironmentService>()?.AppVersion;
 					var contents = JsonSerializer.Serialize(data, data.GetType(), JsonUtils.DefaultSerializerSettings);
 					if(!data.SkipEmpty)
 					{

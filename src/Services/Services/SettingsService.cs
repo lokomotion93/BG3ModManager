@@ -26,6 +26,7 @@ public class SettingsService : ReactiveObject, ISettingsService
 	public UserModConfig ModConfig { get; init; }
 	public ScriptExtenderSettings ExtenderSettings { get; init; }
 	public ScriptExtenderUpdateConfig ExtenderUpdaterSettings { get; init; }
+	public ModManagerContainerSettings ContainerSettings { get; init; }
 
 	private readonly List<ISerializableSettings> _loadSettings;
 	private readonly List<ISerializableSettings> _saveSettings;
@@ -220,14 +221,15 @@ public class SettingsService : ReactiveObject, ISettingsService
 	{
 		_fs = fs;
 
-		AppSettings = new AppSettings();
-		ManagerSettings = new ModManagerSettings();
-		ModConfig = new UserModConfig();
-		ExtenderSettings = new ScriptExtenderSettings();
-		ExtenderUpdaterSettings = new ScriptExtenderUpdateConfig();
+		AppSettings = new();
+		ManagerSettings = new();
+		ModConfig = new();
+		ExtenderSettings = new();
+		ExtenderUpdaterSettings = new();
+		ContainerSettings = new();
 
-		_loadSettings = [ManagerSettings, ModConfig, ExtenderSettings, ExtenderUpdaterSettings];
-		_saveSettings = [ManagerSettings, ModConfig, ExtenderSettings, ExtenderUpdaterSettings];
+		_loadSettings = [ManagerSettings, ModConfig, ExtenderSettings, ExtenderUpdaterSettings, ContainerSettings];
+		_saveSettings = [ManagerSettings, ModConfig, ExtenderSettings, ExtenderUpdaterSettings, ContainerSettings];
 
 		var whenDebugMode = ManagerSettings.WhenAnyValue(x => x.DebugModeEnabled);
 		var whenDevMode = ExtenderSettings.WhenAnyValue(x => x.DeveloperMode);

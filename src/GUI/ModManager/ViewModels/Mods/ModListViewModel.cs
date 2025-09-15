@@ -161,10 +161,14 @@ public class ModListViewModel : ReactiveObject
 			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Add Container", "Enter container name...", InteractionMessageBoxType.Input, "Container1"));
 			if(result.Result)
 			{
-				_mods.Add(new ModContainer(Guid.NewGuid().ToString()) {
-					DisplayName = result.Input ?? string.Empty,
-					IsActive = IsActiveList
-				});
+				var container = new ModContainer(Guid.NewGuid().ToString())
+				{
+					IsActive = IsActiveList,
+					EnableAutosaving = true
+				};
+				container.Settings.DisplayName = result.Input ?? string.Empty;
+				AppServices.Settings.ContainerSettings.Containers.AddOrUpdate(container.Settings);
+				_mods.Add(container);
 			}
 		});
 
@@ -172,7 +176,7 @@ public class ModListViewModel : ReactiveObject
 			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Rename Container", "Enter container name...", InteractionMessageBoxType.Input, modContainer.DisplayName));
 			if (result.Result)
 			{
-				modContainer.DisplayName = result.Input ?? string.Empty;
+				modContainer.Settings.DisplayName = result.Input ?? string.Empty;
 			}
 		});
 

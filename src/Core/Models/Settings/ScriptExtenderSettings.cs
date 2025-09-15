@@ -17,6 +17,8 @@ public class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
 	[Reactive] public bool ExtenderUpdaterIsAvailable { get; set; }
 	[Reactive] public string? ExtenderVersion { get; set; }
 	[Reactive] public int ExtenderMajorVersion { get; set; }
+	public Version? ModManagerVersion { get; set; }
+
 
 	[SettingsEntry("Export Default Values", "Export all values, even if it matches a default extender value")]
 	[DataMember, Reactive]

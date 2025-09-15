@@ -1,4 +1,5 @@
-﻿using ModManager.Models.Mod.Game;
+﻿using ModManager.Models.Mod.Container;
+using ModManager.Models.Mod.Game;
 
 using System.Runtime.Serialization;
 
@@ -21,8 +22,9 @@ public class ModLoadOrder : ReactiveObject
 
 	[ObservableAsProperty] public string? LastModified { get; }
 
-	[DataMember]
-	public List<ModuleShortDesc> Order { get; set; } = [];
+	[DataMember] public List<ModuleShortDesc> Order { get; set; } = [];
+	[DataMember] public List<ModContainerOrderSettings> Containers { get; set; } = [];
+	[DataMember] public Version? ModManagerVersion { get; set; }
 
 	public void Add(IModEntry mod, bool force = false)
 	{
