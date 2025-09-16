@@ -1564,30 +1564,12 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 		modManagerService.ForceLoadedMods.ToObservableChangeSet().Transform(x => x.ToModInterface()).Bind(out _overrideMods).Subscribe();
 
-		ObservableCollectionExtended<IModEntry> readonlyActiveMods = [];
-		ActiveMods.ToObservableChangeSet()
-			.AutoRefresh(x => x.IsHidden)
-			.Filter(x => !x.IsHidden)
-			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyActiveMods).Subscribe();
-
-		ObservableCollectionExtended<IModEntry> readonlyOverrideMods = [];
-		OverrideMods.ToObservableChangeSet()
-			.AutoRefresh(x => x.IsHidden)
-			.Filter(x => !x.IsHidden)
-			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyOverrideMods).Subscribe();
-
-		ObservableCollectionExtended<IModEntry> readonlyInactiveMods = [];
-		InactiveMods.ToObservableChangeSet()
-			.AutoRefresh(x => x.IsHidden)
-			.Filter(x => !x.IsHidden)
-			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyInactiveMods).Subscribe();
-
 		//Pass the connection to the original collections, so the view can observe the total count
 		var activeModsConnection = ActiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var overrideModsConnection = OverrideMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var inactiveModsConnection = InactiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
-		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyActiveMods)
+		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
 		{
 			Columns =
 			{
@@ -1601,12 +1583,12 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
 			},
-		}, ActiveMods, readonlyActiveMods, activeModsConnection, "Active")
+		}, ActiveMods, ActiveMods, activeModsConnection, "Active")
 		{
 			IsActiveList = true
 		};
 
-		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyOverrideMods)
+		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(OverrideMods)
 		{
 			Columns =
 			{
@@ -1617,9 +1599,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
 			}
-		}, OverrideMods, readonlyOverrideMods, overrideModsConnection, "Overrides");
+		}, OverrideMods, OverrideMods, overrideModsConnection, "Overrides");
 
-		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyInactiveMods)
+		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(InactiveMods)
 		{
 			Columns =
 			{
@@ -1630,7 +1612,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
 			}
-		}, InactiveMods, readonlyInactiveMods, inactiveModsConnection, "Inactive");
+		}, InactiveMods, InactiveMods, inactiveModsConnection, "Inactive");
 
 		CanSaveOrder = true;
 
