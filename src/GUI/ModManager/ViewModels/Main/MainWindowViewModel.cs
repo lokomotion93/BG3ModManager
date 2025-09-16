@@ -7,6 +7,7 @@ using ModManager.Extensions;
 using ModManager.Models;
 using ModManager.Models.App;
 using ModManager.Models.Mod;
+using ModManager.Models.Mod.Order;
 using ModManager.Models.NexusMods;
 using ModManager.Models.Settings;
 using ModManager.Models.Updates;
@@ -1148,7 +1149,7 @@ Directory the zip will be extracted to:
 		await ExportLoadOrderToArchiveAsAsync(ViewModelLocator.ModOrder.SelectedProfile, ViewModelLocator.ModOrder.SelectedModOrder);
 	}
 
-	public async Task ExportLoadOrderToArchiveAsAsync(ProfileData? profile = null, ModLoadOrder? order = null)
+	public async Task ExportLoadOrderToArchiveAsAsync(ProfileData? profile = null, ModOrder? order = null)
 	{
 		if (profile != null && order != null)
 		{

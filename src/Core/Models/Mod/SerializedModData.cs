@@ -17,7 +17,7 @@ public class SerializedModData(string uuid) : IModuleShortDesc
 	[DataMember] public string? Author { get; set; }
 	[DataMember] public ulong PublishHandle { get; set; }
 
-	[DataMember] public LarianVersion Version { get; set; } = new LarianVersion();
+	[DataMember] public LarianVersion Version { get; set; } = new();
 
 	[DataMember] public string? Type { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using ModManager.Models.App;
 using ModManager.Models.Mod;
+using ModManager.Models.Mod.Order;
 using ModManager.Models.NexusMods;
 
 using SharpCompress.Archives;
@@ -154,7 +155,7 @@ public static class ImportUtils
 			{
 				if(entry.Text.IsValid())
 				{
-					var order = JsonUtils.SafeDeserialize<ModLoadOrder>(entry.Text);
+					var order = JsonUtils.SafeDeserialize<ModOrder>(entry.Text);
 					if (order != null)
 					{
 						options.Result.Orders.Add(order);
@@ -288,12 +289,15 @@ public static class ImportUtils
 			{
 				foreach (var entry in options.ImportedJsonFiles)
 				{
-					var order = JsonUtils.SafeDeserialize<ModLoadOrder>(entry.Text);
-					if (order != null)
+					if (entry.Text.IsValid())
 					{
-						options.Result.Orders.Add(order);
-						order.Name = entry.FileName;
-						DivinityApp.Log($"Imported mod order from archive: {string.Join(@"\n\t", order.Order.Select(x => x.Name))}");
+						var order = JsonUtils.SafeDeserialize<ModOrder>(entry.Text);
+						if (order != null)
+						{
+							options.Result.Orders.Add(order);
+							order.Name = entry.FileName;
+							DivinityApp.Log($"Imported mod order from archive: {string.Join(@"\n\t", order.Order.Select(x => x.Name))}");
+						}
 					}
 				}
 			}

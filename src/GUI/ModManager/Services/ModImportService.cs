@@ -3,6 +3,7 @@ using ModManager.Models;
 using ModManager.Models.App;
 using ModManager.Models.Mod;
 using ModManager.Models.Mod.Game;
+using ModManager.Models.Mod.Order;
 using ModManager.Models.NexusMods;
 using ModManager.Models.Settings;
 using ModManager.ModUpdater.Cache;
@@ -604,7 +605,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		return task;
 	}
 
-	public async Task<bool> ExportLoadOrderToArchiveAsync(ProfileData selectedProfile, ModLoadOrder selectedModOrder, string outputPath, CancellationToken token)
+	public async Task<bool> ExportLoadOrderToArchiveAsync(ProfileData selectedProfile, ModOrder selectedModOrder, string outputPath, CancellationToken token)
 	{
 		var success = false;
 		if (selectedProfile != null && selectedModOrder != null)
@@ -626,7 +627,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 			var modManager = AppServices.Mods;
 
-			var modPaks = new List<ModData>(modManager.AllMods.Where(x => selectedModOrder.Order.Any(o => o.UUID == x.UUID)));
+			var modPaks = new List<ModData>(modManager.AllMods.Where(x => selectedModOrder.Order.Any(o => o.Id == x.UUID)));
 			modPaks.AddRange(modManager.ForceLoadedMods.Where(x => !x.IsForceLoadedMergedMod));
 
 			var incrementProgress = 100d / modPaks.Count;
@@ -729,7 +730,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 			var serializedMods = exportMods.Where(x => x.EntryType == ModEntryType.Mod)
 				.Select(x => SerializedModData.FromMod((ModData)x))
 				.ToList();
-			outputText = JsonSerializer.Serialize(serializedMods, _jsonOptIgnoreNone);
+			outputText = JsonSerializer.Serialize(serializedMods, JsonUtils.DefaultSerializerSettings);
 		}
 		else if (fileType.Equals(".tsv", StringComparison.OrdinalIgnoreCase))
 		{

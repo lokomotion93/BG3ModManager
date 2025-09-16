@@ -8,6 +8,7 @@ using ModManager.Controls.TreeDataGrid;
 using ModManager.Models;
 using ModManager.Models.Mod;
 using ModManager.Models.Mod.Game;
+using ModManager.Models.Mod.Order;
 using ModManager.Models.Settings;
 using ModManager.Services;
 using ModManager.Util;
@@ -65,8 +66,8 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	public ModListViewModel OverrideModsView { get; }
 	public ModListViewModel InactiveModsView { get; }
 
-	public ObservableCollectionExtended<ModLoadOrder> ModOrderList { get; }
-	public List<ModLoadOrder> ExternalModOrders { get; }
+	public ObservableCollectionExtended<ModOrder> ModOrderList { get; }
+	public List<ModOrder> ExternalModOrders { get; }
 
 	[ObservableAsProperty] public ObservableCollectionExtended<IModEntry>? FocusedList { get; }
 
@@ -82,7 +83,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	[Reactive] public int SelectedAdventureModIndex { get; set; }
 
 	[Reactive] public ProfileData? SelectedProfile { get; set; }
-	[Reactive] public ModLoadOrder? SelectedModOrder { get; set; }
+	[Reactive] public ModOrder? SelectedModOrder { get; set; }
 	[Reactive] public ModData? SelectedAdventureMod { get; set; }
 
 	[ObservableAsProperty] public string? SelectedModOrderName { get; }
@@ -112,9 +113,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	[ObservableAsProperty] public int TotalActiveMods { get; }
 	[ObservableAsProperty] public int TotalInactiveMods { get; }
 
-	public ReactiveCommand<ModLoadOrder, Unit> DeleteOrderCommand { get; }
+	public ReactiveCommand<ModOrder, Unit> DeleteOrderCommand { get; }
 	public RxCommandUnit CopyOrderToClipboardCommand { get; }
-	public ReactiveCommand<ModLoadOrder, Unit> OrderJustLoadedCommand { get; set; }
+	public ReactiveCommand<ModOrder, Unit> OrderJustLoadedCommand { get; set; }
 
 	private static string GetLaunchGameTooltip(ValueTuple<string?, bool, bool, bool> x)
 	{
@@ -239,7 +240,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 		var modManager = _manager;
 
-		List<ModuleShortDesc>? lastActiveOrder = null;
+		List<IModOrderEntry>? lastActiveOrder = null;
 		var lastOrderName = "";
 		if (SelectedModOrder != null)
 		{
@@ -333,10 +334,10 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			{
 				if (!lastAdventureMod.IsValid())
 				{
-					var activeAdventureMod = SelectedModOrder?.Order.FirstOrDefault(x => modManager.GetModType(x.UUID) == "Adventure");
+					var activeAdventureMod = SelectedModOrder?.Order.FirstOrDefault(x => modManager.GetModType(x.Id) == "Adventure");
 					if (activeAdventureMod != null)
 					{
-						lastAdventureMod = activeAdventureMod.UUID;
+						lastAdventureMod = activeAdventureMod.Id;
 					}
 				}
 
@@ -414,7 +415,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				}
 
 				if (Profiles.ElementAtOrDefault(SelectedProfileIndex) is ProfileData profile) SelectedProfile = profile;
-				if (ModOrderList.ElementAtOrDefault(SelectedModOrderIndex) is ModLoadOrder order) SelectedModOrder = order;
+				if (ModOrderList.ElementAtOrDefault(SelectedModOrderIndex) is ModOrder order) SelectedModOrder = order;
 				if (AdventureMods.ElementAtOrDefault(SelectedAdventureModIndex) is ModData adventureMod) SelectedAdventureMod = adventureMod;
 
 				/*if (lastActiveOrder != null && lastActiveOrder.Count > 0)
@@ -436,127 +437,141 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		return new ModuleShortDesc(uuid);
 	}
 
-	private void DisplayMissingMods(ModLoadOrder? order = null)
+	private static void CheckContainerMods(ModOrderContainer container)
+	{
+
+	}
+
+	private void DisplayMissingMods(ModOrder? order = null)
 	{
 		var displayExtenderModWarning = false;
 		var checkMissingMods = !Settings.DisableMissingModWarnings;
 
 		order ??= SelectedModOrder;
-		if (order != null && checkMissingMods)
+
+		if(order != null)
 		{
-			var missingResults = new MissingModsResults();
+			var orderedEntries = order.GetFlattenedEntries();
 
-			for (var i = 0; i < order.Order.Count; i++)
+			if (checkMissingMods)
 			{
-				var entry = order.Order[i];
-				if (_manager.TryGetMod(entry.UUID, out var mod))
-				{
-					if (mod.Dependencies.Count > 0)
-					{
-						foreach (var dependency in mod.Dependencies.Items)
-						{
-							if (dependency == null) continue;
+				var missingResults = new MissingModsResults();
 
-							if (dependency.UUID.IsValid() && !ModDataLoader.IgnoreMod(dependency.UUID) && !_manager.ModExists(dependency.UUID))
+				for (var i = 0; i < orderedEntries.Count; i++)
+				{
+					var entry = orderedEntries[i];
+					if (entry.Type == ModEntryType.Mod)
+					{
+						if (_manager.TryGetMod(entry.Id, out var mod))
+						{
+							if (mod.Dependencies.Count > 0)
 							{
-								missingResults.AddDependency(dependency, mod.UUID);
+								foreach (var dependency in mod.Dependencies.Items)
+								{
+									if (dependency == null) continue;
+
+									if (dependency.UUID.IsValid() && !ModDataLoader.IgnoreMod(dependency.UUID) && !_manager.ModExists(dependency.UUID))
+									{
+										missingResults.AddDependency(dependency, mod.UUID);
+									}
+								}
 							}
+						}
+						else if (!ModDataLoader.IgnoreMod(entry.Id))
+						{
+							missingResults.AddMissing(new ModuleShortDesc(entry.Id) { Name = entry.Name }, i);
 						}
 					}
 				}
-				else if (!ModDataLoader.IgnoreMod(entry.UUID))
+
+				if (missingResults.TotalMissing > 0)
 				{
-					missingResults.AddMissing(entry, i);
+					List<string> messages = [];
+
+					var missingMessage = missingResults.GetMissingMessage();
+					var missingDependencies = missingResults.GetDependenciesMessage();
+
+					if (missingMessage.IsValid())
+					{
+						messages.Add(missingMessage);
+					}
+
+					if (missingDependencies.IsValid())
+					{
+						messages.Add($"Missing Dependencies:\n{missingDependencies}");
+					}
+
+					var finalMessage = string.Join(Environment.NewLine, messages);
+
+					AppServices.Interactions.ShowMessageBox.Handle(new(
+					"Missing Mods in Load Order",
+					finalMessage,
+					InteractionMessageBoxType.Warning))
+					.Subscribe();
 				}
-			}
-
-			if (missingResults.TotalMissing > 0)
-			{
-				List<string> messages = [];
-
-				var missingMessage = missingResults.GetMissingMessage();
-				var missingDependencies = missingResults.GetDependenciesMessage();
-
-				if (missingMessage.IsValid())
+				else
 				{
-					messages.Add(missingMessage);
+					displayExtenderModWarning = true;
 				}
-
-				if (missingDependencies.IsValid())
-				{
-					messages.Add($"Missing Dependencies:\n{missingDependencies}");
-				}
-
-				var finalMessage = string.Join(Environment.NewLine, messages);
-
-				AppServices.Interactions.ShowMessageBox.Handle(new(
-				"Missing Mods in Load Order",
-				finalMessage,
-				InteractionMessageBoxType.Warning))
-				.Subscribe();
 			}
 			else
 			{
 				displayExtenderModWarning = true;
 			}
-		}
-		else
-		{
-			displayExtenderModWarning = true;
-		}
 
-		if (order != null && checkMissingMods && displayExtenderModWarning && AppSettings.Features.ScriptExtender)
-		{
-			var missingResults = new MissingModsResults();
-
-			//DivinityApp.LogMessage($"Mod Order: {string.Join("\n", order.Order.Select(x => x.Name))}");
-			DivinityApp.Log("Checking mods for extender requirements.");
-			for (int i = 0; i < order.Order.Count; i++)
+			if (checkMissingMods && displayExtenderModWarning && AppSettings.Features.ScriptExtender)
 			{
-				var entry = order.Order[i];
-				if (_manager.TryGetMod(entry.UUID, out var mod))
-				{
-					if (mod.ExtenderIcon == ScriptExtenderIconType.Missing)
-					{
-						DivinityApp.Log($"{mod.Name} | ExtenderModStatus: {mod.ExtenderModStatus}");
-						missingResults.AddExtenderRequirement(mod);
+				var missingResults = new MissingModsResults();
 
-						if (mod.Dependencies.Count > 0)
+				//DivinityApp.LogMessage($"Mod Order: {string.Join("\n", order.Order.Select(x => x.Name))}");
+				DivinityApp.Log("Checking mods for extender requirements.");
+				for (int i = 0; i < orderedEntries.Count; i++)
+				{
+					var entry = orderedEntries[i];
+					if (entry.Type == ModEntryType.Mod && _manager.TryGetMod(entry.Id, out var mod))
+					{
+						if (mod.ExtenderIcon == ScriptExtenderIconType.Missing)
 						{
-							foreach (var dependency in mod.Dependencies.Items)
+							DivinityApp.Log($"{mod.Name} | ExtenderModStatus: {mod.ExtenderModStatus}");
+							missingResults.AddExtenderRequirement(mod);
+
+							if (mod.Dependencies.Count > 0)
 							{
-								if (_manager.TryGetMod(dependency.UUID, out var dependencyMod))
+								foreach (var dependency in mod.Dependencies.Items)
 								{
-									// Dependencies not in the order that require the extender
-									if (mod.ExtenderIcon == ScriptExtenderIconType.Missing)
+									if (_manager.TryGetMod(dependency.UUID, out var dependencyMod))
 									{
-										DivinityApp.Log($"{mod.Name} | ExtenderModStatus: {mod.ExtenderModStatus}");
-										missingResults.AddExtenderRequirement(dependencyMod, [mod.Name]);
+										// Dependencies not in the order that require the extender
+										if (mod.ExtenderIcon == ScriptExtenderIconType.Missing)
+										{
+											DivinityApp.Log($"{mod.Name} | ExtenderModStatus: {mod.ExtenderModStatus}");
+											missingResults.AddExtenderRequirement(dependencyMod, [mod.Name]);
+										}
 									}
 								}
 							}
 						}
 					}
 				}
-			}
 
-			if (missingResults.ExtenderRequired.Count > 0)
-			{
-				var finalMessage = "The following mods require the Script Extender. Functionality may be limited without it.\n";
-				finalMessage += missingResults.GetExtenderRequiredMessage();
+				if (missingResults.ExtenderRequired.Count > 0)
+				{
+					var finalMessage = "The following mods require the Script Extender. Functionality may be limited without it.\n";
+					finalMessage += missingResults.GetExtenderRequiredMessage();
 
-				AppServices.Interactions.ShowMessageBox.Handle(new(
-				"Mods Require the Script Extender",
-				finalMessage,
-				InteractionMessageBoxType.Error))
-				.Subscribe();
+					AppServices.Interactions.ShowMessageBox.Handle(new(
+					"Mods Require the Script Extender",
+					finalMessage,
+					InteractionMessageBoxType.Error))
+					.Subscribe();
+				}
 			}
 		}
 	}
 
 	#region Load Orders
 
-	private async Task<List<ModLoadOrder>> LoadExternalLoadOrdersAsync()
+	private async Task<List<ModOrder>> LoadExternalLoadOrdersAsync()
 	{
 		try
 		{
@@ -677,9 +692,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			outputPath = result.File!;
 			modOrderName = _fs.Path.GetFileNameWithoutExtension(outputPath)!;
 			// Save mods that aren't missing
-			var tempOrder = new ModLoadOrder { Name = modOrderName };
-			tempOrder.Order.AddRange(SelectedModOrder.Order.Where(x => modManager.ModExists(x.UUID)));
-			if (ModDataLoader.ExportLoadOrderToFile(outputPath, tempOrder))
+			var tempOrder = SelectedModOrder.Clone();
+			tempOrder.Name = modOrderName;
+			if (ModDataLoader.ExportLoadOrderToFile(outputPath, SelectedModOrder))
 			{
 				AppServices.Commands.ShowAlert($"Saved mod load order to '{outputPath}'", AlertType.Success, 10);
 				var updatedOrder = false;
@@ -780,12 +795,12 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 					//Update "Current" order
 					if (!SelectedModOrder.IsModSettings)
 					{
-						this.ModOrderList.First(x => x.IsModSettings)?.SetOrder(SelectedModOrder.Order);
+						ModOrderList.First(x => x.IsModSettings)?.SetOrder(SelectedModOrder.Order);
 					}
 
 					List<string> orderList = [];
 					if (SelectedAdventureMod != null) orderList.Add(SelectedAdventureMod.UUID);
-					orderList.AddRange(SelectedModOrder.Order.Select(x => x.UUID));
+					orderList.AddRange(SelectedModOrder.Order.Select(x => x.Id));
 
 					SelectedProfile.ActiveMods.Clear();
 					SelectedProfile.ActiveMods.AddRange(orderList.Select(x => ModuleShortDescFromUUID(x)));
@@ -824,7 +839,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 			List<MissingModData> missingMods = [];
 
-			ModLoadOrder currentOrder = new ModLoadOrder() { Name = "Current", FilePath = profile.ModSettingsFile, IsModSettings = true };
+			ModOrder currentOrder = new ModOrder() { Name = "Current", FilePath = profile.ModSettingsFile, IsModSettings = true };
 
 			var modManager = _manager;
 
@@ -872,7 +887,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 					try
 					{
 						SelectedModOrderIndex = selectIndex;
-						if (ModOrderList.ElementAtOrDefault(SelectedModOrderIndex) is ModLoadOrder order) SelectedModOrder = order;
+						if (ModOrderList.ElementAtOrDefault(SelectedModOrderIndex) is ModOrder order) SelectedModOrder = order;
 
 						if(SelectedModOrder != null)
 						{
@@ -889,7 +904,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		}
 	}
 
-	private async Task DeleteOrder(ModLoadOrder order)
+	private async Task DeleteOrder(ModOrder order)
 	{
 		var data = new ShowMessageBoxRequest("Confirm Order Deletion", 
 			$"Delete load order '{order.Name}'? This cannot be undone.",
@@ -997,7 +1012,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		if (SelectedModOrder != null)
 		{
 			SelectedModOrder.Order.Clear();
-			SelectedModOrder.AddRange(ActiveMods.Where(x => x.EntryType == ModEntryType.Mod), true);
+			SelectedModOrder.AddRange(ActiveMods, true);
 		}
 	}
 
@@ -1015,7 +1030,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 	public void RemoveActiveMod(IModEntry mod)
 	{
-		SelectedModOrder?.Remove(mod);
+		SelectedModOrder?.Remove(mod.UUID);
 		ActiveMods.Remove(mod);
 		mod.IsActive = false;
 		if (mod.EntryType == ModEntryType.Mod && mod is ModEntry modEntry && modEntry.Data != null && (modEntry.Data.IsForceLoadedMergedMod || !modEntry.Data.IsForceLoaded))
@@ -1095,7 +1110,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	public void ClearMissingMods()
 	{
 		var modManager = _manager;
-		var totalRemoved = SelectedModOrder != null ? SelectedModOrder.Order.RemoveAll(x => !modManager.ModExists(x.UUID)) : 0;
+		var totalRemoved = SelectedModOrder != null ? SelectedModOrder.Order.RemoveAll(x => !modManager.ModExists(x.Id)) : 0;
 
 		if (totalRemoved > 0)
 		{
@@ -1109,7 +1124,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 		if (removeFromLoadOrder)
 		{
-			SelectedModOrder.Order.RemoveAll(x => deletedMods.Contains(x.UUID));
+			SelectedModOrder.Order.RemoveAll(x => deletedMods.Contains(x.Id));
 			SelectedProfile.ActiveMods.RemoveAll(x => deletedMods.Contains(x.UUID));
 		}
 
@@ -1145,26 +1160,13 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		}
 	}
 
-	private int SortModOrder(ModuleShortDesc a, ModuleShortDesc b)
+	private int SortModOrder(IModOrderEntry a, IModOrderEntry b)
 	{
-		var modManager = _manager;
-
-		if (a != null && b != null)
+		if (a != null && b != null && SelectedModOrder != null)
 		{
-			modManager.TryGetMod(a.UUID, out var moda);
-			modManager.TryGetMod(b.UUID, out var modb);
-			if (moda != null && modb != null)
-			{
-				return moda.Index.CompareTo(modb.Index);
-			}
-			else if (moda != null)
-			{
-				return 1;
-			}
-			else if (modb != null)
-			{
-				return -1;
-			}
+			var indexA = SelectedModOrder.GetIndex(a.Id);
+			var indexB = SelectedModOrder.GetIndex(b.Id);
+			return indexA.CompareTo(indexB);
 		}
 		else if (a != null)
 		{
@@ -1177,11 +1179,11 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		return 0;
 	}
 
-	public void AddNewModOrder(ModLoadOrder? newOrder = null)
+	public void AddNewModOrder(ModOrder? newOrder = null)
 	{
 		if (newOrder == null)
 		{
-			newOrder = new ModLoadOrder()
+			newOrder = new ModOrder()
 			{
 				Name = $"New{ExternalModOrders.Count + 1}"
 			};
@@ -1201,7 +1203,29 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 	public bool LoadModOrder() => LoadModOrder(SelectedModOrder);
 
-	public bool LoadModOrder(ModLoadOrder order, List<MissingModData>? missingModsFromProfileOrder = null)
+	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container)
+	{
+		//TODO fetch from some central container settings location
+		var uiContainer = new ModContainer(container.Id, container.Name ?? string.Empty);
+		targetList.Add(uiContainer);
+
+		foreach (var entry in container.Children.Items)
+		{
+			if(entry.Type == ModEntryType.Mod)
+			{
+				if(_manager.TryGetMod(entry.Id, out var mod))
+				{
+					uiContainer.Mods.Add(mod.ToModInterface());
+				}
+			}
+			else if(entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
+			{
+				AddNestedMods(uiContainer.Mods, subContainer);
+			}
+		}
+	}
+
+	public bool LoadModOrder(ModOrder order, List<MissingModData>? missingModsFromProfileOrder = null)
 	{
 		if (order == null) return false;
 
@@ -1231,9 +1255,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		for (var i = 0; i < loadFrom.Count; i++)
 		{
 			var entry = loadFrom[i];
-			if (!ModDataLoader.IgnoreMod(entry.UUID))
+			if (entry.Type == ModEntryType.Mod && !ModDataLoader.IgnoreMod(entry.Id))
 			{
-				if (modManager.TryGetMod(entry.UUID, out var mod))
+				if (modManager.TryGetMod(entry.Id, out var mod))
 				{
 					if (mod.ModType != "Adventure")
 					{
@@ -1264,18 +1288,24 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				}
 				else
 				{
-					missingResults.AddMissing(entry, i);
+					missingResults.AddMissing(new ModuleShortDesc(entry.Id) { Name = entry.Name }, i);
 				}
 			}
 		}
 
 		ActiveMods.Clear();
-		var activeMods = modManager.AddonMods.Where(x => x.CanAddToLoadOrder && x.IsActive).OrderBy(x => x.Index).ToList();
-		if(activeMods.Count > 0)
+		foreach (var entry in loadFrom)
 		{
-			foreach(var mod in activeMods)
+			if(entry.Type == ModEntryType.Mod)
 			{
-				ActiveMods.Add(mod.ToModInterface());
+				if(modManager.TryGetMod(entry.Id, out var mod))
+				{
+					ActiveMods.Add(mod.ToModInterface());
+				}
+			}
+			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
+			{
+				AddNestedMods(ActiveMods, container);
 			}
 		}
 
@@ -1365,7 +1395,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		}
 	}
 
-	public async Task<ModLoadOrder?> ImportOrderFromSave()
+	public async Task<ModOrder?> ImportOrderFromSave()
 	{
 		var startPath = "";
 		if (SelectedProfile != null)
@@ -1664,7 +1694,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		});
 
 		var canDeleteOrder = canExecuteCommands.CombineLatest(this.WhenAnyValue(x => x.SelectedModOrderIndex).Select(x => x > 0)).AllTrue();
-		DeleteOrderCommand = ReactiveCommand.CreateFromTask<ModLoadOrder>(DeleteOrder, canDeleteOrder);
+		DeleteOrderCommand = ReactiveCommand.CreateFromTask<ModOrder>(DeleteOrder, canDeleteOrder);
 
 		CopyOrderToClipboardCommand = ReactiveCommand.CreateFromObservable(() => Observable.Start(() =>
 		{
@@ -1718,7 +1748,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			}
 		});
 
-		OrderJustLoadedCommand = ReactiveCommand.Create<ModLoadOrder>(order => { });
+		OrderJustLoadedCommand = ReactiveCommand.Create<ModOrder>(order => { });
 
 		/*Profiles.ToObservableChangeSet().CountChanged()
 			.CombineLatest(this.WhenAnyValue(x => x.SelectedProfileIndex))
@@ -1880,7 +1910,7 @@ public class DesignModOrderViewModel : IModOrderViewModel
 
 	private readonly ReadOnlyObservableCollection<ProfileData> _profiles;
 	public ReadOnlyObservableCollection<ProfileData> Profiles => _profiles;
-	public ObservableCollectionExtended<ModLoadOrder> ModOrderList { get; }
+	public ObservableCollectionExtended<ModOrder> ModOrderList { get; }
 	public bool IsLocked { get; }
 
 	public int SelectedProfileIndex { get; set; }
@@ -1888,7 +1918,7 @@ public class DesignModOrderViewModel : IModOrderViewModel
 	public int SelectedAdventureModIndex { get; set; }
 
 	public ProfileData? SelectedProfile { get; set; }
-	public ModLoadOrder? SelectedModOrder { get; set; }
+	public ModOrder? SelectedModOrder { get; set; }
 	public ModData? SelectedAdventureMod { get; set; }
 
 	public void AddActiveMod(IModEntry mod) => throw new NotImplementedException();
@@ -1915,7 +1945,7 @@ public class DesignModOrderViewModel : IModOrderViewModel
 			FilePath = "%LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\\PlayerProfiles\\Public\\profile8.lsf"
 		});
 
-		ModOrderList.Add(new ModLoadOrder()
+		ModOrderList.Add(new ModOrder()
 		{
 			Name = "Current",
 			FilePath = "%LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\\PlayerProfiles\\Public\\modsettings.lsx"

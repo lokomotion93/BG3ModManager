@@ -3,6 +3,7 @@
 using ModManager.Json;
 using ModManager.Models.Mod;
 using ModManager.Models.Mod.Container;
+using ModManager.Models.Mod.Order;
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -205,6 +206,7 @@ public static class JsonUtils
 		TypeInfoResolver = DataContractDefaultValueResolver.Default,
 		//TypeInfoResolver = ModManagerJsonContext.Default,
 		PropertyNameCaseInsensitive = true,
+		RespectNullableAnnotations = true,
 	};
 
 	public static JsonSerializerOptions DefaultSerializerSettings => _defaultSerializerSettings;
@@ -215,6 +217,10 @@ public static class JsonUtils
 		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModConfig>());
 		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModContainerSettings>());
 		_defaultSerializerSettings.Converters.Add(new JsonArrayToSourceListConverter<string>());
+		_defaultSerializerSettings.Converters.Add(new JsonArrayToSourceListConverter<IModOrderEntry>());
+		_defaultSerializerSettings.Converters.Add(new LarianVersionToStringConverter());
+		_defaultSerializerSettings.Converters.Add(new IModOrderEntryConverter());
+		_defaultSerializerSettings.PropertyNamingPolicy = new MigrationNamingPolicy();
 	}
 
 	public static T? Deserialize<T>(string text, JsonSerializerOptions? opts = null) => JsonSerializer.Deserialize<T?>(text, opts ?? _defaultSerializerSettings);

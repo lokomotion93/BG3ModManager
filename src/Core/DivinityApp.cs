@@ -30,6 +30,9 @@ public static class DivinityApp
 	public static string DateTimeTooltipFormat { get; set; } = "MMMM dd, yyyy";
 	public static string DateTimeExtenderBuildFormat { get; set; } = "MM/dd/yyyy hh:mm tt";
 
+	public const string ORDER_EXT_V1 = ".json";
+	public const string ORDER_EXT_V2 = ".bg3mmjson";
+
 #if !DOS2
 	public const string PIPE_ID = "bg3mm.server";
 

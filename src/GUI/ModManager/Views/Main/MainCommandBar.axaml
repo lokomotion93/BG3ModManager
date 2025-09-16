@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:menuModel="using:ModManager.Models.Menu"
     xmlns:mod="using:ModManager.Models.Mod"
+    xmlns:modOrder="using:ModManager.Models.Mod.Order"
     xmlns:sukiControls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:vm="using:ModManager.ViewModels.Main"
     d:DesignHeight="240"
@@ -181,7 +182,7 @@
 							</MenuFlyout>
 						</FlyoutBase.AttachedFlyout>
 						<ComboBox.ItemTemplate>
-							<DataTemplate DataType="mod:ModLoadOrder">
+							<DataTemplate DataType="modOrder:ModOrder">
 								<TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding FilePath}" />
 							</DataTemplate>
 						</ComboBox.ItemTemplate>

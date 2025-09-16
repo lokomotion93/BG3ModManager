@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using ModManager.Json;
+
+using System.Runtime.Serialization;
 
 namespace ModManager.Models;
 
@@ -71,6 +73,7 @@ static class VersionHelpers
 	}
 }
 
+[JsonConverter(typeof(LarianVersionToStringConverter))]
 [DataContract]
 public class LarianVersion : ReactiveObject
 {

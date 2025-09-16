@@ -1,5 +1,7 @@
 ﻿using LSLib.LS;
 
+using ModManager.Json;
+
 using System.Runtime.Serialization;
 
 namespace ModManager.Models.Mod.Game;
@@ -23,7 +25,7 @@ public class ModuleShortDesc : ReactiveObject, IModuleShortDesc
 		DefaultByteSwapGuids = false
 	};
 
-	private static string GetAttributeAsString(Dictionary<string, NodeAttribute> attributes, string name, string fallBack)
+	private static string? GetAttributeAsString(Dictionary<string, NodeAttribute> attributes, string name, string? fallBack = null)
 	{
 		if (attributes.TryGetValue(name, out var attribute))
 		{
@@ -60,7 +62,7 @@ public class ModuleShortDesc : ReactiveObject, IModuleShortDesc
 		return new ModuleShortDesc(GetAttributeAsString(attributes, "UUID", "") ?? string.Empty)
 		{
 			Folder = GetAttributeAsString(attributes, "Folder", ""),
-			MD5 = GetAttributeAsString(attributes, "MD5", ""),
+			MD5 = GetAttributeAsString(attributes, "MD5"),
 			Name = GetAttributeAsString(attributes, "Name", ""),
 			Version = new LarianVersion(GetULongAttribute(attributes, "Version", 0UL)),
 		};
@@ -79,6 +81,27 @@ public class ModuleShortDesc : ReactiveObject, IModuleShortDesc
 		};
 	}
 
+	public static ModuleShortDesc FromModData(IModEntry m)
+	{
+		if(m.EntryType == ModEntryType.Mod && m is ModEntry modEntry && modEntry.Data != null)
+		{
+			return modEntry.Data.ToModuleShortDesc();
+		}
+		//else if(m.EntryType == ModEntryType.Container && m is ModContainer modContainer)
+		//{
+			
+		//}
+		var shortDesc = new ModuleShortDesc(m.UUID)
+		{
+			Name = m.DisplayName
+		};
+		if(m.Version != null)
+		{
+			shortDesc.Version.ParseString(m.Version);
+		}
+		return shortDesc;
+	}
+
 	public void UpdateFrom(IModuleShortDesc m)
 	{
 		Folder = m.Folder;
@@ -93,9 +116,6 @@ public class ModuleShortDesc : ReactiveObject, IModuleShortDesc
 	public ModuleShortDesc(string uuid)
 	{
 		UUID = uuid;
-		Name = "";
-		Folder = "";
-		MD5 = "";
 		PublishHandle = 0ul;
 		Version = new();
 	}

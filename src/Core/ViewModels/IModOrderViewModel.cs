@@ -2,6 +2,7 @@
 
 using ModManager.Models;
 using ModManager.Models.Mod;
+using ModManager.Models.Mod.Order;
 
 namespace ModManager.ViewModels;
 
@@ -13,7 +14,7 @@ public interface IModOrderViewModel
 	ReadOnlyObservableCollection<ProfileData> Profiles { get; }
 	//ReadOnlyObservableCollection<DivinityModData> Mods { get; }
 	//ReadOnlyObservableCollection<DivinityModData> WorkshopMods { get; }
-	ObservableCollectionExtended<ModLoadOrder> ModOrderList { get; }
+	ObservableCollectionExtended<ModOrder> ModOrderList { get; }
 
 	//bool IsDragging { get; }
 	//bool IsRefreshing { get; }
@@ -24,7 +25,7 @@ public interface IModOrderViewModel
 	int SelectedAdventureModIndex { get; set; }
 
 	ProfileData? SelectedProfile { get; set; }
-	ModLoadOrder? SelectedModOrder { get; set; }
+	ModOrder? SelectedModOrder { get; set; }
 	ModData? SelectedAdventureMod { get; set; }
 
 	//int ActiveSelected { get; }

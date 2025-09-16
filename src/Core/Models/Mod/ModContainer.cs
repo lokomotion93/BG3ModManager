@@ -6,6 +6,7 @@ using ModManager.Json;
 using System.Reflection;
 
 using ModManager.Models.Mod.Container;
+using ModManager.Models.Mod.Order;
 
 namespace ModManager.Models.Mod;
 public class ModContainer : ReactiveObject, IModEntry
@@ -115,6 +116,23 @@ public class ModContainer : ReactiveObject, IModEntry
 		}
 	}
 
+	public ModOrderContainer ToSerialized()
+	{
+		var container = new ModOrderContainer(UUID) { Name = this.DisplayName };
+		foreach(var child in Mods)
+		{
+			if(child.EntryType == ModEntryType.Container && child is ModContainer subContainer)
+			{
+				container.Children.Add(subContainer.ToSerialized());
+			}
+			else if(child.EntryType == ModEntryType.Mod && child is ModEntry mod)
+			{
+				container.Children.Add(mod.ToSerialized());
+			}
+		}
+		return container;
+	}
+
 	public ModContainer(string uuid)
 	{
 		UUID = uuid;
@@ -124,7 +142,7 @@ public class ModContainer : ReactiveObject, IModEntry
 		});
 
 		Settings = new(uuid);
-		this.WhenAnyValue(x => x.Settings.DisplayName).BindTo(this, x => x.DisplayName);
+		this.WhenAnyValue(x => x.Settings.DisplayName).ToUIProperty(this, x => x.DisplayName);
 
 		var modsConn = this.Mods.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
 

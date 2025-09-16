@@ -1,5 +1,7 @@
 ﻿using DynamicData.Binding;
 
+using ModManager.Models.Mod.Order;
+
 using System.Globalization;
 
 namespace ModManager.Models.Mod;
@@ -35,6 +37,8 @@ public class ModEntry : ReactiveObject, IModEntry
 	public string? Export(ModExportType exportType) => string.Empty;
 
 	[Reactive] public ModData? Data { get; set; }
+
+	public ModOrderMod ToSerialized() => new(UUID) { Name = DisplayName };
 
 	public ModEntry(string uuid)
 	{

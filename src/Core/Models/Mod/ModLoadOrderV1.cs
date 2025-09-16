@@ -5,8 +5,9 @@ using System.Runtime.Serialization;
 
 namespace ModManager.Models.Mod;
 
+[Obsolete("Use ModOrder instead")]
 [DataContract]
-public class ModLoadOrder : ReactiveObject
+public class ModLoadOrderV1 : ReactiveObject
 {
 	[Reactive] public string? Name { get; set; }
 	[Reactive] public string? FilePath { get; set; }
@@ -23,7 +24,6 @@ public class ModLoadOrder : ReactiveObject
 	[ObservableAsProperty] public string? LastModified { get; }
 
 	[DataMember] public List<ModuleShortDesc> Order { get; set; } = [];
-	[DataMember] public List<ModContainerOrderSettings> Containers { get; set; } = [];
 	[DataMember] public Version? ModManagerVersion { get; set; }
 
 	public void Add(IModEntry mod, bool force = false)
@@ -34,10 +34,7 @@ public class ModLoadOrder : ReactiveObject
 			{
 				if (force)
 				{
-					Order.Add(new(mod.UUID)
-					{
-						Name = mod.DisplayName
-					});
+					Order.Add(ModuleShortDesc.FromModData(mod));
 				}
 				else
 				{
@@ -54,18 +51,12 @@ public class ModLoadOrder : ReactiveObject
 						}
 						if (!alreadyInOrder)
 						{
-							Order.Add(new(mod.UUID)
-							{
-								Name = mod.DisplayName
-							});
+							Order.Add(ModuleShortDesc.FromModData(mod));
 						}
 					}
 					else
 					{
-						Order.Add(new(mod.UUID)
-						{
-							Name = mod.DisplayName
-						});
+						Order.Add(ModuleShortDesc.FromModData(mod));
 					}
 				}
 			}
@@ -190,7 +181,7 @@ public class ModLoadOrder : ReactiveObject
 		Order.AddRange(nextOrder);
 	}
 
-	public void SetOrder(ModLoadOrder nextOrder)
+	public void SetOrder(ModLoadOrderV1 nextOrder)
 	{
 		Order.Clear();
 		Order.AddRange(nextOrder.Order);
@@ -205,9 +196,9 @@ public class ModLoadOrder : ReactiveObject
 		return false;
 	}
 
-	public ModLoadOrder Clone()
+	public ModLoadOrderV1 Clone()
 	{
-		return new ModLoadOrder()
+		return new ModLoadOrderV1()
 		{
 			Name = Name,
 			Order = Order.ToList(),
@@ -215,7 +206,7 @@ public class ModLoadOrder : ReactiveObject
 		};
 	}
 
-	public ModLoadOrder()
+	public ModLoadOrderV1()
 	{
 		this.WhenAnyValue(x => x.LastModifiedDate).Select(x => x.ToString("g")).ToUIProperty(this, x => x.LastModified, "");
 	}
