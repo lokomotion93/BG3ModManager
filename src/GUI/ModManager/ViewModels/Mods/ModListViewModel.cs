@@ -44,6 +44,8 @@ public class ModListViewModel : ReactiveObject
 	public ReactiveCommand<ModContainer, Unit> DeleteContainerModsCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> RenameContainerCommand { get; }
 
+	public bool IsDirty { get; set; }
+
 	private static string ToFilterResultText(ValueTuple<int, int, int, string?, bool> x)
 	{
 		var (total, totalHidden, totalSelected, filterText, isEnabled) = x;
@@ -75,6 +77,18 @@ public class ModListViewModel : ReactiveObject
 		TotalMods = total;
 		TotalModsHidden = totalHidden;
 		TotalModsSelected = totalSelected;
+
+		if (e.Action == NotifyCollectionChangedAction.Remove && IsDirty && e.OldItems != null)
+		{
+			foreach(var entry in e.OldItems.Cast<IModEntry>())
+			{
+				if(entry != null)
+				{
+					_mods.Remove(entry);
+				}
+			}
+			IsDirty = false;
+		}
 	}
 
 	public void UpdateIndexes()
@@ -110,12 +124,12 @@ public class ModListViewModel : ReactiveObject
 	}
 
 	public ModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
-		ICollection<IModEntry> collection,
+		ICollection<IModEntry> backingCollection,
 		INotifyCollectionChanged observedCollection,
 		IObservable<IChangeSet<IModEntry>> connection,
 		string title = "")
 	{
-		_mods = collection;
+		_mods = backingCollection;
 		Mods = treeGridSource;
 		Title = title;
 
@@ -187,7 +201,7 @@ public class ModListViewModel : ReactiveObject
 
 		DeleteContainerModsCommand = ReactiveCommand.CreateFromTask<ModContainer>(async modContainer =>
 		{
-			await AppServices.Interactions.DeleteMods.Handle(new(modContainer.Mods));
+			await AppServices.Interactions.DeleteMods.Handle(new(modContainer.Children!));
 		});
 	}
 }

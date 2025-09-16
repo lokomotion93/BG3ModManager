@@ -146,6 +146,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		var allowInside = false;
 		if (e.TargetRow.Model is ModContainer modContainer)
 		{
+			ViewModel.IsDirty = true;
 			if(!modContainer.IsExpanded)
 			{
 				//Need to delay by a few frames since the expander cell may not be rendered yet
