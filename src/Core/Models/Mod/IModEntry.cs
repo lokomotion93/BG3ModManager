@@ -22,6 +22,7 @@ public interface IModEntry : ISelectable, IReactiveObject
 	bool CanDelete { get; }
 	bool PreserveSelection { get; set; }
 	bool IsDirty { get; set; }
+	bool IsVisible { get; }
 
 	object? ContextMenu { get; set; }
 

@@ -37,9 +37,9 @@ namespace ModManager
 		{
 			entry.Index = index;
 			index += 1;
-			if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer)
+			if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer && modContainer.Children != null)
 			{
-				foreach(var child in modContainer.Mods)
+				foreach(var child in modContainer.Children)
 				{
 					RecalculateIndexes(child, ref index);
 				}
@@ -84,7 +84,7 @@ namespace ModManager
 
 				if (ran.Next(100) <= 60)
 				{
-					containers[ran.Next(0, containers.Count-1)].Mods.Add(mod);
+					containers[ran.Next(0, containers.Count-1)].Children!.Add(mod);
 				}
 				else
 				{

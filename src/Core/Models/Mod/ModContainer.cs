@@ -34,8 +34,8 @@ public class ModContainer : ReactiveObject, IModEntry
 	public string? LastUpdated => string.Empty;
 	public bool CanDelete => true;
 
-	public ObservableCollectionExtended<IModEntry> Mods { get; } = [];
-	public IObservableCollection<IModEntry>? Children => Mods;
+	private readonly ObservableCollectionExtended<IModEntry> _children = [];
+	public IObservableCollection<IModEntry> Children => _children;
 
 	public RxCommandUnit ToggleForceAllowInLoadOrderCommand { get; }
 	public RxCommandUnit ToggleNameDisplayCommand { get; }
@@ -44,6 +44,7 @@ public class ModContainer : ReactiveObject, IModEntry
 	[ObservableAsProperty] public bool CanForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public bool ForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public bool DisplayFileForName { get; }
+	[ObservableAsProperty] public bool IsVisible { get; }
 	[ObservableAsProperty] public string? ForceAllowInLoadOrderLabel { get; }
 	[ObservableAsProperty] public string? ToggleModNameLabel { get; }
 
@@ -57,11 +58,11 @@ public class ModContainer : ReactiveObject, IModEntry
 		{
 			_modDataType.GetProperty(propertyName)?.SetValue(modEntry.Data, value);
 		}
-		else if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer)
+		else if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer && modContainer.Children != null)
 		{
-			foreach(var mod in modContainer.Mods)
+			foreach(var child in modContainer.Children)
 			{
-				SetProperty(mod, propertyName, value);
+				SetProperty(child, propertyName, value);
 			}
 		}
 		entry.RaisePropertyChanged(nameof(IModEntry.IsDirty));
@@ -73,9 +74,9 @@ public class ModContainer : ReactiveObject, IModEntry
 		{
 			return _modDataType.GetProperty(propertyName)?.GetValue(modEntry.Data)?.Equals(value) == true;
 		}
-		else if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer)
+		else if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer && modContainer.Children != null)
 		{
-			return modContainer.Mods.All(x => PropertyMatches(x, propertyName, value));
+			return modContainer.Children.All(x => PropertyMatches(x, propertyName, value));
 		}
 		return false;
 	}
@@ -119,15 +120,18 @@ public class ModContainer : ReactiveObject, IModEntry
 	public ModOrderContainer ToSerialized()
 	{
 		var container = new ModOrderContainer(UUID) { Name = this.DisplayName };
-		foreach(var child in Mods)
+		if(Children != null)
 		{
-			if(child.EntryType == ModEntryType.Container && child is ModContainer subContainer)
+			foreach (var child in Children)
 			{
-				container.Children.Add(subContainer.ToSerialized());
-			}
-			else if(child.EntryType == ModEntryType.Mod && child is ModEntry mod)
-			{
-				container.Children.Add(mod.ToSerialized());
+				if (child.EntryType == ModEntryType.Container && child is ModContainer subContainer)
+				{
+					container.Children.Add(subContainer.ToSerialized());
+				}
+				else if (child.EntryType == ModEntryType.Mod && child is ModEntry mod)
+				{
+					container.Children.Add(mod.ToSerialized());
+				}
 			}
 		}
 		return container;
@@ -141,16 +145,18 @@ public class ModContainer : ReactiveObject, IModEntry
 			if (!b) IsSelected = false;
 		});
 
+		this.WhenAnyValue(x => x.IsHidden, b => !b).ToUIProperty(this, x => x.IsVisible, true);
+
 		Settings = new(uuid);
 		this.WhenAnyValue(x => x.Settings.DisplayName).ToUIProperty(this, x => x.DisplayName);
 
-		var modsConn = this.Mods.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
+		var modsConn = _children.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
 
-		var hasChildren = modsConn.CountChanged().Select(_ => Mods.Count > 0);
+		var hasChildren = modsConn.CountChanged().Select(_ => _children.Count > 0);
 
-		modsConn.Select(_ => Mods.All(AllCanForceAllowInLoadOrder)).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
-		modsConn.Select(_ => Mods.All(AllForceLoadedInLoadOrder)).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
-		modsConn.Select(_ => Mods.All(AllDisplayFileForName)).ToUIProperty(this, x => x.DisplayFileForName);
+		modsConn.Select(_ => _children.All(AllCanForceAllowInLoadOrder)).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
+		modsConn.Select(_ => _children.All(AllForceLoadedInLoadOrder)).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
+		modsConn.Select(_ => _children.All(AllDisplayFileForName)).ToUIProperty(this, x => x.DisplayFileForName);
 
 		this.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
 

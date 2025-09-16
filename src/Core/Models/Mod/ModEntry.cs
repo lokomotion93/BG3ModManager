@@ -28,6 +28,7 @@ public class ModEntry : ReactiveObject, IModEntry
 	[ObservableAsProperty] public string? Author { get; }
 	[ObservableAsProperty] public string? LastUpdated { get; }
 	[ObservableAsProperty] public bool CanDelete { get; }
+	[ObservableAsProperty] public bool IsVisible { get; }
 	[ObservableAsProperty] public string? SelectedColor { get; }
 	[ObservableAsProperty] public string? PointerOverColor { get; }
 	[ObservableAsProperty] public string? ListColor { get; }
@@ -43,6 +44,8 @@ public class ModEntry : ReactiveObject, IModEntry
 	public ModEntry(string uuid)
 	{
 		UUID = uuid;
+
+		this.WhenAnyValue(x => x.IsHidden, b => !b).ToUIProperty(this, x => x.IsVisible, true);
 
 		var whenMod = this.WhenAnyValue(x => x.Data).WhereNotNull();
 

@@ -15,6 +15,7 @@ using ModManager.Util;
 using ModManager.ViewModels.Mods;
 
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -1215,12 +1216,12 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			{
 				if(_manager.TryGetMod(entry.Id, out var mod))
 				{
-					uiContainer.Mods.Add(mod.ToModInterface());
+					uiContainer.Children.Add(mod.ToModInterface());
 				}
 			}
 			else if(entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
 			{
-				AddNestedMods(uiContainer.Mods, subContainer);
+				AddNestedMods(uiContainer.Children, subContainer);
 			}
 		}
 	}
@@ -1564,12 +1565,30 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 		modManagerService.ForceLoadedMods.ToObservableChangeSet().Transform(x => x.ToModInterface()).Bind(out _overrideMods).Subscribe();
 
+		ObservableCollectionExtended<IModEntry> readonlyActiveMods = [];
+		ActiveMods.ToObservableChangeSet()
+			.AutoRefresh(x => x.IsHidden)
+			.Filter(x => !x.IsHidden)
+			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyActiveMods).Subscribe();
+
+		ObservableCollectionExtended<IModEntry> readonlyOverrideMods = [];
+		OverrideMods.ToObservableChangeSet()
+			.AutoRefresh(x => x.IsHidden)
+			.Filter(x => !x.IsHidden)
+			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyOverrideMods).Subscribe();
+
+		ObservableCollectionExtended<IModEntry> readonlyInactiveMods = [];
+		InactiveMods.ToObservableChangeSet()
+			.AutoRefresh(x => x.IsHidden)
+			.Filter(x => !x.IsHidden)
+			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyInactiveMods).Subscribe();
+
 		//Pass the connection to the original collections, so the view can observe the total count
 		var activeModsConnection = ActiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var overrideModsConnection = OverrideMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var inactiveModsConnection = InactiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
-		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
+		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyActiveMods)
 		{
 			Columns =
 			{
@@ -1583,12 +1602,12 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
 			},
-		}, ActiveMods, ActiveMods, activeModsConnection, "Active")
+		}, ActiveMods, readonlyActiveMods, activeModsConnection, "Active")
 		{
 			IsActiveList = true
 		};
 
-		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(OverrideMods)
+		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyOverrideMods)
 		{
 			Columns =
 			{
@@ -1599,9 +1618,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
 			}
-		}, OverrideMods, OverrideMods, overrideModsConnection, "Overrides");
+		}, OverrideMods, readonlyOverrideMods, overrideModsConnection, "Overrides");
 
-		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(InactiveMods)
+		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyInactiveMods)
 		{
 			Columns =
 			{
@@ -1612,7 +1631,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
 			}
-		}, InactiveMods, InactiveMods, inactiveModsConnection, "Inactive");
+		}, InactiveMods, readonlyInactiveMods, inactiveModsConnection, "Inactive");
 
 		CanSaveOrder = true;
 
@@ -1774,6 +1793,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		var whenNotRefreshing = this.WhenAnyValue(x => x.IsRefreshing, b => !b);
 
 		this.WhenAnyValue(x => x.SelectedProfile, x => x.SelectedModOrder)
+			.SkipUntil(whenNotRefreshing)
 			.ThrottleFirst(TimeSpan.FromMilliseconds(50))
 			.ObserveOn(RxApp.MainThreadScheduler)
 			.Subscribe(x =>
