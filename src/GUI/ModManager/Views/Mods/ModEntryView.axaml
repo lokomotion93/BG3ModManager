@@ -10,8 +10,6 @@
     d:DesignWidth="800"
     x:DataType="mod:ModEntry"
     IsHitTestVisible="True"
-    ToolTip.Placement="RightEdgeAlignedTop"
-    ToolTip.ShowDelay="100"
     mc:Ignorable="d">
 	<UserControl.Styles>
 		<Style Selector="TextBlock">
@@ -22,7 +20,7 @@
 	</UserControl.Styles>
 	<Panel Name="MainPanel" Background="Transparent" DataContext="{Binding Data}">
 		<ToolTip.Tip>
-			<StackPanel MaxWidth="700" Background="Transparent" Orientation="Vertical">
+			<StackPanel Width="700" Background="Transparent" Orientation="Vertical">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
@@ -38,7 +36,7 @@
 							    Color="Black" />
 						</TextBlock.Effect>
 					</TextBlock>
-					<TextBlock Grid.Column="1" Text="{Binding DisplayVersion}" />
+					<TextBlock Grid.Column="1" Padding="4,0" Text="{Binding DisplayVersion}" />
 					<TextBlock Grid.Column="2"
 					    HorizontalAlignment="Right"
 					    Classes="Primary"
@@ -58,14 +56,13 @@
 						    Color="Black" />
 					</TextBlock.Effect>
 				</TextBlock>
-				<ScrollViewer MaxWidth="432"
+				<ScrollViewer MinHeight="24"
 				    MaxHeight="300"
-				    Padding="4"
 				    Background="{DynamicResource SukiPopupBackground}"
 				    IsVisible="{Binding HasDescription}"
 				    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				    ScrollViewer.VerticalScrollBarVisibility="Auto">
-					<TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+				    ScrollViewer.VerticalScrollBarVisibility="Visible">
+					<TextBlock Padding="4" Text="{Binding Description}" TextWrapping="Wrap" />
 				</ScrollViewer>
 				<StackPanel IsVisible="{Binding NexusModsInformationVisibility}" Orientation="Vertical">
 					<Separator />
@@ -86,8 +83,8 @@
 				    ItemsSource="{Binding DisplayedConflicts}"
 				    Style="{StaticResource ModuleShortDescListBox}" />-->
 				</StackPanel>
-				<StackPanel Margin="2" DataContext="{Binding}" Orientation="Vertical">
-					<!--<ItemsControl ItemTemplateSelector="{StaticResource TagTemplateSelector}" ItemsSource="{Binding Tags}">
+				<!--<StackPanel Margin="2" DataContext="{Binding}" Orientation="Vertical">
+					<ItemsControl ItemTemplateSelector="{StaticResource TagTemplateSelector}" ItemsSource="{Binding Tags}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal" />
@@ -100,8 +97,8 @@
 							</Style.Triggers>
 						</Style>
 					</ItemsControl.Style>
-				</ItemsControl>-->
-				</StackPanel>
+				</ItemsControl>
+				</StackPanel>-->
 				<StackPanel Orientation="Vertical">
 					<Separator />
 					<TextBlock IsVisible="{Binding HasFilePath}" Text="{Binding FileName}" />
@@ -160,8 +157,6 @@
 				    Stretch="UniformToFill" />
 			</StackPanel>
 		</ToolTip.Tip>
-		<StackPanel Orientation="Horizontal">
-			<TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
-		</StackPanel>
+		<TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
 	</Panel>
 </UserControl>

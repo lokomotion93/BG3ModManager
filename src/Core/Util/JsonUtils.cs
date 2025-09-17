@@ -2,7 +2,6 @@
 
 using ModManager.Json;
 using ModManager.Models.Mod;
-using ModManager.Models.Mod.Container;
 using ModManager.Models.Mod.Order;
 
 using System.ComponentModel;

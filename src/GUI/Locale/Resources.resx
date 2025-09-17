@@ -412,4 +412,7 @@
   <data name="ModListView_RenameContainer" xml:space="preserve">
     <value>Rename...</value>
   </data>
+  <data name="ModContainer_ToolTip_Children" xml:space="preserve">
+    <value>Container ({0} Children)</value>
+  </data>
 </root>

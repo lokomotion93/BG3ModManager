@@ -15,5 +15,40 @@
 			</Style>
 		</Style>
 	</UserControl.Styles>
-	<TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
+	<Panel Background="Transparent">
+		<ToolTip.Tip>
+			<StackPanel Width="700" Background="Transparent" Orientation="Vertical">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="4" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<TextBlock FontSize="16" FontWeight="Bold" Text="{Binding DisplayName}">
+						<TextBlock.Effect>
+							<DropShadowDirectionEffect BlurRadius="4"
+							    Direction="330"
+							    Opacity="0.25"
+							    ShadowDepth="2"
+							    Color="Black" />
+						</TextBlock.Effect>
+					</TextBlock>
+					<TextBlock Grid.Column="2"
+					    HorizontalAlignment="Right"
+					    Classes="Primary"
+					    Text="{Binding ContainerToolTipTitleText}" />
+				</Grid>
+				<Separator />
+				<ScrollViewer MinHeight="24"
+				    MaxHeight="300"
+				    Background="{DynamicResource SukiPopupBackground}"
+				    IsVisible="{Binding HasDescription}"
+				    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				    ScrollViewer.VerticalScrollBarVisibility="Visible">
+					<TextBlock Padding="4" Text="{Binding Description}" TextWrapping="Wrap" />
+				</ScrollViewer>
+			</StackPanel>
+		</ToolTip.Tip>
+		<TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
+	</Panel>
 </UserControl>

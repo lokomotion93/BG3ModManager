@@ -11,6 +11,7 @@ public class ModOrderContainer(string id) : IModOrderEntry, INested<List<IModOrd
 
 	public string Id { get; set; } = id;
 	public string? Name { get; set; }
+	public ModContainerSettings? Settings { get; set; }
 
 	public List<IModOrderEntry> Children { get; set; } = [];
 

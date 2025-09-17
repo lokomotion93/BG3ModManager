@@ -33,6 +33,10 @@ public partial class App : Application
 		var desktop = DesktopLifetime;
 		if (desktop != null)
 		{
+			ToolTip.ShowDelayProperty.OverrideDefaultValue(typeof(Panel), 500);
+			ToolTip.BetweenShowDelayProperty.OverrideDefaultValue(typeof(Panel), 500);
+			ToolTip.PlacementProperty.OverrideDefaultValue(typeof(Panel), PlacementMode.RightEdgeAlignedTop);
+
 			var viewLocator = new ViewLocator();
 			Locator.CurrentMutable.RegisterConstant<IViewLocator>(viewLocator);
 			DataTemplates.Add(viewLocator);

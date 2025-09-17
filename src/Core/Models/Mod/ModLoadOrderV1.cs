@@ -1,7 +1,4 @@
-﻿using ModManager.Models.Mod.Container;
-using ModManager.Models.Mod.Game;
-
-using System.Runtime.Serialization;
+﻿using ModManager.Models.Mod.Game;
 
 namespace ModManager.Models.Mod;
 

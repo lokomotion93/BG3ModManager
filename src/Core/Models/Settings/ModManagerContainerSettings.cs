@@ -1,7 +1,7 @@
 ﻿using DynamicData;
 
 using ModManager.Json;
-using ModManager.Models.Mod.Container;
+using ModManager.Models.Mod;
 
 namespace ModManager.Models.Settings;
 

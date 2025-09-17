@@ -4,8 +4,6 @@ using DynamicData.Binding;
 using ModManager.Json;
 
 using System.Reflection;
-
-using ModManager.Models.Mod.Container;
 using ModManager.Models.Mod.Order;
 using ModManager.Models.Interfaces;
 
@@ -42,10 +40,13 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 	public RxCommandUnit ToggleNameDisplayCommand { get; }
 
 	[ObservableAsProperty] public string? DisplayName { get; }
+	[ObservableAsProperty] public string? Description { get; }
+	[ObservableAsProperty] public string? ContainerToolTipTitleText { get; }
 	[ObservableAsProperty] public bool CanForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public bool ForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public bool DisplayFileForName { get; }
 	[ObservableAsProperty] public bool IsVisible { get; }
+	[ObservableAsProperty] public bool HasDescription { get; }
 	[ObservableAsProperty] public string? ForceAllowInLoadOrderLabel { get; }
 	[ObservableAsProperty] public string? ToggleModNameLabel { get; }
 
@@ -120,7 +121,7 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 
 	public ModOrderContainer ToSerialized()
 	{
-		var container = new ModOrderContainer(UUID) { Name = this.DisplayName };
+		var container = new ModOrderContainer(UUID) { Name = this.DisplayName, Settings = Settings };
 		if(Children != null)
 		{
 			foreach (var child in Children)
@@ -138,6 +139,23 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 		return container;
 	}
 
+	private string? GetContainerToolTipTitleText()
+	{
+		if(_children.Count < 0)
+		{
+			return Loca.ModContainer_ToolTip_Children.SafeFormat("Container (0 Children)", 0);
+		}
+		else
+		{
+			var total = 0;
+			foreach(var entry in this.ForEachNested())
+			{
+				total++;
+			}
+			return Loca.ModContainer_ToolTip_Children.SafeFormat($"Container ({total} Children)", total);
+		}
+	}
+
 	public ModContainer(string uuid)
 	{
 		UUID = uuid;
@@ -150,6 +168,9 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 
 		Settings = new(uuid);
 		this.WhenAnyValue(x => x.Settings.DisplayName).ToUIProperty(this, x => x.DisplayName);
+		this.WhenAnyValue(x => x.Settings.Description).ToUIProperty(this, x => x.Description);
+		this.WhenAnyValue(x => x.Description, x => x.IsValid()).ToUIProperty(this, x => x.HasDescription, false);
+		_children.ToObservableChangeSet().CountChanged().Select(_ => GetContainerToolTipTitleText()).ToUIProperty(this, x => x.ContainerToolTipTitleText);
 
 		var modsConn = _children.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
 

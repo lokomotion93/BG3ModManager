@@ -403,6 +403,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Container ({0} Children).
+        /// </summary>
+        public static string ModContainer_ToolTip_Children {
+            get {
+                return ResourceManager.GetString("ModContainer_ToolTip_Children", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Container....
         /// </summary>
         public static string ModListView_AddContainer {
