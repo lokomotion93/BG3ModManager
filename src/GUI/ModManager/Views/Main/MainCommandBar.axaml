@@ -124,8 +124,7 @@
 					    MaxWidth="150"
 					    AutoScrollToSelectedItem="False"
 					    ItemsSource="{Binding ModOrder.Profiles}"
-					    SelectedIndex="{Binding ModOrder.SelectedProfileIndex, FallbackValue=0}"
-					    SelectedValue="{Binding ModOrder.SelectedProfile, Mode=TwoWay}">
+					    SelectedIndex="{Binding ModOrder.SelectedProfileIndex, FallbackValue=0}">
 						<controls:ComboBoxWithRightClick.ItemTemplate>
 							<DataTemplate DataType="m:ProfileData">
 								<TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding FilePath}" />
@@ -160,8 +159,7 @@
 					<controls:ComboBoxWithRightClick Name="OrdersComboBox"
 					    MaxWidth="500"
 					    ItemsSource="{Binding ModOrder.ModOrderList}"
-					    SelectedIndex="{Binding ModOrder.SelectedModOrderIndex, FallbackValue=0}"
-					    SelectedValue="{Binding ModOrder.SelectedModOrder, Mode=TwoWay}">
+					    SelectedIndex="{Binding ModOrder.SelectedModOrderIndex, FallbackValue=0}">
 						<FlyoutBase.AttachedFlyout>
 							<MenuFlyout Placement="Pointer" ShowMode="Transient">
 								<MenuItem Command="{Binding RenameOrderCommand}" Header="Rename">
@@ -227,8 +225,7 @@
 					<ComboBox x:Name="CampaignComboBox"
 					    MaxWidth="150"
 					    ItemsSource="{Binding ModOrder.AdventureMods}"
-					    SelectedIndex="{Binding ModOrder.SelectedAdventureModIndex, FallbackValue=0}"
-					    SelectedValue="{Binding ModOrder.SelectedAdventureMod, Mode=TwoWay}">
+					    SelectedIndex="{Binding ModOrder.SelectedAdventureModIndex, FallbackValue=0}">
 						<ComboBox.ItemTemplate>
 							<DataTemplate DataType="mod:ModData">
 								<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding FilePath}" />

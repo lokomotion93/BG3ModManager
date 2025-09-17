@@ -1209,6 +1209,18 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	{
 		//TODO fetch from some central container settings location
 		var uiContainer = new ModContainer(container.Id, container.Name ?? string.Empty);
+		if (container.Settings == null)
+		{
+			var globalContainerSettings = _settings.ContainerSettings.Containers.Lookup(container.Id);
+			if (globalContainerSettings.HasValue)
+			{
+				uiContainer.Settings.SetFrom(globalContainerSettings.Value);
+			}
+		}
+		else
+		{
+			uiContainer.Settings.SetFrom(container.Settings);
+		}
 		targetList.Add(uiContainer);
 
 		foreach (var entry in container.Children)
@@ -1814,13 +1826,15 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			}
 		});
 
-		this.WhenAnyValue(x => x.SelectedProfile, x => x.SelectedModOrder)
+		this.WhenAnyValue(x => x.SelectedProfileIndex, x => x.SelectedModOrderIndex)
 			.ThrottleFirst(TimeSpan.FromMilliseconds(50))
 			.ObserveOn(RxApp.MainThreadScheduler)
 			.Subscribe(x =>
 		{
 			if (IsRefreshing || IsLoadingOrder) return;
-			ApplyProfile(x.Item1, x.Item2);
+			SelectedProfile = Profiles.ElementAtOrDefault(x.Item1);
+			SelectedModOrder = ModOrderList.ElementAtOrDefault(x.Item2);
+			ApplyProfile(SelectedProfile, SelectedModOrder);
 		});
 
 		//this.WhenAnyValue(x => x.OverrideModsFilterText).Throttle(TimeSpan.FromMilliseconds(500)).ObserveOn(RxApp.MainThreadScheduler).
@@ -1831,9 +1845,11 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			SelectedModOrder?.Sort(SortModOrder);
 		});
 
-		this.WhenAnyValue(x => x.SelectedAdventureModIndex).Throttle(TimeSpan.FromMilliseconds(50)).Subscribe((i) =>
+		this.WhenAnyValue(x => x.SelectedAdventureModIndex).Throttle(TimeSpan.FromMilliseconds(50)).Subscribe(index =>
 		{
-			if (modManagerService.AdventureMods != null && SelectedAdventureMod != null && SelectedProfile != null && SelectedProfile.ActiveMods != null)
+			SelectedAdventureMod = AdventureMods.ElementAtOrDefault(index);
+
+			if (!IsRefreshing && modManagerService.AdventureMods != null && SelectedAdventureMod != null && SelectedProfile != null && SelectedProfile.ActiveMods != null)
 			{
 				if (!SelectedProfile.ActiveMods.Any(m => m.UUID == SelectedAdventureMod.UUID))
 				{
@@ -1847,7 +1863,10 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		//modSettingsWatcher.PauseWatcher(true);
 		this.WhenAnyValue(x => x.SelectedProfile).WhereNotNull().Select(x => x.FilePath).Subscribe(path =>
 		{
-			_modSettingsWatcher.SetDirectory(path);
+			if(path.IsExistingDirectory())
+			{
+				_modSettingsWatcher.SetDirectory(path);
+			}
 		});
 
 		IDisposable? checkModSettingsTask = null;
