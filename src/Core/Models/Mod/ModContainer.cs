@@ -7,9 +7,10 @@ using System.Reflection;
 
 using ModManager.Models.Mod.Container;
 using ModManager.Models.Mod.Order;
+using ModManager.Models.Interfaces;
 
 namespace ModManager.Models.Mod;
-public class ModContainer : ReactiveObject, IModEntry
+public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollection<IModEntry>, IModEntry>
 {
 	public ModEntryType EntryType => ModEntryType.Container;
 

@@ -1,25 +1,18 @@
 ﻿using DynamicData;
 
 using ModManager.Json;
+using ModManager.Models.Interfaces;
 
 namespace ModManager.Models.Mod.Order;
 
-public class ModOrderContainer : ReactiveObject, IModOrderEntry
+public class ModOrderContainer(string id) : IModOrderEntry, INested<List<IModOrderEntry>, IModOrderEntry>
 {
-	public ModEntryType Type { get; init; }
+	public ModEntryType Type { get; init; } = ModEntryType.Container;
 
-	[Reactive] public string Id { get; set; }
-	[Reactive] public string? Name { get; set; }
+	public string Id { get; set; } = id;
+	public string? Name { get; set; }
 
-	[JsonConverter(typeof(JsonArrayToSourceListConverter<IModOrderEntry>))]
-	public SourceList<IModOrderEntry> Children { get; set; }
-
-	public ModOrderContainer(string id)
-	{
-		Id = id;
-		Children = new();
-		Type = ModEntryType.Container;
-	}
+	public List<IModOrderEntry> Children { get; set; } = [];
 
 	[JsonConstructor]
 	public ModOrderContainer() : this(string.Empty)

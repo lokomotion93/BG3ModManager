@@ -1,18 +1,11 @@
 ﻿namespace ModManager.Models.Mod.Order;
 
-[DataContract]
-public class ModOrderMod : ReactiveObject, IModOrderEntry
+public class ModOrderMod(string id) : IModOrderEntry
 {
-	[DataMember] public ModEntryType Type { get; init; }
+	public ModEntryType Type { get; init; } = ModEntryType.Mod;
 
-	[Reactive, DataMember] public string Id { get; set; }
-	[Reactive, DataMember] public string? Name { get; set; }
-
-	public ModOrderMod(string id)
-	{
-		Id = id;
-		Type = ModEntryType.Mod;
-	}
+	public string Id { get; set; } = id;
+	public string? Name { get; set; }
 
 	[JsonConstructor]
 	public ModOrderMod() : this(string.Empty)

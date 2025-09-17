@@ -1,5 +1,6 @@
 ﻿using ModManager.Extensions;
 using ModManager.Json;
+using ModManager.Models.Interfaces;
 using ModManager.Models.Mod;
 using ModManager.Models.Settings;
 using ModManager.Util;
@@ -194,5 +195,20 @@ public static class ModelExtensions
 			DivinityApp.Log($"Error saving {data.FileName}:\n{ex}");
 		}
 		return false;
+	}
+
+	public static IEnumerable<T2> ForEachNested<T, T2>(this INested<T, T2> nested) where T : IList<T2>
+	{
+		foreach(var entry in nested.Children)
+		{
+			yield return entry;
+			if(entry is INested<T, T2> subNested)
+			{
+				foreach(var subEntry in subNested.ForEachNested())
+				{
+					yield return subEntry;
+				}
+			}
+		}
 	}
 }

@@ -26,7 +26,7 @@ public class ModOrder : ReactiveObject
 	{
 		for (var i = 0; i < container.Children.Count; i++)
 		{
-			var entry = container.Children.Items[i];
+			var entry = container.Children[i];
 
 			if (entry.Id == id)
 			{
@@ -69,7 +69,7 @@ public class ModOrder : ReactiveObject
 	private static void AddNestedEntries(ModOrderContainer container, ref List<IModOrderEntry> target)
 	{
 		target.Add(container);
-		foreach (var entry in container.Children.Items)
+		foreach (var entry in container.Children)
 		{
 			if (entry.Type == ModEntryType.Mod)
 			{
@@ -98,6 +98,29 @@ public class ModOrder : ReactiveObject
 			}
 		}
 		return entries;
+	}
+
+	public HashSet<string> GetModIds()
+	{
+		var ids = new HashSet<string>();
+		foreach (var entry in Order)
+		{
+			if (entry.Type == ModEntryType.Mod)
+			{
+				ids.Add(entry.Id);
+			}
+			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
+			{
+				foreach(var subEntry in container.ForEachNested())
+				{
+					if(subEntry.Type == ModEntryType.Mod)
+					{
+						ids.Add(subEntry.Id);
+					}
+				}
+			}
+		}
+		return ids;
 	}
 
 	public void Add(IModOrderEntry entry, bool force = false)
@@ -203,15 +226,16 @@ public class ModOrder : ReactiveObject
 				{
 					var mod = (ModOrderMod)entry;
 					var existingMod = (ModOrderMod)existing;
-
-					existingMod.SetFrom(existingMod);
+					existingMod.Name = mod.Name;
 				}
 				else if (entry.Type == ModEntryType.Container)
 				{
 					var container = (ModOrderContainer)entry;
 					var existingContainer = (ModOrderContainer)existing;
 
-					existingContainer.SetFrom(container);
+					existingContainer.Name = container.Name;
+					existingContainer.Children.Clear();
+					existingContainer.Children.AddRange(container.Children);
 				}
 			}
 		}
@@ -251,7 +275,7 @@ public class ModOrder : ReactiveObject
 
 	private static void AddContainerIds(ref List<string> targetList, ModOrderContainer container)
 	{
-		foreach(var entry in container.Children.Items)
+		foreach(var entry in container.Children)
 		{
 			if (entry.Type == ModEntryType.Mod && entry is ModOrderMod mod)
 			{
