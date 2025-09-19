@@ -394,6 +394,34 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				var modThickness = new Thickness(0);
 				var modContainerThickness = new Thickness(0, 0, 0, 1);
 
+				//Initialize context menus. RowPrepared apparently doesn't fire until a row is interacted with
+				d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
+					h => (sender, e) => h(e),
+					h => ModsTreeDataGrid.Loaded += h,
+					h => ModsTreeDataGrid.Loaded -= h
+				).Subscribe(e =>
+				{
+					if (ModsTreeDataGrid.RowsPresenter != null)
+					{
+						foreach (var child in ModsTreeDataGrid.RowsPresenter.GetVisualChildren())
+						{
+							if (child is TreeDataGridRow row && row.Model is IModEntry entry)
+							{
+								if (entry.EntryType == ModEntryType.Mod)
+								{
+									entry.ContextMenu = modContext;
+									row.BorderThickness = modThickness;
+								}
+								else if (entry.EntryType == ModEntryType.Container)
+								{
+									entry.ContextMenu = modContainerContext;
+									row.BorderThickness = modContainerThickness;
+								}
+							}
+						}
+					}
+				}));
+
 				d(Observable.FromEvent<EventHandler<TreeDataGridRowEventArgs>, TreeDataGridRowEventArgs>(
 					h => (sender, e) => h(e),
 					h => ModsTreeDataGrid.RowPrepared += h,
