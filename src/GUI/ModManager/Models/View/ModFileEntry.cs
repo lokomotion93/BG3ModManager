@@ -139,15 +139,15 @@ public class ModFileEntry : ReactiveObject, IFileModel
 			IconColor = MaterialIconUtils.ExtensionToIconBrush(FileExtension);
 		}
 
-		this.WhenAnyValue(x => x.IsExpanded).Subscribe(b =>
+		var firstItem = _children.Connect().ToCollection().Select(x => x.FirstOrDefault()).WhereNotNull().Take(1);
+
+		this.WhenAnyValue(x => x.IsExpanded).CombineLatest(firstItem).Subscribe(x =>
 		{
-			if(b && _children.Count == 1)
+			var isExpanded = x.First;
+			var firstChild = x.Second;
+			if(isExpanded && _children.Count == 1 && firstChild?.IsDirectory == true)
 			{
-				var child = _children.Items.FirstOrDefault();
-				if(child?.IsDirectory == true)
-				{
-					child.IsExpanded = true;
-				}
+				firstChild.IsExpanded = true;
 			}
 		});
 	}
