@@ -15,7 +15,7 @@
 	<Grid Margin="24"
 	    HorizontalAlignment="Stretch"
 	    VerticalAlignment="Stretch"
-	    RowDefinitions="*,auto,*,auto">
+	    RowDefinitions="*,*,*,auto">
 		<TextBlock Name="TitleTextControl"
 		    Margin="12"
 		    VerticalAlignment="Bottom"
