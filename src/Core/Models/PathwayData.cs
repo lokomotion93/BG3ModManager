@@ -52,7 +52,7 @@ public class PathwayData : ReactiveObject
 		{
 			AppDataModsPath = fs.Path.Join(appDataGame, "Mods");
 			AppDataInactiveModsPath = fs.Path.Join(appDataGame, "Mods_Disabled");
-			AppDataProfilesPath = fs.Path.Join(appDataGame, "Profiles");
+			AppDataProfilesPath = fs.Path.Join(appDataGame, "PlayerProfiles");
 			AppDataModCrashSanityCheck = fs.Path.Join(appDataGame, "ModCrashSanityCheck");
 			AppDataScriptExtenderPath = fs.Path.Join(appDataGame, "Script Extender");
 		}
