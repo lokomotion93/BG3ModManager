@@ -1,20 +1,19 @@
 ﻿using ModManager.Models;
 using ModManager.Util;
 
-using System.IO;
-
 namespace ModManager.Services;
-public class PathwaysService : IPathwaysService
+public class PathwaysService(ISettingsService settingsService, IFileSystemService fs) : IPathwaysService
 {
-	private readonly ISettingsService _settingsService;
+	private readonly ISettingsService _settingsService = settingsService;
+	private readonly IFileSystemService _fs = fs;
 
-	public PathwayData Data { get; }
+	public PathwayData Data { get; } = new();
 
 	public string GetLarianStudiosAppDataFolder()
 	{
-		if (Directory.Exists(Data.AppDataGameFolder))
+		if (_fs.Directory.Exists(Data.AppDataGameFolder))
 		{
-			var parentDir = Directory.GetParent(Data.AppDataGameFolder);
+			var parentDir = _fs.Directory.GetParent(Data.AppDataGameFolder);
 			if (parentDir != null)
 			{
 				return parentDir.FullName;
@@ -28,17 +27,17 @@ public class PathwaysService : IPathwaysService
 		else
 		{
 			appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
-			if (string.IsNullOrEmpty(appDataFolder) || !Directory.Exists(appDataFolder))
+			if (string.IsNullOrEmpty(appDataFolder) || !_fs.Directory.Exists(appDataFolder))
 			{
 				var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
-				if (Directory.Exists(userFolder))
+				if (_fs.Directory.Exists(userFolder))
 				{
-					appDataFolder = Path.Join(userFolder, "AppData", "Local", "Larian Studios");
+					appDataFolder = _fs.Path.Join(userFolder, "AppData", "Local", "Larian Studios");
 				}
 			}
 			else
 			{
-				appDataFolder = Path.Join(appDataFolder, "Larian Studios");
+				appDataFolder = _fs.Path.Join(appDataFolder, "Larian Studios");
 			}
 		}
 		return appDataFolder;
@@ -56,59 +55,52 @@ public class PathwaysService : IPathwaysService
 				_settingsService.AppSettings.DefaultPathways.DocumentsGameFolder = "Larian Studios\\Baldur's Gate 3";
 			}
 
-			var gameDataFolder = Path.Join(localAppDataFolder, _settingsService.AppSettings.DefaultPathways.DocumentsGameFolder);
+			var appDataGameFolder = _fs.Path.Join(localAppDataFolder, _settingsService.AppSettings.DefaultPathways.DocumentsGameFolder);
 
-			if (!string.IsNullOrEmpty(gameDataFolderOverride) && Directory.Exists(gameDataFolderOverride))
+			if (!string.IsNullOrEmpty(gameDataFolderOverride) && _fs.Directory.Exists(gameDataFolderOverride))
 			{
-				gameDataFolder = gameDataFolderOverride;
-				var parentDir = Directory.GetParent(gameDataFolder);
+				appDataGameFolder = gameDataFolderOverride;
+				var parentDir = _fs.Directory.GetParent(appDataGameFolder);
 				if (parentDir != null)
 				{
 					localAppDataFolder = parentDir.FullName;
 				}
 			}
-			else if (!Directory.Exists(gameDataFolder))
+			else if (!_fs.Directory.Exists(appDataGameFolder))
 			{
 				var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
-				if (Directory.Exists(userFolder))
+				if (_fs.Directory.Exists(userFolder))
 				{
-					localAppDataFolder = Path.Join(userFolder, "AppData", "Local");
-					gameDataFolder = Path.Join(localAppDataFolder, _settingsService.AppSettings.DefaultPathways.DocumentsGameFolder);
+					localAppDataFolder = _fs.Path.Join(userFolder, "AppData", "Local");
+					appDataGameFolder = _fs.Path.Join(localAppDataFolder, _settingsService.AppSettings.DefaultPathways.DocumentsGameFolder);
 				}
 			}
 
-			var modPakFolder = Path.Join(gameDataFolder, "Mods");
-			var gmCampaignsFolder = Path.Join(gameDataFolder, "GMCampaigns");
-			var profileFolder = Path.Join(gameDataFolder, "PlayerProfiles");
+			Data.UpdateAppDataPathways(appDataGameFolder);
 
-			Data.AppDataGameFolder = gameDataFolder;
-			Data.AppDataModsPath = modPakFolder;
-			Data.AppDataCampaignsPath = gmCampaignsFolder;
-			Data.AppDataProfilesPath = profileFolder;
-
-			if (Directory.Exists(localAppDataFolder))
+			if (_fs.Directory.Exists(localAppDataFolder))
 			{
-				Directory.CreateDirectory(gameDataFolder);
-				DivinityApp.Log($"Larian documents folder set to '{gameDataFolder}'.");
+				_fs.Directory.CreateDirectory(appDataGameFolder);
+				DivinityApp.Log($"Larian documents folder set to '{appDataGameFolder}'.");
 
-				if (!Directory.Exists(modPakFolder))
+				if (!_fs.Directory.Exists(Data.AppDataModsPath) && Data.AppDataModsPath.IsValid())
 				{
-					DivinityApp.Log($"No mods folder found at '{modPakFolder}'. Creating folder.");
-					Directory.CreateDirectory(modPakFolder);
+					DivinityApp.Log($"No mods folder found at '{Data.AppDataModsPath}'. Creating folder.");
+					_fs.Directory.CreateDirectory(Data.AppDataModsPath);
 				}
 
 #if DOS2
-				if (!Directory.Exists(gmCampaignsFolder))
+				if (!_fs.Directory.Exists(gmCampaignsFolder))
 				{
 					DivinityApp.Log($"No GM campaigns folder found at '{gmCampaignsFolder}'. Creating folder.");
-					Directory.CreateDirectory(gmCampaignsFolder);
+					_fs.Directory.CreateDirectory(gmCampaignsFolder);
 				}
 #endif
 
-				if (!Directory.Exists(profileFolder))
+				if (!_fs.Directory.Exists(Data.AppDataProfilesPath) && Data.AppDataProfilesPath.IsValid())
 				{
-					DivinityApp.Log($"No PlayerProfiles folder found at '{profileFolder}'. Creating folder.");
-					Directory.CreateDirectory(profileFolder);
+					DivinityApp.Log($"No PlayerProfiles folder found at '{Data.AppDataProfilesPath}'. Creating folder.");
+					_fs.Directory.CreateDirectory(Data.AppDataProfilesPath);
 				}
 			}
 			else
@@ -117,35 +109,35 @@ public class PathwaysService : IPathwaysService
 				DivinityApp.Log($"Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.DoNotVerify) return a non-existent path?\nResult({Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.DoNotVerify)})");
 			}
 
-			if (string.IsNullOrWhiteSpace(currentGameDataPath) || !Directory.Exists(currentGameDataPath))
+			if (string.IsNullOrWhiteSpace(currentGameDataPath) || !_fs.Directory.Exists(currentGameDataPath))
 			{
 				var defaultPathways = _settingsService.AppSettings.DefaultPathways;
 				var installPath = RegistryHelper.GetGameInstallPath(defaultPathways.Steam.RootFolderName,
 					defaultPathways.GOG.Registry_32, defaultPathways.GOG.Registry_64, defaultPathways.Steam.AppID);
 
-				if (!string.IsNullOrEmpty(installPath) && Directory.Exists(installPath))
+				if (!string.IsNullOrEmpty(installPath) && _fs.Directory.Exists(installPath))
 				{
 					Data.InstallPath = installPath;
-					if (!File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
+					if (!_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
 					{
 						var exePath = "";
 						if (!RegistryHelper.IsGOG)
 						{
-							exePath = Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
+							exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
 						}
 						else
 						{
-							exePath = Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GOG.ExePath);
+							exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GOG.ExePath);
 						}
-						if (File.Exists(exePath))
+						if (_fs.File.Exists(exePath))
 						{
 							_settingsService.ManagerSettings.GameExecutablePath = exePath.Replace("\\", "/");
 							DivinityApp.Log($"Exe path set to '{exePath}'.");
 						}
 					}
 
-					var gameDataPath = Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GameDataFolder).Replace("\\", "/");
-					if (Directory.Exists(gameDataPath))
+					var gameDataPath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GameDataFolder).Replace("\\", "/");
+					if (_fs.Directory.Exists(gameDataPath))
 					{
 						DivinityApp.Log($"Set game data path to '{gameDataPath}'.");
 						_settingsService.ManagerSettings.GameDataPath = gameDataPath;
@@ -158,20 +150,20 @@ public class PathwaysService : IPathwaysService
 			}
 			else
 			{
-				var installPath = Path.GetFullPath(Path.Join(_settingsService.ManagerSettings.GameDataPath, @"..\..\"));
+				var installPath = _fs.Path.GetFullPath(_fs.Path.Join(_settingsService.ManagerSettings.GameDataPath, @"..\..\"));
 				Data.InstallPath = installPath;
-				if (!File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
+				if (!_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
 				{
 					var exePath = "";
 					if (!RegistryHelper.IsGOG)
 					{
-						exePath = Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
+						exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
 					}
 					else
 					{
-						exePath = Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GOG.ExePath);
+						exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GOG.ExePath);
 					}
-					if (File.Exists(exePath))
+					if (_fs.File.Exists(exePath))
 					{
 						_settingsService.ManagerSettings.GameExecutablePath = exePath.Replace("\\", "/");
 						DivinityApp.Log($"Exe path set to '{exePath}'.");
@@ -180,7 +172,7 @@ public class PathwaysService : IPathwaysService
 			}
 
 
-			if (!Directory.Exists(_settingsService.ManagerSettings.GameDataPath) || !File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
+			if (!_fs.Directory.Exists(_settingsService.ManagerSettings.GameDataPath) || !_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
 			{
 				DivinityApp.Log($"Failed to find game data path at '{_settingsService.ManagerSettings.GameDataPath}', and/or executable at '{_settingsService.ManagerSettings.GameExecutablePath}'");
 				return false;
@@ -194,11 +186,5 @@ public class PathwaysService : IPathwaysService
 		}
 
 		return false;
-	}
-
-	public PathwaysService(ISettingsService settingsService)
-	{
-		_settingsService = settingsService;
-		Data = new();
 	}
 }

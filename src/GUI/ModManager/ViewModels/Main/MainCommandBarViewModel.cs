@@ -290,8 +290,12 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		});
 	}
 
-	private static bool OpenInExplorerOrOther(string? mode, string? path)
+	private static bool OpenInExplorerOrOther(string? mode, string? path, bool createDirectory = false)
 	{
+		if(createDirectory && !path.IsExistingDirectory() && path.IsValid())
+		{
+			AppServices.FS.Directory.CreateDirectory(path);
+		}
 		if(mode == "dopus")
 		{
 			return AppServices.Dopus.OpenInDirectoryOpus(path);
@@ -344,7 +348,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		//Savegames\Story
 		var canOpenProfileSaves = modOrder.WhenAnyValue(x => x.SelectedProfileSavesPath, fs.Directory.Exists).CombineLatest(canExecuteCommands).AllTrue();
-		var canOpenExtenderDirectory = main.PathwayData.WhenAnyValue(x => x.AppDataGameFolder).Select(x => fs.Directory.Exists(fs.Path.Join(x, "Script Extender")));
+		var canOpenExtenderDirectory = main.PathwayData.WhenAnyValue(x => x.AppDataScriptExtenderPath, Validators.IsValid).CombineLatest(canExecuteCommands).AllTrue();
 
 		OpenModsFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, main.PathwayData.AppDataModsPath), canOpenModsDirectory);
 		CopyModsDirectoryPathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(main.PathwayData.AppDataModsPath), canOpenModsDirectory);
@@ -373,7 +377,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		OpenSavesFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfileSavesPath), canOpenProfileSaves);
 		
-		OpenExtenderDataFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, fs.Path.Join(main.PathwayData.AppDataGameFolder, "Script Extender")), canOpenExtenderDirectory);
+		OpenExtenderDataFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, main.PathwayData.AppDataScriptExtenderPath, true), canOpenExtenderDirectory);
 
 		OpenNexusModsCommand = ReactiveCommand.Create(() => ProcessHelper.TryOpenPath(DivinityApp.URL_NEXUSMODS), canExecuteCommands);
 		OpenSteamPageCommand = ReactiveCommand.Create(() => ProcessHelper.TryOpenPath(DivinityApp.URL_STEAM), canExecuteCommands);

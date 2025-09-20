@@ -733,22 +733,18 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 	public bool DeleteModCrashSanityCheck()
 	{
-		if (Settings.DeleteModCrashSanityCheck && PathwayData.AppDataGameFolder.IsValid())
+		if (Settings.DeleteModCrashSanityCheck && PathwayData.AppDataModCrashSanityCheck.IsExistingDirectory())
 		{
-			var modCrashSanityCheck = _fs.Path.Join(PathwayData.AppDataGameFolder, "ModCrashSanityCheck");
+			var directoryPath = PathwayData.AppDataModCrashSanityCheck;
 			try
 			{
-				if (_fs.Directory.Exists(modCrashSanityCheck))
-				{
-					_fs.Directory.Delete(modCrashSanityCheck);
-
-					DivinityApp.Log($"Deleted '{modCrashSanityCheck}'");
-					return true;
-				}
+				_fs.Directory.Delete(directoryPath);
+				DivinityApp.Log($"Deleted '{directoryPath}'");
+				return true;
 			}
 			catch (Exception ex)
 			{
-				DivinityApp.Log($"Error deleting '{modCrashSanityCheck}':\n{ex}");
+				DivinityApp.Log($"Error deleting '{directoryPath}':\n{ex}");
 			}
 		}
 		return false;
