@@ -82,11 +82,31 @@
 					<view:KeybindingsView Name="KeybindingsView" DataContext="{Binding Source={x:Static manager:ViewModelLocator.Keybindings}}" />
 				</TabItem>
 				<TabItem Header="Advanced" ToolTip.Tip="Advanced Mod Manager Settings (Data/settings.json)">
-					<controls:AutoGrid RowCount="4" RowHeight="auto">
+					<controls:AutoGrid RowCount="5" RowHeight="auto">
 						<controls:AutoGrid.ColumnDefinitions>
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="*" />
 						</controls:AutoGrid.ColumnDefinitions>
+
+						<TextBlock Classes="left" Text="Language" />
+						<ComboBox BackgroundSizing="CenterBorder"
+						    Classes="right"
+						    ItemsSource="{Binding Settings.Languages}"
+						    SelectedIndex="0"
+						    SelectedValue="{Binding Settings.SelectedLanguage}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate>
+									<TextBlock>
+										<TextBlock.Text>
+											<MultiBinding StringFormat="{}{0} ({1})">
+												<Binding Path="EnglishName" />
+												<Binding Path="Name" />
+											</MultiBinding>
+										</TextBlock.Text>
+									</TextBlock>
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
 
 						<TextBlock Name="ModDeveloperModeTextBlock" Classes="left" Text="Mod Developer Mode" />
 						<CheckBox Name="ModDeveloperModeCheckBox" Classes="right" IsChecked="{Binding Settings.DebugModeEnabled}" />

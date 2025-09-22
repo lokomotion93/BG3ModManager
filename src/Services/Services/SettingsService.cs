@@ -10,6 +10,7 @@ using ModManager.Util;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
+using System.Globalization;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -259,6 +260,23 @@ public class SettingsService : ReactiveObject, ISettingsService
 			ManagerSettings.WhenAnyValue(x => x.ActionOnGameLaunchIndex).SkipUntil(settingsWindowIsOpen),
 			x => x.ActionOnGameLaunchIndex,
 			x => x.ActionOnGameLaunch);
+
+
+		ManagerSettings.WhenAnyValue(x => x.SelectedLanguage).SkipUntil(settingsWindowIsOpen).Select(x => x?.Name).BindTo(ManagerSettings, x => x.Language);
+		ManagerSettings.WhenAnyValue(x => x.Language).WhereNotNull().ObserveOn(RxApp.MainThreadScheduler).Subscribe(langName =>
+		{
+			var langService = Locator.Current.GetService<ILocaleService>();
+			if(langService != null)
+			{
+				try
+				{
+					var lang = CultureInfo.GetCultureInfo(langName);
+					ManagerSettings.SelectedLanguage = lang;
+					langService.Culture = lang;
+				}
+				catch(Exception) { }
+			}
+		});
 
 		ExtenderUpdaterSettings.BindEnumToIndex(
 			ExtenderUpdaterSettings.WhenAnyValue(x => x.UpdateChannel),
