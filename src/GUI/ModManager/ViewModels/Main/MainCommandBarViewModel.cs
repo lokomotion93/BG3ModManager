@@ -2,8 +2,10 @@
 using DynamicData.Binding;
 
 using ModManager.Models;
+using ModManager.Models.App;
 using ModManager.Models.Menu;
 using ModManager.Models.Mod;
+using ModManager.Models.Settings;
 using ModManager.Services;
 using ModManager.Util;
 using ModManager.ViewModels.Mods;
@@ -217,6 +219,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 	[Keybinding("Open Repository Page...", Key.F11, KeyModifiers.None, "", "Help")]
 	public RxCommandUnit? OpenRepositoryPageCommand { get; private set; }
+	public RxCommandUnit? MoveModsCommand { get; private set; }
 
 	//Context Menu commands
 
@@ -243,6 +246,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Reactive] public bool HighlightExtenderDownload { get; private set; }
 	[Reactive] public bool HasDopus { get; private set; }
 	[Reactive] public bool IsDeveloperMode { get; private set; }
+	[Reactive] public ModManagerSettings? Settings { get; private set; }
 
 	public MainCommandBarViewModel()
 	{
@@ -309,6 +313,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	public MainCommandBarViewModel(MainWindowViewModel main, ModOrderViewModel modOrder, ModImportService modImporter, IFileSystemService fs, IDirectoryOpusService dopus, IInteractionsService interactions) : this()
 	{
 		ModOrder = modOrder;
+		Settings = main.Settings;
 		var canExecuteCommands = main.WhenAnyValue(x => x.IsLocked, b => !b);
 
 		var isModOrderView = main.WhenAnyValue(x => x.Views.CurrentView, x => x == modOrder);
@@ -728,6 +733,46 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		OpenSelectedModOrderFilePathCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedModOrderFilePath), whenModOrderPath);
 		CopySelectedModOrderFilePathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(modOrder.SelectedModOrderFilePath), whenModOrderPath);
+
+		MoveModsCommand = ReactiveCommand.Create(() =>
+		{
+			var filesToMove = new List<ModFileMoveTask>();
+
+			var fs = AppServices.FS;
+			var pathways = AppServices.Pathways.Data;
+
+			var userModsFolder = fs.Path.GetFullPath(pathways.AppDataModsPath);
+			var userModsDisabledFolder = fs.Path.GetFullPath(pathways.AppDataInactiveModsPath);
+
+			foreach (var mod in AppServices.Mods.UserMods)
+			{
+				if (mod.FilePath.IsExistingFile())
+				{
+					var parentDir = fs.Path.GetFullPath(fs.Path.GetDirectoryName(mod.FilePath));
+					var isActive = mod.IsActive || (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod && !mod.ForceAllowInLoadOrder);
+					var targetDir = isActive ? userModsFolder : userModsDisabledFolder;
+
+					var newFilePath = fs.Path.Join(targetDir, fs.Path.GetFileName(mod.FilePath));
+					if (!parentDir.Equals(targetDir, StringComparison.OrdinalIgnoreCase) && !fs.File.Exists(newFilePath))
+					{
+						filesToMove.Add(new ModFileMoveTask(mod, mod.FilePath, newFilePath));
+					}
+				}
+			}
+
+			if (filesToMove.Count > 0)
+			{
+				modOrder.LockAll(true);
+				DivinityApp.Log($"Moving '{filesToMove.Count}' mods.");
+
+				foreach (var task in filesToMove)
+				{
+					task.Move(fs, false);
+				}
+
+				modOrder.LockAll(false);
+			}
+		}, canExecuteCommands);
 
 		//MenuEntry.FromKeybinding(ImportNexusModsIdsCommand, nameof(ImportNexusModsIdsCommand), keybindings),
 		_menuEntries.AddRange([
