@@ -1653,7 +1653,7 @@ public static partial class ModDataLoader
 		return null;
 	}
 
-	public static async Task<ModsLoadingResults> LoadModsAsync(string gameDataPath, string userModsPath, CancellationToken token)
+	public static async Task<ModsLoadingResults> LoadModsAsync(string? gameDataPath, PathwayData pathways, CancellationToken token)
 	{
 		var time = DateTimeOffset.Now;
 
@@ -1664,11 +1664,11 @@ public static partial class ModDataLoader
 			baseMods.TryAdd(mod.Folder!, mod);
 		}
 
-		ModDirectoryLoadingResults dataDirMods = null!;
+		ModDirectoryLoadingResults? dataDirMods = null;
 
-		if(_fs.Directory.Exists(gameDataPath))
+		if(gameDataPath.IsValid() && _fs.Directory.Exists(gameDataPath))
 		{
-			using var dataPakParser = new DirectoryPakParser(gameDataPath, FileUtils.GameDataOptions);
+			using var dataPakParser = new DirectoryPakParser([gameDataPath], FileUtils.GameDataOptions);
 			dataDirMods = await dataPakParser.ProcessAsync(detectDuplicates: true, parseLooseMetaFiles: true, token);
 
 			DivinityApp.Log($"Took {DateTimeOffset.Now - time:s\\.ff} second(s) to load mods from '{gameDataPath}'");
@@ -1680,10 +1680,11 @@ public static partial class ModDataLoader
 			dataDirMods = new ModDirectoryLoadingResults(gameDataPath);
 		}
 
-		using var userPakParser = new DirectoryPakParser(userModsPath, FileUtils.FlatSearchOptions, baseMods, []);
+		string?[] userModPaths = [pathways.AppDataModsPath, pathways.AppDataInactiveModsPath];
+		using var userPakParser = new DirectoryPakParser(userModPaths, FileUtils.FlatSearchOptions, baseMods, []);
 		var userMods = await userPakParser.ProcessAsync(detectDuplicates: true, parseLooseMetaFiles: false, token);
 
-		DivinityApp.Log($"Took {DateTimeOffset.Now - time:s\\.ff} second(s) to load mods from '{userModsPath}'");
+		DivinityApp.Log($"Took {DateTimeOffset.Now - time:s\\.ff} second(s) to load mods from '{string.Join(";", userModPaths)}'");
 
 		return new ModsLoadingResults(dataDirMods, userMods);
 	}

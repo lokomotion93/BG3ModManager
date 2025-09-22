@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 
+using ModManager.Models;
 using ModManager.Models.Mod;
 
 using System.Diagnostics.CodeAnalysis;
@@ -32,6 +33,6 @@ public interface IModManagerService
 	void Refresh();
 	void ApplyUserModConfig();
 	void SetLoadedMods(IEnumerable<ModData> loadedMods, bool githubEnabled, bool nexusModsEnabled, bool modioEnabled);
-	Task<List<ModData>> LoadModsAsync(string gameDataPath, string userModsDirectoryPath, CancellationToken token);
+	Task<List<ModData>> LoadModsAsync(string? gameDataPath, PathwayData pathways, CancellationToken token);
 	IEnumerable<IModEntry> GetAllModsAsInterface();
 }

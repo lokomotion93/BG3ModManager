@@ -78,32 +78,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 
 			Data.UpdateAppDataPathways(appDataGameFolder);
 
-			if (_fs.Directory.Exists(localAppDataFolder))
-			{
-				_fs.Directory.CreateDirectory(appDataGameFolder);
-				DivinityApp.Log($"Larian documents folder set to '{appDataGameFolder}'.");
-
-				if (!_fs.Directory.Exists(Data.AppDataModsPath) && Data.AppDataModsPath.IsValid())
-				{
-					DivinityApp.Log($"No mods folder found at '{Data.AppDataModsPath}'. Creating folder.");
-					_fs.Directory.CreateDirectory(Data.AppDataModsPath);
-				}
-
-#if DOS2
-				if (!_fs.Directory.Exists(gmCampaignsFolder))
-				{
-					DivinityApp.Log($"No GM campaigns folder found at '{gmCampaignsFolder}'. Creating folder.");
-					_fs.Directory.CreateDirectory(gmCampaignsFolder);
-				}
-#endif
-
-				if (!_fs.Directory.Exists(Data.AppDataProfilesPath) && Data.AppDataProfilesPath.IsValid())
-				{
-					DivinityApp.Log($"No PlayerProfiles folder found at '{Data.AppDataProfilesPath}'. Creating folder.");
-					_fs.Directory.CreateDirectory(Data.AppDataProfilesPath);
-				}
-			}
-			else
+			if (!_fs.Directory.Exists(localAppDataFolder))
 			{
 				Locator.Current.GetService<IGlobalCommandsService>()?.ShowAlert("Failed to find %LOCALAPPDATA% folder - This is weird", AlertType.Danger);
 				DivinityApp.Log($"Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.DoNotVerify) return a non-existent path?\nResult({Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.DoNotVerify)})");

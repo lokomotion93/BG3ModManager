@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using ModManager.Models;
 using ModManager.Models.Mod;
 using ModManager.Util;
 
@@ -199,9 +200,9 @@ public class ModManagerService : ReactiveObject, IModManagerService
 		}
 	}
 
-	public async Task<List<ModData>> LoadModsAsync(string gameDataPath, string userModsDirectoryPath, CancellationToken token)
+	public async Task<List<ModData>> LoadModsAsync(string? gameDataPath, PathwayData pathways, CancellationToken token)
 	{
-		var mods = await ModDataLoader.LoadModsAsync(gameDataPath, userModsDirectoryPath, token);
+		var mods = await ModDataLoader.LoadModsAsync(gameDataPath, pathways, token);
 		
 		var baseMods = mods.DataDirectoryMods.Mods;
 		var userMods = mods.UserDirectoryMods.Mods;

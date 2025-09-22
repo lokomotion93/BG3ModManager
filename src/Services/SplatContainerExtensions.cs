@@ -29,7 +29,7 @@ public static class SplatContainerExtensions
 
 		var settingsService = new SettingsService(fileSystemService);
 		SplatRegistrations.RegisterConstant<ISettingsService>(settingsService);
-		SplatRegistrations.RegisterConstant<IPathwaysService>(new PathwaysService(settingsService));
+		SplatRegistrations.RegisterConstant<IPathwaysService>(new PathwaysService(settingsService, fileSystemService));
 
 		SplatRegistrations.RegisterLazySingleton<HttpClient, AppHttpClient>();
 

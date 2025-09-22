@@ -116,7 +116,8 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 	public ReactiveCommand<ModOrder, Unit> DeleteOrderCommand { get; }
 	public RxCommandUnit CopyOrderToClipboardCommand { get; }
-	public ReactiveCommand<ModOrder, Unit> OrderJustLoadedCommand { get; set; }
+	public ReactiveCommand<ModOrder, Unit> OrderJustLoadedCommand { get; }
+	public RxCommandUnit MoveModsCommand { get; }
 
 	private static string GetLaunchGameTooltip(ValueTuple<string?, bool, bool, bool> x)
 	{
@@ -262,7 +263,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		{
 			DivinityApp.Log("Loading mods...");
 			main.Progress.WorkText = "Loading mods...";
-			var loadedMods = await _manager.LoadModsAsync(Settings.GameDataPath, PathwayData.AppDataModsPath, token);
+			var loadedMods = await _manager.LoadModsAsync(Settings.GameDataPath, PathwayData, token);
 			main.Progress.IncreaseValue(taskStepAmount);
 
 			var mainCampaign = loadedMods.FirstOrDefault(x => x.UUID == _manager.MainCampaignGuid);
