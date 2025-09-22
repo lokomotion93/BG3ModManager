@@ -18,6 +18,9 @@ using System.Reflection;
 namespace ModManager.Views.Mods;
 public partial class ModListView : ReactiveUserControl<ModListViewModel>
 {
+	private bool _isSingleSelect = false;
+	private bool _isDragging = false;
+
 	private static IList<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
 	{
 		IEnumerable<IModEntry>? children;
@@ -128,6 +131,12 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 	private void OnTreeDataGridDrag(TreeDataGridRowDragEventArgs e)
 	{
+		if (ViewModel?.IsLocked == true)
+		{
+			e.Inner.DragEffects = DragDropEffects.None;
+			return;
+		}
+
 		MaybeRedirectDrop(e);
 		if (e.Inner.Data.Get(DragInfo.DataFormat) is DragInfo di && di.Source.Selection is ITreeDataGridRowSelectionModel<IModEntry> selection)
 		{
@@ -144,6 +153,12 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	{
 		_isDragging = false;
 		var allowInside = false;
+
+		if (ViewModel?.IsLocked == true)
+		{
+			e.Inner.DragEffects = DragDropEffects.None;
+			return;
+		}
 		if (e.TargetRow.Model is ModContainer modContainer)
 		{
 			ViewModel.IsDirty = true;
@@ -186,9 +201,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			}
 		}
 	}
-
-	private bool _isSingleSelect = false;
-	private bool _isDragging = false;
 
 	private void OnTreeDataGridDragStarted(TreeDataGridRowDragStartedEventArgs e)
 	{
@@ -285,6 +297,11 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 	private void OnDrop(object? sender, DragEventArgs e)
 	{
+		if (ViewModel?.IsLocked == true)
+		{
+			e.DragEffects = DragDropEffects.None;
+			return;
+		}
 		if (e.DragEffects.HasFlag(DragDropEffects.Copy))
 		{
 			var droppedFiles = e.Data.GetFiles();
@@ -306,6 +323,11 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 	private void OnDragOver(object? sender, DragEventArgs e)
 	{
+		if (ViewModel?.IsLocked == true)
+		{
+			e.DragEffects = DragDropEffects.None;
+			return;
+		}
 		var canImport = false;
 		var files = e.Data.GetFiles();
 		if (files != null)

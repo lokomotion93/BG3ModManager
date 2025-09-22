@@ -1558,6 +1558,13 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		}
 	}
 
+	public void LockAll(bool locked)
+	{
+		ActiveModsView.IsLocked = locked;
+		InactiveModsView.IsLocked = locked;
+		OverrideModsView.IsLocked = locked;
+	}
+
 	private static readonly HashSet<string> _migrateCampaigns = new HashSet<string>()
 	{
 		"991c9c7a-fb80-40cb-8f0d-b92d4e80e9b1",

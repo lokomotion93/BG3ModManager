@@ -28,6 +28,7 @@ public class ModListViewModel : ReactiveObject
 	[Reactive] public int TotalModsHidden { get; private set; }
 	[Reactive] public int TotalModsSelected { get; private set; }
 
+	[Reactive] public bool IsLocked { get; set; }
 	[Reactive] public bool IsFocused { get; set; }
 	[Reactive] public bool IsKeyboardFocusWithin { get; set; }
 	[Reactive] public bool IsActiveList { get; set; }
