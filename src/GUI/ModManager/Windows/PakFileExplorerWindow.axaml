@@ -34,7 +34,7 @@
 			<Separator />
 			<MenuItem Command="{Binding Path=CopyToClipboardCommand, Source={x:Static manager:AppServices.Commands}}"
 			    CommandParameter="{Binding FilePath}"
-			    Header="{x:Static loca:Resources.Window_PakFileExplorer_MenuItem_CopyPathToClipboard}"
+			    Header="{x:Static loca:Resources.Button_CopyPathToClipboard}"
 			    Icon="{icons:MaterialIconExt Kind=ClipboardAdd}" />
 		</MenuFlyout>
 	</Window.Resources>

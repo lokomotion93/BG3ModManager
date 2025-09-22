@@ -88,6 +88,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy Path to Clipboard....
+        /// </summary>
+        public static string Button_CopyPathToClipboard {
+            get {
+                return ResourceManager.GetString("Button_CopyPathToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         public static string Button_Download {
@@ -106,11 +115,326 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open in Directory Opus....
+        /// </summary>
+        public static string Button_OpenInDopus {
+            get {
+                return ResourceManager.GetString("Button_OpenInDopus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open in File Explorer....
+        /// </summary>
+        public static string Button_OpenInFileExplorer {
+            get {
+                return ResourceManager.GetString("Button_OpenInFileExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        public static string Button_Rename {
+            get {
+                return ResourceManager.GetString("Button_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skip.
         /// </summary>
         public static string Button_Skip {
             get {
                 return ResourceManager.GetString("Button_Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add New Order.
+        /// </summary>
+        public static string CommandBar_Button_AddNewOrder_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_AddNewOrder_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donate a Coffee....
+        /// </summary>
+        public static string CommandBar_Button_Donate_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_Donate_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Active Mods to Zip.
+        /// </summary>
+        public static string CommandBar_Button_ExportActiveModsToZip_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_ExportActiveModsToZip_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Active Mods to Zip As....
+        /// </summary>
+        public static string CommandBar_Button_ExportOrderToArchive_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_ExportOrderToArchive_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Order to Game.
+        /// </summary>
+        public static string CommandBar_Button_ExportOrderToGame_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_ExportOrderToGame_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch Game....
+        /// </summary>
+        public static string CommandBar_Button_LaunchGame_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_LaunchGame_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Mod Locations\nInactive mods will be moved to Mods_Disabled, and active mods will be moved to the Mods folder..
+        /// </summary>
+        public static string CommandBar_Button_MoveMods_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_MoveMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Script Extender Logs Folder....
+        /// </summary>
+        public static string CommandBar_Button_OpenExtenderLogsFolder_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_OpenExtenderLogsFolder_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Home Page (GitHub)....
+        /// </summary>
+        public static string CommandBar_Button_OpenGitHub_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_OpenGitHub_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Mods Folder....
+        /// </summary>
+        public static string CommandBar_Button_OpenModsFolder_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_OpenModsFolder_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Nexus Mods....
+        /// </summary>
+        public static string CommandBar_Button_OpenNexusMods_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_OpenNexusMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Steam Page....
+        /// </summary>
+        public static string CommandBar_Button_OpenSteamPage_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_OpenSteamPage_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Mods.
+        /// </summary>
+        public static string CommandBar_Button_RefreshMods_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_RefreshMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Order.
+        /// </summary>
+        public static string CommandBar_Button_SaveOrder_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_SaveOrder_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Order As....
+        /// </summary>
+        public static string CommandBar_Button_SaveOrderAs_ToolTip {
+            get {
+                return ResourceManager.GetString("CommandBar_Button_SaveOrderAs_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Executable Path....
+        /// </summary>
+        public static string CommandBar_LaunchGameFlyout_Button_EditExecutablePath {
+            get {
+                return ResourceManager.GetString("CommandBar_LaunchGameFlyout_Button_EditExecutablePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Parent Folder in Directory Opus....
+        /// </summary>
+        public static string CommandBar_LaunchGameFlyout_Button_OpenGameFolder_Dopus {
+            get {
+                return ResourceManager.GetString("CommandBar_LaunchGameFlyout_Button_OpenGameFolder_Dopus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Parent Folder in File Explorer....
+        /// </summary>
+        public static string CommandBar_LaunchGameFlyout_Button_OpenGameFolder_FileExplorer {
+            get {
+                return ResourceManager.GetString("CommandBar_LaunchGameFlyout_Button_OpenGameFolder_FileExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executable Path.
+        /// </summary>
+        public static string CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ExecutablePath {
+            get {
+                return ResourceManager.GetString("CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ExecutablePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent Folder Path.
+        /// </summary>
+        public static string CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ParentFolder {
+            get {
+                return ResourceManager.GetString("CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ParentFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to Clipboard....
+        /// </summary>
+        public static string CommandBar_LaunchGameFlyout_CopyToClipboard_Header {
+            get {
+                return ResourceManager.GetString("CommandBar_LaunchGameFlyout_CopyToClipboard_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open....
+        /// </summary>
+        public static string CommandBar_LaunchGameFlyout_Open_Header {
+            get {
+                return ResourceManager.GetString("CommandBar_LaunchGameFlyout_Open_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile....
+        /// </summary>
+        public static string CommandBar_ProfileFlyout_Profile_Header {
+            get {
+                return ResourceManager.GetString("CommandBar_ProfileFlyout_Profile_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saves....
+        /// </summary>
+        public static string CommandBar_ProfileFlyout_Saves_Header {
+            get {
+                return ResourceManager.GetString("CommandBar_ProfileFlyout_Saves_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Campaign.
+        /// </summary>
+        public static string CommandBar_Section_Campaign {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Campaign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string CommandBar_Section_Export {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Links.
+        /// </summary>
+        public static string CommandBar_Section_Links {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Links", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order.
+        /// </summary>
+        public static string CommandBar_Section_Order {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string CommandBar_Section_Profile {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string CommandBar_Section_Refresh {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcuts.
+        /// </summary>
+        public static string CommandBar_Section_Shortcuts {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Shortcuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support.
+        /// </summary>
+        public static string CommandBar_Section_Support {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Support", resourceCulture);
             }
         }
         
@@ -448,6 +772,78 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On Game Launch.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Header {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When the game launches through the mod manager, this action will be performed on the mod manager window.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Header_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Header_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Value_Close {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Value_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close the window.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Value_Close_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Value_Close_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Value_Minimize {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Value_Minimize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize the window.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Value_Minimize_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Value_Minimize_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Value_None {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Value_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do nothing.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_Value_None_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_Value_None_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string Window_About_Title {
@@ -777,15 +1173,6 @@ namespace ModManager.Locale {
         public static string Window_PakFileExplorer_MenuItem_ClearAll_ToolTip {
             get {
                 return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_ClearAll_ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copy Path to Clipboard....
-        /// </summary>
-        public static string Window_PakFileExplorer_MenuItem_CopyPathToClipboard {
-            get {
-                return ResourceManager.GetString("Window_PakFileExplorer_MenuItem_CopyPathToClipboard", resourceCulture);
             }
         }
         

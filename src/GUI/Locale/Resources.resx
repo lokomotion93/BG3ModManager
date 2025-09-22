@@ -346,9 +346,6 @@
   <data name="Window_PakFileExplorer_MenuItem_ExtractAllTo" xml:space="preserve">
     <value>Extract All Selected To...</value>
   </data>
-  <data name="Window_PakFileExplorer_MenuItem_CopyPathToClipboard" xml:space="preserve">
-    <value>Copy Path to Clipboard...</value>
-  </data>
   <data name="Window_PakFileExplorer_MenuItem_AddMods_ToolTip" xml:space="preserve">
     <value>Add Mod(s)...</value>
   </data>
@@ -414,5 +411,137 @@
   </data>
   <data name="ModContainer_ToolTip_Children" xml:space="preserve">
     <value>Container ({0} Children)</value>
+  </data>
+  <data name="CommandBar_Button_MoveMods_ToolTip" xml:space="preserve">
+    <value>Update Mod Locations\nInactive mods will be moved to Mods_Disabled, and active mods will be moved to the Mods folder.</value>
+  </data>
+  <data name="CommandBar_Button_ExportOrderToArchive_ToolTip" xml:space="preserve">
+    <value>Export Active Mods to Zip As...</value>
+  </data>
+  <data name="CommandBar_ProfileFlyout_Profile_Header" xml:space="preserve">
+    <value>Profile...</value>
+  </data>
+  <data name="CommandBar_ProfileFlyout_Saves_Header" xml:space="preserve">
+    <value>Saves...</value>
+  </data>
+  <data name="Button_Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="Button_CopyPathToClipboard" xml:space="preserve">
+    <value>Copy Path to Clipboard...</value>
+  </data>
+  <data name="Button_OpenInFileExplorer" xml:space="preserve">
+    <value>Open in File Explorer...</value>
+  </data>
+  <data name="Button_OpenInDopus" xml:space="preserve">
+    <value>Open in Directory Opus...</value>
+  </data>
+  <data name="CommandBar_Button_SaveOrder_ToolTip" xml:space="preserve">
+    <value>Save Order</value>
+  </data>
+  <data name="CommandBar_Button_SaveOrderAs_ToolTip" xml:space="preserve">
+    <value>Save Order As...</value>
+  </data>
+  <data name="CommandBar_Button_AddNewOrder_ToolTip" xml:space="preserve">
+    <value>Add New Order</value>
+  </data>
+  <data name="CommandBar_Button_ExportOrderToGame_ToolTip" xml:space="preserve">
+    <value>Export Order to Game</value>
+  </data>
+  <data name="CommandBar_Button_ExportActiveModsToZip_ToolTip" xml:space="preserve">
+    <value>Export Active Mods to Zip</value>
+  </data>
+  <data name="CommandBar_Button_RefreshMods_ToolTip" xml:space="preserve">
+    <value>Refresh Mods</value>
+  </data>
+  <data name="CommandBar_Button_OpenModsFolder_ToolTip" xml:space="preserve">
+    <value>Open Mods Folder...</value>
+  </data>
+  <data name="CommandBar_Button_OpenExtenderLogsFolder_ToolTip" xml:space="preserve">
+    <value>Open Script Extender Logs Folder...</value>
+  </data>
+  <data name="CommandBar_Button_LaunchGame_ToolTip" xml:space="preserve">
+    <value>Launch Game...</value>
+  </data>
+  <data name="CommandBar_LaunchGameFlyout_Button_EditExecutablePath" xml:space="preserve">
+    <value>Edit Executable Path...</value>
+  </data>
+  <data name="CommandBar_LaunchGameFlyout_Open_Header" xml:space="preserve">
+    <value>Open...</value>
+  </data>
+  <data name="CommandBar_LaunchGameFlyout_Button_OpenGameFolder_FileExplorer" xml:space="preserve">
+    <value>Open Parent Folder in File Explorer...</value>
+  </data>
+  <data name="CommandBar_LaunchGameFlyout_Button_OpenGameFolder_Dopus" xml:space="preserve">
+    <value>Open Parent Folder in Directory Opus...</value>
+  </data>
+  <data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Header" xml:space="preserve">
+    <value>Copy to Clipboard...</value>
+  </data>
+  <data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ExecutablePath" xml:space="preserve">
+    <value>Executable Path</value>
+  </data>
+  <data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ParentFolder" xml:space="preserve">
+    <value>Parent Folder Path</value>
+  </data>
+  <data name="CommandBar_Section_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="CommandBar_Section_Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="CommandBar_Section_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="CommandBar_Section_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="CommandBar_Section_Campaign" xml:space="preserve">
+    <value>Campaign</value>
+  </data>
+  <data name="CommandBar_Section_Shortcuts" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="CommandBar_Section_Links" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="CommandBar_Section_Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="CommandBar_Button_OpenSteamPage_ToolTip" xml:space="preserve">
+    <value>Open Steam Page...</value>
+  </data>
+  <data name="CommandBar_Button_OpenNexusMods_ToolTip" xml:space="preserve">
+    <value>Open Nexus Mods...</value>
+  </data>
+  <data name="CommandBar_Button_Donate_ToolTip" xml:space="preserve">
+    <value>Donate a Coffee...</value>
+  </data>
+  <data name="CommandBar_Button_OpenGitHub_ToolTip" xml:space="preserve">
+    <value>Open Home Page (GitHub)...</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Header" xml:space="preserve">
+    <value>On Game Launch</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Header_ToolTip" xml:space="preserve">
+    <value>When the game launches through the mod manager, this action will be performed on the mod manager window</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Value_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Value_None_ToolTip" xml:space="preserve">
+    <value>Do nothing</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Value_Minimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Value_Minimize_ToolTip" xml:space="preserve">
+    <value>Minimize the window</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Value_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_Value_Close_ToolTip" xml:space="preserve">
+    <value>Close the window</value>
   </data>
 </root>
