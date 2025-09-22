@@ -11,6 +11,7 @@ using DynamicData;
 
 using ModManager.Models.Mod;
 using ModManager.Services;
+using ModManager.Styling;
 using ModManager.ViewModels.Mods;
 
 using System.Reflection;
@@ -416,6 +417,25 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				var modThickness = new Thickness(0);
 				var modContainerThickness = new Thickness(0, 0, 0, 1);
 
+				void PrepareRow(TreeDataGridRow row, IModEntry entry)
+				{
+					if (entry.EntryType == ModEntryType.Mod)
+					{
+						entry.ContextMenu = modContext;
+						row.BorderThickness = modThickness;
+					}
+					else if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+					{
+						entry.ContextMenu = modContainerContext;
+						row.BorderThickness = modContainerThickness;
+						row[!BorderBrushProperty] = container.Settings.WhenAnyValue(x => x.BorderColor).Select(x => x.IsValid() ? ColorBrushCache.GetBrush(x) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
+
+						var defaultBG = row.Background;
+						row[!BackgroundProperty] = container.Settings.WhenAnyValue(x => x.BackgroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultBG).ToBinding();
+						row[!BorderThicknessProperty] = container.Settings.WhenAnyValue(x => x.BorderThickness).Select(x => x.IsValid() ? Thickness.Parse(x) : modContainerThickness).ToBinding();
+					}
+				}
+
 				//Initialize context menus. RowPrepared apparently doesn't fire until a row is interacted with
 				d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
 					h => (sender, e) => h(e),
@@ -429,16 +449,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 						{
 							if (child is TreeDataGridRow row && row.Model is IModEntry entry)
 							{
-								if (entry.EntryType == ModEntryType.Mod)
-								{
-									entry.ContextMenu = modContext;
-									row.BorderThickness = modThickness;
-								}
-								else if (entry.EntryType == ModEntryType.Container)
-								{
-									entry.ContextMenu = modContainerContext;
-									row.BorderThickness = modContainerThickness;
-								}
+								PrepareRow(row, entry);
 							}
 						}
 					}
@@ -461,16 +472,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 							ModsTreeDataGrid.RowSelection!.Select(e.RowIndex);
 							entry.PreserveSelection = false;
 						}
-						if(entry.EntryType == ModEntryType.Mod)
-						{
-							entry.ContextMenu = modContext;
-							e.Row.BorderThickness = modThickness;
-						}
-						else if (entry.EntryType == ModEntryType.Container)
-						{
-							entry.ContextMenu = modContainerContext;
-							e.Row.BorderThickness = modContainerThickness;
-						}
+						PrepareRow(e.Row, entry);
 					}
 				}));
 

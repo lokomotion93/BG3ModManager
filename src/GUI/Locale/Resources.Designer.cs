@@ -205,15 +205,6 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update Mod Locations\nInactive mods will be moved to Mods_Disabled, and active mods will be moved to the Mods folder..
-        /// </summary>
-        public static string CommandBar_Button_MoveMods_ToolTip {
-            get {
-                return ResourceManager.GetString("CommandBar_Button_MoveMods_ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Open Script Extender Logs Folder....
         /// </summary>
         public static string CommandBar_Button_OpenExtenderLogsFolder_ToolTip {
@@ -453,6 +444,654 @@ namespace ModManager.Locale {
         public static string Footer_NexusModsAPILimit_ToolTip {
             get {
                 return ResourceManager.GetString("Footer_NexusModsAPILimit_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add New Order.
+        /// </summary>
+        public static string Keybinding_AddNewOrder {
+            get {
+                return ResourceManager.GetString("Keybinding_AddNewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for All Mod Updates.
+        /// </summary>
+        public static string Keybinding_CheckAllModUpdates {
+            get {
+                return ResourceManager.GetString("Keybinding_CheckAllModUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check all sources of mod updates (GitHub, Nexus, etc.).
+        /// </summary>
+        public static string Keybinding_CheckAllModUpdates_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_CheckAllModUpdates_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check For App Updates.
+        /// </summary>
+        public static string Keybinding_CheckForAppUpdates {
+            get {
+                return ResourceManager.GetString("Keybinding_CheckForAppUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Github Mod Updates.
+        /// </summary>
+        public static string Keybinding_CheckForGitHubModUpdates {
+            get {
+                return ResourceManager.GetString("Keybinding_CheckForGitHubModUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for mod.io Updates.
+        /// </summary>
+        public static string Keybinding_CheckForModioUpdates {
+            get {
+                return ResourceManager.GetString("Keybinding_CheckForModioUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Nexus Mod Updates.
+        /// </summary>
+        public static string Keybinding_CheckForNexusModsUpdates {
+            get {
+                return ResourceManager.GetString("Keybinding_CheckForNexusModsUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates....
+        /// </summary>
+        public static string Keybinding_CheckForUpdates {
+            get {
+                return ResourceManager.GetString("Keybinding_CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Selected Mods....
+        /// </summary>
+        public static string Keybinding_DeleteSelectedMods {
+            get {
+                return ResourceManager.GetString("Keybinding_DeleteSelectedMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download &amp; Extract the Script Extender....
+        /// </summary>
+        public static string Keybinding_DownloadScriptExtender {
+            get {
+                return ResourceManager.GetString("Keybinding_DownloadScriptExtender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Order to Game.
+        /// </summary>
+        public static string Keybinding_ExportOrder {
+            get {
+                return ResourceManager.GetString("Keybinding_ExportOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export order to modsettings.lsx.
+        /// </summary>
+        public static string Keybinding_ExportOrder_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_ExportOrder_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Order to Archive As....
+        /// </summary>
+        public static string Keybinding_ExportOrderToArchiveAs {
+            get {
+                return ResourceManager.GetString("Keybinding_ExportOrderToArchiveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export all active mods to an archive file of a chosen type.
+        /// </summary>
+        public static string Keybinding_ExportOrderToArchiveAs_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_ExportOrderToArchiveAs_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Order to Text File....
+        /// </summary>
+        public static string Keybinding_ExportOrderToTextFile {
+            get {
+                return ResourceManager.GetString("Keybinding_ExportOrderToTextFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Order to Archive (.zip).
+        /// </summary>
+        public static string Keybinding_ExportOrderToZip {
+            get {
+                return ResourceManager.GetString("Keybinding_ExportOrderToZip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export all active mods to a zip file.
+        /// </summary>
+        public static string Keybinding_ExportOrderToZip_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_ExportOrderToZip_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract All Selected Mods To....
+        /// </summary>
+        public static string Keybinding_ExtractAllSelectedMods {
+            get {
+                return ResourceManager.GetString("Keybinding_ExtractAllSelectedMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract Selected Active Mods To....
+        /// </summary>
+        public static string Keybinding_ExtractSelectedActiveMods {
+            get {
+                return ResourceManager.GetString("Keybinding_ExtractSelectedActiveMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract Active Adventure Mod To....
+        /// </summary>
+        public static string Keybinding_ExtractSelectedAdventure {
+            get {
+                return ResourceManager.GetString("Keybinding_ExtractSelectedAdventure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract Selected Inactive Mods To....
+        /// </summary>
+        public static string Keybinding_ExtractSelectedInactiveMods {
+            get {
+                return ResourceManager.GetString("Keybinding_ExtractSelectedInactiveMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Focus Active Mods List.
+        /// </summary>
+        public static string Keybinding_FocusActiveMods {
+            get {
+                return ResourceManager.GetString("Keybinding_FocusActiveMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Focus Inactive Mods List.
+        /// </summary>
+        public static string Keybinding_FocusInactiveMods {
+            get {
+                return ResourceManager.GetString("Keybinding_FocusInactiveMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Mods....
+        /// </summary>
+        public static string Keybinding_ImportMods {
+            get {
+                return ResourceManager.GetString("Keybinding_ImportMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Nexus Mods Data from Archives....
+        /// </summary>
+        public static string Keybinding_ImportNexusModsIds {
+            get {
+                return ResourceManager.GetString("Keybinding_ImportNexusModsIds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Order from File....
+        /// </summary>
+        public static string Keybinding_ImportOrderFromFile {
+            get {
+                return ResourceManager.GetString("Keybinding_ImportOrderFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Order from Save....
+        /// </summary>
+        public static string Keybinding_ImportOrderFromSave {
+            get {
+                return ResourceManager.GetString("Keybinding_ImportOrderFromSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Order from Save As New Order....
+        /// </summary>
+        public static string Keybinding_ImportOrderFromSaveAsNew {
+            get {
+                return ResourceManager.GetString("Keybinding_ImportOrderFromSaveAsNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Order &amp; Mods from Archive....
+        /// </summary>
+        public static string Keybinding_ImportOrderFromZipFile {
+            get {
+                return ResourceManager.GetString("Keybinding_ImportOrderFromZipFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch Game.
+        /// </summary>
+        public static string Keybinding_LaunchGame {
+            get {
+                return ResourceManager.GetString("Keybinding_LaunchGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moved Selected Mods to Opposite List.
+        /// </summary>
+        public static string Keybinding_MoveSelectedMods {
+            get {
+                return ResourceManager.GetString("Keybinding_MoveSelectedMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to Bottom of List.
+        /// </summary>
+        public static string Keybinding_MoveToBottom {
+            get {
+                return ResourceManager.GetString("Keybinding_MoveToBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to Top of List.
+        /// </summary>
+        public static string Keybinding_MoveToTop {
+            get {
+                return ResourceManager.GetString("Keybinding_MoveToTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add New Order.
+        /// </summary>
+        public static string Keybinding_NewOrder {
+            get {
+                return ResourceManager.GetString("Keybinding_NewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donate a Coffee....
+        /// </summary>
+        public static string Keybinding_OpenDonationPage {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenDonationPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Script Extender Data Folder.
+        /// </summary>
+        public static string Keybinding_OpenExtenderDataFolder {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenExtenderDataFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Extender Logs Folder.
+        /// </summary>
+        public static string Keybinding_OpenExtenderLogsFolder {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenExtenderLogsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Game Folder.
+        /// </summary>
+        public static string Keybinding_OpenGameFolder {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenGameFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Repository Page....
+        /// </summary>
+        public static string Keybinding_OpenGitHubRepo {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenGitHubRepo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Mods Folder.
+        /// </summary>
+        public static string Keybinding_OpenModsFolder {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenModsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Nexus Mods Website.
+        /// </summary>
+        public static string Keybinding_OpenNexusMods {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenNexusMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Saves Folder.
+        /// </summary>
+        public static string Keybinding_OpenSavesFolder {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenSavesFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Steam Store Page.
+        /// </summary>
+        public static string Keybinding_OpenSteamPage {
+            get {
+                return ResourceManager.GetString("Keybinding_OpenSteamPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organize Mod Paks.
+        /// </summary>
+        public static string Keybinding_OrganizeModPaks {
+            get {
+                return ResourceManager.GetString("Keybinding_OrganizeModPaks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder..
+        /// </summary>
+        public static string Keybinding_OrganizeModPaks_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_OrganizeModPaks_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Mods.
+        /// </summary>
+        public static string Keybinding_RefreshMods {
+            get {
+                return ResourceManager.GetString("Keybinding_RefreshMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Mod Updates.
+        /// </summary>
+        public static string Keybinding_RefreshModUpdates {
+            get {
+                return ResourceManager.GetString("Keybinding_RefreshModUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload All Mods.
+        /// </summary>
+        public static string Keybinding_ReloadMods {
+            get {
+                return ResourceManager.GetString("Keybinding_ReloadMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload mod data without doing a full reload (i.e. reload metadata like the name).
+        /// </summary>
+        public static string Keybinding_ReloadMods_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_ReloadMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Order.
+        /// </summary>
+        public static string Keybinding_RenameOrder {
+            get {
+                return ResourceManager.GetString("Keybinding_RenameOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename current load order.
+        /// </summary>
+        public static string Keybinding_RenameOrder_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_RenameOrder_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Save.
+        /// </summary>
+        public static string Keybinding_RenameSave {
+            get {
+                return ResourceManager.GetString("Keybinding_RenameSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Order.
+        /// </summary>
+        public static string Keybinding_SaveOrder {
+            get {
+                return ResourceManager.GetString("Keybinding_SaveOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Order As....
+        /// </summary>
+        public static string Keybinding_SaveOrderAs {
+            get {
+                return ResourceManager.GetString("Keybinding_SaveOrderAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Settings.
+        /// </summary>
+        public static string Keybinding_SaveSettings {
+            get {
+                return ResourceManager.GetString("Keybinding_SaveSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speak Active Order.
+        /// </summary>
+        public static string Keybinding_SpeakActiveModOrder {
+            get {
+                return ResourceManager.GetString("Keybinding_SpeakActiveModOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Speaking.
+        /// </summary>
+        public static string Keybinding_StopSpeaking {
+            get {
+                return ResourceManager.GetString("Keybinding_StopSpeaking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to Other List.
+        /// </summary>
+        public static string Keybinding_SwapListFocus {
+            get {
+                return ResourceManager.GetString("Keybinding_SwapListFocus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string Keybinding_ToggleAboutWindow {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleAboutWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Collection Downloader Window.
+        /// </summary>
+        public static string Keybinding_ToggleCollectionDownloaderWindow {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleCollectionDownloaderWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show File Names for Mods.
+        /// </summary>
+        public static string Keybinding_ToggleFileNameDisplay {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleFileNameDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Focus Filter for Current List.
+        /// </summary>
+        public static string Keybinding_ToggleFilterFocus {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleFilterFocus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Keybindings Window.
+        /// </summary>
+        public static string Keybinding_ToggleKeybindings {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleKeybindings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download nxm:\\ Link....
+        /// </summary>
+        public static string Keybinding_ToggleNXMLinkDownloader {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleNXMLinkDownloader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download a NexusMods link for a mod file or a collection.
+        /// </summary>
+        public static string Keybinding_ToggleNXMLinkDownloader_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleNXMLinkDownloader_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Mod Files Explorer Window.
+        /// </summary>
+        public static string Keybinding_TogglePakFileExplorerWindow {
+            get {
+                return ResourceManager.GetString("Keybinding_TogglePakFileExplorerWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Settings Window.
+        /// </summary>
+        public static string Keybinding_ToggleSettingsWindow {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleSettingsWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Stats Validator Window.
+        /// </summary>
+        public static string Keybinding_ToggleStatsValidatorWindow {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleStatsValidatorWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Dark/Light Mode.
+        /// </summary>
+        public static string Keybinding_ToggleThemeMode {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleThemeMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Updates View.
+        /// </summary>
+        public static string Keybinding_ToggleUpdatesView {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleUpdatesView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Version Generator Window.
+        /// </summary>
+        public static string Keybinding_ToggleVersionGeneratorWindow {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleVersionGeneratorWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A tool for mod authors to generate version numbers for a mod&apos;s meta.lsx.
+        /// </summary>
+        public static string Keybinding_ToggleVersionGeneratorWindow_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_ToggleVersionGeneratorWindow_ToolTip", resourceCulture);
             }
         }
         

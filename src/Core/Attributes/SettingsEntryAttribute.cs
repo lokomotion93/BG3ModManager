@@ -10,15 +10,17 @@ public class SettingsEntryAttribute : Attribute
 	public string? ToolTip { get; set; }
 	public string? BindTo { get; set; }
 	public string? BindVisibilityTo { get; set; }
+	public string? ControlText { get; set; }
 	public bool DisableAutoGen { get; set; }
 
-	public SettingsEntryAttribute(string displayName = "", string tooltip = "", string? bindTo = null, string? bindVisibilityTo = null, bool disableAutoGen = false)
+	public SettingsEntryAttribute(string displayName = "", string tooltip = "", string? bindTo = null, string? bindVisibilityTo = null, bool disableAutoGen = false, string? controlText = null)
 	{
 		DisplayName = displayName;
 		ToolTip = tooltip;
 		BindTo = bindTo;
 		BindVisibilityTo = bindVisibilityTo;
 		DisableAutoGen = disableAutoGen;
+		ControlText = controlText;
 	}
 }
 

@@ -28,6 +28,8 @@ public static class AppServices
 	public static IFileSystemService FS => Get<IFileSystemService>()!;
 	public static IDirectoryOpusService Dopus => Get<IDirectoryOpusService>()!;
 
+	public static ILocaleService Locale => Get<ILocaleService>()!;
+
 	static AppServices()
 	{
 		var resolver = Locator.CurrentMutable;

@@ -412,9 +412,6 @@
   <data name="ModContainer_ToolTip_Children" xml:space="preserve">
     <value>Container ({0} Children)</value>
   </data>
-  <data name="CommandBar_Button_MoveMods_ToolTip" xml:space="preserve">
-    <value>Update Mod Locations\nInactive mods will be moved to Mods_Disabled, and active mods will be moved to the Mods folder.</value>
-  </data>
   <data name="CommandBar_Button_ExportOrderToArchive_ToolTip" xml:space="preserve">
     <value>Export Active Mods to Zip As...</value>
   </data>
@@ -543,5 +540,227 @@
   </data>
   <data name="Settings_ActionOnGameLaunch_Value_Close_ToolTip" xml:space="preserve">
     <value>Close the window</value>
+  </data>
+  <data name="Keybinding_AddNewOrder" xml:space="preserve">
+    <value>Add New Order</value>
+  </data>
+  <data name="Keybinding_CheckForAppUpdates" xml:space="preserve">
+    <value>Check For App Updates</value>
+  </data>
+  <data name="Keybinding_CheckAllModUpdates" xml:space="preserve">
+    <value>Check for All Mod Updates</value>
+  </data>
+  <data name="Keybinding_CheckAllModUpdates_ToolTip" xml:space="preserve">
+    <value>Check all sources of mod updates (GitHub, Nexus, etc.)</value>
+  </data>
+  <data name="Keybinding_CheckForGitHubModUpdates" xml:space="preserve">
+    <value>Check for Github Mod Updates</value>
+  </data>
+  <data name="Keybinding_CheckForNexusModsUpdates" xml:space="preserve">
+    <value>Check for Nexus Mod Updates</value>
+  </data>
+  <data name="Keybinding_CheckForModioUpdates" xml:space="preserve">
+    <value>Check for mod.io Updates</value>
+  </data>
+  <data name="Keybinding_ExportOrder" xml:space="preserve">
+    <value>Export Order to Game</value>
+  </data>
+  <data name="Keybinding_ExportOrder_ToolTip" xml:space="preserve">
+    <value>Export order to modsettings.lsx</value>
+  </data>
+  <data name="Keybinding_ExportOrderToTextFile" xml:space="preserve">
+    <value>Export Order to Text File...</value>
+  </data>
+  <data name="Keybinding_ExportOrderToZip" xml:space="preserve">
+    <value>Export Order to Archive (.zip)</value>
+  </data>
+  <data name="Keybinding_ExportOrderToZip_ToolTip" xml:space="preserve">
+    <value>Export all active mods to a zip file</value>
+  </data>
+  <data name="Keybinding_ExportOrderToArchiveAs" xml:space="preserve">
+    <value>Export Order to Archive As...</value>
+  </data>
+  <data name="Keybinding_ExportOrderToArchiveAs_ToolTip" xml:space="preserve">
+    <value>Export all active mods to an archive file of a chosen type</value>
+  </data>
+  <data name="Keybinding_RenameOrder" xml:space="preserve">
+    <value>Rename Order</value>
+  </data>
+  <data name="Keybinding_RenameOrder_ToolTip" xml:space="preserve">
+    <value>Rename current load order</value>
+  </data>
+  <data name="Keybinding_LaunchGame" xml:space="preserve">
+    <value>Launch Game</value>
+  </data>
+  <data name="Keybinding_OpenDonationPage" xml:space="preserve">
+    <value>Donate a Coffee...</value>
+  </data>
+  <data name="Keybinding_OpenGitHubRepo" xml:space="preserve">
+    <value>Open Repository Page...</value>
+  </data>
+  <data name="Keybinding_OpenModsFolder" xml:space="preserve">
+    <value>Open Mods Folder</value>
+  </data>
+  <data name="Keybinding_OpenExtenderLogsFolder" xml:space="preserve">
+    <value>Open Extender Logs Folder</value>
+  </data>
+  <data name="Keybinding_OpenNexusMods" xml:space="preserve">
+    <value>Open Nexus Mods Website</value>
+  </data>
+  <data name="Keybinding_OpenSteamPage" xml:space="preserve">
+    <value>Open Steam Store Page</value>
+  </data>
+  <data name="Keybinding_RefreshMods" xml:space="preserve">
+    <value>Refresh Mods</value>
+  </data>
+  <data name="Keybinding_ReloadMods" xml:space="preserve">
+    <value>Reload All Mods</value>
+  </data>
+  <data name="Keybinding_ReloadMods_ToolTip" xml:space="preserve">
+    <value>Reload mod data without doing a full reload (i.e. reload metadata like the name)</value>
+  </data>
+  <data name="Keybinding_RefreshModUpdates" xml:space="preserve">
+    <value>Refresh Mod Updates</value>
+  </data>
+  <data name="Keybinding_RenameSave" xml:space="preserve">
+    <value>Rename Save</value>
+  </data>
+  <data name="Keybinding_SaveOrder" xml:space="preserve">
+    <value>Save Order</value>
+  </data>
+  <data name="Keybinding_SaveOrderAs" xml:space="preserve">
+    <value>Save Order As...</value>
+  </data>
+  <data name="Keybinding_SaveSettings" xml:space="preserve">
+    <value>Save Settings</value>
+  </data>
+  <data name="Keybinding_ToggleUpdatesView" xml:space="preserve">
+    <value>Toggle Updates View</value>
+  </data>
+  <data name="Keybinding_TogglePakFileExplorerWindow" xml:space="preserve">
+    <value>Toggle Mod Files Explorer Window</value>
+  </data>
+  <data name="Keybinding_ToggleStatsValidatorWindow" xml:space="preserve">
+    <value>Toggle Stats Validator Window</value>
+  </data>
+  <data name="Keybinding_ToggleSettingsWindow" xml:space="preserve">
+    <value>Toggle Settings Window</value>
+  </data>
+  <data name="Keybinding_ToggleKeybindings" xml:space="preserve">
+    <value>Toggle Keybindings Window</value>
+  </data>
+  <data name="Keybinding_ToggleVersionGeneratorWindow" xml:space="preserve">
+    <value>Toggle Version Generator Window</value>
+  </data>
+  <data name="Keybinding_ToggleVersionGeneratorWindow_ToolTip" xml:space="preserve">
+    <value>A tool for mod authors to generate version numbers for a mod's meta.lsx</value>
+  </data>
+  <data name="Keybinding_ToggleAboutWindow" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Keybinding_ToggleThemeMode" xml:space="preserve">
+    <value>Toggle Dark/Light Mode</value>
+  </data>
+  <data name="Keybinding_ImportMods" xml:space="preserve">
+    <value>Import Mods...</value>
+  </data>
+  <data name="Keybinding_ImportNexusModsIds" xml:space="preserve">
+    <value>Import Nexus Mods Data from Archives...</value>
+  </data>
+  <data name="Keybinding_NewOrder" xml:space="preserve">
+    <value>Add New Order</value>
+  </data>
+  <data name="Keybinding_SaveOrder" xml:space="preserve">
+    <value>Save Order</value>
+  </data>
+  <data name="Keybinding_SaveOrderAs" xml:space="preserve">
+    <value>Save Order As...</value>
+  </data>
+  <data name="Keybinding_ImportOrderFromSave" xml:space="preserve">
+    <value>Import Order from Save...</value>
+  </data>
+  <data name="Keybinding_ImportOrderFromSaveAsNew" xml:space="preserve">
+    <value>Import Order from Save As New Order...</value>
+  </data>
+  <data name="Keybinding_ImportOrderFromFile" xml:space="preserve">
+    <value>Import Order from File...</value>
+  </data>
+  <data name="Keybinding_ImportOrderFromZipFile" xml:space="preserve">
+    <value>Import Order &amp; Mods from Archive...</value>
+  </data>
+  <data name="Keybinding_MoveSelectedMods" xml:space="preserve">
+    <value>Moved Selected Mods to Opposite List</value>
+  </data>
+  <data name="Keybinding_FocusActiveMods" xml:space="preserve">
+    <value>Focus Active Mods List</value>
+  </data>
+  <data name="Keybinding_FocusInactiveMods" xml:space="preserve">
+    <value>Focus Inactive Mods List</value>
+  </data>
+  <data name="Keybinding_SwapListFocus" xml:space="preserve">
+    <value>Go to Other List</value>
+  </data>
+  <data name="Keybinding_MoveToTop" xml:space="preserve">
+    <value>Move to Top of List</value>
+  </data>
+  <data name="Keybinding_MoveToBottom" xml:space="preserve">
+    <value>Move to Bottom of List</value>
+  </data>
+  <data name="Keybinding_ToggleFilterFocus" xml:space="preserve">
+    <value>Toggle Focus Filter for Current List</value>
+  </data>
+  <data name="Keybinding_ToggleFileNameDisplay" xml:space="preserve">
+    <value>Show File Names for Mods</value>
+  </data>
+  <data name="Keybinding_DeleteSelectedMods" xml:space="preserve">
+    <value>Delete Selected Mods...</value>
+  </data>
+  <data name="Keybinding_OpenGameFolder" xml:space="preserve">
+    <value>Open Game Folder</value>
+  </data>
+  <data name="Keybinding_OpenSavesFolder" xml:space="preserve">
+    <value>Open Saves Folder</value>
+  </data>
+  <data name="Keybinding_OpenExtenderDataFolder" xml:space="preserve">
+    <value>Open Script Extender Data Folder</value>
+  </data>
+  <data name="Keybinding_DownloadScriptExtender" xml:space="preserve">
+    <value>Download &amp; Extract the Script Extender...</value>
+  </data>
+  <data name="Keybinding_ToggleNXMLinkDownloader" xml:space="preserve">
+    <value>Download nxm:\\ Link...</value>
+  </data>
+  <data name="Keybinding_ToggleNXMLinkDownloader_ToolTip" xml:space="preserve">
+    <value>Download a NexusMods link for a mod file or a collection</value>
+  </data>
+  <data name="Keybinding_ToggleCollectionDownloaderWindow" xml:space="preserve">
+    <value>Open Collection Downloader Window</value>
+  </data>
+  <data name="Keybinding_ExtractAllSelectedMods" xml:space="preserve">
+    <value>Extract All Selected Mods To...</value>
+  </data>
+  <data name="Keybinding_ExtractSelectedActiveMods" xml:space="preserve">
+    <value>Extract Selected Active Mods To...</value>
+  </data>
+  <data name="Keybinding_ExtractSelectedInactiveMods" xml:space="preserve">
+    <value>Extract Selected Inactive Mods To...</value>
+  </data>
+  <data name="Keybinding_ExtractSelectedAdventure" xml:space="preserve">
+    <value>Extract Active Adventure Mod To...</value>
+  </data>
+  <data name="Keybinding_SpeakActiveModOrder" xml:space="preserve">
+    <value>Speak Active Order</value>
+  </data>
+  <data name="Keybinding_StopSpeaking" xml:space="preserve">
+    <value>Stop Speaking</value>
+  </data>
+  <data name="Keybinding_CheckForUpdates" xml:space="preserve">
+    <value>Check for Updates...</value>
+  </data>
+  <data name="Keybinding_OrganizeModPaks" xml:space="preserve">
+    <value>Organize Mod Paks</value>
+  </data>
+<data name="Keybinding_OrganizeModPaks_ToolTip" xml:space="preserve">
+    <value>Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder.</value>
   </data>
 </root>

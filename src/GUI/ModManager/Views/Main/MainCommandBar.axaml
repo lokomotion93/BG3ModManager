@@ -170,37 +170,25 @@
 					</controls:ComboBoxWithRightClick>
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<Button Command="{Binding SaveOrderCommand}"
-					    Content="{materialIcons:MaterialIconExt Kind=ContentSave}"
-					    Foreground="LimeGreen"
-					    ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_SaveOrder_ToolTip}" />
+					<Button Command="{Binding SaveOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=ContentSave, IconForeground=LimeGreen}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_SaveOrder_ToolTip}" />
 
 					<Button Command="{Binding SaveOrderAsCommand}" Content="{materialIcons:MaterialIconExt Kind=ContentSaveEdit}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_SaveOrderAs_ToolTip}" />
 
-					<Button Command="{Binding AddNewOrderCommand}"
-					    Content="{materialIcons:MaterialIconExt Kind=Add}"
-					    Foreground="OrangeRed"
-					    ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_AddNewOrder_ToolTip}" />
+					<Button Command="{Binding AddNewOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=Add, IconForeground=OrangeRed}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_AddNewOrder_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
 					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Export}" />
-					<Button Command="{Binding ExportOrderCommand}"
-					    Content="{materialIcons:MaterialIconExt Kind=Export}"
-					    Foreground="RoyalBlue"
-					    ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_ExportOrderToGame_ToolTip}" />
+					<Button Command="{Binding ExportOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=Export, IconForeground=RoyalBlue}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_ExportOrderToGame_ToolTip}" />
 
 					<Button Command="{Binding ExportOrderToZipCommand}" Content="{materialIcons:MaterialIconExt Kind=FolderZip}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_ExportActiveModsToZip_ToolTip}" />
 
 					<Button Command="{Binding ExportOrderToArchiveAsCommand}" Content="{materialIcons:MaterialIconExt Kind=ArchiveEdit}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_ExportOrderToArchive_ToolTip}" />
 
-					<Button Command="{Binding MoveModsCommand}" Content="{materialIcons:MaterialIconExt Kind=FileMove, IconForeground={StaticResource MoveModsIconForeground}}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_MoveMods_ToolTip}" />
+					<Button Command="{Binding OrganizeModPaksCommand}" Content="{materialIcons:MaterialIconExt Kind=FileMove, IconForeground={StaticResource MoveModsIconForeground}}" ToolTip.Tip="{x:Static loca:Resources.Keybinding_OrganizeModPaks_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
 					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Refresh}" />
-					<Button Command="{Binding RefreshCommand}"
-					    Content="{materialIcons:MaterialIconExt Kind=Refresh}"
-					    Foreground="Red"
-					    ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_RefreshMods_ToolTip}" />
+					<Button Command="{Binding RefreshCommand}" Content="{materialIcons:MaterialIconExt Kind=Refresh, IconForeground=Red}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_RefreshMods_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" IsVisible="{Binding IsDeveloperMode}" Orientation="Horizontal">
 					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Campaign}" />
@@ -217,30 +205,21 @@
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
 					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Shortcuts}" />
-					<Button Command="{Binding OpenModsFolderCommand}"
-					    Content="{materialIcons:MaterialIconExt Kind=FolderOpen}"
-					    Foreground="RoyalBlue"
-					    ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenModsFolder_ToolTip}">
+					<Button Command="{Binding OpenModsFolderCommand}" Content="{materialIcons:MaterialIconExt Kind=FolderOpen, IconForeground=RoyalBlue}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenModsFolder_ToolTip}">
 						<Button.ContextFlyout>
 							<MenuFlyout>
 								<MenuItem Command="{Binding CopyModsDirectoryPathToClipboardCommand}" Header="{x:Static loca:Resources.Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
 							</MenuFlyout>
 						</Button.ContextFlyout>
 					</Button>
-					<Button Command="{Binding OpenLogsFolderCommand}"
-					    Content="{materialIcons:MaterialIconExt Kind=Contract}"
-					    Foreground="Teal"
-					    ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenExtenderLogsFolder_ToolTip}">
+					<Button Command="{Binding OpenLogsFolderCommand}" Content="{materialIcons:MaterialIconExt Kind=Contract, IconForeground=Teal}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenExtenderLogsFolder_ToolTip}">
 						<Button.ContextFlyout>
 							<MenuFlyout>
 								<MenuItem Command="{Binding CopyExtenderLogsDirectoryPathToClipboardCommand}" Header="{x:Static loca:Resources.Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
 							</MenuFlyout>
 						</Button.ContextFlyout>
 					</Button>
-					<Button Command="{Binding LaunchGameCommand}"
-					    Content="{materialIcons:MaterialIconExt Kind=Launch}"
-					    Foreground="Red"
-					    ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_LaunchGame_ToolTip}">
+					<Button Command="{Binding LaunchGameCommand}" Content="{materialIcons:MaterialIconExt Kind=Launch, IconForeground=Red}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_LaunchGame_ToolTip}">
 						<Button.ContextFlyout>
 							<MenuFlyout>
 								<MenuItem Command="{Binding EditExecutablePathCommand}" Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_Button_EditExecutablePath}" Icon="{materialIcons:MaterialIconExt Kind=FileEdit}" />

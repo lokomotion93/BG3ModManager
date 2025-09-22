@@ -38,7 +38,15 @@ public class MenuEntry : ReactiveObject, IMenuEntry
 				ToolTip = keybinding.ToolTip,
 				Command = command
 			};
-			if(children != null)
+			if (keybinding.DisplayName.IsValid())
+			{
+				AppServices.Locale.EntryToObservable(keybinding.DisplayName).Subscribe(x => entry.DisplayName = x);
+			}
+			if (keybinding.ToolTip.IsValid())
+			{
+				AppServices.Locale.EntryToObservable(keybinding.ToolTip).Subscribe(x => entry.ToolTip = x);
+			}
+			if (children != null)
 			{
 				entry.Children = children;
 			}

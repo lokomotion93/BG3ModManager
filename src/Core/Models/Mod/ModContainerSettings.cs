@@ -15,6 +15,7 @@ public class ModContainerSettings(string id) : ReactiveObject, IObjectWithId
 	[Reactive, DataMember] public string? BorderColor { get; set; }
 	[Reactive, DataMember] public string? ForegroundColor { get; set; }
 	[Reactive, DataMember] public string? BackgroundColor { get; set; }
+	[Reactive, DataMember] public string? BorderThickness { get; set; }
 
 	[JsonConstructor]
 	public ModContainerSettings() : this(string.Empty)

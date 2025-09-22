@@ -40,8 +40,8 @@
 		<TextBlock x:Name="TargetResourceDigestTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="Target Resource Digest" ToolTip.Tip="Use a specific Digest for the target update" IsVisible="{Binding DevOptionsEnabled}" />
 		<controls:EnhancedTextBox x:Name="TargetResourceDigestTextBox" Grid.Row="7" Grid.Column="1" Classes="compact" Text="{Binding TargetResourceDigest, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Use a specific Digest for the target update" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="TargetVersionTextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="Target Version" ToolTip.Tip="Update to a specific version of the script extender (ex. '5.0.0.0')" />
-		<controls:EnhancedTextBox x:Name="TargetVersionTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding TargetVersion, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Update to a specific version of the script extender (ex. '5.0.0.0')"/>
+		<TextBlock x:Name="TargetVersionTextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="Target Version" ToolTip.Tip="Update to a specific version of the script extender (ex. &apos;5.0.0.0&apos;)" />
+		<controls:EnhancedTextBox x:Name="TargetVersionTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding TargetVersion, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Update to a specific version of the script extender (ex. &apos;5.0.0.0&apos;)"/>
 		
 		<TextBlock x:Name="ValidateSignatureTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="Validate Signature" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
 		<CheckBox x:Name="ValidateSignatureCheckBox" Grid.Row="9" Grid.Column="1" Classes="right" IsChecked ="{Binding ValidateSignature}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>

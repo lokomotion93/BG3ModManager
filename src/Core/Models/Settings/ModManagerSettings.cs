@@ -5,6 +5,7 @@ using ModManager.Util;
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -115,6 +116,12 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[DataMember, Reactive] public string? LastLoadedOrderFilePath { get; set; }
 	[DataMember, Reactive] public string? LastExtractOutputPath { get; set; }
 
+	[DefaultValue("en")]
+	[SettingsEntry("Language", "The language to use in the mod manager", disableAutoGen:true)]
+	[DataMember, Reactive] public string? Language { get; set; }
+	public ObservableCollectionExtended<CultureInfo> Languages { get; }
+	[Reactive] public CultureInfo? SelectedLanguage { get; set; }
+
 	[DataMember, Reactive] public ModManagerUpdateSettings UpdateSettings { get; set; }
 	[DataMember, Reactive] public WindowSettings Window { get; set; }
 	[DataMember, Reactive] public ConfirmationSettings Confirmations { get; set; }
@@ -160,5 +167,9 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 		UpdateSettings = new();
 		Window = new();
 		Confirmations = new();
+
+		Languages = [];
+		var langs = CultureInfo.GetCultures(CultureTypes.NeutralCultures).Where(x => x != CultureInfo.InvariantCulture).DistinctBy(x => x.LCID).OrderByDescending(x => x.EnglishName.IndexOf("English") > -1);
+		Languages.AddRange(langs);
 	}
 }

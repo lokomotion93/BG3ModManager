@@ -9,6 +9,7 @@
     xmlns:mod="using:ModManager.Models.Mod"
     xmlns:modView="using:ModManager.Views.Mods"
     xmlns:modconv="using:ModManager.Converters.Mod"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
     xmlns:theme="using:SukiUI.Theme">
 
 	<conv:ForceAllowInLoadOrderIconConverter x:Key="ForceAllowInLoadOrderIconConverter" />
@@ -181,4 +182,7 @@
 	<DataTemplate x:Key="ModEntryTemplate" DataType="mod:ModEntry">
 		<modView:ModEntryView />
 	</DataTemplate>
+
+	<system:Double x:Key="ModEntryToolTipWidth">480</system:Double>
+	<Thickness x:Key="ModEntryToolTipBorderThickness">2</Thickness>
 </ResourceDictionary>

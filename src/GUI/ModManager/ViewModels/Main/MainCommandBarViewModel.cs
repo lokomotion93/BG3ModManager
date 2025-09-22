@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using ModManager.Locale;
 using ModManager.Models;
 using ModManager.Models.App;
 using ModManager.Models.Menu;
@@ -21,205 +22,200 @@ namespace ModManager.ViewModels.Main;
 [Keybindings]
 public partial class MainCommandBarViewModel : ReactiveObject
 {
-	[Keybinding("Add New Order", Key.M)]
+	[Keybinding(nameof(Resources.Keybinding_AddNewOrder), Key.M)]
 	public RxCommandUnit? AddNewOrderCommand { get; private set; }
 
-	[Keybinding("Check For App Updates", Key.U)]
+	[Keybinding(nameof(Resources.Keybinding_CheckForAppUpdates), Key.U)]
 	public RxCommandUnit? CheckForAppUpdatesCommand { get; private set; }
 
-	[Keybinding("Check for All Mod Updates", Key.None, KeyModifiers.None, "Check all sources of mod updates (GitHub, Nexus, etc.)", "Download")]
+	[Keybinding(nameof(Resources.Keybinding_CheckAllModUpdates), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_CheckAllModUpdates_ToolTip))]
 	public RxCommandUnit? CheckAllModUpdatesCommand { get; private set; }
 
-	[Keybinding("Check for Github Mod Updates", Key.None, KeyModifiers.None, "", "Download")]
+	[Keybinding(nameof(Resources.Keybinding_CheckForGitHubModUpdates), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? CheckForGitHubModUpdatesCommand { get; private set; }
 
-	[Keybinding("Check for Nexus Mod Updates", Key.None, KeyModifiers.None, "", "Download")]
+	[Keybinding(nameof(Resources.Keybinding_CheckForNexusModsUpdates), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? CheckForNexusModsUpdatesCommand { get; private set; }
 
-	[Keybinding("Check for mod.io Updates", Key.None, KeyModifiers.None, "", "Download")]
+	[Keybinding(nameof(Resources.Keybinding_CheckForModioUpdates), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? CheckForModioUpdatesCommand { get; private set; }
 
-	[Keybinding("Export Order to Game", Key.E, KeyModifiers.Control, "Export order to modsettings.lsx", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ExportOrder), Key.E, KeyModifiers.Control, nameof(Resources.Keybinding_ExportOrder_ToolTip))]
 	public RxBoolCommandUnit? ExportOrderCommand { get; private set; }
 
-	[Keybinding("Export Order to Text File...", Key.E, KeyModifiers.Control | KeyModifiers.Shift, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ExportOrderToTextFile), Key.E, KeyModifiers.Control | KeyModifiers.Shift)]
 	public RxCommandUnit? ExportOrderToTextFileCommand { get; private set; }
 
-	[Keybinding("Export Order to Archive (.zip)", Key.None, KeyModifiers.None, "Export all active mods to a zip file", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ExportOrderToZip), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_ExportOrderToZip_ToolTip))]
 	public RxCommandUnit? ExportOrderToZipCommand { get; private set; }
 
-	[Keybinding("Export Order to Archive As...", Key.None, KeyModifiers.None, "Export all active mods to an archive file of a chosen type", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ExportOrderToArchiveAs), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_ExportOrderToArchiveAs_ToolTip))]
 	public RxCommandUnit? ExportOrderToArchiveAsCommand { get; private set; }
 
-	[Keybinding("Rename Order", Key.R, KeyModifiers.Control | KeyModifiers.Shift, "Rename current load order", "File")]
+	[Keybinding(nameof(Resources.Keybinding_RenameOrder), Key.R, KeyModifiers.Control | KeyModifiers.Shift, nameof(Resources.Keybinding_RenameOrder_ToolTip))]
 	public RxCommandUnit? RenameOrderCommand { get; private set; }
 
-	[Keybinding("Launch Game", Key.G, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_LaunchGame), Key.G, KeyModifiers.Control)]
 	public RxCommandUnit? LaunchGameCommand { get; private set; }
 
-	[Keybinding("Donate a Coffee...", Key.F10, KeyModifiers.None, "", "Help")]
+	[Keybinding(nameof(Resources.Keybinding_OpenDonationPage), Key.F10, KeyModifiers.None)]
 	public RxCommandUnit? OpenDonationPageCommand { get; private set; }
 
-	[Keybinding("Open Repository Page...", Key.F11, KeyModifiers.None, "", "Help")]
+	[Keybinding(nameof(Resources.Keybinding_OpenGitHubRepo), Key.F11, KeyModifiers.None)]
 	public RxCommandUnit? OpenGitHubRepoCommand { get; private set; }
 
-	[Keybinding("Open Mods Folder", Key.D1, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_OpenModsFolder), Key.D1, KeyModifiers.Control)]
 	public ReactiveCommand<string?, bool>? OpenModsFolderCommand { get; private set; }
 
-	[Keybinding("Open Logs Folder", Key.D2, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_OpenExtenderLogsFolder), Key.D2, KeyModifiers.Control)]
 	public ReactiveCommand<string?, bool>? OpenLogsFolderCommand { get; private set; }
 
-	[Keybinding("Open Nexus Mods Website", Key.D3, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_OpenNexusMods), Key.D3, KeyModifiers.Control)]
 	public RxBoolCommandUnit? OpenNexusModsCommand { get; private set; }
 
-	[Keybinding("Open Steam Store Page", Key.D4, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_OpenSteamPage), Key.D4, KeyModifiers.Control)]
 	public RxBoolCommandUnit? OpenSteamPageCommand { get; private set; }
 
-	[Keybinding("Refresh Mods", Key.F5, KeyModifiers.None, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_RefreshMods), Key.F5, KeyModifiers.None)]
 	public RxCommandUnit? RefreshCommand { get; private set; }
 
-	[Keybinding("Reload All Mods", Key.F5, KeyModifiers.Shift, "Reload mod data without doing a full reload (i.e. reload metadata like the name)", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ReloadMods), Key.F5, KeyModifiers.Shift, nameof(Resources.Keybinding_ReloadMods_ToolTip))]
 	public RxCommandUnit? ReloadModsCommand { get; private set; }
 
-	[Keybinding("Refresh Mod Updates", Key.F6, KeyModifiers.None, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_RefreshModUpdates), Key.F6, KeyModifiers.None)]
 	public RxCommandUnit? RefreshModUpdatesCommand { get; private set; }
 
-	[Keybinding("Rename Save", Key.None, KeyModifiers.None, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_RenameSave), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? RenameSaveCommand { get; private set; }
 
-	[Keybinding("Save Order", Key.S, KeyModifiers.Control, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_SaveOrder), Key.S, KeyModifiers.Control)]
 	public RxBoolCommandUnit? SaveOrderCommand { get; private set; }
 
-	[Keybinding("Save Order As...", Key.S, KeyModifiers.Control | KeyModifiers.Alt, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_SaveOrderAs), Key.S, KeyModifiers.Control | KeyModifiers.Alt)]
 	public RxBoolCommandUnit? SaveOrderAsCommand { get; private set; }
 
-	[Keybinding("Save Settings", Key.S, KeyModifiers.Control | KeyModifiers.Shift, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_SaveSettings), Key.S, KeyModifiers.Control | KeyModifiers.Shift)]
 	public RxCommandUnit? SaveSettingsSilentlyCommand { get; private set; }
 
-	[Keybinding("Toggle Updates View", Key.U, KeyModifiers.Control | KeyModifiers.Alt, "", "View")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleUpdatesView), Key.U, KeyModifiers.Control | KeyModifiers.Alt)]
 	public RxCommandUnit? ToggleUpdatesViewCommand { get; private set; }
 
-	[Keybinding("Toggle Mod Files Explorer Window", Key.P, KeyModifiers.Control | KeyModifiers.Alt, "", "View")]
+	[Keybinding(nameof(Resources.Keybinding_TogglePakFileExplorerWindow), Key.P, KeyModifiers.Control | KeyModifiers.Alt)]
 	public RxBoolCommandUnit? TogglePakFileExplorerWindowCommand { get; private set; }
 
-	[Keybinding("Toggle Stats Validator Window", Key.OemBackslash, KeyModifiers.Control | KeyModifiers.Alt, "", "View")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleStatsValidatorWindow), Key.OemBackslash, KeyModifiers.Control | KeyModifiers.Alt)]
 	public RxBoolCommandUnit? ToggleStatsValidatorWindowCommand { get; private set; }
 
-	[Keybinding("Toggle Settings Window", Key.OemComma, KeyModifiers.Control)]
+	[Keybinding(nameof(Resources.Keybinding_ToggleSettingsWindow), Key.OemComma, KeyModifiers.Control)]
 	public RxBoolCommandUnit? ToggleSettingsWindowCommand { get; private set; }
 
-	[Keybinding("Toggle Keybindings Window", Key.OemComma, KeyModifiers.Control | KeyModifiers.Alt)]
+	[Keybinding(nameof(Resources.Keybinding_ToggleKeybindings), Key.OemComma, KeyModifiers.Control | KeyModifiers.Alt)]
 	public RxBoolCommandUnit? ToggleKeybindingsCommand { get; private set; }
 
-	[Keybinding("Toggle Version Generator Window", Key.G, KeyModifiers.Control, "A tool for mod authors to generate version numbers for a mod's meta.lsx", "Tools")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleVersionGeneratorWindow), Key.G, KeyModifiers.Control, nameof(Resources.Keybinding_ToggleVersionGeneratorWindow_ToolTip))]
 	public RxBoolCommandUnit? ToggleVersionGeneratorWindowCommand { get; private set; }
 
-	[Keybinding("About", Key.F1, KeyModifiers.None, "", "Help")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleAboutWindow), Key.F1, KeyModifiers.None)]
 	public RxBoolCommandUnit? ToggleAboutWindowCommand { get; private set; }
 
-	[Keybinding("Toggle Dark/Light Mode", Key.OemComma, KeyModifiers.Control | KeyModifiers.Alt)]
+	[Keybinding(nameof(Resources.Keybinding_ToggleThemeMode), Key.OemComma, KeyModifiers.Control | KeyModifiers.Alt)]
 	public RxCommandUnit? ToggleThemeModeCommand { get; private set; }
 
+	[Keybinding(nameof(Resources.Keybinding_ImportMods), Key.O, KeyModifiers.Control)]
+	public RxCommandUnit? ImportModsCommand { get; private set; }
 
-	[Keybinding("Import Mods...", Key.O, KeyModifiers.Control, "", "File")]
-	public RxCommandUnit? ImportModCommand { get; private set; }
-
-	[Keybinding("Import Nexus Mods Data from Archives...", Key.None, KeyModifiers.None, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ImportNexusModsIds), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ImportNexusModsIdsCommand { get; private set; }
 
-	[Keybinding("Add New Order", Key.N, KeyModifiers.Control, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_AddNewOrder), Key.N, KeyModifiers.Control)]
 	public RxCommandUnit? NewOrderCommand { get; private set; }
 
-	[Keybinding("Save Order", Key.S, KeyModifiers.Control, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_SaveOrder), Key.S, KeyModifiers.Control)]
 	public RxCommandUnit? SaveCommand { get; private set; }
 
-	[Keybinding("Save Order As...", Key.S, KeyModifiers.Control | KeyModifiers.Alt, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_SaveOrderAs), Key.S, KeyModifiers.Control | KeyModifiers.Alt)]
 	public RxCommandUnit? SaveAsCommand { get; private set; }
 
-	[Keybinding("Import Order from Save...", Key.I, KeyModifiers.Control, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromSave), Key.I, KeyModifiers.Control)]
 	public RxCommandUnit? ImportOrderFromSaveCommand { get; private set; }
 
-	[Keybinding("Import Order from Save As New Order...", Key.I, KeyModifiers.Control | KeyModifiers.Shift, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromSaveAsNew), Key.I, KeyModifiers.Control | KeyModifiers.Shift)]
 	public RxCommandUnit? ImportOrderFromSaveAsNewCommand { get; private set; }
 
-	[Keybinding("Import Order from File...", Key.O, KeyModifiers.Control | KeyModifiers.Shift, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromFile), Key.O, KeyModifiers.Control | KeyModifiers.Shift)]
 	public RxCommandUnit? ImportOrderFromFileCommand { get; private set; }
 
-	[Keybinding("Import Order & Mods from Archive...", Key.None, KeyModifiers.None, "", "File")]
+	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromZipFile), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ImportOrderFromZipFileCommand { get; private set; }
 
-	[Keybinding("Moved Selected Mods to Opposite List", Key.Enter, KeyModifiers.None, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_MoveSelectedMods), Key.Enter, KeyModifiers.None)]
 	public RxCommandUnit? MoveSelectedModsCommand { get; private set; }
 
-	[Keybinding("Focus Active Mods List", Key.Left, KeyModifiers.None, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_FocusActiveMods), Key.Left, KeyModifiers.None)]
 	public RxCommandUnit? FocusActiveModsCommand { get; private set; }
 
-	[Keybinding("Focus Inactive Mods List", Key.Right, KeyModifiers.None, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_FocusInactiveMods), Key.Right, KeyModifiers.None)]
 	public RxCommandUnit? FocusInactiveModsCommand { get; private set; }
 
-	[Keybinding("Go to Other List", Key.Tab, KeyModifiers.None, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_SwapListFocus), Key.Tab, KeyModifiers.None)]
 	public RxCommandUnit? SwapListFocusCommand { get; private set; }
 
-	[Keybinding("Move to Top of Active List", Key.PageUp, KeyModifiers.Control, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_MoveToTop), Key.PageUp, KeyModifiers.Control)]
 	public RxCommandUnit? MoveToTopCommand { get; private set; }
 
-	[Keybinding("Move to Bottom of Active List", Key.PageDown, KeyModifiers.Control, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_MoveToBottom), Key.PageDown, KeyModifiers.Control)]
 	public RxCommandUnit? MoveToBottomCommand { get; private set; }
 
-	[Keybinding("Toggle Focus Filter for Current List", Key.F, KeyModifiers.Control, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleFilterFocus), Key.F, KeyModifiers.Control)]
 	public RxCommandUnit? ToggleFilterFocusCommand { get; private set; }
 
-	[Keybinding("Show File Names for Mods", Key.None, KeyModifiers.None, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleFileNameDisplay), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ToggleFileNameDisplayCommand { get; private set; }
 
-	[Keybinding("Delete Selected Mods...", Key.Delete, KeyModifiers.None, "", "Edit")]
+	[Keybinding(nameof(Resources.Keybinding_DeleteSelectedMods), Key.Delete, KeyModifiers.None)]
 	public RxCommandUnit? DeleteSelectedModsCommand { get; private set; }
 
-	[Keybinding("Toggle Light/Dark Mode", Key.L, KeyModifiers.Control, "", "Settings")]
-	public RxCommandUnit? ToggleViewThemeCommand { get; private set; } //Key.L, ModifierKeys.Control);
-
-	[Keybinding("Open Game Folder", Key.D2, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_OpenGameFolder), Key.D2, KeyModifiers.Control)]
 	public ReactiveCommand<string?, bool>? OpenGameFolderCommand { get; private set; }
 
-	[Keybinding("Open Saves Folder", Key.D3, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_OpenSavesFolder), Key.D3, KeyModifiers.Control)]
 	public ReactiveCommand<string?, bool>? OpenSavesFolderCommand { get; private set; }
 
-	[Keybinding("Open Script Extender Data Folder", Key.D4, KeyModifiers.Control, "", "Go")]
+	[Keybinding(nameof(Resources.Keybinding_OpenExtenderDataFolder), Key.D4, KeyModifiers.Control)]
 	public ReactiveCommand<string?, bool>? OpenExtenderDataFolderCommand { get; private set; }
 
-	[Keybinding("Download & Extract the Script Extender...", Key.None, KeyModifiers.None, "", "Download")]
+	[Keybinding(nameof(Resources.Keybinding_DownloadScriptExtender), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? DownloadScriptExtenderCommand { get; private set; }
 
-	[Keybinding(@"Download nxm:\\ Link...", Key.None, KeyModifiers.None, "Download a NexusMods link for a mod file or a collection", "Download")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleNXMLinkDownloader), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_ToggleNXMLinkDownloader_ToolTip))]
 	public RxBoolCommandUnit? ToggleNXMLinkDownloaderCommand { get; private set; }
 
-	[Keybinding("Open Collection Downloader Window", Key.None, KeyModifiers.None, "", "Download")]
+	[Keybinding(nameof(Resources.Keybinding_ToggleCollectionDownloaderWindow), Key.None, KeyModifiers.None)]
 	public RxBoolCommandUnit? ToggleCollectionDownloaderWindowCommand { get; private set; }
 
-	[Keybinding("Extract All Selected Mods To...", Key.None, KeyModifiers.None, "", "Tools")]
+	[Keybinding(nameof(Resources.Keybinding_ExtractAllSelectedMods), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ExtractAllSelectedModsCommand { get; private set; }
 
-	[Keybinding("Extract Selected Active Mods To...", Key.None, KeyModifiers.None, "", "Tools")]
+	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedActiveMods), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ExtractSelectedActiveModsCommand { get; private set; }
 
-	[Keybinding("Extract Selected Inactive Mods To...", Key.None, KeyModifiers.None, "", "Tools")]
+	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedInactiveMods), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ExtractSelectedInactiveModsCommand { get; private set; }
 
-	[Keybinding("Extract Active Adventure Mod To...", Key.None, KeyModifiers.None, "", "Tools")]
+	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedAdventure), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ExtractSelectedAdventureCommand { get; private set; }
 
-	[Keybinding("Speak Active Order", Key.Home, KeyModifiers.Control, "", "Tools")]
+	[Keybinding(nameof(Resources.Keybinding_SpeakActiveModOrder), Key.Home, KeyModifiers.Control)]
 	public RxCommandUnit? SpeakActiveModOrderCommand { get; private set; }
 
-	[Keybinding("Stop Speaking", Key.Home, KeyModifiers.Control | KeyModifiers.Shift, "", "Tools")]
+	[Keybinding(nameof(Resources.Keybinding_StopSpeaking), Key.Home, KeyModifiers.Control | KeyModifiers.Shift)]
 	public RxCommandUnit? StopSpeakingCommand { get; private set; }
 
-	[Keybinding("Check for Updates...", Key.F7, KeyModifiers.None, "", "Help")]
+	[Keybinding(nameof(Resources.Keybinding_CheckForUpdates), Key.F7, KeyModifiers.None)]
 	public RxCommandUnit? CheckForUpdatesCommand { get; private set; }
 
-	[Keybinding("Open Repository Page...", Key.F11, KeyModifiers.None, "", "Help")]
-	public RxCommandUnit? OpenRepositoryPageCommand { get; private set; }
-	public RxCommandUnit? MoveModsCommand { get; private set; }
+	[Keybinding(nameof(Resources.Keybinding_OrganizeModPaks), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_OrganizeModPaks_ToolTip))]
+	public RxCommandUnit? OrganizeModPaksCommand { get; private set; }
 
 	//Context Menu commands
 
@@ -460,7 +456,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 			AppServices.Settings.ManagerSettings.DarkThemeEnabled = !AppServices.Settings.ManagerSettings.DarkThemeEnabled;
 		}, canExecuteCommands);
 
-		ImportModCommand = ReactiveCommand.CreateFromTask(modImporter.OpenModImportDialog, canExecuteCommands);
+		ImportModsCommand = ReactiveCommand.CreateFromTask(modImporter.OpenModImportDialog, canExecuteCommands);
 		ImportNexusModsIdsCommand = ReactiveCommand.CreateFromTask(modImporter.OpenModIdsImportDialog, canExecuteCommands);
 
 		ImportOrderFromSaveCommand = ReactiveCommand.CreateFromTask(modOrder.ImportOrderFromSaveToCurrent, canExecuteCommands);
@@ -734,7 +730,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		OpenSelectedModOrderFilePathCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedModOrderFilePath), whenModOrderPath);
 		CopySelectedModOrderFilePathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(modOrder.SelectedModOrderFilePath), whenModOrderPath);
 
-		MoveModsCommand = ReactiveCommand.Create(() =>
+		OrganizeModPaksCommand = ReactiveCommand.Create(() =>
 		{
 			var filesToMove = new List<ModFileMoveTask>();
 
@@ -778,7 +774,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		_menuEntries.AddRange([
 			new MenuEntry("_File"){
 				Children = [
-					MenuEntry.FromKeybinding(ImportModCommand, nameof(ImportModCommand), keybindings),
+					MenuEntry.FromKeybinding(ImportModsCommand, nameof(ImportModsCommand), keybindings),
 					MenuEntry.FromKeybinding(ImportNexusModsIdsCommand, nameof(ImportNexusModsIdsCommand), keybindings),
 					new MenuSeparator(),
 					MenuEntry.FromKeybinding(SaveOrderCommand, nameof(SaveOrderCommand), keybindings),
@@ -804,6 +800,8 @@ public partial class MainCommandBarViewModel : ReactiveObject
 				]},
 			new MenuEntry("_Edit"){
 				Children = [
+					MenuEntry.FromKeybinding(OrganizeModPaksCommand, nameof(OrganizeModPaksCommand), keybindings),
+					new MenuSeparator(),
 					MenuEntry.FromKeybinding(MoveSelectedModsCommand, nameof(MoveSelectedModsCommand), keybindings),
 					MenuEntry.FromKeybinding(FocusActiveModsCommand, nameof(FocusActiveModsCommand), keybindings),
 					MenuEntry.FromKeybinding(FocusInactiveModsCommand, nameof(FocusInactiveModsCommand), keybindings),

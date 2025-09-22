@@ -19,8 +19,17 @@
 		</Style>
 	</UserControl.Styles>
 	<Panel Name="MainPanel" Background="Transparent" DataContext="{Binding Data}">
+		<Panel.Styles>
+			<Style Selector="ToolTip">
+				<Setter Property="Width" Value="{StaticResource ModEntryToolTipWidth}" />
+				<Style Selector="^/template/ Border">
+					<Setter Property="BorderBrush" Value="{DynamicResource SukiBorderBrush}" />
+					<Setter Property="BorderThickness" Value="{StaticResource ModEntryToolTipBorderThickness}" />
+				</Style>
+			</Style>
+		</Panel.Styles>
 		<ToolTip.Tip>
-			<StackPanel Width="700" Background="Transparent" Orientation="Vertical">
+			<StackPanel Orientation="Vertical">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
@@ -58,7 +67,6 @@
 				</TextBlock>
 				<ScrollViewer MinHeight="24"
 				    MaxHeight="300"
-				    Background="{DynamicResource SukiPopupBackground}"
 				    IsVisible="{Binding HasDescription}"
 				    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 				    ScrollViewer.VerticalScrollBarVisibility="Visible">

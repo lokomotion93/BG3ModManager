@@ -1,6 +1,8 @@
 ﻿using ModManager.SourceGenerator.Utils;
 
 using System.Diagnostics;
+using System.Globalization;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -143,7 +145,7 @@ public readonly record struct SettingsViewToGenerate
 			var tooltip = entry.ToolTip;
 			if (tooltip != null)
 			{
-				tooltip = _replaceLineBreaksPattern.Replace(tooltip, "&#x0a;");
+				tooltip = SecurityElement.Escape(_replaceLineBreaksPattern.Replace(tooltip, "&#x0a;"));
 			}
 			var tooltipBinding = tooltip;
 			//var tooltipBinding = $"{{Binding ElementName={textBlockName}, Path=(ToolTip.Tip)}}";
@@ -158,6 +160,7 @@ public readonly record struct SettingsViewToGenerate
 
 			//code.AppendLine($"<!--{entry.PropertyName},{entry.DisplayName},{entry.PropertyTypeName},{entry.PropertyType.TypeKind}-->");
 
+			//code.AppendLine($"<!-- {entry.PropertyName} : {entry.PropertyTypeName} -->");
 			switch (entry.PropertyTypeName)
 			{
 				case "Boolean":
@@ -173,7 +176,23 @@ public readonly record struct SettingsViewToGenerate
 					controlText = $"<NumericUpDown x:Name=\"{controlName}NumericUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 					break;
 				default:
-					if (entry.PropertyType.TypeKind == TypeKind.Enum)
+					if(!string.IsNullOrEmpty(entry.ControlText))
+					{
+						var controlTextRaw = entry.ControlText!;
+
+						var rowPlaceHolder = controlTextRaw.IndexOf("Grid.Row=\"{0}\"");
+						if (rowPlaceHolder > -1)
+						{
+							controlText = controlTextRaw.Substring(0, rowPlaceHolder) + $"Grid.Row=\"{totalRows}\"" + controlTextRaw.Substring(rowPlaceHolder + controlTextRaw.Length);
+							//controlText = entry.ControlText.Replace("{0}", totalRows.ToString());
+						}
+						else
+						{
+							controlText = entry.ControlText;
+						}
+						isMultiLine = true;
+					}
+					else if (entry.PropertyType.TypeKind == TypeKind.Enum)
 					{
 						var comboCode = new CodeBuilder();
 						comboCode.StartScope("");
@@ -221,6 +240,9 @@ public readonly record struct SettingsViewToGenerate
 					else
 					{
 						//controlText = $"<TextBlock Tag=\"{entry.PropertyType.TypeKind},{entry.PropertyTypeName}\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+						code.AppendLine(string.Empty);
+						code.AppendLine($"<!-- Failed to generate {entry.PropertyName} -->");
+						code.AppendLine(string.Empty);
 						addedRightColumn = false;
 					}
 					break;
@@ -228,7 +250,7 @@ public readonly record struct SettingsViewToGenerate
 
 			if (!string.IsNullOrWhiteSpace(controlText))
 			{
-				var labelLine = $"<TextBlock x:Name=\"{controlName}TextBlock\" Grid.Row=\"{totalRows}\" Grid.Column=\"0\" Classes=\"left\" Text=\"{entry.DisplayName}\" ToolTip.Tip=\"{tooltip}\"";
+				var labelLine = $"<TextBlock x:Name=\"{controlName}TextBlock\" Grid.Row=\"{totalRows}\" Grid.Column=\"0\" Classes=\"left\" Text=\"{SecurityElement.Escape(entry.DisplayName)}\" ToolTip.Tip=\"{tooltip}\"";
 				if (!string.IsNullOrEmpty(entry.BindVisibilityTo))
 				{
 					labelLine += $" IsVisible=\"{{Binding {entry.BindVisibilityTo}}}\"";

@@ -8,9 +8,10 @@ public readonly record struct SettingsEntryData
 	public readonly string? ToolTip;
 	public readonly string? BindTo;
 	public readonly string? BindVisibilityTo;
+	public readonly string? ControlText;
 	public readonly bool DisableAutoGen;
 
-	public SettingsEntryData(string propertyName, ITypeSymbol propertyType, string? name, string? tooltip, string? bindTo, string? bindVisibilityTo, bool disableAutoGen)
+	public SettingsEntryData(string propertyName, ITypeSymbol propertyType, string? name, string? tooltip, string? bindTo, string? bindVisibilityTo, string? controlText, bool disableAutoGen)
 	{
 		PropertyName = propertyName;
 		PropertyType = propertyType;
@@ -19,6 +20,7 @@ public readonly record struct SettingsEntryData
 		ToolTip = tooltip;
 		BindTo = bindTo;
 		BindVisibilityTo = bindVisibilityTo;
+		ControlText = controlText;
 		DisableAutoGen = disableAutoGen;
 	}
 
@@ -29,6 +31,7 @@ public readonly record struct SettingsEntryData
 		var tooltip = "";
 		string? bindTo = null;
 		string? bindVisibilityTo = null;
+		string? controlText = null;
 		bool disableAutoGen = false;
 
 		for (var i = 0; i < attribute.ConstructorArguments.Length; i++)
@@ -53,6 +56,9 @@ public readonly record struct SettingsEntryData
 					break;
 				case 4:
 					disableAutoGen = bool.Parse(value);
+					break;
+				case 5:
+					controlText = value;
 					break;
 			}
 		}
@@ -79,9 +85,12 @@ public readonly record struct SettingsEntryData
 				case "DisableAutoGen":
 					disableAutoGen = bool.Parse(value);
 					break;
+				case "ControlText":
+					controlText = value;
+					break;
 			}
 		}
 
-		return new SettingsEntryData(propertyName, symbol.Type, name, tooltip, bindTo, bindVisibilityTo, disableAutoGen);
+		return new SettingsEntryData(propertyName, symbol.Type, name, tooltip, bindTo, bindVisibilityTo, controlText, disableAutoGen);
 	}
 }

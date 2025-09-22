@@ -8,7 +8,8 @@ namespace ModManager.Views.Mods
 {
     partial class ModContainerEntryView
     {
-
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
+        internal global::Avalonia.Controls.TextBlock LabelTextBlock;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -24,7 +25,8 @@ namespace ModManager.Views.Mods
                 AvaloniaXamlLoader.Load(this);
             }
 
-
+            var __thisNameScope__ = this.FindNameScope();
+            LabelTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabelTextBlock");
         }
     }
 }

@@ -23,6 +23,8 @@ public static class SplatContainerExtensions
 		SplatRegistrations.RegisterConstant<IFileSystemService>(fileSystemService);
 		SplatRegistrations.RegisterLazySingleton<IFileWatcherService, FileWatcherService>();
 
+		SplatRegistrations.RegisterLazySingleton<ILocaleService, LocaleService>();
+
 		SplatRegistrations.RegisterLazySingleton<IRegistryService, RegistryService>();
 
 		SplatRegistrations.RegisterLazySingleton<IDirectoryOpusService, DirectoryOpusService>();
