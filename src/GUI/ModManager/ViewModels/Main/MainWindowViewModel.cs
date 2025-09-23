@@ -104,7 +104,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 	{
 		_globalCommands.CanExecuteCommands = false;
 
-		Progress.Title = !IsInitialized ? "Loading..." : "Refreshing...";
+		Progress.Title = !IsInitialized ? Loca.Progress_Loading_Title : Loca.Progress_Refresh_Title;
 		IsRefreshing = true;
 		_manager.Refresh();
 		ViewModelLocator.ModUpdates.Clear();
@@ -136,8 +136,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 			if (!GameDirectoryFound)
 			{
-				_globalCommands.ShowAlert("Game Data folder is not valid. Please set it in the preferences window and refresh", AlertType.Danger);
-				//App.WM.Settings.Toggle(true);
+				_globalCommands.ShowAlert(Loca.Alert_Error_GameDataFolderInvalid, AlertType.Danger);
 			}
 
 			IsRefreshing = false;
@@ -164,8 +163,6 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	private async Task DownloadScriptExtenderAsync(CancellationToken token)
 	{
-		Progress.Title = "Setting up the Script Extender...";
-
 		var exeDir = Path.GetDirectoryName(Settings.GameExecutablePath);
 		var dllDestination = Path.Join(exeDir, DivinityApp.EXTENDER_UPDATER_FILE);
 
@@ -174,12 +171,12 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		Stream? unzippedEntryStream = null;
 		try
 		{
-			Progress.WorkText = $"Downloading {PathwayData.ScriptExtenderLatestReleaseUrl}";
+			Progress.WorkText = Loca.Progress_DownloadExtender_Downloading.SafeFormat($"Downloading {PathwayData.ScriptExtenderLatestReleaseUrl}", PathwayData.ScriptExtenderLatestReleaseUrl);
 			webStream = await WebHelper.DownloadFileAsStreamAsync(PathwayData.ScriptExtenderLatestReleaseUrl, token);
 			if (webStream != null)
 			{
 				successes += 1;
-				Progress.IncreaseValue(25, $"Extracting zip to {exeDir}...");
+				Progress.IncreaseValue(25, Loca.Progress_DownloadExtender_ExtractingZip.SafeFormat($"Extracting zip to {exeDir}...", exeDir));
 				using var archive = new ZipArchive(webStream);
 				foreach (var entry in archive.Entries)
 				{
@@ -202,7 +199,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		}
 		finally
 		{
-			Progress.IncreaseValue(25, "Cleaning up...");
+			Progress.IncreaseValue(25, Loca.Progress_DownloadExtender_CleaningUp);
 			webStream?.Dispose();
 			unzippedEntryStream?.Dispose();
 			successes += 1;
@@ -212,14 +209,14 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		{
 			if (successes >= 3)
 			{
-				_globalCommands.ShowAlert($"Successfully installed the Extender updater {DivinityApp.EXTENDER_UPDATER_FILE} to '{exeDir}'", AlertType.Success, 20);
+				_globalCommands.ShowAlert(Loca.Alert_Success_ScriptExtenderInstalled.SafeFormat($"Successfully installed the Extender updater {DivinityApp.EXTENDER_UPDATER_FILE} to '{exeDir}'", DivinityApp.EXTENDER_UPDATER_FILE, exeDir), AlertType.Success, 20);
 				ViewModelLocator.CommandBar.SetExtenderHighlight(false);
 				ExtenderUpdaterSettings.UpdaterIsAvailable = true;
 				_justDownloadedScriptExtender = true;
 			}
 			else
 			{
-				_globalCommands.ShowAlert($"Error occurred when installing the Extender updater {DivinityApp.EXTENDER_UPDATER_FILE} - Check the log", AlertType.Danger, 30);
+				_globalCommands.ShowAlert(Loca.Alert_Error_ScriptExtenderInstallationError.SafeFormat($"Error occurred when installing the Extender updater {DivinityApp.EXTENDER_UPDATER_FILE} - Check the log", DivinityApp.EXTENDER_UPDATER_FILE), AlertType.Danger, 30);
 			}
 		}, RxApp.MainThreadScheduler);
 
@@ -232,7 +229,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	private void DownloadScriptExtender()
 	{
-		ViewModelLocator.Progress.Title = "Setting up the Script Extender...";
+		ViewModelLocator.Progress.Title = Loca.Progress_DownloadExtender_Title;
 		ViewModelLocator.Progress.Start(DownloadScriptExtenderAsync, true);
 	}
 
@@ -301,16 +298,9 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			if (Settings.GameExecutablePath.IsExistingFile())
 			{
 				var exeDir = Path.GetDirectoryName(Settings.GameExecutablePath);
-				var messageText = string.Format(@"Download and install the Script Extender?
-The Script Extender is used by mods to extend the scripting language of the game, allowing new functionality.
-The extender needs to only be installed once, as it automatically updates when you launch the game.
-Download url: 
-{0}
-Directory the zip will be extracted to:
-{1}", PathwayData.ScriptExtenderLatestReleaseUrl, exeDir);
+				var messageText = Loca.MessageBox_ScriptExtenderDownloadConfirmation_Message.SafeFormat(@"Download and install the Script Extender?", PathwayData.ScriptExtenderLatestReleaseUrl, exeDir);
 
-				_interactions.ShowMessageBox.Handle(new("Download & Install the Script Extender?",
-					messageText,
+				_interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ScriptExtenderDownloadConfirmation_Title, messageText,
 					InteractionMessageBoxType.YesNo)).Subscribe(result =>
 				{
 					if (result)
@@ -321,7 +311,7 @@ Directory the zip will be extracted to:
 			}
 			else
 			{
-				_globalCommands.ShowAlert("The 'Game Executable Path' is not set or is not valid", AlertType.Danger);
+				_globalCommands.ShowAlert(Loca.Alert_Error_GameExePathInvalid, AlertType.Danger);
 			}
 		}
 		else
@@ -440,8 +430,8 @@ Directory the zip will be extracted to:
 			_warnExtenderUpdateFailureTask = RxApp.MainThreadScheduler.Schedule(() =>
 			{
 				_justDownloadedScriptExtender = false;
-				_interactions.ShowMessageBox.Handle(new("Script Extender Installation",
-					"The Script Extender has been successfully downloaded.\n\nPlease start the game once to complete the installation process.",
+				_interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ScriptExtenderDownloadCompleted_Title,
+					Loca.MessageBox_ScriptExtenderDownloadCompleted_Message,
 					InteractionMessageBoxType.Warning)).Subscribe();
 			});
 		}
@@ -527,7 +517,7 @@ Directory the zip will be extracted to:
 	{
 		if (!ProcessHelper.TryOpenPath(exePath, File.Exists, launchParams, workingDirectory))
 		{
-			_globalCommands.ShowAlert($"Failed to start game exe '{exePath}' - Check the 'Game Executable Path' in the preferences", AlertType.Danger);
+			_globalCommands.ShowAlert(Loca.Alert_Error_StartGameExeFailed.SafeFormat($"Failed to start game exe '{exePath}' - Check the 'Game Executable Path' in the preferences", exePath), AlertType.Danger);
 		}
 		else
 		{
@@ -598,11 +588,11 @@ Directory the zip will be extracted to:
 				{
 					if (string.IsNullOrWhiteSpace(exePath))
 					{
-						_globalCommands.ShowAlert("No game executable path set", AlertType.Danger, 30);
+						_globalCommands.ShowAlert(Loca.Alert_Error_GameExePathInvalid, AlertType.Danger, 30);
 					}
 					else
 					{
-						_globalCommands.ShowAlert($"Failed to find game exe at, \"{exePath}\"", AlertType.Danger, 90);
+						_globalCommands.ShowAlert(Loca.Alert_Error_LaunchGame_NotFound.SafeFormat($"Failed to find game exe at, \"{exePath}\"", exePath), AlertType.Danger, 90);
 					}
 					return;
 				}
@@ -612,7 +602,7 @@ Directory the zip will be extracted to:
 			}
 			else
 			{
-				_globalCommands.ShowAlert($"Game Exe Path is not set", AlertType.Danger, 30);
+				_globalCommands.ShowAlert(Loca.Alert_Error_GameExePathInvalid, AlertType.Danger, 30);
 			}
 		}
 		else if (Settings.LaunchType == LaunchGameType.Steam)
@@ -634,14 +624,14 @@ Directory the zip will be extracted to:
 				}
 				catch (Exception ex)
 				{
-					var msg = $"Error running custom launch '{Settings.CustomLaunchAction}' with args '{Settings.CustomLaunchArgs}':\n{ex}";
+					var msg = Loca.MessageBox_CustomLaunchError_Message.SafeFormat($"Error running custom launch '{Settings.CustomLaunchAction}' with args '{Settings.CustomLaunchArgs}':\n{ex}", Settings.CustomLaunchAction, Settings.CustomLaunchArgs, ex);
 					DivinityApp.Log(msg);
-					_interactions.ShowMessageBox.Handle(new("Custom Launch Error", msg, InteractionMessageBoxType.Error)).Subscribe();
+					_interactions.ShowMessageBox.Handle(new(Loca.MessageBox_CustomLaunchError_Title, msg, InteractionMessageBoxType.Error)).Subscribe();
 				}
 			}
 			else
 			{
-				_globalCommands.ShowAlert("The 'Launch - Custom Action' is empty. Set it in the preferences.", AlertType.Warning, 30);
+				_globalCommands.ShowAlert(Loca.Alert_Error_LaunchGame_CustomActionEmpty, AlertType.Warning, 30);
 			}
 		}
 
@@ -766,7 +756,7 @@ Directory the zip will be extracted to:
 				{
 					LoadExtenderSettingsBackground();
 				}
-				_globalCommands.ShowAlert($"Larian folder changed to '{x}' - Make sure to refresh", AlertType.Warning, 60);
+				_globalCommands.ShowAlert(Loca.Alert_Warning_DocumentsFolderPathOverrideChanged.SafeFormat($"AppData path override set to '{x}' - Make sure to refresh", x), AlertType.Warning, 60);
 			}
 		});
 
@@ -831,14 +821,14 @@ Directory the zip will be extracted to:
 
 			if (!FileUtils.HasDirectoryReadPermission(Settings.GameDataPath, Settings.DocumentsFolderPathOverride))
 			{
-				var message = $"BG3MM lacks permission to read one or both of the following paths:\nGame Data Path: ({Settings.GameDataPath})\nGame Executable Path: ({Settings.GameExecutablePath})";
-				await _interactions.ShowMessageBox.Handle(new("File Permission Issue", message, InteractionMessageBoxType.Error));
+				var message = Loca.MessageBox_LoadSettings_PermissionDenied_Message.SafeFormat($"BG3MM lacks permission to read one or both of the following paths:\nGame Data Path: ({Settings.GameDataPath})\nGame Executable Path: ({Settings.GameExecutablePath})", Settings.GameDataPath, Settings.GameExecutablePath);
+				await _interactions.ShowMessageBox.Handle(new(Loca.MessageBox_LoadSettings_PermissionDenied_Title, message, InteractionMessageBoxType.Error));
 			}
 			else
 			{
-				var result = await _dialogs.OpenFolderAsync(new("Set Game Installation Folder",
+				var result = await _dialogs.OpenFolderAsync(new(Loca.Picker_GameDataPath_Title,
 					Environment.GetFolderPath(Environment.SpecialFolder.MyComputer),
-					"Set the path to the Baldur's Gate 3 root installation folder"));
+					Loca.Picker_GameDataPath_Description));
 
 				if (result.Success)
 				{
@@ -857,7 +847,7 @@ Directory the zip will be extracted to:
 					}
 					else
 					{
-						_globalCommands.ShowAlert("Failed to find Data folder with given installation directory", AlertType.Danger);
+						_globalCommands.ShowAlert(Loca.Alert_Error_Picker_GameDataPath_NoDataFolder, AlertType.Danger);
 					}
 					if (File.Exists(exePath))
 					{
@@ -865,7 +855,7 @@ Directory the zip will be extracted to:
 					}
 					else
 					{
-						_globalCommands.ShowAlert("Failed to find bg3.exe path with given installation directory", AlertType.Danger);
+						_globalCommands.ShowAlert(Loca.Alert_Error_Picker_GameDataPath_NoExe, AlertType.Danger);
 					}
 					data.InstallPath = dir;
 					//Services.Settings.TrySaveAll(out _);
@@ -895,7 +885,7 @@ Directory the zip will be extracted to:
 		if (!_settings.TrySaveAll(out var errors))
 		{
 			var errorMessage = string.Join("\n", errors.Select(x => x.ToString()));
-			_globalCommands.ShowAlert($"Error saving settings: {errorMessage}", AlertType.Danger);
+			_globalCommands.ShowAlert(Loca.Alert_Error_SaveSettings.SafeFormat($"Error saving settings: {errorMessage}", errorMessage), AlertType.Danger);
 		}
 		else
 		{
@@ -914,8 +904,6 @@ Directory the zip will be extracted to:
 		_deferSave?.Dispose();
 		_deferSave = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), () => SaveSettings());
 	}
-
-
 
 	private string GetInitialStartingDirectory(string? prioritizePath = "")
 	{
@@ -1128,13 +1116,13 @@ Directory the zip will be extracted to:
 	public async Task ExportLoadOrderToArchiveAsync()
 	{
 		var result = await _interactions.ShowMessageBox.Handle(new(
-			"Confirm Archive Creation",
-			$"Save active mods to a zip file?{Environment.NewLine}Depending on the number of mods, this may take some time.",
+			Loca.MessageBox_ExportLoadOrderToArchiveAsync_Title,
+			Loca.MessageBox_ExportLoadOrderToArchiveAsync_Message,
 			InteractionMessageBoxType.YesNo));
 		if (result)
 		{
-			Progress.Title = "Adding active mods to zip...";
-			Progress.Start(async token =>
+			Progress.Title = Loca.Progress_ExportLoadOrderToArchiveAsync_Title;
+			await Progress.Start(async token =>
 			{
 				ViewModelLocator.ModOrder.UpdateOrderFromActiveMods();
 				await _importer.ExportLoadOrderToArchiveAsync(ViewModelLocator.ModOrder.SelectedProfile, ViewModelLocator.ModOrder.SelectedModOrder, "", token);
@@ -1162,15 +1150,15 @@ Directory the zip will be extracted to:
 			var outputName = ModDataLoader.MakeSafeFilename($"{baseOrderName}-{DateTime.Now.ToString(sysFormat + "_HH-mm-ss")}.zip", '_');
 
 			var result = await _dialogs.SaveFileAsync(new(
-				"Export Load Order As...",
+				Loca.Picker_ExportLoadOrderToArchiveAs_Title,
 				GetInitialStartingDirectory(),
 				CommonFileTypes.ArchiveFileTypes,
 				outputName));
 
 			if (result.Success)
 			{
-				Progress.Title = "Adding active mods to zip...";
-				Progress.Start(async token =>
+				Progress.Title = Loca.Progress_ExportLoadOrderToArchiveAsync_Title;
+				await Progress.Start(async token =>
 				{
 					await _importer.ExportLoadOrderToArchiveAsync(ViewModelLocator.ModOrder.SelectedProfile, ViewModelLocator.ModOrder.SelectedModOrder, result.File, token);
 				}, true);
@@ -1178,7 +1166,7 @@ Directory the zip will be extracted to:
 		}
 		else
 		{
-			_globalCommands.ShowAlert("SelectedProfile or SelectedModOrder is null! Failed to export mod order", AlertType.Danger);
+			_globalCommands.ShowAlert(Loca.Alert_Error_ExportLoadOrderToArchiveAs, AlertType.Danger);
 		}
 	}
 

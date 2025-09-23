@@ -963,7 +963,7 @@
 		<value>Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button</value>
 	</data>
 	<data name="Settings_DocumentsFolderPathOverride" xml:space="preserve">
-		<value>"Override AppData Path</value>
+		<value>Override AppData Path</value>
 	</data>
 	<data name="Settings_DocumentsFolderPathOverride_ToolTip" xml:space="preserve">
 		<value>[EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods.</value>
@@ -1158,7 +1158,7 @@
 		<value>Custom Profile</value>
 	</data>
 	<data name="Settings_Extender_CustomProfile_ToolTip" xml:space="preserve">
-		<value>"Use a profile other than Public\nThis should be the profile folder name</value>
+		<value>Use a profile other than Public\nThis should be the profile folder name</value>
 	</data>
 	<data name="Settings_Extender_CreateConsole" xml:space="preserve">
 		<value>Create Console Window</value>
@@ -1345,5 +1345,133 @@
 	</data>
 	<data name="Settings_ExtenderUpdater_ValidateSignature" xml:space="preserve">
 		<value>Validate Signature</value>
+	</data>
+	<data name="Progress_Loading_Title" xml:space="preserve">
+		<value>Loading...</value>
+	</data>
+	<data name="Progress_Refresh_Title" xml:space="preserve">
+		<value>Refreshing...</value>
+	</data>
+	<data name="Progress_Refresh_LoadingMods" xml:space="preserve">
+		<value>Loading mods...</value>
+	</data>
+	<data name="Progress_Refresh_LoadingProfiles" xml:space="preserve">
+		<value>Loading profiles...</value>
+	</data>
+	<data name="Progress_Refresh_LoadingCurrentProfile" xml:space="preserve">
+		<value>Loading current profile...</value>
+	</data>
+	<data name="Progress_Refresh_LoadingExternalOrders" xml:space="preserve">
+		<value>Loading external load orders...</value>
+	</data>
+	<data name="Progress_Refresh_ProfileSetup" xml:space="preserve">
+		<value>Setting up profiles &amp; orders...</value>
+	</data>
+	<data name="Progress_Refresh_Finish" xml:space="preserve">
+		<value>Finishing up...</value>
+	</data>
+	<data name="Progress_DownloadExtender_Title" xml:space="preserve">
+		<value>Setting up the Script Extender...</value>
+	</data>
+	<data name="Progress_DownloadExtender_Downloading" xml:space="preserve">
+		<value>Downloading {0}</value>
+		<comment>Placeholders: latest release url</comment>
+	</data>
+	<data name="Progress_DownloadExtender_ExtractingZip" xml:space="preserve">
+		<value>Extracting zip to {0}...</value>
+		<comment>Placeholders: executable directory</comment>
+	</data>
+	<data name="Progress_DownloadExtender_CleaningUp" xml:space="preserve">
+		<value>Cleaning up...</value>
+	</data>
+	<data name="Progress_ExportLoadOrderToArchiveAsync_Title" xml:space="preserve">
+		<value>Adding active mods to zip...</value>
+	</data>
+	<data name="Alert_Success_ScriptExtenderInstalled" xml:space="preserve">
+		<value>Successfully installed the Extender updater {0} to '{1}'</value>
+		<comment>Placeholders: latest release url, executable directory</comment>
+	</data>
+	<data name="Alert_Error_ScriptExtenderInstallationError" xml:space="preserve">
+		<value>Error occurred when installing the Extender updater {0} - Check the log</value>
+		<comment>Placeholders: latest release url</comment>
+	</data>
+	<data name="Alert_Error_GameExePathInvalid" xml:space="preserve">
+		<value>The 'Game Executable Path' is not set or is not valid</value>
+	</data>
+	<data name="Alert_Error_GameDataFolderInvalid" xml:space="preserve">
+		<value>Game Data folder is not valid. Please set it in the preferences window and refresh</value>
+	</data>
+	<data name="Alert_Error_StartGameExeFailed" xml:space="preserve">
+		<value>Failed to start game exe '{0}' - Check the 'Game Executable Path' in the preferences</value>
+		<comment>Placeholders: game exe path</comment>
+	</data>
+	<data name="Alert_Error_LaunchGame_NotFound" xml:space="preserve">
+		<value>Failed to find game exe at "{0}"</value>
+		<comment>Placeholders: game exe path</comment>
+	</data>
+	<data name="Alert_Error_LaunchGame_CustomActionEmpty" xml:space="preserve">
+		<value>The 'Launch - Custom Action' is empty. Set it in the preferences.</value>
+	</data>
+	<data name="Alert_Error_Picker_GameDataPath_NoDataFolder" xml:space="preserve">
+		<value>Failed to find Data folder with given installation directory</value>
+	</data>
+	<data name="Alert_Error_Picker_GameDataPath_NoExe" xml:space="preserve">
+		<value>Failed to find bg3.exe path with given installation directory</value>
+	</data>
+	<data name="Alert_Error_SaveSettings" xml:space="preserve">
+		<value>Error saving settings: {0}</value>
+	</data>
+	<data name="Alert_Error_ExportLoadOrderToArchiveAs" xml:space="preserve">
+		<value>The current profile or the current mod order is null! Failed to export mod order</value>
+	</data>
+	<data name="Alert_Warning_DocumentsFolderPathOverrideChanged" xml:space="preserve">
+		<value>AppData path override set to '{0}' - Make sure to refresh</value>
+	</data>
+	<data name="MessageBox_LoadSettings_PermissionDenied_Title" xml:space="preserve">
+		<value>File Permission Issue</value>
+	</data>
+	<data name="MessageBox_LoadSettings_PermissionDenied_Message" xml:space="preserve">
+		<value>BG3MM lacks permission to read one or both of the following paths:\nGame Data Path: ({0})\nGame Executable Path: ({1}).</value>
+	</data>
+	<data name="MessageBox_ScriptExtenderDownloadConfirmation_Title" xml:space="preserve">
+		<value>Download &amp; Install the Script Extender?</value>
+	</data>
+	<data name="MessageBox_ScriptExtenderDownloadConfirmation_Message" xml:space="preserve">
+		<value>Download and install the Script Extender?
+The Script Extender is used by mods to extend the scripting language of the game, allowing new functionality.
+The extender needs to only be installed once, as it automatically updates when you launch the game.
+Download url: 
+{0}
+Directory the zip will be extracted to:
+{1}</value>
+		<comment>Placeholders: latest release url, executable directory</comment>
+	</data>
+	<data name="MessageBox_ScriptExtenderDownloadCompleted_Title" xml:space="preserve">
+		<value>Script Extender Installation</value>
+	</data>
+	<data name="MessageBox_ScriptExtenderDownloadCompleted_Message" xml:space="preserve">
+		<value>The Script Extender has been successfully downloaded.\n\nPlease start the game once to complete the installation process.</value>
+	</data>
+	<data name="MessageBox_CustomLaunchError_Title" xml:space="preserve">
+		<value>Custom Launch Error</value>
+	</data>
+	<data name="MessageBox_CustomLaunchError_Message" xml:space="preserve">
+		<value>Error running custom launch '{0}' with args '{1}':\n{2}</value>
+		<comment>Placeholders: launch action, launch args, exception message</comment>
+	</data>
+	<data name="MessageBox_ExportLoadOrderToArchiveAsync_Title" xml:space="preserve">
+		<value>Confirm Archive Creation</value>
+	</data>
+	<data name="MessageBox_ExportLoadOrderToArchiveAsync_Message" xml:space="preserve">
+		<value>Save active mods to a zip file?\nDepending on the number of mods, this may take some time.</value>
+	</data>
+	<data name="Picker_GameDataPath_Title" xml:space="preserve">
+		<value>Set Game Installation Folder</value>
+	</data>
+	<data name="Picker_GameDataPath_Description" xml:space="preserve">
+		<value>Set the path to the Baldur's Gate 3 root installation folder</value>
+	</data>
+	<data name="Picker_ExportLoadOrderToArchiveAs_Title" xml:space="preserve">
+		<value>Export Load Order As...</value>
 	</data>
 </root>

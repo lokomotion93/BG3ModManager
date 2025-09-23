@@ -2,6 +2,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:manager="using:ModManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="using:SukiUI.Controls"
     xmlns:vm="using:ModManager.ViewModels.Main"
@@ -12,16 +13,14 @@
 	<Design.DataContext>
 		<vm:DesignProgressBarViewModel />
 	</Design.DataContext>
-	<Grid Margin="24"
-	    HorizontalAlignment="Stretch"
-	    VerticalAlignment="Stretch"
-	    RowDefinitions="*,*,*,auto">
+	<Grid Margin="24" RowDefinitions="*,*,*,auto">
 		<TextBlock Name="TitleTextControl"
 		    Margin="12"
+		    HorizontalAlignment="Stretch"
 		    VerticalAlignment="Bottom"
 		    FontSize="24"
 		    FontWeight="Bold"
-		    Text="Loading..."
+		    Text="{Binding Title}"
 		    TextAlignment="Center"
 		    TextWrapping="Wrap">
 			<TextBlock.Effect>
@@ -36,11 +35,6 @@
 		    Margin="16,0"
 		    HorizontalAlignment="Stretch"
 		    VerticalAlignment="Center">
-			<!--<ProgressBar Name="ProgressBarControl"
-			             Maximum="100"
-			             Minimum="0"
-			             ShowProgressText="True"
-			             Value="75" />-->
 			<suki:CircleProgressBar Name="ProgressBarControl"
 			    Width="130"
 			    Height="130"
@@ -51,20 +45,19 @@
 			<!--<suki:WaveProgress IsTextVisible="True" Value="{Binding UIValue}" />-->
 		</Panel>
 
-		<TextBlock Name="WorkTextControl"
-		    Grid.Row="2"
+		<TextBlock Grid.Row="2"
 		    Margin="12"
+		    HorizontalAlignment="Stretch"
 		    VerticalAlignment="Top"
 		    FontSize="12"
-		    Text="Processing mod paks..."
+		    Text="{Binding WorkText}"
 		    TextAlignment="Center"
 		    TextWrapping="Wrap" />
-		<Button Name="CancelButton"
-		    Grid.Row="3"
+		<Button Grid.Row="3"
 		    HorizontalAlignment="Center"
 		    Classes="Flat Large"
 		    Command="{Binding CancelCommand}"
-		    Content="Cancel"
+		    Content="{manager:LocaleKey Button_Cancel}"
 		    IsVisible="{Binding CanCancel}" />
 	</Grid>
 </UserControl>

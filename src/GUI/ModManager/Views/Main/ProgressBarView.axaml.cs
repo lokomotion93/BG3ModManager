@@ -21,9 +21,6 @@ public partial class ProgressBarView : ReactiveUserControl<ProgressBarViewModel>
 		{
 			this.GetObservable(IsVisibleProperty).BindTo(ViewModel, x => x.IsVisible);
 
-			ViewModel.WhenAnyValue(x => x.Title).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.TitleTextControl.Text);
-			ViewModel.WhenAnyValue(x => x.WorkText).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.WorkTextControl.Text);
-
 			var whenValue = ViewModel.WhenAnyValue(x => x.Value)
 			.Select(x => Math.Clamp(x, 0d, 100d))
 			.ObserveOn(RxApp.MainThreadScheduler);

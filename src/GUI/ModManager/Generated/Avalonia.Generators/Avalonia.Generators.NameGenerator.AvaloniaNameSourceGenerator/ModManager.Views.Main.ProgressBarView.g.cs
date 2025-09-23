@@ -14,10 +14,6 @@ namespace ModManager.Views.Main
         internal global::SukiUI.Controls.CircleProgressBar ProgressBarControl;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock ProgressValueTextControl;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
-        internal global::Avalonia.Controls.TextBlock WorkTextControl;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
-        internal global::Avalonia.Controls.Button CancelButton;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -37,8 +33,6 @@ namespace ModManager.Views.Main
             TitleTextControl = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("TitleTextControl");
             ProgressBarControl = __thisNameScope__?.Find<global::SukiUI.Controls.CircleProgressBar>("ProgressBarControl");
             ProgressValueTextControl = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ProgressValueTextControl");
-            WorkTextControl = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("WorkTextControl");
-            CancelButton = __thisNameScope__?.Find<global::Avalonia.Controls.Button>("CancelButton");
         }
     }
 }

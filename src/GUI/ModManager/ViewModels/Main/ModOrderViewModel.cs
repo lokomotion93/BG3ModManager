@@ -262,7 +262,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		if (_fs.Directory.Exists(PathwayData.AppDataGameFolder))
 		{
 			DivinityApp.Log("Loading mods...");
-			main.Progress.WorkText = "Loading mods...";
+			main.Progress.WorkText = Loca.Progress_Refresh_LoadingMods;
 			var loadedMods = await _manager.LoadModsAsync(Settings.GameDataPath, PathwayData, token);
 			main.Progress.IncreaseValue(taskStepAmount);
 
@@ -277,14 +277,14 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			}
 
 			DivinityApp.Log("Loading profiles...");
-			main.Progress.WorkText = "Loading profiles...";
+			main.Progress.WorkText = Loca.Progress_Refresh_LoadingProfiles;
 			var loadedProfiles = await LoadProfilesAsync(token);
 			main.Progress.IncreaseValue(taskStepAmount);
 
 			if (!selectedProfileUUID.IsValid() && (loadedProfiles != null && loadedProfiles.Count > 0))
 			{
 				DivinityApp.Log("Loading current profile...");
-				main.Progress.WorkText = "Loading current profile...";
+				main.Progress.WorkText = Loca.Progress_Refresh_LoadingCurrentProfile;
 				selectedProfileUUID = await ModDataLoader.GetSelectedProfileUUIDAsync(PathwayData.AppDataProfilesPath, token);
 				main.Progress.IncreaseValue(taskStepAmount);
 			}
@@ -298,7 +298,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			}
 
 			DivinityApp.Log("Loading external load orders...");
-			main.Progress.WorkText = "Loading external load orders...";
+			main.Progress.WorkText = Loca.Progress_Refresh_LoadingExternalOrders;
 			var savedModOrderList = await LoadExternalLoadOrdersAsync();
 			main.Progress.IncreaseValue(taskStepAmount);
 
@@ -312,7 +312,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			}
 
 			DivinityApp.Log("Setting up mod lists...");
-			main.Progress.WorkText = "Setting up profiles & orders...";
+			main.Progress.WorkText = Loca.Progress_Refresh_ProfileSetup;
 
 			await Observable.Start(() =>
 			{
@@ -323,7 +323,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			}, RxApp.MainThreadScheduler);
 
 			main.Progress.IncreaseValue(taskStepAmount);
-			main.Progress.WorkText = "Finishing up...";
+			main.Progress.WorkText = Loca.Progress_Refresh_Finish;
 		}
 		else
 		{
@@ -417,13 +417,6 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				if (ModOrderList.ElementAtOrDefault(SelectedModOrderIndex) is ModOrder order) SelectedModOrder = order;
 				if (AdventureMods.ElementAtOrDefault(SelectedAdventureModIndex) is ModData adventureMod) SelectedAdventureMod = adventureMod;
 
-				/*if (lastActiveOrder != null && lastActiveOrder.Count > 0)
-				{
-					SelectedModOrder?.SetOrder(lastActiveOrder);
-				}*/
-
-				DivinityApp.Log($"SelectedProfile({SelectedProfileIndex}:{SelectedProfile?.FolderName}) | SelectedModOrder({SelectedModOrderIndex}:{SelectedModOrder?.Name}) SelectedAdventureMod({SelectedAdventureModIndex}:{SelectedAdventureMod?.Name})");
-
 				IsLoadingOrder = false;
 				IsRefreshing = false;
 				ApplyProfile(SelectedProfile, SelectedModOrder);
@@ -438,11 +431,6 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			return mod.ToModuleShortDesc();
 		}
 		return new ModuleShortDesc(uuid);
-	}
-
-	private static void CheckContainerMods(ModOrderContainer container)
-	{
-
 	}
 
 	private void DisplayMissingMods(ModOrder? order = null)

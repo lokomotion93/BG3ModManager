@@ -61,6 +61,114 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The current profile or the current mod order is null! Failed to export mod order.
+        /// </summary>
+        public static string Alert_Error_ExportLoadOrderToArchiveAs {
+            get {
+                return ResourceManager.GetString("Alert_Error_ExportLoadOrderToArchiveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Data folder is not valid. Please set it in the preferences window and refresh.
+        /// </summary>
+        public static string Alert_Error_GameDataFolderInvalid {
+            get {
+                return ResourceManager.GetString("Alert_Error_GameDataFolderInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;Game Executable Path&apos; is not set or is not valid.
+        /// </summary>
+        public static string Alert_Error_GameExePathInvalid {
+            get {
+                return ResourceManager.GetString("Alert_Error_GameExePathInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;Launch - Custom Action&apos; is empty. Set it in the preferences..
+        /// </summary>
+        public static string Alert_Error_LaunchGame_CustomActionEmpty {
+            get {
+                return ResourceManager.GetString("Alert_Error_LaunchGame_CustomActionEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to find game exe at &quot;{0}&quot;.
+        /// </summary>
+        public static string Alert_Error_LaunchGame_NotFound {
+            get {
+                return ResourceManager.GetString("Alert_Error_LaunchGame_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to find Data folder with given installation directory.
+        /// </summary>
+        public static string Alert_Error_Picker_GameDataPath_NoDataFolder {
+            get {
+                return ResourceManager.GetString("Alert_Error_Picker_GameDataPath_NoDataFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to find bg3.exe path with given installation directory.
+        /// </summary>
+        public static string Alert_Error_Picker_GameDataPath_NoExe {
+            get {
+                return ResourceManager.GetString("Alert_Error_Picker_GameDataPath_NoExe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error saving settings: {0}.
+        /// </summary>
+        public static string Alert_Error_SaveSettings {
+            get {
+                return ResourceManager.GetString("Alert_Error_SaveSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occurred when installing the Extender updater {0} - Check the log.
+        /// </summary>
+        public static string Alert_Error_ScriptExtenderInstallationError {
+            get {
+                return ResourceManager.GetString("Alert_Error_ScriptExtenderInstallationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to start game exe &apos;{0}&apos; - Check the &apos;Game Executable Path&apos; in the preferences.
+        /// </summary>
+        public static string Alert_Error_StartGameExeFailed {
+            get {
+                return ResourceManager.GetString("Alert_Error_StartGameExeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully installed the Extender updater {0} to &apos;{1}&apos;.
+        /// </summary>
+        public static string Alert_Success_ScriptExtenderInstalled {
+            get {
+                return ResourceManager.GetString("Alert_Success_ScriptExtenderInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AppData path override set to &apos;{0}&apos; - Make sure to refresh.
+        /// </summary>
+        public static string Alert_Warning_DocumentsFolderPathOverrideChanged {
+            get {
+                return ResourceManager.GetString("Alert_Warning_DocumentsFolderPathOverrideChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply.
         /// </summary>
         public static string Button_Apply {
@@ -1303,6 +1411,102 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error running custom launch &apos;{0}&apos; with args &apos;{1}&apos;:\n{2}.
+        /// </summary>
+        public static string MessageBox_CustomLaunchError_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_CustomLaunchError_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Launch Error.
+        /// </summary>
+        public static string MessageBox_CustomLaunchError_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_CustomLaunchError_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save active mods to a zip file?\nDepending on the number of mods, this may take some time..
+        /// </summary>
+        public static string MessageBox_ExportLoadOrderToArchiveAsync_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_ExportLoadOrderToArchiveAsync_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Archive Creation.
+        /// </summary>
+        public static string MessageBox_ExportLoadOrderToArchiveAsync_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_ExportLoadOrderToArchiveAsync_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BG3MM lacks permission to read one or both of the following paths:\nGame Data Path: ({0})\nGame Executable Path: ({1})..
+        /// </summary>
+        public static string MessageBox_LoadSettings_PermissionDenied_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_LoadSettings_PermissionDenied_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Permission Issue.
+        /// </summary>
+        public static string MessageBox_LoadSettings_PermissionDenied_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_LoadSettings_PermissionDenied_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Script Extender has been successfully downloaded.\n\nPlease start the game once to complete the installation process..
+        /// </summary>
+        public static string MessageBox_ScriptExtenderDownloadCompleted_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_ScriptExtenderDownloadCompleted_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Extender Installation.
+        /// </summary>
+        public static string MessageBox_ScriptExtenderDownloadCompleted_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_ScriptExtenderDownloadCompleted_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download and install the Script Extender?
+        ///The Script Extender is used by mods to extend the scripting language of the game, allowing new functionality.
+        ///The extender needs to only be installed once, as it automatically updates when you launch the game.
+        ///Download url: 
+        ///{0}
+        ///Directory the zip will be extracted to:
+        ///{1}.
+        /// </summary>
+        public static string MessageBox_ScriptExtenderDownloadConfirmation_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_ScriptExtenderDownloadConfirmation_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download &amp; Install the Script Extender?.
+        /// </summary>
+        public static string MessageBox_ScriptExtenderDownloadConfirmation_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_ScriptExtenderDownloadConfirmation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Mod Display Name.
         /// </summary>
         public static string Mod_Command_DisplayFileForName_Disable {
@@ -1681,6 +1885,150 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Load Order As....
+        /// </summary>
+        public static string Picker_ExportLoadOrderToArchiveAs_Title {
+            get {
+                return ResourceManager.GetString("Picker_ExportLoadOrderToArchiveAs_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the path to the Baldur&apos;s Gate 3 root installation folder.
+        /// </summary>
+        public static string Picker_GameDataPath_Description {
+            get {
+                return ResourceManager.GetString("Picker_GameDataPath_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Game Installation Folder.
+        /// </summary>
+        public static string Picker_GameDataPath_Title {
+            get {
+                return ResourceManager.GetString("Picker_GameDataPath_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleaning up....
+        /// </summary>
+        public static string Progress_DownloadExtender_CleaningUp {
+            get {
+                return ResourceManager.GetString("Progress_DownloadExtender_CleaningUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading {0}.
+        /// </summary>
+        public static string Progress_DownloadExtender_Downloading {
+            get {
+                return ResourceManager.GetString("Progress_DownloadExtender_Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting zip to {0}....
+        /// </summary>
+        public static string Progress_DownloadExtender_ExtractingZip {
+            get {
+                return ResourceManager.GetString("Progress_DownloadExtender_ExtractingZip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting up the Script Extender....
+        /// </summary>
+        public static string Progress_DownloadExtender_Title {
+            get {
+                return ResourceManager.GetString("Progress_DownloadExtender_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding active mods to zip....
+        /// </summary>
+        public static string Progress_ExportLoadOrderToArchiveAsync_Title {
+            get {
+                return ResourceManager.GetString("Progress_ExportLoadOrderToArchiveAsync_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string Progress_Loading_Title {
+            get {
+                return ResourceManager.GetString("Progress_Loading_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finishing up....
+        /// </summary>
+        public static string Progress_Refresh_Finish {
+            get {
+                return ResourceManager.GetString("Progress_Refresh_Finish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading current profile....
+        /// </summary>
+        public static string Progress_Refresh_LoadingCurrentProfile {
+            get {
+                return ResourceManager.GetString("Progress_Refresh_LoadingCurrentProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading external load orders....
+        /// </summary>
+        public static string Progress_Refresh_LoadingExternalOrders {
+            get {
+                return ResourceManager.GetString("Progress_Refresh_LoadingExternalOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading mods....
+        /// </summary>
+        public static string Progress_Refresh_LoadingMods {
+            get {
+                return ResourceManager.GetString("Progress_Refresh_LoadingMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading profiles....
+        /// </summary>
+        public static string Progress_Refresh_LoadingProfiles {
+            get {
+                return ResourceManager.GetString("Progress_Refresh_LoadingProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting up profiles &amp; orders....
+        /// </summary>
+        public static string Progress_Refresh_ProfileSetup {
+            get {
+                return ResourceManager.GetString("Progress_Refresh_ProfileSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshing....
+        /// </summary>
+        public static string Progress_Refresh_Title {
+            get {
+                return ResourceManager.GetString("Progress_Refresh_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On Game Launch.
         /// </summary>
         public static string Settings_ActionOnGameLaunch {
@@ -1951,7 +2299,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Override AppData Path.
+        ///   Looks up a localized string similar to Override AppData Path.
         /// </summary>
         public static string Settings_DocumentsFolderPathOverride {
             get {
@@ -2032,7 +2380,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Use a profile other than Public\nThis should be the profile folder name.
+        ///   Looks up a localized string similar to Use a profile other than Public\nThis should be the profile folder name.
         /// </summary>
         public static string Settings_Extender_CustomProfile_ToolTip {
             get {
