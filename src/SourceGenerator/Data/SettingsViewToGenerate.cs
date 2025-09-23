@@ -56,24 +56,11 @@ public readonly record struct SettingsViewToGenerate
 	private const string DescriptionAttributeName = "System.ComponentModel.DescriptionAttribute";
 	private const string DisplayAttributeName = "System.ComponentModel.DataAnnotations.DisplayAttribute";
 
-	private static AttributeData? GetNameAttribute(ISymbol member)
-	{
-		foreach(var attribute in member.GetAttributes())
-		{
-			var attributeClassName = attribute.AttributeClass?.ToDisplayString();
-			if (attributeClassName == DescriptionAttributeName || attributeClassName == DisplayAttributeName)
-			{
-				return attribute;
-			}
-		}
-		return null;
-	}
-
 	private static Tuple<string?, string?, string> GetAttributeNameAndToolTip(ISymbol member)
 	{
 		string? name = null;
 		string? tooltip = null;
-		string comments = "";
+		string comments = string.Empty;
 
 		foreach (var attribute in member.GetAttributes())
 		{
@@ -134,8 +121,8 @@ public readonly record struct SettingsViewToGenerate
 
 		int totalRows = 0;
 
-		code.StartScope("");
-		code.StartScope("");
+		code.StartScope(string.Empty);
+		code.StartScope(string.Empty);
 
 		foreach (var entry in Entries)
 		{
@@ -156,7 +143,7 @@ public readonly record struct SettingsViewToGenerate
 			var addedRightColumn = true;
 			var isMultiLine = false;
 
-			var controlName = entry.PropertyName.Replace(" ", "");
+			var controlName = entry.PropertyName.Replace(" ", string.Empty);
 
 			//code.AppendLine($"<!--{entry.PropertyName},{entry.DisplayName},{entry.PropertyTypeName},{entry.PropertyType.TypeKind}-->");
 
@@ -195,8 +182,8 @@ public readonly record struct SettingsViewToGenerate
 					else if (entry.PropertyType.TypeKind == TypeKind.Enum)
 					{
 						var comboCode = new CodeBuilder();
-						comboCode.StartScope("");
-						comboCode.StartScope("");
+						comboCode.StartScope(string.Empty);
+						comboCode.StartScope(string.Empty);
 
 						isSingleLine = false;
 						var comboText = $"<ComboBox x:Name=\"{controlName}ComboBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" SelectedIndex=\"{{Binding {bindTo}, FallbackValue=0}}\" ToolTip.Tip=\"{tooltipBinding}\"";
@@ -206,7 +193,7 @@ public readonly record struct SettingsViewToGenerate
 						}
 						comboText += ">";
 						comboCode.AppendLine(comboText);
-						comboCode.StartScope("");
+						comboCode.StartScope(string.Empty);
 						
 						foreach(var member in entry.PropertyType.GetMembers())
 						{
@@ -231,7 +218,7 @@ public readonly record struct SettingsViewToGenerate
 							}
 						}
 
-						comboCode.EndScope("");
+						comboCode.EndScope(string.Empty);
 						comboCode.AppendLine("</ComboBox>");
 
 						controlText = comboCode.ToString().Trim();
