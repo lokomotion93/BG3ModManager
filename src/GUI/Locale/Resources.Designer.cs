@@ -1681,6 +1681,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BG3ModManager {0}.
+        /// </summary>
+        public static string Window_Main_Title {
+            get {
+                return ResourceManager.GetString("Window_Main_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description:.
         /// </summary>
         public static string Window_ModProperties_Section_Description {

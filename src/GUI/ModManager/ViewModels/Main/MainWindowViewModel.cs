@@ -4,6 +4,7 @@ using DynamicData;
 using DynamicData.Binding;
 
 using ModManager.Extensions;
+using ModManager.Locale;
 using ModManager.Models;
 using ModManager.Models.App;
 using ModManager.Models.Mod;
@@ -1660,7 +1661,7 @@ Directory the zip will be extracted to:
 		RxApp.DefaultExceptionHandler = exceptionHandler;
 
 		Version = environmentService.AppVersion.ToString();
-		Title = $"{environmentService.AppProductName} {Version}";
+		AppServices.Locale.EntryToObservable(nameof(Resources.Window_Main_Title)).Select(x => x.SafeFormat($"{environmentService.AppProductName} {Version}", Version)).BindTo(this, x => x.Title);
 		DivinityApp.Log($"{Title} initializing...");
 
 		AppServices.AppUpdater.Configure(DivinityApp.GITHUB_USER, DivinityApp.GITHUB_REPO, DivinityApp.GITHUB_RELEASE_ASSET);
