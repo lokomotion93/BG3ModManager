@@ -670,12 +670,6 @@
   <data name="Keybinding_NewOrder" xml:space="preserve">
     <value>Add New Order</value>
   </data>
-  <data name="Keybinding_SaveOrder" xml:space="preserve">
-    <value>Save Order</value>
-  </data>
-  <data name="Keybinding_SaveOrderAs" xml:space="preserve">
-    <value>Save Order As...</value>
-  </data>
   <data name="Keybinding_ImportOrderFromSave" xml:space="preserve">
     <value>Import Order from Save...</value>
   </data>
@@ -760,7 +754,11 @@
   <data name="Keybinding_OrganizeModPaks" xml:space="preserve">
     <value>Organize Mod Paks</value>
   </data>
-<data name="Keybinding_OrganizeModPaks_ToolTip" xml:space="preserve">
+  <data name="Keybinding_OrganizeModPaks_ToolTip" xml:space="preserve">
     <value>Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder.</value>
+  </data>
+  <data name="Window_Main_Title" xml:space="preserve">
+    <value>BG3ModManager {0}</value>
+    <comment>Includes version</comment>
   </data>
 </root>
