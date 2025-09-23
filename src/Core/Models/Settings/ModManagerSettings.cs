@@ -168,8 +168,12 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 		Window = new();
 		Confirmations = new();
 
-		Languages = [];
-		var langs = CultureInfo.GetCultures(CultureTypes.NeutralCultures).Where(x => x != CultureInfo.InvariantCulture).DistinctBy(x => x.LCID).OrderByDescending(x => x.EnglishName.IndexOf("English") > -1);
-		Languages.AddRange(langs);
+		Languages = [
+			CultureInfo.GetCultureInfo("en"),
+			CultureInfo.GetCultureInfo("ru"),
+			CultureInfo.GetCultureInfo("zh-Hans"),
+		];
+		//var langs = CultureInfo.GetCultures(CultureTypes.NeutralCultures).Where(x => x != CultureInfo.InvariantCulture).DistinctBy(x => x.LCID).OrderByDescending(x => x.EnglishName.IndexOf("English") > -1);
+		//Languages.AddRange(langs);
 	}
 }
