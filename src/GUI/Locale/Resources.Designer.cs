@@ -79,6 +79,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string Button_Clear {
+            get {
+                return ResourceManager.GetString("Button_Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Button_Close {
@@ -138,6 +147,24 @@ namespace ModManager.Locale {
         public static string Button_Rename {
             get {
                 return ResourceManager.GetString("Button_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string Button_Reset {
+            get {
+                return ResourceManager.GetString("Button_Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset to Default.
+        /// </summary>
+        public static string Button_ResetToDefault_ToolTip {
+            get {
+                return ResourceManager.GetString("Button_ResetToDefault_ToolTip", resourceCulture);
             }
         }
         
@@ -426,6 +453,15 @@ namespace ModManager.Locale {
         public static string CommandBar_Section_Support {
             get {
                 return ResourceManager.GetString("CommandBar_Section_Support", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press Any Key....
+        /// </summary>
+        public static string Confirmation_PressAny {
+            get {
+                return ResourceManager.GetString("Confirmation_PressAny", resourceCulture);
             }
         }
         
@@ -3378,6 +3414,15 @@ namespace ModManager.Locale {
         public static string Window_PakFileExplorer_Title {
             get {
                 return ResourceManager.GetString("Window_PakFileExplorer_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Keybinding.
+        /// </summary>
+        public static string Window_SettingsWindow_Button_ClearKey_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Button_ClearKey_ToolTip", resourceCulture);
             }
         }
         

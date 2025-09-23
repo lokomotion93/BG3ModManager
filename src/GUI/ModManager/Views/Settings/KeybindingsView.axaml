@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:m="using:ModManager.Models"
+    xmlns:manager="using:ModManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:ModManager.ViewModels.Settings"
     d:DesignHeight="450"
@@ -20,13 +21,13 @@
 			<MenuItem Margin="10,0,0,0"
 			    Command="{Binding ResetKeyCommand}"
 			    CommandParameter="{Binding $parent[Button].Tag}"
-			    Header="Reset"
-			    ToolTip.Tip="Reset to Default" />
+			    Header="{manager:LocaleKey Button_Reset}"
+			    ToolTip.Tip="{manager:LocaleKey Button_ResetToDefault_ToolTip}" />
 			<MenuItem Margin="10,0,0,0"
 			    Command="{Binding ClearKeyCommand}"
 			    CommandParameter="{Binding $parent[Button].Tag}"
-			    Header="Clear"
-			    ToolTip.Tip="Clear Keybinding" />
+			    Header="{manager:LocaleKey Button_Clear}"
+			    ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Button_ClearKey_ToolTip}" />
 		</MenuFlyout>
 
 		<Animation x:Key="FadeInAnimation" x:SetterTargetType="Grid" Duration="0:0:04">
@@ -79,7 +80,7 @@
 			<TextBlock HorizontalAlignment="Center"
 			    VerticalAlignment="Center"
 			    FontSize="24"
-			    Text="Press Any Key..." />
+			    Text="{manager:LocaleKey Confirmation_PressAny}" />
 		</Grid>
 	</Panel>
 </UserControl>

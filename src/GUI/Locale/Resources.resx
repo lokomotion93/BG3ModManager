@@ -235,9 +235,6 @@
 	<data name="Window_AppUpdate_ChangelogTitle" xml:space="preserve">
 		<value>Changelog</value>
 	</data>
-	<data name="Button_Download" xml:space="preserve">
-		<value>Download</value>
-	</data>
 	<data name="Window_AppUpdate_DownloadToolTip" xml:space="preserve">
 		<value>Download and install the latest update.</value>
 	</data>
@@ -294,6 +291,21 @@
 	</data>
 	<data name="Button_Apply" xml:space="preserve">
 		<value>Apply</value>
+	</data>
+	<data name="Button_Download" xml:space="preserve">
+		<value>Download</value>
+	</data>
+	<data name="Button_Reset" xml:space="preserve">
+		<value>Reset</value>
+	</data>
+	<data name="Button_ResetToDefault_ToolTip" xml:space="preserve">
+		<value>Reset to Default</value>
+	</data>
+	<data name="Button_Clear" xml:space="preserve">
+		<value>Clear</value>
+	</data>
+	<data name="Confirmation_PressAny" xml:space="preserve">
+		<value>Press Any Key...</value>
 	</data>
 	<data name="Window_ModProperties_Tab_Config" xml:space="preserve">
 		<value>Config</value>
@@ -456,6 +468,9 @@
 	</data>
 	<data name="Window_SettingsWindow_Button_DeleteCache_ToolTip" xml:space="preserve">
 		<value>Delete the local mod cache, located in the mod manager's Data folder</value>
+	</data>
+	<data name="Window_SettingsWindow_Button_ClearKey_ToolTip" xml:space="preserve">
+		<value>Clear Keybinding</value>
 	</data>
 	<data name="ModListView_AddContainer" xml:space="preserve">
 		<value>Add Container...</value>
