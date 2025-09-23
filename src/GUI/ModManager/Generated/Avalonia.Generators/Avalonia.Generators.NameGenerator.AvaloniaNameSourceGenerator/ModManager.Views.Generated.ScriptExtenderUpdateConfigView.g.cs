@@ -13,12 +13,6 @@ namespace ModManager.Views.Generated
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.ComboBox UpdateChannelComboBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
-        internal global::Avalonia.Controls.ComboBoxItem ReleaseComboBoxItem;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
-        internal global::Avalonia.Controls.ComboBoxItem DevelComboBoxItem;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
-        internal global::Avalonia.Controls.ComboBoxItem NightlyComboBoxItem;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::Avalonia.Controls.TextBlock CachePathTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.2.0")]
         internal global::ModManager.Controls.EnhancedTextBox CachePathTextBox;
@@ -72,9 +66,6 @@ namespace ModManager.Views.Generated
             var __thisNameScope__ = this.FindNameScope();
             UpdateChannelTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("UpdateChannelTextBlock");
             UpdateChannelComboBox = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBox>("UpdateChannelComboBox");
-            ReleaseComboBoxItem = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBoxItem>("ReleaseComboBoxItem");
-            DevelComboBoxItem = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBoxItem>("DevelComboBoxItem");
-            NightlyComboBoxItem = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBoxItem>("NightlyComboBoxItem");
             CachePathTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("CachePathTextBlock");
             CachePathTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("CachePathTextBox");
             DebugTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("DebugTextBlock");
