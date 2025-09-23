@@ -46,20 +46,6 @@ public partial class SettingsWindow : HideWindowBase<SettingsWindowViewModel>
 				this.GetObservable(IsVisibleProperty).BindTo(ViewModel, x => x.IsVisible);
 				SettingsTabControl.GetObservable(TabIndexProperty).Select(ValidateIndex).BindTo(ViewModel, x => x.SelectedTabIndex);
 				ViewModel.WhenAnyValue(x => x.SelectedTabIndex).Select(x => (int)x).BindTo(SettingsTabControl, x => x.TabIndex);
-
-				if(TryGetSettingsEntry(nameof(ModManagerSettings.DebugModeEnabled), out var debugModeAttribute))
-				{
-					ModDeveloperModeTextBlock.Text = debugModeAttribute.DisplayName;
-					ToolTip.SetTip(ModDeveloperModeTextBlock, debugModeAttribute.ToolTip);
-					ToolTip.SetTip(ModDeveloperModeCheckBox, debugModeAttribute.ToolTip);
-				}
-
-				if(TryGetSettingsEntry(nameof(ModManagerSettings.LogEnabled), out var logAttribute))
-				{
-					LoggingTextBlock.Text = logAttribute.DisplayName;
-					ToolTip.SetTip(LoggingTextBlock, logAttribute.ToolTip);
-					ToolTip.SetTip(LoggingCheckBox, logAttribute.ToolTip);
-				}
 			}
 		});
 	}

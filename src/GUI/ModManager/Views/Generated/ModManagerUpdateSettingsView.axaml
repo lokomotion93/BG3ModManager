@@ -5,6 +5,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:manager="using:ModManager"
 	xmlns:controls="using:ModManager.Controls"
 	xmlns:vm="using:ModManager.Models.Settings"
 	x:DataType="vm:ModManagerUpdateSettings"
@@ -12,28 +13,28 @@
     d:DesignWidth="1600"
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-		<TextBlock x:Name="ModioAPIKeyTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="mod.io API Key" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io" />
-		<controls:EnhancedTextBox x:Name="ModioAPIKeyTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding ModioAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io"/>
+		<TextBlock x:Name="ModioAPIKeyTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ModioAPIKey}" ToolTip.Tip="{manager:LocaleKey Settings_ModioAPIKey_ToolTip}" />
+		<controls:EnhancedTextBox x:Name="ModioAPIKeyTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding ModioAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_ModioAPIKey_ToolTip}"/>
 		
-		<TextBlock x:Name="NexusModsAPIKeyTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="NexusMods API Key" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information" />
-		<controls:EnhancedTextBox x:Name="NexusModsAPIKeyTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding NexusModsAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Your NexusMods API key, which will allow the mod manager to fetch mod updates/information"/>
+		<TextBlock x:Name="NexusModsAPIKeyTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_NexusModsAPIKey}" ToolTip.Tip="{manager:LocaleKey Settings_NexusModsAPIKey_ToolTip}" />
+		<controls:EnhancedTextBox x:Name="NexusModsAPIKeyTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding NexusModsAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_NexusModsAPIKey_ToolTip}"/>
 		
-		<TextBlock x:Name="AllowAdultContentTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Allow Adult Content" ToolTip.Tip="Allow adult content when downloading collections from NexusMods" />
-		<CheckBox x:Name="AllowAdultContentCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding AllowAdultContent}" ToolTip.Tip="Allow adult content when downloading collections from NexusMods"/>
+		<TextBlock x:Name="AllowAdultContentTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_AllowAdultContent}" ToolTip.Tip="{manager:LocaleKey Settings_AllowAdultContent_ToolTip}" />
+		<CheckBox x:Name="AllowAdultContentCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding AllowAdultContent}" ToolTip.Tip="{manager:LocaleKey Settings_AllowAdultContent_ToolTip}"/>
 		
-		<TextBlock x:Name="MinimumUpdateTimePeriodTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="Minimum Update Time Period" ToolTip.Tip="Prevent checking for updates for individual mods until this amount of time has passed since the last check&amp;#x0a;This is to prevent hitting API limits too quickly" />
-		<controls:TimeSpanUpDown x:Name="MinimumUpdateTimePeriodTimeSpanUpDown" Grid.Row="3" Grid.Column="1" Classes="right" Value="{Binding MinimumUpdateTimePeriod}" ToolTip.Tip="Prevent checking for updates for individual mods until this amount of time has passed since the last check&amp;#x0a;This is to prevent hitting API limits too quickly"/>
+		<TextBlock x:Name="MinimumUpdateTimePeriodTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_MinimumUpdateTimePeriod}" ToolTip.Tip="{manager:LocaleKey Settings_MinimumUpdateTimePeriod_ToolTip}" />
+		<controls:TimeSpanUpDown x:Name="MinimumUpdateTimePeriodTimeSpanUpDown" Grid.Row="3" Grid.Column="1" Classes="right" Value="{Binding MinimumUpdateTimePeriod}" ToolTip.Tip="{manager:LocaleKey Settings_MinimumUpdateTimePeriod_ToolTip}"/>
 		
-		<TextBlock x:Name="UpdateGitHubModsTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="Update GitHub Mods" ToolTip.Tip="Automatically check for updates for mods configured with GitHub repository releases" />
-		<CheckBox x:Name="UpdateGitHubModsCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateGitHubMods}" ToolTip.Tip="Automatically check for updates for mods configured with GitHub repository releases"/>
+		<TextBlock x:Name="UpdateGitHubModsTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_UpdateGitHubMods}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateGitHubMods_ToolTip}" />
+		<CheckBox x:Name="UpdateGitHubModsCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateGitHubMods}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateGitHubMods_ToolTip}"/>
 		
-		<TextBlock x:Name="UpdateModioModsTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="Update mod.io Mods" ToolTip.Tip="Automatically check for updates for mods configured with mod.io releases" />
-		<CheckBox x:Name="UpdateModioModsCheckBox" Grid.Row="5" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateModioMods}" ToolTip.Tip="Automatically check for updates for mods configured with mod.io releases"/>
+		<TextBlock x:Name="UpdateModioModsTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_UpdateModioMods}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateModioMods_ToolTip}" />
+		<CheckBox x:Name="UpdateModioModsCheckBox" Grid.Row="5" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateModioMods}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateModioMods_ToolTip}"/>
 		
-		<TextBlock x:Name="UpdateNexusModsTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="Update NexusMods Mods" ToolTip.Tip="Automatically check for updates for mods configured with NexusMods releases" />
-		<CheckBox x:Name="UpdateNexusModsCheckBox" Grid.Row="6" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateNexusMods}" ToolTip.Tip="Automatically check for updates for mods configured with NexusMods releases"/>
+		<TextBlock x:Name="UpdateNexusModsTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_UpdateNexusMods}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateNexusMods_ToolTip}" />
+		<CheckBox x:Name="UpdateNexusModsCheckBox" Grid.Row="6" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateNexusMods}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateNexusMods_ToolTip}"/>
 		
-		<TextBlock x:Name="UpdateScriptExtenderTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="Update the Script Extender" ToolTip.Tip="If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe" />
-		<CheckBox x:Name="UpdateScriptExtenderCheckBox" Grid.Row="7" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateScriptExtender}" ToolTip.Tip="If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe"/>
+		<TextBlock x:Name="UpdateScriptExtenderTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_UpdateScriptExtender}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateScriptExtender_ToolTip}" />
+		<CheckBox x:Name="UpdateScriptExtenderCheckBox" Grid.Row="7" Grid.Column="1" Classes="right" IsChecked ="{Binding UpdateScriptExtender}" ToolTip.Tip="{manager:LocaleKey Settings_UpdateScriptExtender_ToolTip}"/>
 	</Grid>
 </UserControl>

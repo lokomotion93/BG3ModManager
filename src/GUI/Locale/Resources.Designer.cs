@@ -1735,6 +1735,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow Adult Content.
+        /// </summary>
+        public static string Settings_AllowAdultContent {
+            get {
+                return ResourceManager.GetString("Settings_AllowAdultContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow adult content when downloading collections from NexusMods.
+        /// </summary>
+        public static string Settings_AllowAdultContent_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_AllowAdultContent_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Missing Dependencies When Exporting.
         /// </summary>
         public static string Settings_AutoAddDependenciesWhenExporting {
@@ -1933,6 +1951,618 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Console On Reset.
+        /// </summary>
+        public static string Settings_Extender_ClearOnReset {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ClearOnReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clears the extender console when the reset command is used.
+        /// </summary>
+        public static string Settings_Extender_ClearOnReset_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ClearOnReset_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Console Window.
+        /// </summary>
+        public static string Settings_Extender_CreateConsole {
+            get {
+                return ResourceManager.GetString("Settings_Extender_CreateConsole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a console window that logs extender internals\nMainly useful for debugging.
+        /// </summary>
+        public static string Settings_Extender_CreateConsole_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_CreateConsole_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Profile.
+        /// </summary>
+        public static string Settings_Extender_CustomProfile {
+            get {
+                return ResourceManager.GetString("Settings_Extender_CustomProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Use a profile other than Public\nThis should be the profile folder name.
+        /// </summary>
+        public static string Settings_Extender_CustomProfile_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_CustomProfile_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Osiris Debugger Flags.
+        /// </summary>
+        public static string Settings_Extender_DebuggerFlags {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DebuggerFlags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debugger flags to set\nDefault: 0.
+        /// </summary>
+        public static string Settings_Extender_DebuggerFlags_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DebuggerFlags_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Osiris Debugger Port.
+        /// </summary>
+        public static string Settings_Extender_DebuggerPort {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DebuggerPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port number the Osiris debugger will listen on\nDefault: 9999.
+        /// </summary>
+        public static string Settings_Extender_DebuggerPort_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DebuggerPort_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default to Client Side.
+        /// </summary>
+        public static string Settings_Extender_DefaultToClientConsole {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DefaultToClientConsole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defaults the extender console to the client-side\nThis is setting is intended for developers.
+        /// </summary>
+        public static string Settings_Extender_DefaultToClientConsole_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DefaultToClientConsole_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Developer Mode.
+        /// </summary>
+        public static string Settings_Extender_DeveloperMode {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DeveloperMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables various debug functionality for development purposes\nThis can be checked by mods to enable additional log messages and more.
+        /// </summary>
+        public static string Settings_Extender_DeveloperMode_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DeveloperMode_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Launcher.
+        /// </summary>
+        public static string Settings_Extender_DisableLauncher {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableLauncher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prevents the exe from force-opening the launcher\nMay not work correctly if extender auto-updating is enabled, or the --skip-launcher launch param is set.
+        /// </summary>
+        public static string Settings_Extender_DisableLauncher_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableLauncher_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Mod Validation.
+        /// </summary>
+        public static string Settings_Extender_DisableModValidation {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableModValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable module hashing when loading mods\nSpeeds up mod loading with no drawbacks.
+        /// </summary>
+        public static string Settings_Extender_DisableModValidation_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableModValidation_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Story Merge.
+        /// </summary>
+        public static string Settings_Extender_DisableStoryMerge {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableStoryMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prevents story.div.osi merging, which automatically happens when mods are present\nMay only occur when loading a save.
+        /// </summary>
+        public static string Settings_Extender_DisableStoryMerge_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableStoryMerge_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Story Patching.
+        /// </summary>
+        public static string Settings_Extender_DisableStoryPatching {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableStoryPatching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prevents patching story.bin with story.div.osi when loading saves, effectively preventing the Osiris scripts in the save from updating.
+        /// </summary>
+        public static string Settings_Extender_DisableStoryPatching_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DisableStoryPatching_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dump Network Strings.
+        /// </summary>
+        public static string Settings_Extender_DumpNetworkStrings {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DumpNetworkStrings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dumps the NetworkFixedString table to LogDirectory\nMainly useful for debugging desync issues.
+        /// </summary>
+        public static string Settings_Extender_DumpNetworkStrings_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_DumpNetworkStrings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Achievements.
+        /// </summary>
+        public static string Settings_Extender_EnableAchievements {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableAchievements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable achievements for modded games.
+        /// </summary>
+        public static string Settings_Extender_EnableAchievements_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableAchievements_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Osiris Debugger.
+        /// </summary>
+        public static string Settings_Extender_EnableDebugger {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableDebugger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables the Osiris debugger interface (vscode extension).
+        /// </summary>
+        public static string Settings_Extender_EnableDebugger_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableDebugger_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extensions.
+        /// </summary>
+        public static string Settings_Extender_EnableExtensions {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableExtensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables extender API functionality.
+        /// </summary>
+        public static string Settings_Extender_EnableExtensions_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableExtensions_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Osiris Scripts.
+        /// </summary>
+        public static string Settings_Extender_EnableLogging {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableLogging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable logging of Osiris activity (rule evaluation, queries, etc.) to a log file.
+        /// </summary>
+        public static string Settings_Extender_EnableLogging_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableLogging_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lua Debugger.
+        /// </summary>
+        public static string Settings_Extender_EnableLuaDebugger {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableLuaDebugger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables the Lua debugger interface (vscode extension).
+        /// </summary>
+        public static string Settings_Extender_EnableLuaDebugger_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnableLuaDebugger_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Default Values.
+        /// </summary>
+        public static string Settings_Extender_ExportDefaultExtenderSettings {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ExportDefaultExtenderSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export all values, even if it matches a default extender value.
+        /// </summary>
+        public static string Settings_Extender_ExportDefaultExtenderSettings_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ExportDefaultExtenderSettings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable ModCrashSanityCheck.
+        /// </summary>
+        public static string Settings_Extender_InsanityCheck {
+            get {
+                return ResourceManager.GetString("Settings_Extender_InsanityCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disables the ModCrashSanityCheck jank that disables mods the next time the game runs.
+        /// </summary>
+        public static string Settings_Extender_InsanityCheck_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_InsanityCheck_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Script Compilation.
+        /// </summary>
+        public static string Settings_Extender_LogCompile {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogCompile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Osiris story compilation to a log file.
+        /// </summary>
+        public static string Settings_Extender_LogCompile_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogCompile_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Directory.
+        /// </summary>
+        public static string Settings_Extender_LogDirectory {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory where the generated Osiris logs will be stored\nDefault is Documents\\OsirisLogs.
+        /// </summary>
+        public static string Settings_Extender_LogDirectory_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogDirectory_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Working Story Errors.
+        /// </summary>
+        public static string Settings_Extender_LogFailedCompile {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogFailedCompile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log errors during Osiris story compilation to a log file (LogFailedCompile).
+        /// </summary>
+        public static string Settings_Extender_LogFailedCompile_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogFailedCompile_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Runtime.
+        /// </summary>
+        public static string Settings_Extender_LogRuntime {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogRuntime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log extender console and script output to a log file.
+        /// </summary>
+        public static string Settings_Extender_LogRuntime_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LogRuntime_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lua Builtin Directory.
+        /// </summary>
+        public static string Settings_Extender_LuaBuiltinResourceDirectory {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LuaBuiltinResourceDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An additional directory where the Script Extender will check for builtin scripts\nThis setting is meant for developers, to make it easier to test builtin script changes.
+        /// </summary>
+        public static string Settings_Extender_LuaBuiltinResourceDirectory_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_LuaBuiltinResourceDirectory_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Crash Reports.
+        /// </summary>
+        public static string Settings_Extender_SendCrashReports {
+            get {
+                return ResourceManager.GetString("Settings_Extender_SendCrashReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload minidumps to the crash report collection server after a game crash.
+        /// </summary>
+        public static string Settings_Extender_SendCrashReports_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_SendCrashReports_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Performance Warnings.
+        /// </summary>
+        public static string Settings_Extender_ShowPerfWarnings {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ShowPerfWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print warnings to the extender console window, which indicates when the server-side part of the game lags behind (a.k.a. warnings about ticks taking too long)..
+        /// </summary>
+        public static string Settings_Extender_ShowPerfWarnings_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ShowPerfWarnings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cache Path.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_CachePath {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_CachePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_Debug {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable debug mode in the extender updater, which prints more messages to the console window.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_Debug_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_Debug_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Updates.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_DisableUpdates {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_DisableUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable automatic updating to the latest extender version.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_DisableUpdates_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_DisableUpdates_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IPv4 Only.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_IPv4Only {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_IPv4Only", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use only IPv4 when fetching the latest update.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_IPv4Only_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_IPv4Only_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manifest Name.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_ManifestName {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_ManifestName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manifest URL.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_ManifestURL {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_ManifestURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target Resource Digest.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_TargetResourceDigest {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_TargetResourceDigest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use a specific Digest for the target update.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_TargetResourceDigest_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_TargetResourceDigest_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target Version.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_TargetVersion {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_TargetVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update to a specific version of the script extender (ex. &apos;5.0.0.0&apos;).
+        /// </summary>
+        public static string Settings_ExtenderUpdater_TargetVersion_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_TargetVersion_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Channel.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_UpdateChannel {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_UpdateChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use a specific update channel.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_UpdateChannel_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_UpdateChannel_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate Signature.
+        /// </summary>
+        public static string Settings_ExtenderUpdater_ValidateSignature {
+            get {
+                return ResourceManager.GetString("Settings_ExtenderUpdater_ValidateSignature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game Data Path.
         /// </summary>
         public static string Settings_GameDataPath {
@@ -2077,7 +2707,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal Logging.
+        ///   Looks up a localized string similar to Enable Mod Manager Logs.
         /// </summary>
         public static string Settings_LogEnabled {
             get {
@@ -2091,6 +2721,60 @@ namespace ModManager.Locale {
         public static string Settings_LogEnabled_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_LogEnabled_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Update Time Period.
+        /// </summary>
+        public static string Settings_MinimumUpdateTimePeriod {
+            get {
+                return ResourceManager.GetString("Settings_MinimumUpdateTimePeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prevent checking for updates for individual mods until this amount of time has passed since the last check\nThis is to prevent hitting API limits too quickly.
+        /// </summary>
+        public static string Settings_MinimumUpdateTimePeriod_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_MinimumUpdateTimePeriod_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mod.io API Key.
+        /// </summary>
+        public static string Settings_ModioAPIKey {
+            get {
+                return ResourceManager.GetString("Settings_ModioAPIKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io.
+        /// </summary>
+        public static string Settings_ModioAPIKey_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ModioAPIKey_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NexusMods API Key.
+        /// </summary>
+        public static string Settings_NexusModsAPIKey {
+            get {
+                return ResourceManager.GetString("Settings_NexusModsAPIKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your NexusMods API key, which will allow the mod manager to fetch mod updates/information.
+        /// </summary>
+        public static string Settings_NexusModsAPIKey_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_NexusModsAPIKey_ToolTip", resourceCulture);
             }
         }
         
@@ -2127,6 +2811,78 @@ namespace ModManager.Locale {
         public static string Settings_ShiftListFocusOnSwap_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_ShiftListFocusOnSwap_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update GitHub Mods.
+        /// </summary>
+        public static string Settings_UpdateGitHubMods {
+            get {
+                return ResourceManager.GetString("Settings_UpdateGitHubMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically check for updates for mods configured with GitHub repository releases.
+        /// </summary>
+        public static string Settings_UpdateGitHubMods_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_UpdateGitHubMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update mod.io Mods.
+        /// </summary>
+        public static string Settings_UpdateModioMods {
+            get {
+                return ResourceManager.GetString("Settings_UpdateModioMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically check for updates for mods configured with mod.io releases.
+        /// </summary>
+        public static string Settings_UpdateModioMods_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_UpdateModioMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update NexusMods Mods.
+        /// </summary>
+        public static string Settings_UpdateNexusMods {
+            get {
+                return ResourceManager.GetString("Settings_UpdateNexusMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically check for updates for mods configured with NexusMods releases.
+        /// </summary>
+        public static string Settings_UpdateNexusMods_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_UpdateNexusMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update the Script Extender.
+        /// </summary>
+        public static string Settings_UpdateScriptExtender {
+            get {
+                return ResourceManager.GetString("Settings_UpdateScriptExtender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe.
+        /// </summary>
+        public static string Settings_UpdateScriptExtender_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_UpdateScriptExtender_ToolTip", resourceCulture);
             }
         }
         
@@ -2622,6 +3378,177 @@ namespace ModManager.Locale {
         public static string Window_PakFileExplorer_Title {
             get {
                 return ResourceManager.GetString("Window_PakFileExplorer_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Current Params.
+        /// </summary>
+        public static string Window_SettingsWindow_Button_ClearParams_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Button_ClearParams_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Cache.
+        /// </summary>
+        public static string Window_SettingsWindow_Button_DeleteCache {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Button_DeleteCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the local mod cache, located in the mod manager&apos;s Data folder.
+        /// </summary>
+        public static string Window_SettingsWindow_Button_DeleteCache_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Button_DeleteCache_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch Params.
+        /// </summary>
+        public static string Window_SettingsWindow_Button_LaunchParams {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Button_LaunchParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters to pass to the game executable when launching the game through the mod manager.
+        /// </summary>
+        public static string Window_SettingsWindow_Button_LaunchParams_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Button_LaunchParams_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Experimental.
+        /// </summary>
+        public static string Window_SettingsWindow_Section_Experimental {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Section_Experimental", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_Advanced {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced Mod Manager Settings (Data/settings.json).
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_Advanced_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_Advanced_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_General {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod Manager Settings (Data/settings.json).
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_General_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_General_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keybindings.
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_Keybindings {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_Keybindings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keybinding Settings (Data/keybindings.json).
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_Keybindings_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_Keybindings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod Updating.
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_ModUpdating {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_ModUpdating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Settings (Data/settings.json).
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_ModUpdating_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_ModUpdating_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Extender.
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_ScriptExtender {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_ScriptExtender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Extender Settings (ScriptExtenderSettings.json).
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_ScriptExtender_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_ScriptExtender_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Extender Updater.
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_ScriptExtenderUpdater {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_ScriptExtenderUpdater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Extender Updater Settings (ScriptExtenderUpdaterConfig.json).
+        /// </summary>
+        public static string Window_SettingsWindow_Tab_ScriptExtenderUpdater_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Tab_ScriptExtenderUpdater_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Window_SettingsWindow_Title {
+            get {
+                return ResourceManager.GetString("Window_SettingsWindow_Title", resourceCulture);
             }
         }
         

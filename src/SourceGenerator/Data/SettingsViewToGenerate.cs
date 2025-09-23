@@ -226,11 +226,11 @@ public readonly record struct SettingsViewToGenerate
 								{
 									if (!HasWhitespace(entryName))
 									{
-										entryName = $" Content=\"{{manager:LocaleKey {entryName}}}\"";
+										entryName = $"Content=\"{{manager:LocaleKey {entryName}}}\"";
 									}
 									else
 									{
-										entryName = $" Content=\"{SecurityElement.Escape(entryName)}\"";
+										entryName = $"Content=\"{SecurityElement.Escape(entryName)}\"";
 									}
 								}
 								if (!string.IsNullOrWhiteSpace(entryToolTip))

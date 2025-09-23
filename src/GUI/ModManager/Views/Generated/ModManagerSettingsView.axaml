@@ -5,6 +5,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:manager="using:ModManager"
 	xmlns:controls="using:ModManager.Controls"
 	xmlns:vm="using:ModManager.Models.Settings"
 	x:DataType="vm:ModManagerSettings"
@@ -12,72 +13,72 @@
     d:DesignWidth="1600"
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-		<TextBlock x:Name="GameDataPathTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="Game Data Path" ToolTip.Tip="The path to the Data folder&amp;#x0a;Example: Baldur&apos;s Gate 3/Data" />
-		<controls:EnhancedTextBox x:Name="GameDataPathTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding GameDataPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="The path to the Data folder&amp;#x0a;Example: Baldur&apos;s Gate 3/Data"/>
+		<TextBlock x:Name="DocumentsFolderPathOverrideTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DocumentsFolderPathOverride}" ToolTip.Tip="{manager:LocaleKey Settings_DocumentsFolderPathOverride_ToolTip}" />
+		<controls:EnhancedTextBox x:Name="DocumentsFolderPathOverrideTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding DocumentsFolderPathOverride, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_DocumentsFolderPathOverride_ToolTip}"/>
 		
-		<TextBlock x:Name="GameExecutablePathTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="Game Executable Path" ToolTip.Tip="The path to bg3.exe" />
-		<controls:EnhancedTextBox x:Name="GameExecutablePathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding GameExecutablePath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="The path to bg3.exe"/>
+		<TextBlock x:Name="GameDataPathTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_GameDataPath}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}" />
+		<controls:EnhancedTextBox x:Name="GameDataPathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding GameDataPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
 		
-		<TextBlock x:Name="LoadOrderPathTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Load Orders Path" ToolTip.Tip="The folder containing mod load order .json files" />
-		<controls:EnhancedTextBox x:Name="LoadOrderPathTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding LoadOrderPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="The folder containing mod load order .json files"/>
+		<TextBlock x:Name="GameExecutablePathTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_GameExecutablePath}" ToolTip.Tip="{manager:LocaleKey Settings_GameExecutablePath_ToolTip}" />
+		<controls:EnhancedTextBox x:Name="GameExecutablePathTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding GameExecutablePath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameExecutablePath_ToolTip}"/>
 		
-		<TextBlock x:Name="DocumentsFolderPathOverrideTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="Override AppData Path" ToolTip.Tip="[EXPERIMENTAL]&amp;#x0a;Override the default location to %LOCALAPPDATA%\Larian Studios\Baldur&apos;s Gate 3&amp;#x0a;This folder is used when exporting load orders, loading profiles, and loading mods." />
-		<controls:EnhancedTextBox x:Name="DocumentsFolderPathOverrideTextBox" Grid.Row="3" Grid.Column="1" Classes="compact" Text="{Binding DocumentsFolderPathOverride, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="[EXPERIMENTAL]&amp;#x0a;Override the default location to %LOCALAPPDATA%\Larian Studios\Baldur&apos;s Gate 3&amp;#x0a;This folder is used when exporting load orders, loading profiles, and loading mods."/>
+		<TextBlock x:Name="LoadOrderPathTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_LoadOrderPath}" ToolTip.Tip="{manager:LocaleKey Settings_LoadOrderPath_ToolTip}" />
+		<controls:EnhancedTextBox x:Name="LoadOrderPathTextBox" Grid.Row="3" Grid.Column="1" Classes="compact" Text="{Binding LoadOrderPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_LoadOrderPath_ToolTip}"/>
 		
-		<TextBlock x:Name="AutoAddDependenciesWhenExportingTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="Add Missing Dependencies When Exporting" ToolTip.Tip="Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order" />
-		<CheckBox x:Name="AutoAddDependenciesWhenExportingCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding AutoAddDependenciesWhenExporting}" ToolTip.Tip="Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order"/>
-		
-		<TextBlock x:Name="CheckForUpdatesTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="Automatically Check For Updates" ToolTip.Tip="Automatically check for updates when the program starts" />
-		<CheckBox x:Name="CheckForUpdatesCheckBox" Grid.Row="5" Grid.Column="1" Classes="right" IsChecked ="{Binding CheckForUpdates}" ToolTip.Tip="Automatically check for updates when the program starts"/>
-		
-		<TextBlock x:Name="EnableColorblindSupportTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="Colorblind Support" ToolTip.Tip="Enables some colorblind support, such as displaying icons for toolkit projects (which normally have a green background)" />
-		<CheckBox x:Name="EnableColorblindSupportCheckBox" Grid.Row="6" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableColorblindSupport}" ToolTip.Tip="Enables some colorblind support, such as displaying icons for toolkit projects (which normally have a green background)"/>
-		
-		<TextBlock x:Name="DeleteModCrashSanityCheckTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="Delete ModCrashSanityCheck" ToolTip.Tip="Automatically delete the %LOCALAPPDATA%/Larian Studios/Baldur&apos;s Gate 3/ModCrashSanityCheck folder, which may make certain mods deactivate if it exists" />
-		<CheckBox x:Name="DeleteModCrashSanityCheckCheckBox" Grid.Row="7" Grid.Column="1" Classes="right" IsChecked ="{Binding DeleteModCrashSanityCheck}" ToolTip.Tip="Automatically delete the %LOCALAPPDATA%/Larian Studios/Baldur&apos;s Gate 3/ModCrashSanityCheck folder, which may make certain mods deactivate if it exists"/>
-		
-		<TextBlock x:Name="LaunchDX11TextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="DirectX 11" ToolTip.Tip="If enabled, when launching the game, bg3_dx11.exe is used instead" />
-		<CheckBox x:Name="LaunchDX11CheckBox" Grid.Row="8" Grid.Column="1" Classes="right" IsChecked ="{Binding LaunchDX11}" ToolTip.Tip="If enabled, when launching the game, bg3_dx11.exe is used instead"/>
-		
-		<TextBlock x:Name="LaunchTypeTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="Launch Game - Action" ToolTip.Tip="Change how to launch the game" />
-		<ComboBox x:Name="LaunchTypeComboBox" Grid.Row="9" Grid.Column="1" Classes="right" SelectedIndex="{Binding LaunchTypeIndex, FallbackValue=0}" ToolTip.Tip="Change how to launch the game">
-			<ComboBoxItem x:Name="ExeComboBoxItem" Content="Default (Exe)" ToolTip.Tip="Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn't exist,\nallowing you to bypassing the launcher" />
-			<ComboBoxItem x:Name="SteamComboBoxItem" Content="Steam" ToolTip.Tip="Open the game by running the Steam launch protocol ('steam://run/1086940')" />
-			<ComboBoxItem x:Name="CustomComboBoxItem" Content="Custom" ToolTip.Tip="Open the game by opening a different file or protocol (ex. a batch file or protocol handler like playnite://playnite/start/id)" />
+		<TextBlock x:Name="ActionOnGameLaunchTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ActionOnGameLaunch}" ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_ToolTip}" />
+		<ComboBox x:Name="ActionOnGameLaunchComboBox" Grid.Row="4" Grid.Column="1" Classes="right" SelectedIndex="{Binding ActionOnGameLaunchIndex, FallbackValue=0}" ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_ToolTip}">
+			<ComboBoxItem Content="{manager:LocaleKey GameLaunchWindowAction_None}" ToolTip.Tip="{manager:LocaleKey GameLaunchWindowAction_None_ToolTip}" Tag="None" />
+			<ComboBoxItem Content="{manager:LocaleKey GameLaunchWindowAction_Minimize}" ToolTip.Tip="{manager:LocaleKey GameLaunchWindowAction_Minimize_ToolTip}" Tag="Minimize" />
+			<ComboBoxItem Content="{manager:LocaleKey GameLaunchWindowAction_Close}" ToolTip.Tip="{manager:LocaleKey GameLaunchWindowAction_Close_ToolTip}" Tag="Close" />
 		</ComboBox>
 		
-		<TextBlock x:Name="CustomLaunchActionTextBlock" Grid.Row="10" Grid.Column="0" Classes="left" Text="Launch Game - Custom Action" ToolTip.Tip="A file path, protocol, or custom process shell command to run" IsVisible="{Binding IsCustomLaunchEnabled}" />
-		<controls:EnhancedTextBox x:Name="CustomLaunchActionTextBox" Grid.Row="10" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchAction, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="A file path, protocol, or custom process shell command to run" IsVisible="{Binding IsCustomLaunchEnabled}"/>
+		<TextBlock x:Name="AutoAddDependenciesWhenExportingTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_AutoAddDependenciesWhenExporting}" ToolTip.Tip="{manager:LocaleKey Settings_AutoAddDependenciesWhenExporting_ToolTip}" />
+		<CheckBox x:Name="AutoAddDependenciesWhenExportingCheckBox" Grid.Row="5" Grid.Column="1" Classes="right" IsChecked ="{Binding AutoAddDependenciesWhenExporting}" ToolTip.Tip="{manager:LocaleKey Settings_AutoAddDependenciesWhenExporting_ToolTip}"/>
 		
-		<TextBlock x:Name="CustomLaunchArgsTextBlock" Grid.Row="11" Grid.Column="0" Classes="left" Text="Launch Game - Custom Arguments" ToolTip.Tip="Optional additional arguments to path to the custom launch command" IsVisible="{Binding IsCustomLaunchEnabled}" />
-		<controls:EnhancedTextBox x:Name="CustomLaunchArgsTextBox" Grid.Row="11" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchArgs, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Optional additional arguments to path to the custom launch command" IsVisible="{Binding IsCustomLaunchEnabled}"/>
+		<TextBlock x:Name="CheckForUpdatesTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_CheckForUpdates}" ToolTip.Tip="{manager:LocaleKey Settings_CheckForUpdates_ToolTip}" />
+		<CheckBox x:Name="CheckForUpdatesCheckBox" Grid.Row="6" Grid.Column="1" Classes="right" IsChecked ="{Binding CheckForUpdates}" ToolTip.Tip="{manager:LocaleKey Settings_CheckForUpdates_ToolTip}"/>
 		
-		<TextBlock x:Name="DisableLauncherTelemetryTextBlock" Grid.Row="12" Grid.Column="0" Classes="left" Text="Launcher - Disable Telemetry" ToolTip.Tip="Disable the telemetry options in the launcher&amp;#x0a;Telemetry is always disabled if mods are active" />
-		<CheckBox x:Name="DisableLauncherTelemetryCheckBox" Grid.Row="12" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableLauncherTelemetry}" ToolTip.Tip="Disable the telemetry options in the launcher&amp;#x0a;Telemetry is always disabled if mods are active"/>
+		<TextBlock x:Name="CustomLaunchActionTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_CustomLaunchAction}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchAction_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}" />
+		<controls:EnhancedTextBox x:Name="CustomLaunchActionTextBox" Grid.Row="7" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchAction, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchAction_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}"/>
 		
-		<TextBlock x:Name="DisableLauncherModWarningsTextBlock" Grid.Row="13" Grid.Column="0" Classes="left" Text="Launcher - Disable Warnings" ToolTip.Tip="Disable the mod/data mismatch warnings in the launcher" />
-		<CheckBox x:Name="DisableLauncherModWarningsCheckBox" Grid.Row="13" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableLauncherModWarnings}" ToolTip.Tip="Disable the mod/data mismatch warnings in the launcher"/>
+		<TextBlock x:Name="CustomLaunchArgsTextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_CustomLaunchArgs}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchArgs_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}" />
+		<controls:EnhancedTextBox x:Name="CustomLaunchArgsTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchArgs, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchArgs_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}"/>
 		
-		<TextBlock x:Name="LimitToSingleInstanceTextBlock" Grid.Row="14" Grid.Column="0" Classes="left" Text="Limit to Single Instance" ToolTip.Tip="Prevent the mod manager from launching multiple instances of the game&amp;#x0a;This can be bypassed by holding Shift when clicking on the launch button" />
-		<CheckBox x:Name="LimitToSingleInstanceCheckBox" Grid.Row="14" Grid.Column="1" Classes="right" IsChecked ="{Binding LimitToSingleInstance}" ToolTip.Tip="Prevent the mod manager from launching multiple instances of the game&amp;#x0a;This can be bypassed by holding Shift when clicking on the launch button"/>
+		<TextBlock x:Name="DeleteModCrashSanityCheckTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DeleteModCrashSanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_DeleteModCrashSanityCheck_ToolTip}" />
+		<CheckBox x:Name="DeleteModCrashSanityCheckCheckBox" Grid.Row="9" Grid.Column="1" Classes="right" IsChecked ="{Binding DeleteModCrashSanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_DeleteModCrashSanityCheck_ToolTip}"/>
 		
-		<TextBlock x:Name="ActionOnGameLaunchTextBlock" Grid.Row="15" Grid.Column="0" Classes="left" Text="On Game Launch" ToolTip.Tip="When the game launches through the mod manager, this action will be performed" />
-		<ComboBox x:Name="ActionOnGameLaunchComboBox" Grid.Row="15" Grid.Column="1" Classes="right" SelectedIndex="{Binding ActionOnGameLaunchIndex, FallbackValue=0}" ToolTip.Tip="When the game launches through the mod manager, this action will be performed">
-			<ComboBoxItem x:Name="NoneComboBoxItem" Content="None" ToolTip.Tip="Do nothing" />
-			<ComboBoxItem x:Name="MinimizeComboBoxItem" Content="Minimize" ToolTip.Tip="Minimize the window" />
-			<ComboBoxItem x:Name="CloseComboBoxItem" Content="Close" ToolTip.Tip="Close the window" />
+		<TextBlock x:Name="DisableLauncherModWarningsTextBlock" Grid.Row="10" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DisableLauncherModWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_DisableLauncherModWarnings_ToolTip}" />
+		<CheckBox x:Name="DisableLauncherModWarningsCheckBox" Grid.Row="10" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableLauncherModWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_DisableLauncherModWarnings_ToolTip}"/>
+		
+		<TextBlock x:Name="DisableLauncherTelemetryTextBlock" Grid.Row="11" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DisableLauncherTelemetry}" ToolTip.Tip="{manager:LocaleKey Settings_DisableLauncherTelemetry_ToolTip}" />
+		<CheckBox x:Name="DisableLauncherTelemetryCheckBox" Grid.Row="11" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableLauncherTelemetry}" ToolTip.Tip="{manager:LocaleKey Settings_DisableLauncherTelemetry_ToolTip}"/>
+		
+		<TextBlock x:Name="DisableMissingModWarningsTextBlock" Grid.Row="12" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DisableMissingModWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_DisableMissingModWarnings_ToolTip}" />
+		<CheckBox x:Name="DisableMissingModWarningsCheckBox" Grid.Row="12" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableMissingModWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_DisableMissingModWarnings_ToolTip}"/>
+		
+		<TextBlock x:Name="EnableColorblindSupportTextBlock" Grid.Row="13" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_EnableColorblindSupport}" ToolTip.Tip="{manager:LocaleKey Settings_EnableColorblindSupport_ToolTip}" />
+		<CheckBox x:Name="EnableColorblindSupportCheckBox" Grid.Row="13" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableColorblindSupport}" ToolTip.Tip="{manager:LocaleKey Settings_EnableColorblindSupport_ToolTip}"/>
+		
+		<TextBlock x:Name="GameStoryLogEnabledTextBlock" Grid.Row="14" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_GameStoryLogEnabled}" ToolTip.Tip="{manager:LocaleKey Settings_GameStoryLogEnabled_ToolTip}" />
+		<CheckBox x:Name="GameStoryLogEnabledCheckBox" Grid.Row="14" Grid.Column="1" Classes="right" IsChecked ="{Binding GameStoryLogEnabled}" ToolTip.Tip="{manager:LocaleKey Settings_GameStoryLogEnabled_ToolTip}"/>
+		
+		<TextBlock x:Name="LaunchDX11TextBlock" Grid.Row="15" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_LaunchDX11}" ToolTip.Tip="{manager:LocaleKey Settings_LaunchDX11_ToolTip}" />
+		<CheckBox x:Name="LaunchDX11CheckBox" Grid.Row="15" Grid.Column="1" Classes="right" IsChecked ="{Binding LaunchDX11}" ToolTip.Tip="{manager:LocaleKey Settings_LaunchDX11_ToolTip}"/>
+		
+		<TextBlock x:Name="LaunchTypeTextBlock" Grid.Row="16" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_LaunchType}" ToolTip.Tip="{manager:LocaleKey Settings_LaunchType_ToolTip}" />
+		<ComboBox x:Name="LaunchTypeComboBox" Grid.Row="16" Grid.Column="1" Classes="right" SelectedIndex="{Binding LaunchTypeIndex, FallbackValue=0}" ToolTip.Tip="{manager:LocaleKey Settings_LaunchType_ToolTip}">
+			<ComboBoxItem Content="{manager:LocaleKey LaunchGameType_Exe}" ToolTip.Tip="{manager:LocaleKey LaunchGameType_Exe_ToolTip}" Tag="Exe" />
+			<ComboBoxItem Content="{manager:LocaleKey LaunchGameType_Steam}" ToolTip.Tip="{manager:LocaleKey LaunchGameType_Steam_ToolTip}" Tag="Steam" />
+			<ComboBoxItem Content="{manager:LocaleKey LaunchGameType_Custom}" ToolTip.Tip="{manager:LocaleKey LaunchGameType_Custom_ToolTip}" Tag="Custom" />
 		</ComboBox>
 		
-		<TextBlock x:Name="SaveWindowLocationTextBlock" Grid.Row="16" Grid.Column="0" Classes="left" Text="Save Window Location" ToolTip.Tip="Save and restore the window location when the application starts." />
-		<CheckBox x:Name="SaveWindowLocationCheckBox" Grid.Row="16" Grid.Column="1" Classes="right" IsChecked ="{Binding SaveWindowLocation}" ToolTip.Tip="Save and restore the window location when the application starts."/>
+		<TextBlock x:Name="LimitToSingleInstanceTextBlock" Grid.Row="17" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_LimitToSingleInstance}" ToolTip.Tip="{manager:LocaleKey Settings_LimitToSingleInstance_ToolTip}" />
+		<CheckBox x:Name="LimitToSingleInstanceCheckBox" Grid.Row="17" Grid.Column="1" Classes="right" IsChecked ="{Binding LimitToSingleInstance}" ToolTip.Tip="{manager:LocaleKey Settings_LimitToSingleInstance_ToolTip}"/>
 		
-		<TextBlock x:Name="ShiftListFocusOnSwapTextBlock" Grid.Row="17" Grid.Column="0" Classes="left" Text="Shift Focus on Swap" ToolTip.Tip="When moving selected mods to the opposite list with Enter, move focus to that list as well" />
-		<CheckBox x:Name="ShiftListFocusOnSwapCheckBox" Grid.Row="17" Grid.Column="1" Classes="right" IsChecked ="{Binding ShiftListFocusOnSwap}" ToolTip.Tip="When moving selected mods to the opposite list with Enter, move focus to that list as well"/>
+		<TextBlock x:Name="SaveWindowLocationTextBlock" Grid.Row="18" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_SaveWindowLocation}" ToolTip.Tip="{manager:LocaleKey Settings_SaveWindowLocation_ToolTip}" />
+		<CheckBox x:Name="SaveWindowLocationCheckBox" Grid.Row="18" Grid.Column="1" Classes="right" IsChecked ="{Binding SaveWindowLocation}" ToolTip.Tip="{manager:LocaleKey Settings_SaveWindowLocation_ToolTip}"/>
 		
-		<TextBlock x:Name="DisableMissingModWarningsTextBlock" Grid.Row="18" Grid.Column="0" Classes="left" Text="Skip Checking for Missing Mods" ToolTip.Tip="If a load order is missing mods, no warnings will be displayed" />
-		<CheckBox x:Name="DisableMissingModWarningsCheckBox" Grid.Row="18" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableMissingModWarnings}" ToolTip.Tip="If a load order is missing mods, no warnings will be displayed"/>
-		
-		<TextBlock x:Name="GameStoryLogEnabledTextBlock" Grid.Row="19" Grid.Column="0" Classes="left" Text="Story Log" ToolTip.Tip="When launching the game, enable the Osiris story log (osiris.log)" />
-		<CheckBox x:Name="GameStoryLogEnabledCheckBox" Grid.Row="19" Grid.Column="1" Classes="right" IsChecked ="{Binding GameStoryLogEnabled}" ToolTip.Tip="When launching the game, enable the Osiris story log (osiris.log)"/>
+		<TextBlock x:Name="ShiftListFocusOnSwapTextBlock" Grid.Row="19" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ShiftListFocusOnSwap}" ToolTip.Tip="{manager:LocaleKey Settings_ShiftListFocusOnSwap_ToolTip}" />
+		<CheckBox x:Name="ShiftListFocusOnSwapCheckBox" Grid.Row="19" Grid.Column="1" Classes="right" IsChecked ="{Binding ShiftListFocusOnSwap}" ToolTip.Tip="{manager:LocaleKey Settings_ShiftListFocusOnSwap_ToolTip}"/>
 	</Grid>
 </UserControl>

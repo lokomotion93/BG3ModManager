@@ -1,1022 +1,1334 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
+	<!-- 
+	Microsoft ResX Schema 
+	
+	Version 2.0
+	
+	The primary goals of this format is to allow a simple XML format 
+	that is mostly human readable. The generation and parsing of the 
+	various data types are done through the TypeConverter classes 
+	associated with the data types.
+	
+	Example:
+	
+	... ado.net/XML headers & schema ...
+	<resheader name="resmimetype">text/microsoft-resx</resheader>
+	<resheader name="version">2.0</resheader>
+	<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+	<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+	<data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+	<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+	<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+		<value>[base64 mime encoded serialized .NET Framework object]</value>
+	</data>
+	<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+		<value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+		<comment>This is a comment</comment>
+	</data>
+				
+	There are any number of "resheader" rows that contain simple 
+	name/value pairs.
+	
+	Each data row contains a name, and value. The row also contains a 
+	type or mimetype. Type corresponds to a .NET class that support 
+	text/value conversion through the TypeConverter architecture. 
+	Classes that don't support this are serialized and stored with the 
+	mimetype set.
+	
+	The mimetype is used for serialized objects, and tells the 
+	ResXResourceReader how to depersist the object. This is currently not 
+	extensible. For a given mimetype the value must be set accordingly:
+	
+	Note - application/x-microsoft.net.object.binary.base64 is the format 
+	that the ResXResourceWriter will generate, however the reader can 
+	read any of the formats listed below.
+	
+	mimetype: application/x-microsoft.net.object.binary.base64
+	value	: The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+	
+	mimetype: application/x-microsoft.net.object.soap.base64
+	value	: The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="Footer_NexusModsAPILimit_ToolTip" xml:space="preserve">
-    <value>Nexus Mods API Limits</value>
-  </data>
-  <data name="Footer_NexusModsAPILimit_Text" xml:space="preserve">
-    <value>NexusMods API Limit [Hourly ({0}/{1}) Daily ({2}/{3})]</value>
-    <comment>Needs 4 placeholders for Hourly Remaining/Limit and Daily Remaining/Limit</comment>
-  </data>
-  <data name="Mod_DisplayName_FileView_Type_Toolkit" xml:space="preserve">
-    <value>[Toolkit Project]</value>
-  </data>
-  <data name="Mod_DisplayName_FileView_Type_Loose" xml:space="preserve">
-    <value>[Loose Mod]</value>
-  </data>
-  <data name="Mod_DisplayName_FileView_Pattern" xml:space="preserve">
-    <value>{0} {1}</value>
-    <comment>Folder +FileView text (toolkit or loose)</comment>
-  </data>
-  <data name="Mod_ExtenderStatus_RequiresVersion" xml:space="preserve">
-    <value>Requires Script Extender v{0} or Higher</value>
-  </data>
-  <data name="Mod_ExtenderStatus_RequiresDefault" xml:space="preserve">
-    <value>Requires the Script Extender</value>
-  </data>
-  <data name="Mod_ExtenderStatus_DisabledFromConfig" xml:space="preserve">
-    <value>(Enable Extensions in the Script Extender Settings)</value>
-  </data>
-  <data name="Mod_ExtenderStatus_MissingAppData" xml:space="preserve">
-    <value>(Missing %LOCALAPPDATA%\\..\\{0})</value>
-  </data>
-  <data name="Mod_ExtenderStatus_MissingUpdater" xml:space="preserve">
-    <value>(Missing {0})</value>
-  </data>
-  <data name="Mod_ExtenderStatus_MissingRequiredVersion" xml:space="preserve">
-    <value>(The installed SE version is older)</value>
-  </data>
-  <data name="Mod_ExtenderStatus_MissingUpdaterInfo" xml:space="preserve">
-    <value>You are missing the Script Extender updater (DWrite.dll), which is required</value>
-  </data>
-  <data name="Mod_ExtenderStatus_InstalledVersion" xml:space="preserve">
-    <value>Currently installed version is v{0}</value>
-  </data>
-  <data name="Mod_ExtenderStatus_NotFoundInfo" xml:space="preserve">
-    <value>No installed Script Extender version found\nIf you've already downloaded it, try opening the game once to complete the installation process</value>
-  </data>
-  <data name="Mod_StringFormatPattern" xml:space="preserve">
-    <value>Name({0}) Version({1}) Author({2}) UUID({3}) File({4})</value>
-  </data>
-  <data name="Mod_OsirisStatus_HasScripts" xml:space="preserve">
-    <value>Has Osiris Scripting</value>
-  </data>
-  <data name="Mod_OsirisStatus_HasModFixer" xml:space="preserve">
-    <value>Has Mod Fixer</value>
-  </data>
-  <data name="Mod_NexusModsToolTip_Endorsements" xml:space="preserve">
-    <value>Endorsements: {0}</value>
-  </data>
-  <data name="Mod_NexusModsToolTip_CreatedOn" xml:space="preserve">
-    <value>Created on {0}</value>
-  </data>
-  <data name="Mod_NexusModsToolTip_UpdatedOn" xml:space="preserve">
-    <value>Last updated on {0}</value>
-  </data>
-  <data name="LarianStudios" xml:space="preserve">
-    <value>Larian Studios</value>
-  </data>
-  <data name="Mod_MissingDependenciesToolTip" xml:space="preserve">
-    <value>Missing Dependencies:\n{0}</value>
-  </data>
-  <data name="Mod_Type_ToolkitProject" xml:space="preserve">
-    <value>Toolkit Project</value>
-  </data>
-  <data name="Mod_Type_LooseMod" xml:space="preserve">
-    <value>Loose Mod</value>
-  </data>
-  <data name="Mod_Type_Override" xml:space="preserve">
-    <value>Override</value>
-  </data>
-  <data name="Mod_Type_Adventure" xml:space="preserve">
-    <value>Adventure</value>
-  </data>
-  <data name="Mod_Type_Addon" xml:space="preserve">
-    <value>Add-on</value>
-  </data>
-  <data name="Mod_Command_DisplayFileForName_Disable" xml:space="preserve">
-    <value>Show Mod Display Name</value>
-  </data>
-  <data name="Mod_Command_DisplayFileForName_Enable" xml:space="preserve">
-    <value>Show File Name</value>
-  </data>
-  <data name="Mod_Command_ForceAllowInLoadOrder_Disable" xml:space="preserve">
-    <value>Remove from Load Order</value>
-  </data>
-  <data name="Mod_Command_ForceAllowInLoadOrder_Enable" xml:space="preserve">
-    <value>Allow in Load Order</value>
-  </data>
-  <data name="Window_AppUpdate_Title" xml:space="preserve">
-    <value>Updates</value>
-  </data>
-  <data name="Button_Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Button_Skip" xml:space="preserve">
-    <value>Skip</value>
-  </data>
-  <data name="Window_AppUpdate_Available" xml:space="preserve">
-    <value>{0} {1} is now available.\nYou have version {2} installed.</value>
-    <comment>AppTitle, Version, CurrentVersion</comment>
-  </data>
-  <data name="Window_AppUpdate_UpToDate" xml:space="preserve">
-    <value>[0] is up-to-date.</value>
-    <comment>AppTitle</comment>
-  </data>
-  <data name="Window_AppUpdate_ChangelogTitle" xml:space="preserve">
-    <value>Changelog</value>
-  </data>
-  <data name="Button_Download" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="Window_AppUpdate_DownloadToolTip" xml:space="preserve">
-    <value>Download and install the latest update.</value>
-  </data>
-  <data name="Window_About_Title_HomePage" xml:space="preserve">
-    <value>Home Page:</value>
-  </data>
-  <data name="Window_About_Title_License" xml:space="preserve">
-    <value>License:</value>
-  </data>
-  <data name="Window_About_Title_Author" xml:space="preserve">
-    <value>Author:</value>
-  </data>
-  <data name="Window_About_Title_SupportLinks" xml:space="preserve">
-    <value>Support Links</value>
-  </data>
-  <data name="Window_About_Title_Donate" xml:space="preserve">
-    <value>Donate a Coffee:</value>
-  </data>
-  <data name="Window_About_Title_Issues" xml:space="preserve">
-    <value>Report an Issue:</value>
-  </data>
-  <data name="Window_About_Title_Changelog" xml:space="preserve">
-    <value>Changelog:</value>
-  </data>
-  <data name="Window_About_Title" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="Window_ModProperties_Title" xml:space="preserve">
-    <value>Mod Properties</value>
-  </data>
-  <data name="Window_ModProperties_Section_ModType" xml:space="preserve">
-    <value>Mod type:</value>
-  </data>
-  <data name="Window_ModProperties_Section_Name" xml:space="preserve">
-    <value>Name:</value>
-  </data>
-  <data name="Window_ModProperties_Section_Description" xml:space="preserve">
-    <value>Description:</value>
-  </data>
-  <data name="Window_ModProperties_Section_Location" xml:space="preserve">
-    <value>Location:</value>
-  </data>
-  <data name="Window_ModProperties_Section_Size" xml:space="preserve">
-    <value>Size:</value>
-  </data>
-  <data name="Window_ModProperties_Tab_General" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="Button_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Button_OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Button_Apply" xml:space="preserve">
-    <value>Apply</value>
-  </data>
-  <data name="Window_ModProperties_Tab_Config" xml:space="preserve">
-    <value>Config</value>
-  </data>
-  <data name="Window_ModProperties_Tab_Notes" xml:space="preserve">
-    <value>Notes</value>
-  </data>
-  <data name="Window_ModProperties_TitleWithMod" xml:space="preserve">
-    <value>{0} Properties</value>
-  </data>
-  <data name="Mod_Type_Pak" xml:space="preserve">
-    <value>Pak</value>
-  </data>
-  <data name="Window_CollectionDownloader_Title" xml:space="preserve">
-    <value>NexusMods Collection Downloader</value>
-  </data>
-  <data name="Window_CollectionDownloader_Heading_ModOnly" xml:space="preserve">
-    <value>Download {0}</value>
-  </data>
-  <data name="Window_CollectionDownloader_Heading_Unknown" xml:space="preserve">
-    <value>Download Collection</value>
-  </data>
-  <data name="Window_CollectionDownloader_Button_ListView_ToolTip" xml:space="preserve">
-    <value>View as List</value>
-  </data>
-  <data name="Window_CollectionDownloader_Button_CardView_ToolTip" xml:space="preserve">
-    <value>View as Cards</value>
-  </data>
-  <data name="Window_CollectionDownloader_Button_EnableAll_ToolTip" xml:space="preserve">
-    <value>Enable All</value>
-  </data>
-  <data name="Window_CollectionDownloader_Button_DisableAll_ToolTip" xml:space="preserve">
-    <value>Disable All</value>
-  </data>
-  <data name="Window_CollectionDownloader_Section_Mods" xml:space="preserve">
-    <value>Mods</value>
-  </data>
-  <data name="Window_CollectionDownloader_Heading_WithAuthor" xml:space="preserve">
-    <value>Download {0} by {1}</value>
-  </data>
-  <data name="Window_NXMDownload_Title" xml:space="preserve">
-    <value>NXM Downloader</value>
-  </data>
-  <data name="Window_NXMDownload_Instructions" xml:space="preserve">
-    <value>Enter a nxm:\\ url below:</value>
-  </data>
-  <data name="Window_PakFileExplorer_Title" xml:space="preserve">
-    <value>Mod File Explorer</value>
-  </data>
-  <data name="Window_PakFileExplorer_MenuItem_ExtractTo" xml:space="preserve">
-    <value>Extract To...</value>
-  </data>
-  <data name="Window_PakFileExplorer_MenuItem_ExtractAllTo" xml:space="preserve">
-    <value>Extract All Selected To...</value>
-  </data>
-  <data name="Window_PakFileExplorer_MenuItem_AddMods_ToolTip" xml:space="preserve">
-    <value>Add Mod(s)...</value>
-  </data>
-  <data name="Window_PakFileExplorer_MenuItem_AddPak_ToolTip" xml:space="preserve">
-    <value>Add Pak...</value>
-  </data>
-  <data name="Window_PakFileExplorer_MenuItem_ClearAll_ToolTip" xml:space="preserve">
-    <value>Clear All</value>
-  </data>
-  <data name="Window_PakFileExplorer_Picker_AddMod_Title" xml:space="preserve">
-    <value>Pick Mods to View...</value>
-  </data>
-  <data name="Window_PakFileExplorer_Picker_AddPak_Title" xml:space="preserve">
-    <value>Open Pak File...</value>
-  </data>
-  <data name="Window_PakFileExplorer_Picker_ExtractFiles_Title" xml:space="preserve">
-    <value>Extract File(s) To...</value>
-  </data>
-  <data name="Window_StatsValidator_Title" xml:space="preserve">
-    <value>Stats Validator</value>
-  </data>
-  <data name="Window_StatsValidator_Button_Validate_ToolTip" xml:space="preserve">
-    <value>Validate Again</value>
-  </data>
-  <data name="Window_StatsValidator_Section_Results" xml:space="preserve">
-    <value>Results</value>
-  </data>
-  <data name="Window_StatsValidator_Section_TimeTaken" xml:space="preserve">
-    <value>Time Taken:</value>
-  </data>
-  <data name="Window_StatsValidator_LockScreen_Text" xml:space="preserve">
-    <value>Validating...</value>
-  </data>
-  <data name="Window_StatsValidator_Output_NoIssues" xml:space="preserve">
-    <value>No issues found!</value>
-  </data>
-  <data name="Window_StatsValidator_Output_Issues" xml:space="preserve">
-    <value>{0} issue(s):</value>
-  </data>
-  <data name="Window_StatsValidator_FileUnknown" xml:space="preserve">
-    <value>Unknown</value>
-  </data>
-  <data name="Window_StatsValidator_Alert_Init" xml:space="preserve">
-    <value>Initializing base data...</value>
-  </data>
-  <data name="Window_StatsValidator_Alert_Validating" xml:space="preserve">
-    <value>Validating mod stats...</value>
-  </data>
-  <data name="Window_StatsValidator_Alert_Done" xml:space="preserve">
-    <value>Validation complete for {0}</value>
-  </data>
-  <data name="ModListView_AddContainer" xml:space="preserve">
-    <value>Add Container...</value>
-  </data>
-  <data name="ModListView_DeleteContainer" xml:space="preserve">
-    <value>Container...</value>
-  </data>
-  <data name="ModListView_DeleteContainerMods" xml:space="preserve">
-    <value>Container Mods...</value>
-  </data>
-  <data name="ModListView_RenameContainer" xml:space="preserve">
-    <value>Rename...</value>
-  </data>
-  <data name="ModContainer_ToolTip_Children" xml:space="preserve">
-    <value>Container ({0} Children)</value>
-  </data>
-  <data name="CommandBar_Button_ExportOrderToArchive_ToolTip" xml:space="preserve">
-    <value>Export Active Mods to Zip As...</value>
-  </data>
-  <data name="CommandBar_ProfileFlyout_Profile_Header" xml:space="preserve">
-    <value>Profile...</value>
-  </data>
-  <data name="CommandBar_ProfileFlyout_Saves_Header" xml:space="preserve">
-    <value>Saves...</value>
-  </data>
-  <data name="Button_Rename" xml:space="preserve">
-    <value>Rename</value>
-  </data>
-  <data name="Button_CopyPathToClipboard" xml:space="preserve">
-    <value>Copy Path to Clipboard...</value>
-  </data>
-  <data name="Button_OpenInFileExplorer" xml:space="preserve">
-    <value>Open in File Explorer...</value>
-  </data>
-  <data name="Button_OpenInDopus" xml:space="preserve">
-    <value>Open in Directory Opus...</value>
-  </data>
-  <data name="CommandBar_Button_SaveOrder_ToolTip" xml:space="preserve">
-    <value>Save Order</value>
-  </data>
-  <data name="CommandBar_Button_SaveOrderAs_ToolTip" xml:space="preserve">
-    <value>Save Order As...</value>
-  </data>
-  <data name="CommandBar_Button_AddNewOrder_ToolTip" xml:space="preserve">
-    <value>Add New Order</value>
-  </data>
-  <data name="CommandBar_Button_ExportOrderToGame_ToolTip" xml:space="preserve">
-    <value>Export Order to Game</value>
-  </data>
-  <data name="CommandBar_Button_ExportActiveModsToZip_ToolTip" xml:space="preserve">
-    <value>Export Active Mods to Zip</value>
-  </data>
-  <data name="CommandBar_Button_RefreshMods_ToolTip" xml:space="preserve">
-    <value>Refresh Mods</value>
-  </data>
-  <data name="CommandBar_Button_OpenModsFolder_ToolTip" xml:space="preserve">
-    <value>Open Mods Folder...</value>
-  </data>
-  <data name="CommandBar_Button_OpenExtenderLogsFolder_ToolTip" xml:space="preserve">
-    <value>Open Script Extender Logs Folder...</value>
-  </data>
-  <data name="CommandBar_Button_LaunchGame_ToolTip" xml:space="preserve">
-    <value>Launch Game...</value>
-  </data>
-  <data name="CommandBar_LaunchGameFlyout_Button_EditExecutablePath" xml:space="preserve">
-    <value>Edit Executable Path...</value>
-  </data>
-  <data name="CommandBar_LaunchGameFlyout_Open_Header" xml:space="preserve">
-    <value>Open...</value>
-  </data>
-  <data name="CommandBar_LaunchGameFlyout_Button_OpenGameFolder_FileExplorer" xml:space="preserve">
-    <value>Open Parent Folder in File Explorer...</value>
-  </data>
-  <data name="CommandBar_LaunchGameFlyout_Button_OpenGameFolder_Dopus" xml:space="preserve">
-    <value>Open Parent Folder in Directory Opus...</value>
-  </data>
-  <data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Header" xml:space="preserve">
-    <value>Copy to Clipboard...</value>
-  </data>
-  <data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ExecutablePath" xml:space="preserve">
-    <value>Executable Path</value>
-  </data>
-  <data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ParentFolder" xml:space="preserve">
-    <value>Parent Folder Path</value>
-  </data>
-  <data name="CommandBar_Section_Profile" xml:space="preserve">
-    <value>Profile</value>
-  </data>
-  <data name="CommandBar_Section_Order" xml:space="preserve">
-    <value>Order</value>
-  </data>
-  <data name="CommandBar_Section_Export" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="CommandBar_Section_Refresh" xml:space="preserve">
-    <value>Refresh</value>
-  </data>
-  <data name="CommandBar_Section_Campaign" xml:space="preserve">
-    <value>Campaign</value>
-  </data>
-  <data name="CommandBar_Section_Shortcuts" xml:space="preserve">
-    <value>Shortcuts</value>
-  </data>
-  <data name="CommandBar_Section_Links" xml:space="preserve">
-    <value>Links</value>
-    <comment>Section for external website urls</comment>
-  </data>
-  <data name="CommandBar_Section_Support" xml:space="preserve">
-    <value>Support</value>
-  </data>
-  <data name="CommandBar_Button_OpenSteamPage_ToolTip" xml:space="preserve">
-    <value>Open Steam Page...</value>
-  </data>
-  <data name="CommandBar_Button_OpenNexusMods_ToolTip" xml:space="preserve">
-    <value>Open Nexus Mods...</value>
-  </data>
-  <data name="CommandBar_Button_Donate_ToolTip" xml:space="preserve">
-    <value>Donate a Coffee...</value>
-  </data>
-  <data name="CommandBar_Button_OpenGitHub_ToolTip" xml:space="preserve">
-    <value>Open Home Page (GitHub)...</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Header" xml:space="preserve">
-    <value>On Game Launch</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Header_ToolTip" xml:space="preserve">
-    <value>When the game launches through the mod manager, this action will be performed on the mod manager window</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Value_None" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Value_None_ToolTip" xml:space="preserve">
-    <value>Do nothing</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Value_Minimize" xml:space="preserve">
-    <value>Minimize</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Value_Minimize_ToolTip" xml:space="preserve">
-    <value>Minimize the window</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Value_Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_Value_Close_ToolTip" xml:space="preserve">
-    <value>Close the window</value>
-  </data>
-  <data name="Keybinding_AddNewOrder" xml:space="preserve">
-    <value>Add New Order</value>
-  </data>
-  <data name="Keybinding_CheckForAppUpdates" xml:space="preserve">
-    <value>Check For App Updates</value>
-  </data>
-  <data name="Keybinding_CheckAllModUpdates" xml:space="preserve">
-    <value>Check for All Mod Updates</value>
-  </data>
-  <data name="Keybinding_CheckAllModUpdates_ToolTip" xml:space="preserve">
-    <value>Check all sources of mod updates (GitHub, Nexus, etc.)</value>
-  </data>
-  <data name="Keybinding_CheckForGitHubModUpdates" xml:space="preserve">
-    <value>Check for Github Mod Updates</value>
-  </data>
-  <data name="Keybinding_CheckForNexusModsUpdates" xml:space="preserve">
-    <value>Check for Nexus Mod Updates</value>
-  </data>
-  <data name="Keybinding_CheckForModioUpdates" xml:space="preserve">
-    <value>Check for mod.io Updates</value>
-  </data>
-  <data name="Keybinding_ExportOrder" xml:space="preserve">
-    <value>Export Order to Game</value>
-  </data>
-  <data name="Keybinding_ExportOrder_ToolTip" xml:space="preserve">
-    <value>Export order to modsettings.lsx</value>
-  </data>
-  <data name="Keybinding_ExportOrderToTextFile" xml:space="preserve">
-    <value>Export Order to Text File...</value>
-  </data>
-  <data name="Keybinding_ExportOrderToZip" xml:space="preserve">
-    <value>Export Order to Archive (.zip)</value>
-  </data>
-  <data name="Keybinding_ExportOrderToZip_ToolTip" xml:space="preserve">
-    <value>Export all active mods to a zip file</value>
-  </data>
-  <data name="Keybinding_ExportOrderToArchiveAs" xml:space="preserve">
-    <value>Export Order to Archive As...</value>
-  </data>
-  <data name="Keybinding_ExportOrderToArchiveAs_ToolTip" xml:space="preserve">
-    <value>Export all active mods to an archive file of a chosen type</value>
-  </data>
-  <data name="Keybinding_RenameOrder" xml:space="preserve">
-    <value>Rename Order</value>
-  </data>
-  <data name="Keybinding_RenameOrder_ToolTip" xml:space="preserve">
-    <value>Rename current load order</value>
-  </data>
-  <data name="Keybinding_LaunchGame" xml:space="preserve">
-    <value>Launch Game</value>
-  </data>
-  <data name="Keybinding_OpenDonationPage" xml:space="preserve">
-    <value>Donate a Coffee...</value>
-  </data>
-  <data name="Keybinding_OpenGitHubRepo" xml:space="preserve">
-    <value>Open Repository Page...</value>
-  </data>
-  <data name="Keybinding_OpenModsFolder" xml:space="preserve">
-    <value>Open Mods Folder</value>
-  </data>
-  <data name="Keybinding_OpenExtenderLogsFolder" xml:space="preserve">
-    <value>Open Extender Logs Folder</value>
-  </data>
-  <data name="Keybinding_OpenNexusMods" xml:space="preserve">
-    <value>Open Nexus Mods Website</value>
-  </data>
-  <data name="Keybinding_OpenSteamPage" xml:space="preserve">
-    <value>Open Steam Store Page</value>
-  </data>
-  <data name="Keybinding_RefreshMods" xml:space="preserve">
-    <value>Refresh Mods</value>
-  </data>
-  <data name="Keybinding_ReloadMods" xml:space="preserve">
-    <value>Reload All Mods</value>
-  </data>
-  <data name="Keybinding_ReloadMods_ToolTip" xml:space="preserve">
-    <value>Reload mod data without doing a full reload (i.e. reload metadata like the name)</value>
-  </data>
-  <data name="Keybinding_RefreshModUpdates" xml:space="preserve">
-    <value>Refresh Mod Updates</value>
-  </data>
-  <data name="Keybinding_RenameSave" xml:space="preserve">
-    <value>Rename Save</value>
-  </data>
-  <data name="Keybinding_SaveOrder" xml:space="preserve">
-    <value>Save Order</value>
-  </data>
-  <data name="Keybinding_SaveOrderAs" xml:space="preserve">
-    <value>Save Order As...</value>
-  </data>
-  <data name="Keybinding_SaveSettings" xml:space="preserve">
-    <value>Save Settings</value>
-  </data>
-  <data name="Keybinding_ToggleUpdatesView" xml:space="preserve">
-    <value>Toggle Updates View</value>
-  </data>
-  <data name="Keybinding_TogglePakFileExplorerWindow" xml:space="preserve">
-    <value>Toggle Mod Files Explorer Window</value>
-  </data>
-  <data name="Keybinding_ToggleStatsValidatorWindow" xml:space="preserve">
-    <value>Toggle Stats Validator Window</value>
-  </data>
-  <data name="Keybinding_ToggleSettingsWindow" xml:space="preserve">
-    <value>Toggle Settings Window</value>
-  </data>
-  <data name="Keybinding_ToggleKeybindings" xml:space="preserve">
-    <value>Toggle Keybindings Window</value>
-  </data>
-  <data name="Keybinding_ToggleVersionGeneratorWindow" xml:space="preserve">
-    <value>Toggle Version Generator Window</value>
-  </data>
-  <data name="Keybinding_ToggleVersionGeneratorWindow_ToolTip" xml:space="preserve">
-    <value>A tool for mod authors to generate version numbers for a mod's meta.lsx</value>
-  </data>
-  <data name="Keybinding_ToggleAboutWindow" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="Keybinding_ToggleThemeMode" xml:space="preserve">
-    <value>Toggle Dark/Light Mode</value>
-  </data>
-  <data name="Keybinding_ImportMods" xml:space="preserve">
-    <value>Import Mods...</value>
-  </data>
-  <data name="Keybinding_ImportNexusModsIds" xml:space="preserve">
-    <value>Import Nexus Mods Data from Archives...</value>
-  </data>
-  <data name="Keybinding_NewOrder" xml:space="preserve">
-    <value>Add New Order</value>
-  </data>
-  <data name="Keybinding_ImportOrderFromSave" xml:space="preserve">
-    <value>Import Order from Save...</value>
-  </data>
-  <data name="Keybinding_ImportOrderFromSaveAsNew" xml:space="preserve">
-    <value>Import Order from Save As New Order...</value>
-  </data>
-  <data name="Keybinding_ImportOrderFromFile" xml:space="preserve">
-    <value>Import Order from File...</value>
-  </data>
-  <data name="Keybinding_ImportOrderFromZipFile" xml:space="preserve">
-    <value>Import Order &amp; Mods from Archive...</value>
-  </data>
-  <data name="Keybinding_MoveSelectedMods" xml:space="preserve">
-    <value>Moved Selected Mods to Opposite List</value>
-  </data>
-  <data name="Keybinding_FocusActiveMods" xml:space="preserve">
-    <value>Focus Active Mods List</value>
-  </data>
-  <data name="Keybinding_FocusInactiveMods" xml:space="preserve">
-    <value>Focus Inactive Mods List</value>
-  </data>
-  <data name="Keybinding_SwapListFocus" xml:space="preserve">
-    <value>Go to Other List</value>
-  </data>
-  <data name="Keybinding_MoveToTop" xml:space="preserve">
-    <value>Move to Top of List</value>
-  </data>
-  <data name="Keybinding_MoveToBottom" xml:space="preserve">
-    <value>Move to Bottom of List</value>
-  </data>
-  <data name="Keybinding_ToggleFilterFocus" xml:space="preserve">
-    <value>Toggle Focus Filter for Current List</value>
-  </data>
-  <data name="Keybinding_ToggleFileNameDisplay" xml:space="preserve">
-    <value>Show File Names for Mods</value>
-  </data>
-  <data name="Keybinding_DeleteSelectedMods" xml:space="preserve">
-    <value>Delete Selected Mods...</value>
-  </data>
-  <data name="Keybinding_OpenGameFolder" xml:space="preserve">
-    <value>Open Game Folder</value>
-  </data>
-  <data name="Keybinding_OpenSavesFolder" xml:space="preserve">
-    <value>Open Saves Folder</value>
-  </data>
-  <data name="Keybinding_OpenExtenderDataFolder" xml:space="preserve">
-    <value>Open Script Extender Data Folder</value>
-  </data>
-  <data name="Keybinding_DownloadScriptExtender" xml:space="preserve">
-    <value>Download &amp; Extract the Script Extender...</value>
-  </data>
-  <data name="Keybinding_ToggleNXMLinkDownloader" xml:space="preserve">
-    <value>Download nxm:\\ Link...</value>
-  </data>
-  <data name="Keybinding_ToggleNXMLinkDownloader_ToolTip" xml:space="preserve">
-    <value>Download a NexusMods link for a mod file or a collection</value>
-  </data>
-  <data name="Keybinding_ToggleCollectionDownloaderWindow" xml:space="preserve">
-    <value>Open Collection Downloader Window</value>
-  </data>
-  <data name="Keybinding_ExtractAllSelectedMods" xml:space="preserve">
-    <value>Extract All Selected Mods To...</value>
-  </data>
-  <data name="Keybinding_ExtractSelectedActiveMods" xml:space="preserve">
-    <value>Extract Selected Active Mods To...</value>
-  </data>
-  <data name="Keybinding_ExtractSelectedInactiveMods" xml:space="preserve">
-    <value>Extract Selected Inactive Mods To...</value>
-  </data>
-  <data name="Keybinding_ExtractSelectedAdventure" xml:space="preserve">
-    <value>Extract Active Adventure Mod To...</value>
-  </data>
-  <data name="Keybinding_SpeakActiveModOrder" xml:space="preserve">
-    <value>Speak Active Order</value>
-  </data>
-  <data name="Keybinding_StopSpeaking" xml:space="preserve">
-    <value>Stop Speaking</value>
-  </data>
-  <data name="Keybinding_CheckForUpdates" xml:space="preserve">
-    <value>Check for Updates...</value>
-  </data>
-  <data name="Keybinding_OrganizeModPaks" xml:space="preserve">
-    <value>Organize Mod Paks</value>
-  </data>
-  <data name="Keybinding_OrganizeModPaks_ToolTip" xml:space="preserve">
-    <value>Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder.</value>
-  </data>
-  <data name="Window_Main_Title" xml:space="preserve">
-    <value>BG3ModManager {0}</value>
-    <comment>Includes version</comment>
-  </data>
-  <data name="TopMenu_File" xml:space="preserve">
-    <value>_File</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="TopMenu_Edit" xml:space="preserve">
-    <value>_Edit</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="TopMenu_Settings" xml:space="preserve">
-    <value>_Settings</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="TopMenu_View" xml:space="preserve">
-    <value>_View</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="TopMenu_Go" xml:space="preserve">
-    <value>_Go</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="TopMenu_Download" xml:space="preserve">
-    <value>_Download</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="TopMenu_Download_ModUpdates" xml:space="preserve">
-    <value>Check for Mod Updates...</value>
-  </data>
-  <data name="TopMenu_Tools" xml:space="preserve">
-    <value>_Tools</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="TopMenu_Tools_Speak" xml:space="preserve">
-    <value>Speak...</value>
-  </data>
-  <data name="TopMenu_Tools_Extract" xml:space="preserve">
-    <value>Extract...</value>
-  </data>
-  <data name="TopMenu_Help" xml:space="preserve">
-    <value>_Help</value>
-    <comment>Start with an underscore for keyboard accessibility</comment>
-  </data>
-  <data name="Settings_GameDataPath" xml:space="preserve">
-    <value>Game Data Path</value>
-  </data>
-  <data name="Settings_GameDataPath_ToolTip" xml:space="preserve">
-    <value>The path to the Data folder\nExample: Baldur's Gate 3/Data</value>
-  </data>
-  <data name="Settings_GameExecutablePath" xml:space="preserve">
-    <value>Game Executable Path</value>
-  </data>
-  <data name="Settings_GameExecutablePath_ToolTip" xml:space="preserve">
-    <value>The path to bg3.exe</value>
-  </data>
-  <data name="Settings_LaunchDX11" xml:space="preserve">
-    <value>DirectX 11</value>
-  </data>
-  <data name="Settings_LaunchDX11_ToolTip" xml:space="preserve">
-    <value>If enabled, when launching the game, bg3_dx11.exe is used instead</value>
-  </data>
-  <data name="Settings_GameStoryLogEnabled" xml:space="preserve">
-    <value>Story Log</value>
-  </data>
-  <data name="Settings_GameStoryLogEnabled_ToolTip" xml:space="preserve">
-    <value>When launching the game, enable the Osiris story log (osiris.log)</value>
-  </data>
-  <data name="Settings_DisableLauncherTelemetry" xml:space="preserve">
-    <value>Launcher - Disable Telemetry</value>
-  </data>
-  <data name="Settings_DisableLauncherTelemetry_ToolTip" xml:space="preserve">
-    <value>Disable the telemetry options in the launcher\nTelemetry is always disabled if mods are active</value>
-  </data>
-  <data name="Settings_DisableLauncherModWarnings" xml:space="preserve">
-    <value>Launcher - Disable Warnings</value>
-  </data>
-  <data name="Settings_DisableLauncherModWarnings_ToolTip" xml:space="preserve">
-    <value>Disable the mod/data mismatch warnings in the launcher</value>
-  </data>
-  <data name="Settings_LaunchType" xml:space="preserve">
-    <value>Launch Game - Action</value>
-  </data>
-  <data name="Settings_LaunchType_ToolTip" xml:space="preserve">
-    <value>Change how to launch the game</value>
-  </data>
-  <data name="Settings_CustomLaunchAction" xml:space="preserve">
-    <value>Launch Game - Custom Action</value>
-  </data>
-  <data name="Settings_CustomLaunchAction_ToolTip" xml:space="preserve">
-    <value>A file path, protocol, or custom process shell command to run</value>
-  </data>
-  <data name="Settings_CustomLaunchArgs" xml:space="preserve">
-    <value>Launch Game - Custom Arguments</value>
-  </data>
-  <data name="Settings_CustomLaunchArgs_ToolTip" xml:space="preserve">
-    <value>Optional additional arguments to path to the custom launch command</value>
-  </data>
-  <data name="Settings_LoadOrderPath" xml:space="preserve">
-    <value>Load Orders Path</value>
-  </data>
-  <data name="Settings_LoadOrderPath_ToolTip" xml:space="preserve">
-    <value>The folder containing mod load order .json files</value>
-  </data>
-  <data name="Settings_LogEnabled" xml:space="preserve">
-    <value>Internal Logging</value>
-  </data>
-  <data name="Settings_LogEnabled_ToolTip" xml:space="preserve">
-    <value>Enable the log for the mod manager</value>
-  </data>
-  <data name="Settings_AutoAddDependenciesWhenExporting" xml:space="preserve">
-    <value>Add Missing Dependencies When Exporting</value>
-  </data>
-  <data name="Settings_AutoAddDependenciesWhenExporting_ToolTip" xml:space="preserve">
-    <value>Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order</value>
-  </data>
-  <data name="Settings_DisableMissingModWarnings" xml:space="preserve">
-    <value>Skip Checking for Missing Mods</value>
-  </data>
-  <data name="Settings_DisableMissingModWarnings_ToolTip" xml:space="preserve">
-    <value>If a load order is missing mods, no warnings will be displayed</value>
-  </data>
-  <data name="Settings_CheckForUpdates" xml:space="preserve">
-    <value>Automatically Check For Updates</value>
-  </data>
-  <data name="Settings_CheckForUpdates_ToolTip" xml:space="preserve">
-    <value>Automatically check for updates when the program starts</value>
-  </data>
-  <data name="Settings_LimitToSingleInstance" xml:space="preserve">
-    <value>Limit to Single Instance</value>
-  </data>
-  <data name="Settings_LimitToSingleInstance_ToolTip" xml:space="preserve">
-    <value>Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button</value>
-  </data>
-  <data name="Settings_DocumentsFolderPathOverride" xml:space="preserve">
-    <value>"Override AppData Path</value>
-  </data>
-  <data name="Settings_DocumentsFolderPathOverride_ToolTip" xml:space="preserve">
-    <value>[EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods.</value>
-  </data>
-  <data name="Settings_EnableColorblindSupport" xml:space="preserve">
-    <value>Colorblind Support</value>
-  </data>
-  <data name="Settings_EnableColorblindSupport_ToolTip" xml:space="preserve">
-    <value>Enables some colorblind support, such as displaying icons for toolkit projects (which normally have a green background)</value>
-  </data>
-  <data name="Settings_ShiftListFocusOnSwap" xml:space="preserve">
-    <value>Shift Focus on Swap</value>
-  </data>
-  <data name="Settings_ShiftListFocusOnSwap_ToolTip" xml:space="preserve">
-    <value>When moving selected mods to the opposite list with Enter, move focus to that list as well</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch" xml:space="preserve">
-    <value>On Game Launch</value>
-  </data>
-  <data name="Settings_ActionOnGameLaunch_ToolTip" xml:space="preserve">
-    <value>When the game launches through the mod manager, this action will be performed</value>
-  </data>
-  <data name="Settings_DebugModeEnabled" xml:space="preserve">
-    <value>Mod Developer Mode</value>
-  </data>
-  <data name="Settings_DebugModeEnabled_ToolTip" xml:space="preserve">
-    <value>This enables features for mod developers, such as being able to copy a mod's UUID in context menus, and additional Script Extender options</value>
-  </data>
-  <data name="Settings_SaveWindowLocation" xml:space="preserve">
-    <value>Save Window Location</value>
-  </data>
-  <data name="Settings_SaveWindowLocation_ToolTip" xml:space="preserve">
-    <value>Save and restore the window location when the application starts.</value>
-  </data>
-  <data name="Settings_DeleteModCrashSanityCheck" xml:space="preserve">
-    <value>Delete ModCrashSanityCheck</value>
-  </data>
-  <data name="Settings_DeleteModCrashSanityCheck_ToolTip" xml:space="preserve">
-    <value>Automatically delete the %LOCALAPPDATA%/Larian Studios/Baldur's Gate 3/ModCrashSanityCheck folder, which may make certain mods deactivate if it exists</value>
-  </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Settings_Language_ToolTip" xml:space="preserve">
-    <value>The language to use in the mod manager</value>
-  </data>
-  <data name="LaunchGameType_Exe" xml:space="preserve">
-    <value>Default (Exe)</value>
-  </data>
-  <data name="LaunchGameType_Exe_ToolTip" xml:space="preserve">
-    <value>Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn't exist,\nallowing you to bypassing the launcher</value>
-  </data>
-  <data name="LaunchGameType_Steam" xml:space="preserve">
-    <value>Steam</value>
-  </data>
-  <data name="LaunchGameType_Steam_ToolTip" xml:space="preserve">
-    <value>Open the game by running the Steam launch protocol ('steam://run/1086940')</value>
-  </data>
-  <data name="LaunchGameType_Custom" xml:space="preserve">
-    <value>Custom</value>
-  </data>
-  <data name="LaunchGameType_Custom_ToolTip" xml:space="preserve">
-    <value>Open the game by opening a different file or protocol (ex. a batch file or protocol handler like playnite://playnite/start/id)</value>
-  </data>
-  <data name="GameLaunchWindowAction_None" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="GameLaunchWindowAction_None_ToolTip" xml:space="preserve">
-    <value>Do nothing</value>
-  </data>
-  <data name="GameLaunchWindowAction_Minimize" xml:space="preserve">
-    <value>Minimize</value>
-  </data>
-  <data name="GameLaunchWindowAction_Minimize_ToolTip" xml:space="preserve">
-    <value>Minimize the window</value>
-  </data>
-  <data name="GameLaunchWindowAction_Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="GameLaunchWindowAction_Close_ToolTip" xml:space="preserve">
-    <value>Close the window</value>
-  </data>
-  <data name="ExtenderUpdateChannel_Release" xml:space="preserve">
-    <value>Release</value>
-  </data>
-  <data name="ExtenderUpdateChannel_Release_ToolTip" xml:space="preserve">
-    <value>The default channel</value>
-  </data>
-  <data name="ExtenderUpdateChannel_Devel" xml:space="preserve">
-    <value>Devel</value>
-  </data>
-  <data name="ExtenderUpdateChannel_Devel_ToolTip" xml:space="preserve">
-    <value>An update channel intended for developers, with potentially unstable updates</value>
-  </data>
-  <data name="ExtenderUpdateChannel_Nightly" xml:space="preserve">
-    <value>Nightly</value>
-  </data>
-  <data name="ExtenderUpdateChannel_Nightly_ToolTip" xml:space="preserve">
-    <value>An update channel intended for developers, with bleeding-edge experimental updates</value>
-  </data>
-  <data name="ModSourceType_None" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="ModSourceType_None_ToolTip" xml:space="preserve">
-    <value>No known mod source</value>
-  </data>
-  <data name="ModSourceType_GitHub" xml:space="preserve">
-    <value>GitHub</value>
-  </data>
-  <data name="ModSourceType_GitHub_ToolTip" xml:space="preserve">
-    <value>This mod's update source is from a GitHub repository</value>
-  </data>
-  <data name="ModSourceType_NexusMods" xml:space="preserve">
-    <value>Nexus Mods</value>
-  </data>
-  <data name="ModSourceType_NexusMods_ToolTip" xml:space="preserve">
-    <value>This mod's update source is from NexusMods</value>
-  </data>
-  <data name="ModSourceType_Modio" xml:space="preserve">
-    <value>mod.io</value>
-  </data>
-  <data name="ModSourceType_Modio_ToolTip" xml:space="preserve">
-    <value>This mod's update source is from mod.io</value>
-  </data>
+	mimetype: application/x-microsoft.net.object.bytearray.base64
+	value	: The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	<xsd:schema id="root"
+		xmlns=""
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Footer_NexusModsAPILimit_ToolTip" xml:space="preserve">
+		<value>Nexus Mods API Limits</value>
+	</data>
+	<data name="Footer_NexusModsAPILimit_Text" xml:space="preserve">
+		<value>NexusMods API Limit [Hourly ({0}/{1}) Daily ({2}/{3})]</value>
+		<comment>Needs 4 placeholders for Hourly Remaining/Limit and Daily Remaining/Limit</comment>
+	</data>
+	<data name="Mod_DisplayName_FileView_Type_Toolkit" xml:space="preserve">
+		<value>[Toolkit Project]</value>
+	</data>
+	<data name="Mod_DisplayName_FileView_Type_Loose" xml:space="preserve">
+		<value>[Loose Mod]</value>
+	</data>
+	<data name="Mod_DisplayName_FileView_Pattern" xml:space="preserve">
+		<value>{0} {1}</value>
+		<comment>Folder +FileView text (toolkit or loose)</comment>
+	</data>
+	<data name="Mod_ExtenderStatus_RequiresVersion" xml:space="preserve">
+		<value>Requires Script Extender v{0} or Higher</value>
+	</data>
+	<data name="Mod_ExtenderStatus_RequiresDefault" xml:space="preserve">
+		<value>Requires the Script Extender</value>
+	</data>
+	<data name="Mod_ExtenderStatus_DisabledFromConfig" xml:space="preserve">
+		<value>(Enable Extensions in the Script Extender Settings)</value>
+	</data>
+	<data name="Mod_ExtenderStatus_MissingAppData" xml:space="preserve">
+		<value>(Missing %LOCALAPPDATA%\\..\\{0})</value>
+	</data>
+	<data name="Mod_ExtenderStatus_MissingUpdater" xml:space="preserve">
+		<value>(Missing {0})</value>
+	</data>
+	<data name="Mod_ExtenderStatus_MissingRequiredVersion" xml:space="preserve">
+		<value>(The installed SE version is older)</value>
+	</data>
+	<data name="Mod_ExtenderStatus_MissingUpdaterInfo" xml:space="preserve">
+		<value>You are missing the Script Extender updater (DWrite.dll), which is required</value>
+	</data>
+	<data name="Mod_ExtenderStatus_InstalledVersion" xml:space="preserve">
+		<value>Currently installed version is v{0}</value>
+	</data>
+	<data name="Mod_ExtenderStatus_NotFoundInfo" xml:space="preserve">
+		<value>No installed Script Extender version found\nIf you've already downloaded it, try opening the game once to complete the installation process</value>
+	</data>
+	<data name="Mod_StringFormatPattern" xml:space="preserve">
+		<value>Name({0}) Version({1}) Author({2}) UUID({3}) File({4})</value>
+	</data>
+	<data name="Mod_OsirisStatus_HasScripts" xml:space="preserve">
+		<value>Has Osiris Scripting</value>
+	</data>
+	<data name="Mod_OsirisStatus_HasModFixer" xml:space="preserve">
+		<value>Has Mod Fixer</value>
+	</data>
+	<data name="Mod_NexusModsToolTip_Endorsements" xml:space="preserve">
+		<value>Endorsements: {0}</value>
+	</data>
+	<data name="Mod_NexusModsToolTip_CreatedOn" xml:space="preserve">
+		<value>Created on {0}</value>
+	</data>
+	<data name="Mod_NexusModsToolTip_UpdatedOn" xml:space="preserve">
+		<value>Last updated on {0}</value>
+	</data>
+	<data name="LarianStudios" xml:space="preserve">
+		<value>Larian Studios</value>
+	</data>
+	<data name="Mod_MissingDependenciesToolTip" xml:space="preserve">
+		<value>Missing Dependencies:\n{0}</value>
+	</data>
+	<data name="Mod_Type_ToolkitProject" xml:space="preserve">
+		<value>Toolkit Project</value>
+	</data>
+	<data name="Mod_Type_LooseMod" xml:space="preserve">
+		<value>Loose Mod</value>
+	</data>
+	<data name="Mod_Type_Override" xml:space="preserve">
+		<value>Override</value>
+	</data>
+	<data name="Mod_Type_Adventure" xml:space="preserve">
+		<value>Adventure</value>
+	</data>
+	<data name="Mod_Type_Addon" xml:space="preserve">
+		<value>Add-on</value>
+	</data>
+	<data name="Mod_Command_DisplayFileForName_Disable" xml:space="preserve">
+		<value>Show Mod Display Name</value>
+	</data>
+	<data name="Mod_Command_DisplayFileForName_Enable" xml:space="preserve">
+		<value>Show File Name</value>
+	</data>
+	<data name="Mod_Command_ForceAllowInLoadOrder_Disable" xml:space="preserve">
+		<value>Remove from Load Order</value>
+	</data>
+	<data name="Mod_Command_ForceAllowInLoadOrder_Enable" xml:space="preserve">
+		<value>Allow in Load Order</value>
+	</data>
+	<data name="Window_AppUpdate_Title" xml:space="preserve">
+		<value>Updates</value>
+	</data>
+	<data name="Button_Close" xml:space="preserve">
+		<value>Close</value>
+	</data>
+	<data name="Button_Skip" xml:space="preserve">
+		<value>Skip</value>
+	</data>
+	<data name="Window_AppUpdate_Available" xml:space="preserve">
+		<value>{0} {1} is now available.\nYou have version {2} installed.</value>
+		<comment>AppTitle, Version, CurrentVersion</comment>
+	</data>
+	<data name="Window_AppUpdate_UpToDate" xml:space="preserve">
+		<value>[0] is up-to-date.</value>
+		<comment>AppTitle</comment>
+	</data>
+	<data name="Window_AppUpdate_ChangelogTitle" xml:space="preserve">
+		<value>Changelog</value>
+	</data>
+	<data name="Button_Download" xml:space="preserve">
+		<value>Download</value>
+	</data>
+	<data name="Window_AppUpdate_DownloadToolTip" xml:space="preserve">
+		<value>Download and install the latest update.</value>
+	</data>
+	<data name="Window_About_Title_HomePage" xml:space="preserve">
+		<value>Home Page:</value>
+	</data>
+	<data name="Window_About_Title_License" xml:space="preserve">
+		<value>License:</value>
+	</data>
+	<data name="Window_About_Title_Author" xml:space="preserve">
+		<value>Author:</value>
+	</data>
+	<data name="Window_About_Title_SupportLinks" xml:space="preserve">
+		<value>Support Links</value>
+	</data>
+	<data name="Window_About_Title_Donate" xml:space="preserve">
+		<value>Donate a Coffee:</value>
+	</data>
+	<data name="Window_About_Title_Issues" xml:space="preserve">
+		<value>Report an Issue:</value>
+	</data>
+	<data name="Window_About_Title_Changelog" xml:space="preserve">
+		<value>Changelog:</value>
+	</data>
+	<data name="Window_About_Title" xml:space="preserve">
+		<value>About</value>
+	</data>
+	<data name="Window_ModProperties_Title" xml:space="preserve">
+		<value>Mod Properties</value>
+	</data>
+	<data name="Window_ModProperties_Section_ModType" xml:space="preserve">
+		<value>Mod type:</value>
+	</data>
+	<data name="Window_ModProperties_Section_Name" xml:space="preserve">
+		<value>Name:</value>
+	</data>
+	<data name="Window_ModProperties_Section_Description" xml:space="preserve">
+		<value>Description:</value>
+	</data>
+	<data name="Window_ModProperties_Section_Location" xml:space="preserve">
+		<value>Location:</value>
+	</data>
+	<data name="Window_ModProperties_Section_Size" xml:space="preserve">
+		<value>Size:</value>
+	</data>
+	<data name="Window_ModProperties_Tab_General" xml:space="preserve">
+		<value>General</value>
+	</data>
+	<data name="Button_Cancel" xml:space="preserve">
+		<value>Cancel</value>
+	</data>
+	<data name="Button_OK" xml:space="preserve">
+		<value>OK</value>
+	</data>
+	<data name="Button_Apply" xml:space="preserve">
+		<value>Apply</value>
+	</data>
+	<data name="Window_ModProperties_Tab_Config" xml:space="preserve">
+		<value>Config</value>
+	</data>
+	<data name="Window_ModProperties_Tab_Notes" xml:space="preserve">
+		<value>Notes</value>
+	</data>
+	<data name="Window_ModProperties_TitleWithMod" xml:space="preserve">
+		<value>{0} Properties</value>
+	</data>
+	<data name="Mod_Type_Pak" xml:space="preserve">
+		<value>Pak</value>
+	</data>
+	<data name="Window_CollectionDownloader_Title" xml:space="preserve">
+		<value>NexusMods Collection Downloader</value>
+	</data>
+	<data name="Window_CollectionDownloader_Heading_ModOnly" xml:space="preserve">
+		<value>Download {0}</value>
+	</data>
+	<data name="Window_CollectionDownloader_Heading_Unknown" xml:space="preserve">
+		<value>Download Collection</value>
+	</data>
+	<data name="Window_CollectionDownloader_Button_ListView_ToolTip" xml:space="preserve">
+		<value>View as List</value>
+	</data>
+	<data name="Window_CollectionDownloader_Button_CardView_ToolTip" xml:space="preserve">
+		<value>View as Cards</value>
+	</data>
+	<data name="Window_CollectionDownloader_Button_EnableAll_ToolTip" xml:space="preserve">
+		<value>Enable All</value>
+	</data>
+	<data name="Window_CollectionDownloader_Button_DisableAll_ToolTip" xml:space="preserve">
+		<value>Disable All</value>
+	</data>
+	<data name="Window_CollectionDownloader_Section_Mods" xml:space="preserve">
+		<value>Mods</value>
+	</data>
+	<data name="Window_CollectionDownloader_Heading_WithAuthor" xml:space="preserve">
+		<value>Download {0} by {1}</value>
+	</data>
+	<data name="Window_NXMDownload_Title" xml:space="preserve">
+		<value>NXM Downloader</value>
+	</data>
+	<data name="Window_NXMDownload_Instructions" xml:space="preserve">
+		<value>Enter a nxm:\\ url below:</value>
+	</data>
+	<data name="Window_PakFileExplorer_Title" xml:space="preserve">
+		<value>Mod File Explorer</value>
+	</data>
+	<data name="Window_PakFileExplorer_MenuItem_ExtractTo" xml:space="preserve">
+		<value>Extract To...</value>
+	</data>
+	<data name="Window_PakFileExplorer_MenuItem_ExtractAllTo" xml:space="preserve">
+		<value>Extract All Selected To...</value>
+	</data>
+	<data name="Window_PakFileExplorer_MenuItem_AddMods_ToolTip" xml:space="preserve">
+		<value>Add Mod(s)...</value>
+	</data>
+	<data name="Window_PakFileExplorer_MenuItem_AddPak_ToolTip" xml:space="preserve">
+		<value>Add Pak...</value>
+	</data>
+	<data name="Window_PakFileExplorer_MenuItem_ClearAll_ToolTip" xml:space="preserve">
+		<value>Clear All</value>
+	</data>
+	<data name="Window_PakFileExplorer_Picker_AddMod_Title" xml:space="preserve">
+		<value>Pick Mods to View...</value>
+	</data>
+	<data name="Window_PakFileExplorer_Picker_AddPak_Title" xml:space="preserve">
+		<value>Open Pak File...</value>
+	</data>
+	<data name="Window_PakFileExplorer_Picker_ExtractFiles_Title" xml:space="preserve">
+		<value>Extract File(s) To...</value>
+	</data>
+	<data name="Window_StatsValidator_Title" xml:space="preserve">
+		<value>Stats Validator</value>
+	</data>
+	<data name="Window_StatsValidator_Button_Validate_ToolTip" xml:space="preserve">
+		<value>Validate Again</value>
+	</data>
+	<data name="Window_StatsValidator_Section_Results" xml:space="preserve">
+		<value>Results</value>
+	</data>
+	<data name="Window_StatsValidator_Section_TimeTaken" xml:space="preserve">
+		<value>Time Taken:</value>
+	</data>
+	<data name="Window_StatsValidator_LockScreen_Text" xml:space="preserve">
+		<value>Validating...</value>
+	</data>
+	<data name="Window_StatsValidator_Output_NoIssues" xml:space="preserve">
+		<value>No issues found!</value>
+	</data>
+	<data name="Window_StatsValidator_Output_Issues" xml:space="preserve">
+		<value>{0} issue(s):</value>
+	</data>
+	<data name="Window_StatsValidator_FileUnknown" xml:space="preserve">
+		<value>Unknown</value>
+	</data>
+	<data name="Window_StatsValidator_Alert_Init" xml:space="preserve">
+		<value>Initializing base data...</value>
+	</data>
+	<data name="Window_StatsValidator_Alert_Validating" xml:space="preserve">
+		<value>Validating mod stats...</value>
+	</data>
+	<data name="Window_StatsValidator_Alert_Done" xml:space="preserve">
+		<value>Validation complete for {0}</value>
+	</data>
+	<data name="Window_SettingsWindow_Title" xml:space="preserve">
+		<value>Settings</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_General" xml:space="preserve">
+		<value>General</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_General_ToolTip" xml:space="preserve">
+		<value>Mod Manager Settings (Data/settings.json)</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_ModUpdating" xml:space="preserve">
+		<value>Mod Updating</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_ModUpdating_ToolTip" xml:space="preserve">
+		<value>Update Settings (Data/settings.json)</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_ScriptExtender" xml:space="preserve">
+		<value>Script Extender</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_ScriptExtender_ToolTip" xml:space="preserve">
+		<value>Script Extender Settings (ScriptExtenderSettings.json)</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_ScriptExtenderUpdater" xml:space="preserve">
+		<value>Script Extender Updater</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_ScriptExtenderUpdater_ToolTip" xml:space="preserve">
+		<value>Script Extender Updater Settings (ScriptExtenderUpdaterConfig.json)</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_Keybindings" xml:space="preserve">
+		<value>Keybindings</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_Keybindings_ToolTip" xml:space="preserve">
+		<value>Keybinding Settings (Data/keybindings.json)</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_Advanced" xml:space="preserve">
+		<value>Advanced</value>
+	</data>
+	<data name="Window_SettingsWindow_Tab_Advanced_ToolTip" xml:space="preserve">
+		<value>Advanced Mod Manager Settings (Data/settings.json)</value>
+	</data>
+	<data name="Window_SettingsWindow_Button_LaunchParams" xml:space="preserve">
+		<value>Launch Params</value>
+	</data>
+	<data name="Window_SettingsWindow_Section_Experimental" xml:space="preserve">
+		<value>Experimental</value>
+	</data>
+	<data name="Window_SettingsWindow_Button_LaunchParams_ToolTip" xml:space="preserve">
+		<value>Parameters to pass to the game executable when launching the game through the mod manager</value>
+	</data>
+	<data name="Window_SettingsWindow_Button_ClearParams_ToolTip" xml:space="preserve">
+		<value>Clear Current Params</value>
+	</data>
+	<data name="Window_SettingsWindow_Button_DeleteCache" xml:space="preserve">
+		<value>Delete Cache</value>
+	</data>
+	<data name="Window_SettingsWindow_Button_DeleteCache_ToolTip" xml:space="preserve">
+		<value>Delete the local mod cache, located in the mod manager's Data folder</value>
+	</data>
+	<data name="ModListView_AddContainer" xml:space="preserve">
+		<value>Add Container...</value>
+	</data>
+	<data name="ModListView_DeleteContainer" xml:space="preserve">
+		<value>Container...</value>
+	</data>
+	<data name="ModListView_DeleteContainerMods" xml:space="preserve">
+		<value>Container Mods...</value>
+	</data>
+	<data name="ModListView_RenameContainer" xml:space="preserve">
+		<value>Rename...</value>
+	</data>
+	<data name="ModContainer_ToolTip_Children" xml:space="preserve">
+		<value>Container ({0} Children)</value>
+	</data>
+	<data name="CommandBar_Button_ExportOrderToArchive_ToolTip" xml:space="preserve">
+		<value>Export Active Mods to Zip As...</value>
+	</data>
+	<data name="CommandBar_ProfileFlyout_Profile_Header" xml:space="preserve">
+		<value>Profile...</value>
+	</data>
+	<data name="CommandBar_ProfileFlyout_Saves_Header" xml:space="preserve">
+		<value>Saves...</value>
+	</data>
+	<data name="Button_Rename" xml:space="preserve">
+		<value>Rename</value>
+	</data>
+	<data name="Button_CopyPathToClipboard" xml:space="preserve">
+		<value>Copy Path to Clipboard...</value>
+	</data>
+	<data name="Button_OpenInFileExplorer" xml:space="preserve">
+		<value>Open in File Explorer...</value>
+	</data>
+	<data name="Button_OpenInDopus" xml:space="preserve">
+		<value>Open in Directory Opus...</value>
+	</data>
+	<data name="CommandBar_Button_SaveOrder_ToolTip" xml:space="preserve">
+		<value>Save Order</value>
+	</data>
+	<data name="CommandBar_Button_SaveOrderAs_ToolTip" xml:space="preserve">
+		<value>Save Order As...</value>
+	</data>
+	<data name="CommandBar_Button_AddNewOrder_ToolTip" xml:space="preserve">
+		<value>Add New Order</value>
+	</data>
+	<data name="CommandBar_Button_ExportOrderToGame_ToolTip" xml:space="preserve">
+		<value>Export Order to Game</value>
+	</data>
+	<data name="CommandBar_Button_ExportActiveModsToZip_ToolTip" xml:space="preserve">
+		<value>Export Active Mods to Zip</value>
+	</data>
+	<data name="CommandBar_Button_RefreshMods_ToolTip" xml:space="preserve">
+		<value>Refresh Mods</value>
+	</data>
+	<data name="CommandBar_Button_OpenModsFolder_ToolTip" xml:space="preserve">
+		<value>Open Mods Folder...</value>
+	</data>
+	<data name="CommandBar_Button_OpenExtenderLogsFolder_ToolTip" xml:space="preserve">
+		<value>Open Script Extender Logs Folder...</value>
+	</data>
+	<data name="CommandBar_Button_LaunchGame_ToolTip" xml:space="preserve">
+		<value>Launch Game...</value>
+	</data>
+	<data name="CommandBar_LaunchGameFlyout_Button_EditExecutablePath" xml:space="preserve">
+		<value>Edit Executable Path...</value>
+	</data>
+	<data name="CommandBar_LaunchGameFlyout_Open_Header" xml:space="preserve">
+		<value>Open...</value>
+	</data>
+	<data name="CommandBar_LaunchGameFlyout_Button_OpenGameFolder_FileExplorer" xml:space="preserve">
+		<value>Open Parent Folder in File Explorer...</value>
+	</data>
+	<data name="CommandBar_LaunchGameFlyout_Button_OpenGameFolder_Dopus" xml:space="preserve">
+		<value>Open Parent Folder in Directory Opus...</value>
+	</data>
+	<data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Header" xml:space="preserve">
+		<value>Copy to Clipboard...</value>
+	</data>
+	<data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ExecutablePath" xml:space="preserve">
+		<value>Executable Path</value>
+	</data>
+	<data name="CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ParentFolder" xml:space="preserve">
+		<value>Parent Folder Path</value>
+	</data>
+	<data name="CommandBar_Section_Profile" xml:space="preserve">
+		<value>Profile</value>
+	</data>
+	<data name="CommandBar_Section_Order" xml:space="preserve">
+		<value>Order</value>
+	</data>
+	<data name="CommandBar_Section_Export" xml:space="preserve">
+		<value>Export</value>
+	</data>
+	<data name="CommandBar_Section_Refresh" xml:space="preserve">
+		<value>Refresh</value>
+	</data>
+	<data name="CommandBar_Section_Campaign" xml:space="preserve">
+		<value>Campaign</value>
+	</data>
+	<data name="CommandBar_Section_Shortcuts" xml:space="preserve">
+		<value>Shortcuts</value>
+	</data>
+	<data name="CommandBar_Section_Links" xml:space="preserve">
+		<value>Links</value>
+		<comment>Section for external website urls</comment>
+	</data>
+	<data name="CommandBar_Section_Support" xml:space="preserve">
+		<value>Support</value>
+	</data>
+	<data name="CommandBar_Button_OpenSteamPage_ToolTip" xml:space="preserve">
+		<value>Open Steam Page...</value>
+	</data>
+	<data name="CommandBar_Button_OpenNexusMods_ToolTip" xml:space="preserve">
+		<value>Open Nexus Mods...</value>
+	</data>
+	<data name="CommandBar_Button_Donate_ToolTip" xml:space="preserve">
+		<value>Donate a Coffee...</value>
+	</data>
+	<data name="CommandBar_Button_OpenGitHub_ToolTip" xml:space="preserve">
+		<value>Open Home Page (GitHub)...</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Header" xml:space="preserve">
+		<value>On Game Launch</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Header_ToolTip" xml:space="preserve">
+		<value>When the game launches through the mod manager, this action will be performed on the mod manager window</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Value_None" xml:space="preserve">
+		<value>None</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Value_None_ToolTip" xml:space="preserve">
+		<value>Do nothing</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Value_Minimize" xml:space="preserve">
+		<value>Minimize</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Value_Minimize_ToolTip" xml:space="preserve">
+		<value>Minimize the window</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Value_Close" xml:space="preserve">
+		<value>Close</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_Value_Close_ToolTip" xml:space="preserve">
+		<value>Close the window</value>
+	</data>
+	<data name="Keybinding_AddNewOrder" xml:space="preserve">
+		<value>Add New Order</value>
+	</data>
+	<data name="Keybinding_CheckForAppUpdates" xml:space="preserve">
+		<value>Check For App Updates</value>
+	</data>
+	<data name="Keybinding_CheckAllModUpdates" xml:space="preserve">
+		<value>Check for All Mod Updates</value>
+	</data>
+	<data name="Keybinding_CheckAllModUpdates_ToolTip" xml:space="preserve">
+		<value>Check all sources of mod updates (GitHub, Nexus, etc.)</value>
+	</data>
+	<data name="Keybinding_CheckForGitHubModUpdates" xml:space="preserve">
+		<value>Check for Github Mod Updates</value>
+	</data>
+	<data name="Keybinding_CheckForNexusModsUpdates" xml:space="preserve">
+		<value>Check for Nexus Mod Updates</value>
+	</data>
+	<data name="Keybinding_CheckForModioUpdates" xml:space="preserve">
+		<value>Check for mod.io Updates</value>
+	</data>
+	<data name="Keybinding_ExportOrder" xml:space="preserve">
+		<value>Export Order to Game</value>
+	</data>
+	<data name="Keybinding_ExportOrder_ToolTip" xml:space="preserve">
+		<value>Export order to modsettings.lsx</value>
+	</data>
+	<data name="Keybinding_ExportOrderToTextFile" xml:space="preserve">
+		<value>Export Order to Text File...</value>
+	</data>
+	<data name="Keybinding_ExportOrderToZip" xml:space="preserve">
+		<value>Export Order to Archive (.zip)</value>
+	</data>
+	<data name="Keybinding_ExportOrderToZip_ToolTip" xml:space="preserve">
+		<value>Export all active mods to a zip file</value>
+	</data>
+	<data name="Keybinding_ExportOrderToArchiveAs" xml:space="preserve">
+		<value>Export Order to Archive As...</value>
+	</data>
+	<data name="Keybinding_ExportOrderToArchiveAs_ToolTip" xml:space="preserve">
+		<value>Export all active mods to an archive file of a chosen type</value>
+	</data>
+	<data name="Keybinding_RenameOrder" xml:space="preserve">
+		<value>Rename Order</value>
+	</data>
+	<data name="Keybinding_RenameOrder_ToolTip" xml:space="preserve">
+		<value>Rename current load order</value>
+	</data>
+	<data name="Keybinding_LaunchGame" xml:space="preserve">
+		<value>Launch Game</value>
+	</data>
+	<data name="Keybinding_OpenDonationPage" xml:space="preserve">
+		<value>Donate a Coffee...</value>
+	</data>
+	<data name="Keybinding_OpenGitHubRepo" xml:space="preserve">
+		<value>Open Repository Page...</value>
+	</data>
+	<data name="Keybinding_OpenModsFolder" xml:space="preserve">
+		<value>Open Mods Folder</value>
+	</data>
+	<data name="Keybinding_OpenExtenderLogsFolder" xml:space="preserve">
+		<value>Open Extender Logs Folder</value>
+	</data>
+	<data name="Keybinding_OpenNexusMods" xml:space="preserve">
+		<value>Open Nexus Mods Website</value>
+	</data>
+	<data name="Keybinding_OpenSteamPage" xml:space="preserve">
+		<value>Open Steam Store Page</value>
+	</data>
+	<data name="Keybinding_RefreshMods" xml:space="preserve">
+		<value>Refresh Mods</value>
+	</data>
+	<data name="Keybinding_ReloadMods" xml:space="preserve">
+		<value>Reload All Mods</value>
+	</data>
+	<data name="Keybinding_ReloadMods_ToolTip" xml:space="preserve">
+		<value>Reload mod data without doing a full reload (i.e. reload metadata like the name)</value>
+	</data>
+	<data name="Keybinding_RefreshModUpdates" xml:space="preserve">
+		<value>Refresh Mod Updates</value>
+	</data>
+	<data name="Keybinding_RenameSave" xml:space="preserve">
+		<value>Rename Save</value>
+	</data>
+	<data name="Keybinding_SaveOrder" xml:space="preserve">
+		<value>Save Order</value>
+	</data>
+	<data name="Keybinding_SaveOrderAs" xml:space="preserve">
+		<value>Save Order As...</value>
+	</data>
+	<data name="Keybinding_SaveSettings" xml:space="preserve">
+		<value>Save Settings</value>
+	</data>
+	<data name="Keybinding_ToggleUpdatesView" xml:space="preserve">
+		<value>Toggle Updates View</value>
+	</data>
+	<data name="Keybinding_TogglePakFileExplorerWindow" xml:space="preserve">
+		<value>Toggle Mod Files Explorer Window</value>
+	</data>
+	<data name="Keybinding_ToggleStatsValidatorWindow" xml:space="preserve">
+		<value>Toggle Stats Validator Window</value>
+	</data>
+	<data name="Keybinding_ToggleSettingsWindow" xml:space="preserve">
+		<value>Toggle Settings Window</value>
+	</data>
+	<data name="Keybinding_ToggleKeybindings" xml:space="preserve">
+		<value>Toggle Keybindings Window</value>
+	</data>
+	<data name="Keybinding_ToggleVersionGeneratorWindow" xml:space="preserve">
+		<value>Toggle Version Generator Window</value>
+	</data>
+	<data name="Keybinding_ToggleVersionGeneratorWindow_ToolTip" xml:space="preserve">
+		<value>A tool for mod authors to generate version numbers for a mod's meta.lsx</value>
+	</data>
+	<data name="Keybinding_ToggleAboutWindow" xml:space="preserve">
+		<value>About</value>
+	</data>
+	<data name="Keybinding_ToggleThemeMode" xml:space="preserve">
+		<value>Toggle Dark/Light Mode</value>
+	</data>
+	<data name="Keybinding_ImportMods" xml:space="preserve">
+		<value>Import Mods...</value>
+	</data>
+	<data name="Keybinding_ImportNexusModsIds" xml:space="preserve">
+		<value>Import Nexus Mods Data from Archives...</value>
+	</data>
+	<data name="Keybinding_NewOrder" xml:space="preserve">
+		<value>Add New Order</value>
+	</data>
+	<data name="Keybinding_ImportOrderFromSave" xml:space="preserve">
+		<value>Import Order from Save...</value>
+	</data>
+	<data name="Keybinding_ImportOrderFromSaveAsNew" xml:space="preserve">
+		<value>Import Order from Save As New Order...</value>
+	</data>
+	<data name="Keybinding_ImportOrderFromFile" xml:space="preserve">
+		<value>Import Order from File...</value>
+	</data>
+	<data name="Keybinding_ImportOrderFromZipFile" xml:space="preserve">
+		<value>Import Order &amp; Mods from Archive...</value>
+	</data>
+	<data name="Keybinding_MoveSelectedMods" xml:space="preserve">
+		<value>Moved Selected Mods to Opposite List</value>
+	</data>
+	<data name="Keybinding_FocusActiveMods" xml:space="preserve">
+		<value>Focus Active Mods List</value>
+	</data>
+	<data name="Keybinding_FocusInactiveMods" xml:space="preserve">
+		<value>Focus Inactive Mods List</value>
+	</data>
+	<data name="Keybinding_SwapListFocus" xml:space="preserve">
+		<value>Go to Other List</value>
+	</data>
+	<data name="Keybinding_MoveToTop" xml:space="preserve">
+		<value>Move to Top of List</value>
+	</data>
+	<data name="Keybinding_MoveToBottom" xml:space="preserve">
+		<value>Move to Bottom of List</value>
+	</data>
+	<data name="Keybinding_ToggleFilterFocus" xml:space="preserve">
+		<value>Toggle Focus Filter for Current List</value>
+	</data>
+	<data name="Keybinding_ToggleFileNameDisplay" xml:space="preserve">
+		<value>Show File Names for Mods</value>
+	</data>
+	<data name="Keybinding_DeleteSelectedMods" xml:space="preserve">
+		<value>Delete Selected Mods...</value>
+	</data>
+	<data name="Keybinding_OpenGameFolder" xml:space="preserve">
+		<value>Open Game Folder</value>
+	</data>
+	<data name="Keybinding_OpenSavesFolder" xml:space="preserve">
+		<value>Open Saves Folder</value>
+	</data>
+	<data name="Keybinding_OpenExtenderDataFolder" xml:space="preserve">
+		<value>Open Script Extender Data Folder</value>
+	</data>
+	<data name="Keybinding_DownloadScriptExtender" xml:space="preserve">
+		<value>Download &amp; Extract the Script Extender...</value>
+	</data>
+	<data name="Keybinding_ToggleNXMLinkDownloader" xml:space="preserve">
+		<value>Download nxm:\\ Link...</value>
+	</data>
+	<data name="Keybinding_ToggleNXMLinkDownloader_ToolTip" xml:space="preserve">
+		<value>Download a NexusMods link for a mod file or a collection</value>
+	</data>
+	<data name="Keybinding_ToggleCollectionDownloaderWindow" xml:space="preserve">
+		<value>Open Collection Downloader Window</value>
+	</data>
+	<data name="Keybinding_ExtractAllSelectedMods" xml:space="preserve">
+		<value>Extract All Selected Mods To...</value>
+	</data>
+	<data name="Keybinding_ExtractSelectedActiveMods" xml:space="preserve">
+		<value>Extract Selected Active Mods To...</value>
+	</data>
+	<data name="Keybinding_ExtractSelectedInactiveMods" xml:space="preserve">
+		<value>Extract Selected Inactive Mods To...</value>
+	</data>
+	<data name="Keybinding_ExtractSelectedAdventure" xml:space="preserve">
+		<value>Extract Active Adventure Mod To...</value>
+	</data>
+	<data name="Keybinding_SpeakActiveModOrder" xml:space="preserve">
+		<value>Speak Active Order</value>
+	</data>
+	<data name="Keybinding_StopSpeaking" xml:space="preserve">
+		<value>Stop Speaking</value>
+	</data>
+	<data name="Keybinding_CheckForUpdates" xml:space="preserve">
+		<value>Check for Updates...</value>
+	</data>
+	<data name="Keybinding_OrganizeModPaks" xml:space="preserve">
+		<value>Organize Mod Paks</value>
+	</data>
+	<data name="Keybinding_OrganizeModPaks_ToolTip" xml:space="preserve">
+		<value>Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder.</value>
+	</data>
+	<data name="Window_Main_Title" xml:space="preserve">
+		<value>BG3ModManager {0}</value>
+		<comment>Includes version</comment>
+	</data>
+	<data name="TopMenu_File" xml:space="preserve">
+		<value>_File</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_Edit" xml:space="preserve">
+		<value>_Edit</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_Settings" xml:space="preserve">
+		<value>_Settings</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_View" xml:space="preserve">
+		<value>_View</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_Go" xml:space="preserve">
+		<value>_Go</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_Download" xml:space="preserve">
+		<value>_Download</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_Download_ModUpdates" xml:space="preserve">
+		<value>Check for Mod Updates...</value>
+	</data>
+	<data name="TopMenu_Tools" xml:space="preserve">
+		<value>_Tools</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_Tools_Speak" xml:space="preserve">
+		<value>Speak...</value>
+	</data>
+	<data name="TopMenu_Tools_Extract" xml:space="preserve">
+		<value>Extract...</value>
+	</data>
+	<data name="TopMenu_Help" xml:space="preserve">
+		<value>_Help</value>
+		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="Settings_GameDataPath" xml:space="preserve">
+		<value>Game Data Path</value>
+	</data>
+	<data name="Settings_GameDataPath_ToolTip" xml:space="preserve">
+		<value>The path to the Data folder\nExample: Baldur's Gate 3/Data</value>
+	</data>
+	<data name="Settings_GameExecutablePath" xml:space="preserve">
+		<value>Game Executable Path</value>
+	</data>
+	<data name="Settings_GameExecutablePath_ToolTip" xml:space="preserve">
+		<value>The path to bg3.exe</value>
+	</data>
+	<data name="Settings_LaunchDX11" xml:space="preserve">
+		<value>DirectX 11</value>
+	</data>
+	<data name="Settings_LaunchDX11_ToolTip" xml:space="preserve">
+		<value>If enabled, when launching the game, bg3_dx11.exe is used instead</value>
+	</data>
+	<data name="Settings_GameStoryLogEnabled" xml:space="preserve">
+		<value>Story Log</value>
+	</data>
+	<data name="Settings_GameStoryLogEnabled_ToolTip" xml:space="preserve">
+		<value>When launching the game, enable the Osiris story log (osiris.log)</value>
+	</data>
+	<data name="Settings_DisableLauncherTelemetry" xml:space="preserve">
+		<value>Launcher - Disable Telemetry</value>
+	</data>
+	<data name="Settings_DisableLauncherTelemetry_ToolTip" xml:space="preserve">
+		<value>Disable the telemetry options in the launcher\nTelemetry is always disabled if mods are active</value>
+	</data>
+	<data name="Settings_DisableLauncherModWarnings" xml:space="preserve">
+		<value>Launcher - Disable Warnings</value>
+	</data>
+	<data name="Settings_DisableLauncherModWarnings_ToolTip" xml:space="preserve">
+		<value>Disable the mod/data mismatch warnings in the launcher</value>
+	</data>
+	<data name="Settings_LaunchType" xml:space="preserve">
+		<value>Launch Game - Action</value>
+	</data>
+	<data name="Settings_LaunchType_ToolTip" xml:space="preserve">
+		<value>Change how to launch the game</value>
+	</data>
+	<data name="Settings_CustomLaunchAction" xml:space="preserve">
+		<value>Launch Game - Custom Action</value>
+	</data>
+	<data name="Settings_CustomLaunchAction_ToolTip" xml:space="preserve">
+		<value>A file path, protocol, or custom process shell command to run</value>
+	</data>
+	<data name="Settings_CustomLaunchArgs" xml:space="preserve">
+		<value>Launch Game - Custom Arguments</value>
+	</data>
+	<data name="Settings_CustomLaunchArgs_ToolTip" xml:space="preserve">
+		<value>Optional additional arguments to path to the custom launch command</value>
+	</data>
+	<data name="Settings_LoadOrderPath" xml:space="preserve">
+		<value>Load Orders Path</value>
+	</data>
+	<data name="Settings_LoadOrderPath_ToolTip" xml:space="preserve">
+		<value>The folder containing mod load order .json files</value>
+	</data>
+	<data name="Settings_AutoAddDependenciesWhenExporting" xml:space="preserve">
+		<value>Add Missing Dependencies When Exporting</value>
+	</data>
+	<data name="Settings_AutoAddDependenciesWhenExporting_ToolTip" xml:space="preserve">
+		<value>Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order</value>
+	</data>
+	<data name="Settings_DisableMissingModWarnings" xml:space="preserve">
+		<value>Skip Checking for Missing Mods</value>
+	</data>
+	<data name="Settings_DisableMissingModWarnings_ToolTip" xml:space="preserve">
+		<value>If a load order is missing mods, no warnings will be displayed</value>
+	</data>
+	<data name="Settings_CheckForUpdates" xml:space="preserve">
+		<value>Automatically Check For Updates</value>
+	</data>
+	<data name="Settings_CheckForUpdates_ToolTip" xml:space="preserve">
+		<value>Automatically check for updates when the program starts</value>
+	</data>
+	<data name="Settings_LimitToSingleInstance" xml:space="preserve">
+		<value>Limit to Single Instance</value>
+	</data>
+	<data name="Settings_LimitToSingleInstance_ToolTip" xml:space="preserve">
+		<value>Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button</value>
+	</data>
+	<data name="Settings_DocumentsFolderPathOverride" xml:space="preserve">
+		<value>"Override AppData Path</value>
+	</data>
+	<data name="Settings_DocumentsFolderPathOverride_ToolTip" xml:space="preserve">
+		<value>[EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods.</value>
+	</data>
+	<data name="Settings_EnableColorblindSupport" xml:space="preserve">
+		<value>Colorblind Support</value>
+	</data>
+	<data name="Settings_EnableColorblindSupport_ToolTip" xml:space="preserve">
+		<value>Enables some colorblind support, such as displaying icons for toolkit projects (which normally have a green background)</value>
+	</data>
+	<data name="Settings_ShiftListFocusOnSwap" xml:space="preserve">
+		<value>Shift Focus on Swap</value>
+	</data>
+	<data name="Settings_ShiftListFocusOnSwap_ToolTip" xml:space="preserve">
+		<value>When moving selected mods to the opposite list with Enter, move focus to that list as well</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch" xml:space="preserve">
+		<value>On Game Launch</value>
+	</data>
+	<data name="Settings_ActionOnGameLaunch_ToolTip" xml:space="preserve">
+		<value>When the game launches through the mod manager, this action will be performed</value>
+	</data>
+	<data name="Settings_LogEnabled" xml:space="preserve">
+		<value>Enable Mod Manager Logs</value>
+	</data>
+	<data name="Settings_LogEnabled_ToolTip" xml:space="preserve">
+		<value>Enable the log for the mod manager</value>
+	</data>
+	<data name="Settings_DebugModeEnabled" xml:space="preserve">
+		<value>Mod Developer Mode</value>
+	</data>
+	<data name="Settings_DebugModeEnabled_ToolTip" xml:space="preserve">
+		<value>This enables features for mod developers, such as being able to copy a mod's UUID in context menus, and additional Script Extender options</value>
+	</data>
+	<data name="Settings_SaveWindowLocation" xml:space="preserve">
+		<value>Save Window Location</value>
+	</data>
+	<data name="Settings_SaveWindowLocation_ToolTip" xml:space="preserve">
+		<value>Save and restore the window location when the application starts.</value>
+	</data>
+	<data name="Settings_DeleteModCrashSanityCheck" xml:space="preserve">
+		<value>Delete ModCrashSanityCheck</value>
+	</data>
+	<data name="Settings_DeleteModCrashSanityCheck_ToolTip" xml:space="preserve">
+		<value>Automatically delete the %LOCALAPPDATA%/Larian Studios/Baldur's Gate 3/ModCrashSanityCheck folder, which may make certain mods deactivate if it exists</value>
+	</data>
+	<data name="Settings_Language" xml:space="preserve">
+		<value>Language</value>
+	</data>
+	<data name="Settings_Language_ToolTip" xml:space="preserve">
+		<value>The language to use in the mod manager</value>
+	</data>
+	<data name="Settings_UpdateScriptExtender" xml:space="preserve">
+		<value>Update the Script Extender</value>
+	</data>
+	<data name="Settings_UpdateScriptExtender_ToolTip" xml:space="preserve">
+		<value>If the Script Extender updater is installed (DXGI.dll), automatically update it via Tools/Toolbox.exe</value>
+	</data>
+	<data name="Settings_UpdateGitHubMods" xml:space="preserve">
+		<value>Update GitHub Mods</value>
+	</data>
+	<data name="Settings_UpdateGitHubMods_ToolTip" xml:space="preserve">
+		<value>Automatically check for updates for mods configured with GitHub repository releases</value>
+	</data>
+	<data name="Settings_UpdateNexusMods" xml:space="preserve">
+		<value>Update NexusMods Mods</value>
+	</data>
+	<data name="Settings_UpdateNexusMods_ToolTip" xml:space="preserve">
+		<value>Automatically check for updates for mods configured with NexusMods releases</value>
+	</data>
+	<data name="Settings_UpdateModioMods" xml:space="preserve">
+		<value>Update mod.io Mods</value>
+	</data>
+	<data name="Settings_UpdateModioMods_ToolTip" xml:space="preserve">
+		<value>Automatically check for updates for mods configured with mod.io releases</value>
+	</data>
+	<data name="Settings_NexusModsAPIKey" xml:space="preserve">
+		<value>NexusMods API Key</value>
+	</data>
+	<data name="Settings_NexusModsAPIKey_ToolTip" xml:space="preserve">
+		<value>Your NexusMods API key, which will allow the mod manager to fetch mod updates/information</value>
+	</data>
+	<data name="Settings_ModioAPIKey" xml:space="preserve">
+		<value>mod.io API Key</value>
+	</data>
+	<data name="Settings_ModioAPIKey_ToolTip" xml:space="preserve">
+		<value>Your mod.io Web API key, which will allow the mod manager to fetch mod updates/information from mod.io</value>
+	</data>
+	<data name="Settings_MinimumUpdateTimePeriod" xml:space="preserve">
+		<value>Minimum Update Time Period</value>
+	</data>
+	<data name="Settings_MinimumUpdateTimePeriod_ToolTip" xml:space="preserve">
+		<value>Prevent checking for updates for individual mods until this amount of time has passed since the last check\nThis is to prevent hitting API limits too quickly</value>
+	</data>
+	<data name="Settings_AllowAdultContent" xml:space="preserve">
+		<value>Allow Adult Content</value>
+	</data>
+	<data name="Settings_AllowAdultContent_ToolTip" xml:space="preserve">
+		<value>Allow adult content when downloading collections from NexusMods</value>
+	</data>
+	<data name="LaunchGameType_Exe" xml:space="preserve">
+		<value>Default (Exe)</value>
+	</data>
+	<data name="LaunchGameType_Exe_ToolTip" xml:space="preserve">
+		<value>Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn't exist,\nallowing you to bypassing the launcher</value>
+	</data>
+	<data name="LaunchGameType_Steam" xml:space="preserve">
+		<value>Steam</value>
+	</data>
+	<data name="LaunchGameType_Steam_ToolTip" xml:space="preserve">
+		<value>Open the game by running the Steam launch protocol ('steam://run/1086940')</value>
+	</data>
+	<data name="LaunchGameType_Custom" xml:space="preserve">
+		<value>Custom</value>
+	</data>
+	<data name="LaunchGameType_Custom_ToolTip" xml:space="preserve">
+		<value>Open the game by opening a different file or protocol (ex. a batch file or protocol handler like playnite://playnite/start/id)</value>
+	</data>
+	<data name="GameLaunchWindowAction_None" xml:space="preserve">
+		<value>None</value>
+	</data>
+	<data name="GameLaunchWindowAction_None_ToolTip" xml:space="preserve">
+		<value>Do nothing</value>
+	</data>
+	<data name="GameLaunchWindowAction_Minimize" xml:space="preserve">
+		<value>Minimize</value>
+	</data>
+	<data name="GameLaunchWindowAction_Minimize_ToolTip" xml:space="preserve">
+		<value>Minimize the window</value>
+	</data>
+	<data name="GameLaunchWindowAction_Close" xml:space="preserve">
+		<value>Close</value>
+	</data>
+	<data name="GameLaunchWindowAction_Close_ToolTip" xml:space="preserve">
+		<value>Close the window</value>
+	</data>
+	<data name="ExtenderUpdateChannel_Release" xml:space="preserve">
+		<value>Release</value>
+	</data>
+	<data name="ExtenderUpdateChannel_Release_ToolTip" xml:space="preserve">
+		<value>The default channel</value>
+	</data>
+	<data name="ExtenderUpdateChannel_Devel" xml:space="preserve">
+		<value>Devel</value>
+	</data>
+	<data name="ExtenderUpdateChannel_Devel_ToolTip" xml:space="preserve">
+		<value>An update channel intended for developers, with potentially unstable updates</value>
+	</data>
+	<data name="ExtenderUpdateChannel_Nightly" xml:space="preserve">
+		<value>Nightly</value>
+	</data>
+	<data name="ExtenderUpdateChannel_Nightly_ToolTip" xml:space="preserve">
+		<value>An update channel intended for developers, with bleeding-edge experimental updates</value>
+	</data>
+	<data name="ModSourceType_None" xml:space="preserve">
+		<value>None</value>
+	</data>
+	<data name="ModSourceType_None_ToolTip" xml:space="preserve">
+		<value>No known mod source</value>
+	</data>
+	<data name="ModSourceType_GitHub" xml:space="preserve">
+		<value>GitHub</value>
+	</data>
+	<data name="ModSourceType_GitHub_ToolTip" xml:space="preserve">
+		<value>This mod's update source is from a GitHub repository</value>
+	</data>
+	<data name="ModSourceType_NexusMods" xml:space="preserve">
+		<value>Nexus Mods</value>
+	</data>
+	<data name="ModSourceType_NexusMods_ToolTip" xml:space="preserve">
+		<value>This mod's update source is from NexusMods</value>
+	</data>
+	<data name="ModSourceType_Modio" xml:space="preserve">
+		<value>mod.io</value>
+	</data>
+	<data name="ModSourceType_Modio_ToolTip" xml:space="preserve">
+		<value>This mod's update source is from mod.io</value>
+	</data>
+	<data name="Settings_Extender_ExportDefaultExtenderSettings" xml:space="preserve">
+		<value>Export Default Values</value>
+	</data>
+	<data name="Settings_Extender_ExportDefaultExtenderSettings_ToolTip" xml:space="preserve">
+		<value>Export all values, even if it matches a default extender value</value>
+	</data>
+	<data name="Settings_Extender_DeveloperMode" xml:space="preserve">
+		<value>Developer Mode</value>
+	</data>
+	<data name="Settings_Extender_DeveloperMode_ToolTip" xml:space="preserve">
+		<value>Enables various debug functionality for development purposes\nThis can be checked by mods to enable additional log messages and more</value>
+	</data>
+	<data name="Settings_Extender_CustomProfile" xml:space="preserve">
+		<value>Custom Profile</value>
+	</data>
+	<data name="Settings_Extender_CustomProfile_ToolTip" xml:space="preserve">
+		<value>"Use a profile other than Public\nThis should be the profile folder name</value>
+	</data>
+	<data name="Settings_Extender_CreateConsole" xml:space="preserve">
+		<value>Create Console Window</value>
+	</data>
+	<data name="Settings_Extender_CreateConsole_ToolTip" xml:space="preserve">
+		<value>Creates a console window that logs extender internals\nMainly useful for debugging</value>
+	</data>
+	<data name="Settings_Extender_LogFailedCompile" xml:space="preserve">
+		<value>Log Working Story Errors</value>
+	</data>
+	<data name="Settings_Extender_LogFailedCompile_ToolTip" xml:space="preserve">
+		<value>Log errors during Osiris story compilation to a log file (LogFailedCompile)</value>
+	</data>
+	<data name="Settings_Extender_EnableLogging" xml:space="preserve">
+		<value>Log Osiris Scripts</value>
+	</data>
+	<data name="Settings_Extender_EnableLogging_ToolTip" xml:space="preserve">
+		<value>Enable logging of Osiris activity (rule evaluation, queries, etc.) to a log file</value>
+	</data>
+	<data name="Settings_Extender_LogCompile" xml:space="preserve">
+		<value>Log Script Compilation</value>
+	</data>
+	<data name="Settings_Extender_LogCompile_ToolTip" xml:space="preserve">
+		<value>Log Osiris story compilation to a log file</value>
+	</data>
+	<data name="Settings_Extender_LogDirectory" xml:space="preserve">
+		<value>Log Directory</value>
+	</data>
+	<data name="Settings_Extender_LogDirectory_ToolTip" xml:space="preserve">
+		<value>Directory where the generated Osiris logs will be stored\nDefault is Documents\\OsirisLogs</value>
+	</data>
+	<data name="Settings_Extender_LogRuntime" xml:space="preserve">
+		<value>Log Runtime</value>
+	</data>
+	<data name="Settings_Extender_LogRuntime_ToolTip" xml:space="preserve">
+		<value>Log extender console and script output to a log file</value>
+	</data>
+	<data name="Settings_Extender_DisableLauncher" xml:space="preserve">
+		<value>Disable Launcher</value>
+	</data>
+	<data name="Settings_Extender_DisableLauncher_ToolTip" xml:space="preserve">
+		<value>Prevents the exe from force-opening the launcher\nMay not work correctly if extender auto-updating is enabled, or the --skip-launcher launch param is set</value>
+	</data>
+	<data name="Settings_Extender_DisableStoryMerge" xml:space="preserve">
+		<value>Disable Story Merge</value>
+	</data>
+	<data name="Settings_Extender_DisableStoryMerge_ToolTip" xml:space="preserve">
+		<value>Prevents story.div.osi merging, which automatically happens when mods are present\nMay only occur when loading a save</value>
+	</data>
+	<data name="Settings_Extender_DisableStoryPatching" xml:space="preserve">
+		<value>Disable Story Patching</value>
+	</data>
+	<data name="Settings_Extender_DisableStoryPatching_ToolTip" xml:space="preserve">
+		<value>Prevents patching story.bin with story.div.osi when loading saves, effectively preventing the Osiris scripts in the save from updating</value>
+	</data>
+	<data name="Settings_Extender_DisableModValidation" xml:space="preserve">
+		<value>Disable Mod Validation</value>
+	</data>
+	<data name="Settings_Extender_DisableModValidation_ToolTip" xml:space="preserve">
+		<value>Disable module hashing when loading mods\nSpeeds up mod loading with no drawbacks</value>
+	</data>
+	<data name="Settings_Extender_EnableAchievements" xml:space="preserve">
+		<value>Achievements</value>
+	</data>
+	<data name="Settings_Extender_EnableAchievements_ToolTip" xml:space="preserve">
+		<value>Enable achievements for modded games</value>
+	</data>
+	<data name="Settings_Extender_EnableExtensions" xml:space="preserve">
+		<value>Extensions</value>
+	</data>
+	<data name="Settings_Extender_EnableExtensions_ToolTip" xml:space="preserve">
+		<value>Enables extender API functionality</value>
+	</data>
+	<data name="Settings_Extender_SendCrashReports" xml:space="preserve">
+		<value>Send Crash Reports</value>
+	</data>
+	<data name="Settings_Extender_SendCrashReports_ToolTip" xml:space="preserve">
+		<value>Upload minidumps to the crash report collection server after a game crash</value>
+	</data>
+	<data name="Settings_Extender_EnableDebugger" xml:space="preserve">
+		<value>Osiris Debugger</value>
+	</data>
+	<data name="Settings_Extender_EnableDebugger_ToolTip" xml:space="preserve">
+		<value>Enables the Osiris debugger interface (vscode extension)</value>
+	</data>
+	<data name="Settings_Extender_DebuggerPort" xml:space="preserve">
+		<value>Osiris Debugger Port</value>
+	</data>
+	<data name="Settings_Extender_DebuggerPort_ToolTip" xml:space="preserve">
+		<value>Port number the Osiris debugger will listen on\nDefault: 9999</value>
+	</data>
+	<data name="Settings_Extender_DumpNetworkStrings" xml:space="preserve">
+		<value>Dump Network Strings</value>
+	</data>
+	<data name="Settings_Extender_DumpNetworkStrings_ToolTip" xml:space="preserve">
+		<value>Dumps the NetworkFixedString table to LogDirectory\nMainly useful for debugging desync issues</value>
+	</data>
+	<data name="Settings_Extender_DebuggerFlags" xml:space="preserve">
+		<value>Osiris Debugger Flags</value>
+	</data>
+	<data name="Settings_Extender_DebuggerFlags_ToolTip" xml:space="preserve">
+		<value>Debugger flags to set\nDefault: 0</value>
+	</data>
+	<data name="Settings_Extender_EnableLuaDebugger" xml:space="preserve">
+		<value>Lua Debugger</value>
+	</data>
+	<data name="Settings_Extender_EnableLuaDebugger_ToolTip" xml:space="preserve">
+		<value>Enables the Lua debugger interface (vscode extension)</value>
+	</data>
+	<data name="Settings_Extender_LuaBuiltinResourceDirectory" xml:space="preserve">
+		<value>Lua Builtin Directory</value>
+	</data>
+	<data name="Settings_Extender_LuaBuiltinResourceDirectory_ToolTip" xml:space="preserve">
+		<value>An additional directory where the Script Extender will check for builtin scripts\nThis setting is meant for developers, to make it easier to test builtin script changes</value>
+	</data>
+	<data name="Settings_Extender_ClearOnReset" xml:space="preserve">
+		<value>Clear Console On Reset</value>
+	</data>
+	<data name="Settings_Extender_ClearOnReset_ToolTip" xml:space="preserve">
+		<value>Clears the extender console when the reset command is used</value>
+	</data>
+	<data name="Settings_Extender_DefaultToClientConsole" xml:space="preserve">
+		<value>Default to Client Side</value>
+	</data>
+	<data name="Settings_Extender_DefaultToClientConsole_ToolTip" xml:space="preserve">
+		<value>Defaults the extender console to the client-side\nThis is setting is intended for developers</value>
+	</data>
+	<data name="Settings_Extender_ShowPerfWarnings" xml:space="preserve">
+		<value>Show Performance Warnings</value>
+	</data>
+	<data name="Settings_Extender_ShowPerfWarnings_ToolTip" xml:space="preserve">
+		<value>Print warnings to the extender console window, which indicates when the server-side part of the game lags behind (a.k.a. warnings about ticks taking too long).</value>
+	</data>
+	<data name="Settings_Extender_InsanityCheck" xml:space="preserve">
+		<value>Disable ModCrashSanityCheck</value>
+	</data>
+	<data name="Settings_Extender_InsanityCheck_ToolTip" xml:space="preserve">
+		<value>Disables the ModCrashSanityCheck jank that disables mods the next time the game runs</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_UpdateChannel" xml:space="preserve">
+		<value>Update Channel</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_UpdateChannel_ToolTip" xml:space="preserve">
+		<value>Use a specific update channel</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_TargetVersion" xml:space="preserve">
+		<value>Target Version</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_TargetVersion_ToolTip" xml:space="preserve">
+		<value>Update to a specific version of the script extender (ex. '5.0.0.0')</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_TargetResourceDigest" xml:space="preserve">
+		<value>Target Resource Digest</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_TargetResourceDigest_ToolTip" xml:space="preserve">
+		<value>Use a specific Digest for the target update</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_DisableUpdates" xml:space="preserve">
+		<value>Disable Updates</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_DisableUpdates_ToolTip" xml:space="preserve">
+		<value>Disable automatic updating to the latest extender version</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_IPv4Only" xml:space="preserve">
+		<value>IPv4 Only</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_IPv4Only_ToolTip" xml:space="preserve">
+		<value>Use only IPv4 when fetching the latest update</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_Debug" xml:space="preserve">
+		<value>Debug</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_Debug_ToolTip" xml:space="preserve">
+		<value>Enable debug mode in the extender updater, which prints more messages to the console window</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_ManifestURL" xml:space="preserve">
+		<value>Manifest URL</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_ManifestName" xml:space="preserve">
+		<value>Manifest Name</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_CachePath" xml:space="preserve">
+		<value>Cache Path</value>
+	</data>
+	<data name="Settings_ExtenderUpdater_ValidateSignature" xml:space="preserve">
+		<value>Validate Signature</value>
+	</data>
 </root>

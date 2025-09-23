@@ -5,6 +5,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:manager="using:ModManager"
 	xmlns:controls="using:ModManager.Controls"
 	xmlns:vm="using:ModManager.Models.Settings"
 	x:DataType="vm:ScriptExtenderUpdateConfig"
@@ -12,38 +13,38 @@
     d:DesignWidth="1600"
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-		<TextBlock x:Name="UpdateChannelTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="Update Channel" ToolTip.Tip="Use a specific update channel" />
-		<ComboBox x:Name="UpdateChannelComboBox" Grid.Row="0" Grid.Column="1" Classes="right" SelectedIndex="{Binding UpdateChannelIndex, FallbackValue=0}" ToolTip.Tip="Use a specific update channel">
-			<ComboBoxItem x:Name="ReleaseComboBoxItem" Content="Release" ToolTip.Tip="Release" />
-			<ComboBoxItem x:Name="DevelComboBoxItem" Content="Devel" ToolTip.Tip="Devel" />
-			<ComboBoxItem x:Name="NightlyComboBoxItem" Content="Nightly" ToolTip.Tip="Nightly" />
+		<TextBlock x:Name="UpdateChannelTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_UpdateChannel}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_UpdateChannel_ToolTip}" />
+		<ComboBox x:Name="UpdateChannelComboBox" Grid.Row="0" Grid.Column="1" Classes="right" SelectedIndex="{Binding UpdateChannelIndex, FallbackValue=0}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_UpdateChannel_ToolTip}">
+			<ComboBoxItem Content="{manager:LocaleKey ExtenderUpdateChannel_Release}" ToolTip.Tip="{manager:LocaleKey ExtenderUpdateChannel_Release_ToolTip}" Tag="Release" />
+			<ComboBoxItem Content="{manager:LocaleKey ExtenderUpdateChannel_Devel}" ToolTip.Tip="{manager:LocaleKey ExtenderUpdateChannel_Devel_ToolTip}" Tag="Devel" />
+			<ComboBoxItem Content="{manager:LocaleKey ExtenderUpdateChannel_Nightly}" ToolTip.Tip="{manager:LocaleKey ExtenderUpdateChannel_Nightly_ToolTip}" Tag="Nightly" />
 		</ComboBox>
 		
-		<TextBlock x:Name="CachePathTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="CachePath" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
-		<controls:EnhancedTextBox x:Name="CachePathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding CachePath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="CachePathTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_CachePath}" IsVisible="{Binding DevOptionsEnabled}" />
+		<controls:EnhancedTextBox x:Name="CachePathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding CachePath, UpdateSourceTrigger=LostFocus}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="DebugTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="Debug" ToolTip.Tip="Enable debug mode in the extender updater, which prints more messages to the console window" />
-		<CheckBox x:Name="DebugCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding Debug}" ToolTip.Tip="Enable debug mode in the extender updater, which prints more messages to the console window"/>
+		<TextBlock x:Name="DebugTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_Debug}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_Debug_ToolTip}" />
+		<CheckBox x:Name="DebugCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding Debug}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_Debug_ToolTip}"/>
 		
-		<TextBlock x:Name="DisableUpdatesTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="Disable Updates" ToolTip.Tip="Disable automatic updating to the latest extender version" />
-		<CheckBox x:Name="DisableUpdatesCheckBox" Grid.Row="3" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableUpdates}" ToolTip.Tip="Disable automatic updating to the latest extender version"/>
+		<TextBlock x:Name="DisableUpdatesTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_DisableUpdates}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_DisableUpdates_ToolTip}" />
+		<CheckBox x:Name="DisableUpdatesCheckBox" Grid.Row="3" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableUpdates}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_DisableUpdates_ToolTip}"/>
 		
-		<TextBlock x:Name="IPv4OnlyTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="IPv4Only" ToolTip.Tip="Use only IPv4 when fetching the latest update" />
-		<CheckBox x:Name="IPv4OnlyCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding IPv4Only}" ToolTip.Tip="Use only IPv4 when fetching the latest update"/>
+		<TextBlock x:Name="IPv4OnlyTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_IPv4Only}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_IPv4Only_ToolTip}" />
+		<CheckBox x:Name="IPv4OnlyCheckBox" Grid.Row="4" Grid.Column="1" Classes="right" IsChecked ="{Binding IPv4Only}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_IPv4Only_ToolTip}"/>
 		
-		<TextBlock x:Name="ManifestNameTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="Manifest Name" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
-		<controls:EnhancedTextBox x:Name="ManifestNameTextBox" Grid.Row="5" Grid.Column="1" Classes="compact" Text="{Binding ManifestName, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="ManifestNameTextBlock" Grid.Row="5" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_ManifestName}" IsVisible="{Binding DevOptionsEnabled}" />
+		<controls:EnhancedTextBox x:Name="ManifestNameTextBox" Grid.Row="5" Grid.Column="1" Classes="compact" Text="{Binding ManifestName, UpdateSourceTrigger=LostFocus}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="ManifestURLTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="Manifest URL" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
-		<controls:EnhancedTextBox x:Name="ManifestURLTextBox" Grid.Row="6" Grid.Column="1" Classes="compact" Text="{Binding ManifestURL, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="ManifestURLTextBlock" Grid.Row="6" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_ManifestURL}" IsVisible="{Binding DevOptionsEnabled}" />
+		<controls:EnhancedTextBox x:Name="ManifestURLTextBox" Grid.Row="6" Grid.Column="1" Classes="compact" Text="{Binding ManifestURL, UpdateSourceTrigger=LostFocus}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="TargetResourceDigestTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="Target Resource Digest" ToolTip.Tip="Use a specific Digest for the target update" IsVisible="{Binding DevOptionsEnabled}" />
-		<controls:EnhancedTextBox x:Name="TargetResourceDigestTextBox" Grid.Row="7" Grid.Column="1" Classes="compact" Text="{Binding TargetResourceDigest, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Use a specific Digest for the target update" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="TargetResourceDigestTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_TargetResourceDigest}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_TargetResourceDigest_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<controls:EnhancedTextBox x:Name="TargetResourceDigestTextBox" Grid.Row="7" Grid.Column="1" Classes="compact" Text="{Binding TargetResourceDigest, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_TargetResourceDigest_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="TargetVersionTextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="Target Version" ToolTip.Tip="Update to a specific version of the script extender (ex. &apos;5.0.0.0&apos;)" />
-		<controls:EnhancedTextBox x:Name="TargetVersionTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding TargetVersion, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="Update to a specific version of the script extender (ex. &apos;5.0.0.0&apos;)"/>
+		<TextBlock x:Name="TargetVersionTextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_TargetVersion}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_TargetVersion_ToolTip}" />
+		<controls:EnhancedTextBox x:Name="TargetVersionTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding TargetVersion, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_TargetVersion_ToolTip}"/>
 		
-		<TextBlock x:Name="ValidateSignatureTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="Validate Signature" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="ValidateSignatureCheckBox" Grid.Row="9" Grid.Column="1" Classes="right" IsChecked ="{Binding ValidateSignature}" ToolTip.Tip="" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="ValidateSignatureTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_ValidateSignature}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="ValidateSignatureCheckBox" Grid.Row="9" Grid.Column="1" Classes="right" IsChecked ="{Binding ValidateSignature}" IsVisible="{Binding DevOptionsEnabled}"/>
 	</Grid>
 </UserControl>

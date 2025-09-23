@@ -54,7 +54,6 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[DataMember, Reactive] public string? LoadOrderPath { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry(nameof(Resources.Settings_LogEnabled), nameof(Resources.Settings_LogEnabled_ToolTip), disableAutoGen: true)]
 	[DataMember, Reactive] public bool LogEnabled { get; set; }
 
 	[DefaultValue(true)]
@@ -97,7 +96,6 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[Reactive] public bool DisplayFileNames { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry(nameof(Resources.Settings_DebugModeEnabled), nameof(Resources.Settings_DebugModeEnabled_ToolTip), disableAutoGen: true)]
 	[Reactive, DataMember] public bool DebugModeEnabled { get; set; }
 
 	[DefaultValue("")]
@@ -118,7 +116,6 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[DataMember, Reactive] public string? LastExtractOutputPath { get; set; }
 
 	[DefaultValue("en")]
-	[SettingsEntry(nameof(Resources.Settings_Language), nameof(Resources.Settings_Language_ToolTip), disableAutoGen:true)]
 	[DataMember, Reactive] public string? Language { get; set; }
 	public ObservableCollectionExtended<CultureInfo> Languages { get; }
 	[Reactive] public CultureInfo? SelectedLanguage { get; set; }

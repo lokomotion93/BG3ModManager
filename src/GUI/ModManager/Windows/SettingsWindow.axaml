@@ -11,7 +11,7 @@
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:view="using:ModManager.Views.Settings"
     xmlns:vm="using:ModManager.ViewModels"
-    Title="SettingsWindow"
+    Title="{manager:LocaleKey Window_SettingsWindow_Title}"
     Width="800"
     Height="450"
     x:DataType="vm:SettingsWindowViewModel"
@@ -66,34 +66,35 @@
 			    Padding="8"
 			    ScrollViewer.VerticalScrollBarVisibility="Auto"
 			    SelectedIndex="{Binding SelectedTabIndex}">
-				<TabItem Header="General" ToolTip.Tip="Mod Manager Settings (Data/settings.json)">
+				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_General}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_General_ToolTip}">
 					<genview:ModManagerSettingsView Name="GeneralSettingsView" DataContext="{Binding Settings}" />
 				</TabItem>
-				<TabItem Header="Mod Updating" ToolTip.Tip="Update Settings (Data/settings.json)">
+				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_ModUpdating}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_ModUpdating_ToolTip}">
 					<genview:ModManagerUpdateSettingsView Name="UpdateSettingsView" DataContext="{Binding UpdateSettings}" />
 				</TabItem>
-				<TabItem Header="Script Extender" ToolTip.Tip="Script Extender Settings (ScriptExtenderSettings.json)">
+				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtender}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtender_ToolTip}">
 					<genview:ScriptExtenderSettingsView Name="ExtenderSettingsView" DataContext="{Binding ExtenderSettings}" />
 				</TabItem>
-				<TabItem Header="Script Extender Updater" ToolTip.Tip="Script Extender Updater Settings (ScriptExtenderUpdaterConfig.json)">
+				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtenderUpdater}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtenderUpdater_ToolTip}">
 					<genview:ScriptExtenderUpdateConfigView Name="ExtenderUpdateSettingsView" DataContext="{Binding ExtenderUpdaterSettings}" />
 				</TabItem>
-				<TabItem Header="Keybindings" ToolTip.Tip="Keybinding Settings (Data/keybindings.json)">
+				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_Keybindings}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_Keybindings_ToolTip}">
 					<view:KeybindingsView Name="KeybindingsView" DataContext="{Binding Source={x:Static manager:ViewModelLocator.Keybindings}}" />
 				</TabItem>
-				<TabItem Header="Advanced" ToolTip.Tip="Advanced Mod Manager Settings (Data/settings.json)">
+				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_Advanced}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_Advanced_ToolTip}">
 					<controls:AutoGrid RowCount="5" RowHeight="auto">
 						<controls:AutoGrid.ColumnDefinitions>
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="*" />
 						</controls:AutoGrid.ColumnDefinitions>
 
-						<TextBlock Classes="left" Text="Language" />
+						<TextBlock Classes="left" Text="{manager:LocaleKey Settings_Language}" ToolTip.Tip="{manager:LocaleKey Settings_Language_ToolTip}" />
 						<ComboBox BackgroundSizing="CenterBorder"
 						    Classes="right"
 						    ItemsSource="{Binding Settings.Languages}"
 						    SelectedIndex="0"
-						    SelectedValue="{Binding Settings.SelectedLanguage}">
+						    SelectedValue="{Binding Settings.SelectedLanguage}"
+						    ToolTip.Tip="{manager:LocaleKey Settings_Language_ToolTip}">
 							<ComboBox.ItemTemplate>
 								<DataTemplate>
 									<TextBlock>
@@ -108,16 +109,28 @@
 							</ComboBox.ItemTemplate>
 						</ComboBox>
 
-						<TextBlock Name="ModDeveloperModeTextBlock" Classes="left" Text="Mod Developer Mode" />
-						<CheckBox Name="ModDeveloperModeCheckBox" Classes="right" IsChecked="{Binding Settings.DebugModeEnabled}" />
+						<TextBlock Name="ModDeveloperModeTextBlock"
+						    Classes="left"
+						    Text="{manager:LocaleKey Settings_DebugModeEnabled}"
+						    ToolTip.Tip="{manager:LocaleKey Settings_DebugModeEnabled_ToolTip}" />
+						<CheckBox Name="ModDeveloperModeCheckBox"
+						    Classes="right"
+						    IsChecked="{Binding Settings.DebugModeEnabled}"
+						    ToolTip.Tip="{manager:LocaleKey Settings_DebugModeEnabled_ToolTip}" />
 
-						<TextBlock Name="LoggingTextBlock" Classes="left" Text="Enable Mod Manager Logs" />
-						<CheckBox Name="LoggingCheckBox" Classes="right" IsChecked="{Binding Settings.LogEnabled}" />
+						<TextBlock Name="LoggingTextBlock"
+						    Classes="left"
+						    Text="{manager:LocaleKey Settings_LogEnabled}"
+						    ToolTip.Tip="{manager:LocaleKey Settings_LogEnabled_ToolTip}" />
+						<CheckBox Name="LoggingCheckBox"
+						    Classes="right"
+						    IsChecked="{Binding Settings.LogEnabled}"
+						    ToolTip.Tip="{manager:LocaleKey Settings_LogEnabled_ToolTip}" />
 
 						<Button Name="GameLaunchParamsMainButton"
 						    VerticalAlignment="Center"
-						    Content="Launch Params"
-						    ToolTip.Tip="Parameters to pass to the game executable when launching the game through the mod manager">
+						    Content="{manager:LocaleKey Window_SettingsWindow_Button_LaunchParams}"
+						    ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Button_LaunchParams_ToolTip}">
 							<Button.Flyout>
 								<MenuFlyout ItemsSource="{Binding LaunchParams}" Placement="Pointer" ShowMode="Transient">
 									<MenuFlyout.ItemContainerTheme>
@@ -140,20 +153,20 @@
 							<TextBox VerticalAlignment="Center"
 							    Text="{Binding Settings.GameLaunchParams}"
 							    TextWrapping="Wrap"
-							    ToolTip.Tip="Parameters to pass to the game executable when launching the game through the mod manager" />
+							    ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Button_LaunchParams_ToolTip}" />
 							<Button Grid.Column="1"
 							    Command="{Binding ClearLaunchParamsCommand}"
 							    Content="{materialIcons:MaterialIconExt Kind=Close}"
-							    ToolTip.Tip="Clear current params" />
+							    ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Button_ClearParams_ToolTip}" />
 						</Grid>
 
-						<TextBlock Text="Experimental" />
+						<TextBlock Text="{manager:LocaleKey Window_SettingsWindow_Section_Experimental}" />
 						<Button Name="ClearCacheButton"
 						    HorizontalAlignment="Center"
 						    VerticalAlignment="Center"
 						    Command="{Binding ClearCacheCommand}"
-						    Content="Delete Cache"
-						    ToolTip.Tip="Delete the local mod cache, located in the mod manager's Data folder" />
+						    Content="{manager:LocaleKey Window_SettingsWindow_Button_DeleteCache}"
+						    ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Button_DeleteCache_ToolTip}" />
 					</controls:AutoGrid>
 				</TabItem>
 			</TabControl>
