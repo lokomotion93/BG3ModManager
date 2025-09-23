@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loca="using:ModManager.Locale"
+    xmlns:manager="using:ModManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:vm="using:ModManager.ViewModels"
-    Title="{x:Static loca:Resources.Window_NXMDownload_Title}"
+    Title="{manager:LocaleKey Window_NXMDownload_Title}"
     Width="600"
     Height="200"
     x:DataType="vm:NxmDownloadWindowViewModel"
@@ -26,7 +26,7 @@
 					<RowDefinition Height="auto" />
 					<RowDefinition Height="1*" />
 				</Grid.RowDefinitions>
-				<TextBlock Text="{x:Static loca:Resources.Window_NXMDownload_Instructions}" TextAlignment="Center" />
+				<TextBlock Text="{manager:LocaleKey Window_NXMDownload_Instructions}" TextAlignment="Center" />
 				<controls:EnhancedTextBox Name="UrlTextBox"
 				    Grid.Row="1"
 				    Margin="8"
@@ -42,7 +42,7 @@
 				    HorizontalAlignment="Center"
 				    VerticalAlignment="Center"
 				    Command="{Binding DownloadCommand}"
-				    Content="{x:Static loca:Resources.Button_Download}" />
+				    Content="{manager:LocaleKey Button_Download}" />
 			</Grid>
 		</suki:GlassCard>
 	</Panel>

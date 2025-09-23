@@ -81,7 +81,7 @@
 		<MenuFlyout x:Key="ModContainerMenuFlyout" x:DataType="mod:ModContainer" Placement="Bottom">
 			<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.RenameContainerCommand}"
 			    CommandParameter="{Binding}"
-			    Header="{x:Static loca:Resources.ModListView_RenameContainer}"
+			    Header="{manager:LocaleKey ModListView_RenameContainer}"
 			    Icon="{materialIcons:MaterialIconExt Kind=Rename}" />
 
 			<Separator IsVisible="{Binding CanForceAllowInLoadOrder}" />
@@ -99,11 +99,11 @@
 			<MenuItem Header="Delete..." Icon="{materialIcons:MaterialIconExt Kind=Delete}">
 				<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerCommand}"
 				    CommandParameter="{Binding}"
-				    Header="{x:Static loca:Resources.ModListView_DeleteContainer}"
+				    Header="{manager:LocaleKey ModListView_DeleteContainer}"
 				    Icon="{materialIcons:MaterialIconExt Kind=FolderRemove}" />
 				<MenuItem Command="{Binding $parent[local:ModListView].ViewModel.DeleteContainerModsCommand}"
 				    CommandParameter="{Binding}"
-				    Header="{x:Static loca:Resources.ModListView_DeleteContainerMods}"
+				    Header="{manager:LocaleKey ModListView_DeleteContainerMods}"
 				    Icon="{materialIcons:MaterialIconExt Kind=FileRemove}" />
 				<MenuItem Command="{Binding Path=DeleteSelectedModsCommand, Source={x:Static manager:AppServices.Commands}}" Header="Selected Mods..." Icon="{materialIcons:MaterialIconExt Kind=Files}" />
 			</MenuItem>
@@ -118,7 +118,7 @@
 	</UserControl.Resources>
 	<UserControl.ContextFlyout>
 		<MenuFlyout>
-			<MenuItem Command="{Binding AddContainerCommand}" Header="{x:Static loca:Resources.ModListView_AddContainer}" />
+			<MenuItem Command="{Binding AddContainerCommand}" Header="{manager:LocaleKey ModListView_AddContainer}" />
 		</MenuFlyout>
 	</UserControl.ContextFlyout>
 	<Grid RowDefinitions="auto,*">

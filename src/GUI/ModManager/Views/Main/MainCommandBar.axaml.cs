@@ -12,7 +12,7 @@ namespace ModManager.Views.Main;
 
 public partial class MainCommandBar : ReactiveUserControl<MainCommandBarViewModel>
 {
-	private void AddMenuItem(IMenuEntry entry, ItemCollection target)
+	private static void AddMenuItem(IMenuEntry entry, ItemCollection target)
 	{
 		if(entry is MenuEntry menuEntry)
 		{
@@ -20,15 +20,20 @@ public partial class MainCommandBar : ReactiveUserControl<MainCommandBarViewMode
 			{
 				Command = menuEntry.Command,
 			};
-			if(menuEntry.DisplayName.StartsWith("_"))
+			if(menuEntry.UseAccessShortcut || menuEntry.DisplayName?.StartsWith('_') == true)
 			{
-				menuItem.Header = new AccessText() { Text = menuEntry.DisplayName };
+				var tb = new AccessText();
+				tb[!AccessText.TextProperty] = menuEntry.WhenAnyValue(x => x.DisplayName).ToBinding();
+				tb[!ToolTip.TipProperty] = menuEntry.WhenAnyValue(x => x.ToolTip).ToBinding();
+				menuItem.Header = tb;
 			}
 			else
 			{
-				menuItem.Header = new TextBlock() { Text = menuEntry.DisplayName };
+				var tb = new TextBlock();
+				tb[!TextBlock.TextProperty] = menuEntry.WhenAnyValue(x => x.DisplayName).ToBinding();
+				tb[!ToolTip.TipProperty] = menuEntry.WhenAnyValue(x => x.ToolTip).ToBinding();
+				menuItem.Header = tb;
 			}
-			ToolTip.SetTip(menuItem, menuEntry.ToolTip);
 			target.Add(menuItem);
 			if(menuEntry.Children != null)
 			{
@@ -42,11 +47,6 @@ public partial class MainCommandBar : ReactiveUserControl<MainCommandBarViewMode
 		{
 			target.Add(new Separator());
 		}
-	}
-
-	private void FinishRenamingOrder()
-	{
-
 	}
 
 	public MainCommandBar()

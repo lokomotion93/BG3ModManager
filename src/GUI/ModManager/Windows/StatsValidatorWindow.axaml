@@ -4,15 +4,15 @@
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:genview="using:ModManager.Views.Generated"
-    xmlns:loca="using:ModManager.Locale"
     xmlns:m="using:ModManager.Models.View"
+    xmlns:manager="using:ModManager"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:view="using:ModManager.Views.StatsValidator"
     xmlns:vm="using:ModManager.ViewModels"
-    Title="{x:Static loca:Resources.Window_StatsValidator_Title}"
+    Title="{manager:LocaleKey Window_StatsValidator_Title}"
     Width="800"
     Height="450"
     x:DataType="vm:StatsValidatorWindowViewModel"
@@ -44,7 +44,7 @@
 					    Classes="icon"
 					    Command="{Binding ValidateCommand}"
 					    CommandParameter="{Binding Mod}"
-					    ToolTip.Tip="{x:Static loca:Resources.Window_StatsValidator_Button_Validate_ToolTip}">
+					    ToolTip.Tip="{manager:LocaleKey Window_StatsValidator_Button_Validate_ToolTip}">
 						<materialIcons:MaterialIcon Foreground="Red" Kind="Refresh" />
 					</Button>
 				</Grid>
@@ -64,7 +64,7 @@
 							<StackPanel Orientation="Vertical">
 								<TextBlock Name="TitleTextBlock"
 								    FontSize="24"
-								    Text="{x:Static loca:Resources.Window_StatsValidator_Section_Results}"
+								    Text="{manager:LocaleKey Window_StatsValidator_Section_Results}"
 								    TextAlignment="Center"
 								    TextWrapping="Wrap" />
 								<TextBlock Name="TimeTakenTextControl"
@@ -72,7 +72,7 @@
 								    IsVisible="{Binding HasTimeTakenText}"
 								    TextAlignment="Center"
 								    TextWrapping="Wrap">
-									<Run Text="{x:Static loca:Resources.Window_StatsValidator_Section_TimeTaken}" />
+									<Run Text="{manager:LocaleKey Window_StatsValidator_Section_TimeTaken}" />
 									<Run Foreground="Orange" Text="{Binding TimeTakenText}" />
 								</TextBlock>
 							</StackPanel>
@@ -129,7 +129,7 @@
 			    Opacity="0.75">
 				<ContentControl>
 					<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
-						<TextBlock Margin="8" FontSize="32" Text="{x:Static loca:Resources.Window_StatsValidator_LockScreen_Text}" />
+						<TextBlock Margin="8" FontSize="32" Text="{manager:LocaleKey Window_StatsValidator_LockScreen_Text}" />
 						<suki:CircleProgressBar Name="ProgressBarControl"
 						    Width="32"
 						    Height="32"
@@ -137,7 +137,7 @@
 						<Button Name="CancelButton"
 						    Margin="8"
 						    Command="{Binding CancelValidateCommand}"
-						    Content="{x:Static loca:Resources.Button_Cancel}" />
+						    Content="{manager:LocaleKey Button_Cancel}" />
 					</StackPanel>
 				</ContentControl>
 			</Border>

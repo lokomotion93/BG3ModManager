@@ -11,7 +11,7 @@
     xmlns:mv="using:ModManager.Models.View"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:vm="using:ModManager.ViewModels.Window"
-    Title="{x:Static loca:Resources.Window_PakFileExplorer_Title}"
+    Title="{manager:LocaleKey Window_PakFileExplorer_Title}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="vm:PakFileExplorerWindowViewModel"
@@ -27,14 +27,14 @@
 		<MenuFlyout x:Key="FileContextMenu" x:DataType="mv:ModFileEntry">
 			<MenuItem Command="{Binding $parent[local:PakFileExplorerWindow].ViewModel.ExtractFileCommand}"
 			    CommandParameter="{Binding}"
-			    Header="{x:Static loca:Resources.Window_PakFileExplorer_MenuItem_ExtractTo}"
+			    Header="{manager:LocaleKey Window_PakFileExplorer_MenuItem_ExtractTo}"
 			    Icon="{icons:MaterialIconExt Kind=Download}" />
 			<Separator />
-			<MenuItem Command="{Binding $parent[local:PakFileExplorerWindow].ViewModel.ExtractSelectedFilesCommand}" Header="{x:Static loca:Resources.Window_PakFileExplorer_MenuItem_ExtractAllTo}" Icon="{icons:MaterialIconExt Kind=Download}" />
+			<MenuItem Command="{Binding $parent[local:PakFileExplorerWindow].ViewModel.ExtractSelectedFilesCommand}" Header="{manager:LocaleKey Window_PakFileExplorer_MenuItem_ExtractAllTo}" Icon="{icons:MaterialIconExt Kind=Download}" />
 			<Separator />
 			<MenuItem Command="{Binding Path=CopyToClipboardCommand, Source={x:Static manager:AppServices.Commands}}"
 			    CommandParameter="{Binding FilePath}"
-			    Header="{x:Static loca:Resources.Button_CopyPathToClipboard}"
+			    Header="{manager:LocaleKey Button_CopyPathToClipboard}"
 			    Icon="{icons:MaterialIconExt Kind=ClipboardAdd}" />
 		</MenuFlyout>
 	</Window.Resources>
@@ -45,16 +45,16 @@
 				<Button Classes="icon flat"
 				    Command="{Binding AddModCommand}"
 				    Content="{icons:MaterialIconExt Kind=FileImport, Classes='SpringGreen'}"
-				    ToolTip.Tip="{x:Static loca:Resources.Window_PakFileExplorer_MenuItem_AddMods_ToolTip}" />
+				    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_AddMods_ToolTip}" />
 				<Button Classes="icon flat"
 				    Command="{Binding OpenFileBrowserCommand}"
 				    Content="{icons:MaterialIconExt Kind=FolderOpen, Classes='Tan'}"
-				    ToolTip.Tip="{x:Static loca:Resources.Window_PakFileExplorer_MenuItem_AddPak_ToolTip}" />
+				    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_AddPak_ToolTip}" />
 				<Rectangle Width="1" Margin="2,0" Fill="{DynamicResource SukiBorderBrush}" />
 				<Button Classes="icon flat"
 				    Command="{Binding ClearCommand}"
 				    Content="{icons:MaterialIconExt Kind=CloseBoxMultiple, Classes='Red'}"
-				    ToolTip.Tip="{x:Static loca:Resources.Window_PakFileExplorer_MenuItem_ClearAll_ToolTip}" />
+				    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_ClearAll_ToolTip}" />
 			</StackPanel>
 			<TreeDataGrid Name="FilesTreeView"
 			    Grid.Row="1"

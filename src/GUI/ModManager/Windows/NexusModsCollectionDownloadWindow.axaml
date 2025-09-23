@@ -1,16 +1,15 @@
 <Window x:Class="ModManager.NexusModsCollectionDownloadWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:app="using:ModManager"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
-    xmlns:loca="using:ModManager.Locale"
+    xmlns:manager="using:ModManager"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
     xmlns:vm="using:ModManager.ViewModels"
-    Title="{x:Static loca:Resources.Window_CollectionDownloader_Title}"
+    Title="{manager:LocaleKey Window_CollectionDownloader_Title}"
     Width="1563"
     Height="759"
     d:DesignHeight="300"
@@ -91,7 +90,7 @@
 							    Command="{Binding SetGridViewCommand}"
 							    IsChecked="{Binding IsGridView, Mode=OneWay}"
 							    ToolTip.ShowDelay="0"
-							    ToolTip.Tip="{x:Static loca:Resources.Window_CollectionDownloader_Button_ListView_ToolTip}">
+							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_ListView_ToolTip}">
 								<Panel>
 									<Svg Classes="grid-on" Path="/Assets/Icons/ListView_16x.svg" Stretch="Uniform" />
 									<Svg Classes="grid-off" Path="/Assets/Icons/ListViewDisabled_16x.svg" Stretch="Uniform" />
@@ -101,7 +100,7 @@
 							    Command="{Binding SetCardViewCommand}"
 							    IsChecked="{Binding IsCardView, Mode=OneWay}"
 							    ToolTip.ShowDelay="0"
-							    ToolTip.Tip="{x:Static loca:Resources.Window_CollectionDownloader_Button_CardView_ToolTip}">
+							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_CardView_ToolTip}">
 								<Panel>
 									<Svg Classes="card-on" Path="/Assets/Icons/ViewPortrait_16x.svg" />
 									<Svg Classes="card-off" Path="/Assets/Icons/ViewPortraitDisabled_16x.svg" />
@@ -112,16 +111,16 @@
 							    Command="{Binding EnableAllCommand}"
 							    Content="{SvgImage /Assets/Icons/CheckboxCheckAll_16x.svg}"
 							    ToolTip.ShowDelay="0"
-							    ToolTip.Tip="{x:Static loca:Resources.Window_CollectionDownloader_Button_EnableAll_ToolTip}" />
+							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_EnableAll_ToolTip}" />
 							<Button Classes="toolbar"
 							    Command="{Binding DisableAllCommand}"
 							    Content="{SvgImage /Assets/Icons/CheckboxClearAll_16x.svg}"
 							    ToolTip.ShowDelay="0"
-							    ToolTip.Tip="{x:Static loca:Resources.Window_CollectionDownloader_Button_DisableAll_ToolTip}" />
+							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_DisableAll_ToolTip}" />
 						</StackPanel>
 						<TextBlock Grid.Column="1"
 						    FontSize="20"
-						    Text="{x:Static loca:Resources.Window_CollectionDownloader_Section_Mods}"
+						    Text="{manager:LocaleKey Window_CollectionDownloader_Section_Mods}"
 						    TextAlignment="Center" />
 					</Grid>
 				</Grid>
@@ -134,12 +133,12 @@
 					    Padding="12,2"
 					    Background="Lime"
 					    Command="{Binding ConfirmCommand}"
-					    Content="{x:Static loca:Resources.Button_Download}" />
+					    Content="{manager:LocaleKey Button_Download}" />
 					<Button Margin="4,0"
 					    Padding="12,2"
 					    Background="Red"
 					    Command="{Binding CancelCommand}"
-					    Content="{x:Static loca:Resources.Button_Cancel}" />
+					    Content="{manager:LocaleKey Button_Cancel}" />
 				</UniformGrid>
 			</Grid>
 		</suki:GlassCard>

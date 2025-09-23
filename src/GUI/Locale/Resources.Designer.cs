@@ -1483,6 +1483,105 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Download.
+        /// </summary>
+        public static string TopMenu_Download {
+            get {
+                return ResourceManager.GetString("TopMenu_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Mod Updates....
+        /// </summary>
+        public static string TopMenu_Download_ModUpdates {
+            get {
+                return ResourceManager.GetString("TopMenu_Download_ModUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Edit.
+        /// </summary>
+        public static string TopMenu_Edit {
+            get {
+                return ResourceManager.GetString("TopMenu_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _File.
+        /// </summary>
+        public static string TopMenu_File {
+            get {
+                return ResourceManager.GetString("TopMenu_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Go.
+        /// </summary>
+        public static string TopMenu_Go {
+            get {
+                return ResourceManager.GetString("TopMenu_Go", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Help.
+        /// </summary>
+        public static string TopMenu_Help {
+            get {
+                return ResourceManager.GetString("TopMenu_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Settings.
+        /// </summary>
+        public static string TopMenu_Settings {
+            get {
+                return ResourceManager.GetString("TopMenu_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Tools.
+        /// </summary>
+        public static string TopMenu_Tools {
+            get {
+                return ResourceManager.GetString("TopMenu_Tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract....
+        /// </summary>
+        public static string TopMenu_Tools_Extract {
+            get {
+                return ResourceManager.GetString("TopMenu_Tools_Extract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speak....
+        /// </summary>
+        public static string TopMenu_Tools_Speak {
+            get {
+                return ResourceManager.GetString("TopMenu_Tools_Speak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _View.
+        /// </summary>
+        public static string TopMenu_View {
+            get {
+                return ResourceManager.GetString("TopMenu_View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string Window_About_Title {

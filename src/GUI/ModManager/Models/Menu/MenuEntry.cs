@@ -1,12 +1,5 @@
 ﻿using DynamicData.Binding;
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ModManager.Models.Menu;
@@ -15,15 +8,27 @@ public class MenuEntry : ReactiveObject, IMenuEntry
 	[Reactive] public string? DisplayName { get; set; }
 	[Reactive] public string? ToolTip { get; set; }
 	[Reactive] public ICommand? Command { get; set; }
+	[Reactive] public bool UseAccessShortcut { get; set; }
 	public ObservableCollectionExtended<IMenuEntry>? Children { get; set; }
 
-	public MenuEntry() { }
-
-	public MenuEntry(string? name = null, ICommand? command = null, string? tooltip = null)
+	public MenuEntry(string? name = null, ICommand? command = null, string? tooltip = null, bool useLocalization = false, bool useAccessShortcut = false)
 	{
 		DisplayName = name;
 		Command = command;
 		ToolTip = tooltip;
+		UseAccessShortcut = useAccessShortcut;
+
+		if (useLocalization)
+		{
+			if (DisplayName.IsValid())
+			{
+				AppServices.Locale.EntryToObservable(DisplayName).BindTo(this, x => x.DisplayName);
+			}
+			if (ToolTip.IsValid())
+			{
+				AppServices.Locale.EntryToObservable(ToolTip).BindTo(this, x => x.ToolTip);
+			}
+		}
 	}
 
 	public static MenuEntry FromKeybinding(ICommand command, string propertyName,
@@ -32,20 +37,8 @@ public class MenuEntry : ReactiveObject, IMenuEntry
 	{
 		if(properties.TryGetValue(propertyName, out var keybinding) && keybinding != null)
 		{
-			var entry = new MenuEntry()
-			{
-				DisplayName = keybinding.DisplayName,
-				ToolTip = keybinding.ToolTip,
-				Command = command
-			};
-			if (keybinding.DisplayName.IsValid())
-			{
-				AppServices.Locale.EntryToObservable(keybinding.DisplayName).Subscribe(x => entry.DisplayName = x);
-			}
-			if (keybinding.ToolTip.IsValid())
-			{
-				AppServices.Locale.EntryToObservable(keybinding.ToolTip).Subscribe(x => entry.ToolTip = x);
-			}
+			var entry = new MenuEntry(keybinding.DisplayName, command, keybinding.ToolTip, true);
+			
 			if (children != null)
 			{
 				entry.Children = children;

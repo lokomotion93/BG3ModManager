@@ -4,7 +4,7 @@
     xmlns:app="using:ModManager"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loca="using:ModManager.Locale"
+    xmlns:manager="using:ModManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="using:MarkdownViewer.Core.Controls"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
@@ -52,8 +52,8 @@
 						    HorizontalAlignment="Center"
 						    Background="#FF267E26"
 						    Command="{Binding ConfirmCommand}"
-						    Content="{x:Static loca:Resources.Button_Download}"
-						    ToolTip.Tip="{x:Static loca:Resources.Window_AppUpdate_DownloadToolTip}" />
+						    Content="{manager:LocaleKey Button_Download}"
+						    ToolTip.Tip="{manager:LocaleKey Window_AppUpdate_DownloadToolTip}" />
 						<Button Width="120"
 						    Margin="10,0"
 						    HorizontalAlignment="Center"
@@ -68,7 +68,7 @@
 				    BorderThickness="1">
 					<TextBlock VerticalAlignment="Center"
 					    FontSize="24"
-					    Text="{x:Static loca:Resources.Window_AppUpdate_ChangelogTitle}"
+					    Text="{manager:LocaleKey Window_AppUpdate_ChangelogTitle}"
 					    TextAlignment="Center" />
 				</Border>
 				<Border Grid.Row="2" BorderBrush="{DynamicResource SukiControlBorderBrush}" BorderThickness="1,0,1,1">

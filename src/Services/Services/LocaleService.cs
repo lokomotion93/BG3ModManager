@@ -17,11 +17,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ModManager.Services;
+
 public class LocaleService : ReactiveObject, ILocaleService
 {
+	record struct KeyEntry(string Key, string? Fallback, Subject<string?> Subject);
+
 	[Reactive] public CultureInfo Culture { get; set; }
 
-	private readonly Dictionary<string, Subject<string?>> _subjects = [];
+	private readonly Dictionary<string, KeyEntry> _subjects = [];
 
 	private IDisposable? _initialNotify = null;
 
@@ -34,7 +37,7 @@ public class LocaleService : ReactiveObject, ILocaleService
 	{
 		foreach(var entry in _subjects)
 		{
-			entry.Value.OnNext(GetEntry(entry.Key));
+			entry.Value.Subject.OnNext(GetEntry(entry.Key, entry.Value.Fallback));
 		}
 	}
 
@@ -49,12 +52,12 @@ public class LocaleService : ReactiveObject, ILocaleService
 		if(_subjects.TryGetValue(key, out var existing))
 		{
 			StartNotify();
-			return existing;
+			return existing.Subject;
 		}
 		var subject = new Subject<string?>();
-		_subjects.Add(key, subject);
+		_subjects.Add(key, new(key, fallback, subject));
 		StartNotify();
-		return subject;
+		return subject.StartWith(GetEntry(key, fallback));
 	}
 
 	public LocaleService()

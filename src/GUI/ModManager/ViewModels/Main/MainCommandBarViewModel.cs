@@ -772,7 +772,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		//MenuEntry.FromKeybinding(ImportNexusModsIdsCommand, nameof(ImportNexusModsIdsCommand), keybindings),
 		_menuEntries.AddRange([
-			new MenuEntry("_File"){
+			new MenuEntry(nameof(Resources.TopMenu_File), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(ImportModsCommand, nameof(ImportModsCommand), keybindings),
 					MenuEntry.FromKeybinding(ImportNexusModsIdsCommand, nameof(ImportNexusModsIdsCommand), keybindings),
@@ -798,7 +798,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 					MenuEntry.FromKeybinding(ReloadModsCommand, nameof(ReloadModsCommand), keybindings),
 					MenuEntry.FromKeybinding(RefreshModUpdatesCommand, nameof(RefreshModUpdatesCommand), keybindings),
 				]},
-			new MenuEntry("_Edit"){
+			new MenuEntry(nameof(Resources.TopMenu_Edit), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(OrganizeModPaksCommand, nameof(OrganizeModPaksCommand), keybindings),
 					new MenuSeparator(),
@@ -814,20 +814,20 @@ public partial class MainCommandBarViewModel : ReactiveObject
 					new MenuSeparator(),
 					MenuEntry.FromKeybinding(DeleteSelectedModsCommand, nameof(DeleteSelectedModsCommand), keybindings),
 				]},
-			new MenuEntry("_Settings"){
+			new MenuEntry(nameof(Resources.TopMenu_Settings), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(ToggleSettingsWindowCommand, nameof(ToggleSettingsWindowCommand), keybindings),
 					MenuEntry.FromKeybinding(ToggleKeybindingsCommand, nameof(ToggleKeybindingsCommand), keybindings),
 					MenuEntry.FromKeybinding(ToggleThemeModeCommand, nameof(ToggleThemeModeCommand), keybindings),
 				]},
-			new MenuEntry("_View"){
+			new MenuEntry(nameof(Resources.TopMenu_View), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(ToggleUpdatesViewCommand, nameof(ToggleUpdatesViewCommand), keybindings),
 					MenuEntry.FromKeybinding(ToggleVersionGeneratorWindowCommand, nameof(ToggleVersionGeneratorWindowCommand), keybindings),
 					MenuEntry.FromKeybinding(TogglePakFileExplorerWindowCommand, nameof(TogglePakFileExplorerWindowCommand), keybindings),
 					MenuEntry.FromKeybinding(ToggleStatsValidatorWindowCommand, nameof(ToggleStatsValidatorWindowCommand), keybindings),
 				]},
-			new MenuEntry("_Go"){
+			new MenuEntry(nameof(Resources.TopMenu_Go), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(LaunchGameCommand, nameof(LaunchGameCommand), keybindings),
 					new MenuSeparator(),
@@ -841,13 +841,13 @@ public partial class MainCommandBarViewModel : ReactiveObject
 					new MenuSeparator(),
 					MenuEntry.FromKeybinding(OpenGitHubRepoCommand, nameof(OpenGitHubRepoCommand), keybindings),
 				]},
-			new MenuEntry("_Download"){
+			new MenuEntry(nameof(Resources.TopMenu_Download), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(DownloadScriptExtenderCommand, nameof(DownloadScriptExtenderCommand), keybindings),
 					MenuEntry.FromKeybinding(ToggleNXMLinkDownloaderCommand, nameof(ToggleNXMLinkDownloaderCommand), keybindings),
 					MenuEntry.FromKeybinding(ToggleCollectionDownloaderWindowCommand, nameof(ToggleCollectionDownloaderWindowCommand), keybindings),
 					new MenuSeparator(),
-					new MenuEntry("Check for Mod Updates..."){
+					new MenuEntry(nameof(Resources.TopMenu_Download_ModUpdates), useLocalization: true){
 					Children = [
 						MenuEntry.FromKeybinding(CheckAllModUpdatesCommand, nameof(CheckAllModUpdatesCommand), keybindings),
 						new MenuSeparator(),
@@ -856,9 +856,9 @@ public partial class MainCommandBarViewModel : ReactiveObject
 						MenuEntry.FromKeybinding(CheckForModioUpdatesCommand, nameof(CheckForModioUpdatesCommand), keybindings)
 					]},
 				]},
-			new MenuEntry("_Tools"){
+			new MenuEntry(nameof(Resources.TopMenu_Tools), useLocalization: true, useAccessShortcut:true){
 				Children = [
-					new MenuEntry("Extract..."){
+					new MenuEntry(nameof(Resources.TopMenu_Tools_Extract), useLocalization: true){
 					Children = [
 						MenuEntry.FromKeybinding(ExtractAllSelectedModsCommand, nameof(ExtractAllSelectedModsCommand), keybindings),
 						new MenuSeparator(),
@@ -868,13 +868,13 @@ public partial class MainCommandBarViewModel : ReactiveObject
 						MenuEntry.FromKeybinding(ExtractSelectedAdventureCommand, nameof(ExtractSelectedAdventureCommand), keybindings),
 					]},
 					new MenuSeparator(),
-					new MenuEntry("Speak..."){
+					new MenuEntry(nameof(Resources.TopMenu_Tools_Speak), useLocalization: true){
 					Children = [
 						MenuEntry.FromKeybinding(SpeakActiveModOrderCommand, nameof(SpeakActiveModOrderCommand), keybindings),
 						MenuEntry.FromKeybinding(StopSpeakingCommand, nameof(StopSpeakingCommand), keybindings),
 					]},
 				]},
-			new MenuEntry("_Help"){
+			new MenuEntry(nameof(Resources.TopMenu_Help), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(ToggleAboutWindowCommand, nameof(ToggleAboutWindowCommand), keybindings),
 					new MenuSeparator(),

@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loca="using:ModManager.Locale"
+    xmlns:manager="using:ModManager"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
@@ -33,7 +33,7 @@
 
 			<Panel Background="{DynamicResource ModPropertiesBackground}">
 				<TabControl>
-					<TabItem Header="{x:Static loca:Resources.Window_ModProperties_Tab_General}">
+					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_General}">
 						<controls:AutoGrid Margin="10,0" RowCount="8" RowHeight="auto">
 							<controls:AutoGrid.ColumnDefinitions>
 								<ColumnDefinition Width="auto" />
@@ -60,13 +60,13 @@
 
 							<Separator Grid.ColumnSpan="2" Margin="0,8,0,8" />
 
-							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_ModType}" />
+							<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_ModType}" />
 							<TextBlock Classes="right" Text="{Binding ModType}" />
 
-							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Name}" />
+							<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_Name}" />
 							<TextBox Classes="readonly-selectable" Text="{Binding ModName}" TextWrapping="Wrap" />
 
-							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Description}" />
+							<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_Description}" />
 							<TextBox MaxHeight="128"
 							    Classes="readonly-selectable"
 							    FontSize="12"
@@ -75,15 +75,15 @@
 
 							<Separator Grid.ColumnSpan="2" />
 
-							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Location}" />
+							<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_Location}" />
 							<TextBox Classes="readonly-selectable" Text="{Binding ModFilePath}" TextWrapping="NoWrap" />
 
-							<TextBlock Classes="left" Text="{x:Static loca:Resources.Window_ModProperties_Section_Size}" />
+							<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_Size}" />
 							<TextBlock Classes="right" Text="{Binding ModSizeText}" TextWrapping="NoWrap" />
 						</controls:AutoGrid>
 					</TabItem>
-					<TabItem Header="{x:Static loca:Resources.Window_ModProperties_Tab_Config}" />
-					<TabItem Header="{x:Static loca:Resources.Window_ModProperties_Tab_Notes}" />
+					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_Config}" />
+					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_Notes}" />
 				</TabControl>
 			</Panel>
 			<UniformGrid Grid.Row="1"
@@ -100,16 +100,16 @@
 				<Button Name="OKButton"
 				    Classes="Flat"
 				    Command="{Binding OKCommand}"
-				    Content="{x:Static loca:Resources.Button_OK}" />
+				    Content="{manager:LocaleKey Button_OK}" />
 				<Button Name="CancelButton"
 				    Classes="Flat"
 				    Command="{Binding CancelCommand}"
-				    Content="{x:Static loca:Resources.Button_Cancel}" />
+				    Content="{manager:LocaleKey Button_Cancel}" />
 				<Button Name="ApplyButton"
 				    Margin="4,0,0,0"
 				    Classes="Flat"
 				    Command="{Binding ApplyCommand}"
-				    Content="{x:Static loca:Resources.Button_Apply}" />
+				    Content="{manager:LocaleKey Button_Apply}" />
 			</UniformGrid>
 		</Grid>
 	</Border>

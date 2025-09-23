@@ -501,6 +501,7 @@
   </data>
   <data name="CommandBar_Section_Links" xml:space="preserve">
     <value>Links</value>
+    <comment>Section for external website urls</comment>
   </data>
   <data name="CommandBar_Section_Support" xml:space="preserve">
     <value>Support</value>
@@ -760,5 +761,46 @@
   <data name="Window_Main_Title" xml:space="preserve">
     <value>BG3ModManager {0}</value>
     <comment>Includes version</comment>
+  </data>
+  <data name="TopMenu_File" xml:space="preserve">
+    <value>_File</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
+  </data>
+  <data name="TopMenu_Edit" xml:space="preserve">
+    <value>_Edit</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
+  </data>
+  <data name="TopMenu_Settings" xml:space="preserve">
+    <value>_Settings</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
+  </data>
+  <data name="TopMenu_View" xml:space="preserve">
+    <value>_View</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
+  </data>
+  <data name="TopMenu_Go" xml:space="preserve">
+    <value>_Go</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
+  </data>
+  <data name="TopMenu_Download" xml:space="preserve">
+    <value>_Download</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
+  </data>
+  <data name="TopMenu_Download_ModUpdates" xml:space="preserve">
+    <value>Check for Mod Updates...</value>
+  </data>
+  <data name="TopMenu_Tools" xml:space="preserve">
+    <value>_Tools</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
+  </data>
+  <data name="TopMenu_Tools_Speak" xml:space="preserve">
+    <value>Speak...</value>
+  </data>
+  <data name="TopMenu_Tools_Extract" xml:space="preserve">
+    <value>Extract...</value>
+  </data>
+  <data name="TopMenu_Help" xml:space="preserve">
+    <value>_Help</value>
+    <comment>Start with an underscore for keyboard accessibility</comment>
   </data>
 </root>
