@@ -1,15 +1,17 @@
-﻿using System.ComponentModel;
+﻿using ModManager.Locale;
+
+using System.ComponentModel.DataAnnotations;
 
 namespace ModManager;
 
 public enum ModSourceType
 {
-	[Description("None")]
+	[Display(Name = nameof(Resources.ModSourceType_None), Description = nameof(Resources.ModSourceType_None_ToolTip))]
 	NONE,
-	[Description("GitHub")]
+	[Display(Name = nameof(Resources.ModSourceType_GitHub), Description = nameof(Resources.ModSourceType_GitHub_ToolTip))]
 	GITHUB,
-	[Description("Nexus Mods")]
+	[Display(Name = nameof(Resources.ModSourceType_NexusMods), Description = nameof(Resources.ModSourceType_NexusMods_ToolTip))]
 	NEXUSMODS,
-	[Description("Mod.io")]
+	[Display(Name = nameof(Resources.ModSourceType_Modio), Description = nameof(Resources.ModSourceType_Modio_ToolTip))]
 	MODIO
 }

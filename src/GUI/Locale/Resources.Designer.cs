@@ -430,6 +430,60 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devel.
+        /// </summary>
+        public static string ExtenderUpdateChannel_Devel {
+            get {
+                return ResourceManager.GetString("ExtenderUpdateChannel_Devel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An update channel intended for developers, with potentially unstable updates.
+        /// </summary>
+        public static string ExtenderUpdateChannel_Devel_ToolTip {
+            get {
+                return ResourceManager.GetString("ExtenderUpdateChannel_Devel_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nightly.
+        /// </summary>
+        public static string ExtenderUpdateChannel_Nightly {
+            get {
+                return ResourceManager.GetString("ExtenderUpdateChannel_Nightly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An update channel intended for developers, with bleeding-edge experimental updates.
+        /// </summary>
+        public static string ExtenderUpdateChannel_Nightly_ToolTip {
+            get {
+                return ResourceManager.GetString("ExtenderUpdateChannel_Nightly_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Release.
+        /// </summary>
+        public static string ExtenderUpdateChannel_Release {
+            get {
+                return ResourceManager.GetString("ExtenderUpdateChannel_Release", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default channel.
+        /// </summary>
+        public static string ExtenderUpdateChannel_Release_ToolTip {
+            get {
+                return ResourceManager.GetString("ExtenderUpdateChannel_Release_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NexusMods API Limit [Hourly ({0}/{1}) Daily ({2}/{3})].
         /// </summary>
         public static string Footer_NexusModsAPILimit_Text {
@@ -444,6 +498,60 @@ namespace ModManager.Locale {
         public static string Footer_NexusModsAPILimit_ToolTip {
             get {
                 return ResourceManager.GetString("Footer_NexusModsAPILimit_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string GameLaunchWindowAction_Close {
+            get {
+                return ResourceManager.GetString("GameLaunchWindowAction_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close the window.
+        /// </summary>
+        public static string GameLaunchWindowAction_Close_ToolTip {
+            get {
+                return ResourceManager.GetString("GameLaunchWindowAction_Close_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize.
+        /// </summary>
+        public static string GameLaunchWindowAction_Minimize {
+            get {
+                return ResourceManager.GetString("GameLaunchWindowAction_Minimize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize the window.
+        /// </summary>
+        public static string GameLaunchWindowAction_Minimize_ToolTip {
+            get {
+                return ResourceManager.GetString("GameLaunchWindowAction_Minimize_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string GameLaunchWindowAction_None {
+            get {
+                return ResourceManager.GetString("GameLaunchWindowAction_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do nothing.
+        /// </summary>
+        public static string GameLaunchWindowAction_None_ToolTip {
+            get {
+                return ResourceManager.GetString("GameLaunchWindowAction_None_ToolTip", resourceCulture);
             }
         }
         
@@ -1105,6 +1213,60 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom.
+        /// </summary>
+        public static string LaunchGameType_Custom {
+            get {
+                return ResourceManager.GetString("LaunchGameType_Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the game by opening a different file or protocol (ex. a batch file or protocol handler like playnite://playnite/start/id).
+        /// </summary>
+        public static string LaunchGameType_Custom_ToolTip {
+            get {
+                return ResourceManager.GetString("LaunchGameType_Custom_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default (Exe).
+        /// </summary>
+        public static string LaunchGameType_Exe {
+            get {
+                return ResourceManager.GetString("LaunchGameType_Exe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn&apos;t exist,\nallowing you to bypassing the launcher.
+        /// </summary>
+        public static string LaunchGameType_Exe_ToolTip {
+            get {
+                return ResourceManager.GetString("LaunchGameType_Exe_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam.
+        /// </summary>
+        public static string LaunchGameType_Steam {
+            get {
+                return ResourceManager.GetString("LaunchGameType_Steam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the game by running the Steam launch protocol (&apos;steam://run/1086940&apos;).
+        /// </summary>
+        public static string LaunchGameType_Steam_ToolTip {
+            get {
+                return ResourceManager.GetString("LaunchGameType_Steam_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Mod Display Name.
         /// </summary>
         public static string Mod_Command_DisplayFileForName_Disable {
@@ -1411,6 +1573,87 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GitHub.
+        /// </summary>
+        public static string ModSourceType_GitHub {
+            get {
+                return ResourceManager.GetString("ModSourceType_GitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This mod&apos;s update source is from a GitHub repository.
+        /// </summary>
+        public static string ModSourceType_GitHub_ToolTip {
+            get {
+                return ResourceManager.GetString("ModSourceType_GitHub_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mod.io.
+        /// </summary>
+        public static string ModSourceType_Modio {
+            get {
+                return ResourceManager.GetString("ModSourceType_Modio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This mod&apos;s update source is from mod.io.
+        /// </summary>
+        public static string ModSourceType_Modio_ToolTip {
+            get {
+                return ResourceManager.GetString("ModSourceType_Modio_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nexus Mods.
+        /// </summary>
+        public static string ModSourceType_NexusMods {
+            get {
+                return ResourceManager.GetString("ModSourceType_NexusMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This mod&apos;s update source is from NexusMods.
+        /// </summary>
+        public static string ModSourceType_NexusMods_ToolTip {
+            get {
+                return ResourceManager.GetString("ModSourceType_NexusMods_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string ModSourceType_None {
+            get {
+                return ResourceManager.GetString("ModSourceType_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No known mod source.
+        /// </summary>
+        public static string ModSourceType_None_ToolTip {
+            get {
+                return ResourceManager.GetString("ModSourceType_None_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Game Launch.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On Game Launch.
         /// </summary>
         public static string Settings_ActionOnGameLaunch_Header {
@@ -1425,6 +1668,15 @@ namespace ModManager.Locale {
         public static string Settings_ActionOnGameLaunch_Header_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_ActionOnGameLaunch_Header_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When the game launches through the mod manager, this action will be performed.
+        /// </summary>
+        public static string Settings_ActionOnGameLaunch_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ActionOnGameLaunch_ToolTip", resourceCulture);
             }
         }
         
@@ -1479,6 +1731,402 @@ namespace ModManager.Locale {
         public static string Settings_ActionOnGameLaunch_Value_None_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_ActionOnGameLaunch_Value_None_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Missing Dependencies When Exporting.
+        /// </summary>
+        public static string Settings_AutoAddDependenciesWhenExporting {
+            get {
+                return ResourceManager.GetString("Settings_AutoAddDependenciesWhenExporting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order.
+        /// </summary>
+        public static string Settings_AutoAddDependenciesWhenExporting_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_AutoAddDependenciesWhenExporting_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically Check For Updates.
+        /// </summary>
+        public static string Settings_CheckForUpdates {
+            get {
+                return ResourceManager.GetString("Settings_CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically check for updates when the program starts.
+        /// </summary>
+        public static string Settings_CheckForUpdates_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_CheckForUpdates_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch Game - Custom Action.
+        /// </summary>
+        public static string Settings_CustomLaunchAction {
+            get {
+                return ResourceManager.GetString("Settings_CustomLaunchAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file path, protocol, or custom process shell command to run.
+        /// </summary>
+        public static string Settings_CustomLaunchAction_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_CustomLaunchAction_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch Game - Custom Arguments.
+        /// </summary>
+        public static string Settings_CustomLaunchArgs {
+            get {
+                return ResourceManager.GetString("Settings_CustomLaunchArgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional additional arguments to path to the custom launch command.
+        /// </summary>
+        public static string Settings_CustomLaunchArgs_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_CustomLaunchArgs_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod Developer Mode.
+        /// </summary>
+        public static string Settings_DebugModeEnabled {
+            get {
+                return ResourceManager.GetString("Settings_DebugModeEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This enables features for mod developers, such as being able to copy a mod&apos;s UUID in context menus, and additional Script Extender options.
+        /// </summary>
+        public static string Settings_DebugModeEnabled_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_DebugModeEnabled_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete ModCrashSanityCheck.
+        /// </summary>
+        public static string Settings_DeleteModCrashSanityCheck {
+            get {
+                return ResourceManager.GetString("Settings_DeleteModCrashSanityCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically delete the %LOCALAPPDATA%/Larian Studios/Baldur&apos;s Gate 3/ModCrashSanityCheck folder, which may make certain mods deactivate if it exists.
+        /// </summary>
+        public static string Settings_DeleteModCrashSanityCheck_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_DeleteModCrashSanityCheck_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launcher - Disable Warnings.
+        /// </summary>
+        public static string Settings_DisableLauncherModWarnings {
+            get {
+                return ResourceManager.GetString("Settings_DisableLauncherModWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable the mod/data mismatch warnings in the launcher.
+        /// </summary>
+        public static string Settings_DisableLauncherModWarnings_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_DisableLauncherModWarnings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launcher - Disable Telemetry.
+        /// </summary>
+        public static string Settings_DisableLauncherTelemetry {
+            get {
+                return ResourceManager.GetString("Settings_DisableLauncherTelemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable the telemetry options in the launcher\nTelemetry is always disabled if mods are active.
+        /// </summary>
+        public static string Settings_DisableLauncherTelemetry_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_DisableLauncherTelemetry_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip Checking for Missing Mods.
+        /// </summary>
+        public static string Settings_DisableMissingModWarnings {
+            get {
+                return ResourceManager.GetString("Settings_DisableMissingModWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a load order is missing mods, no warnings will be displayed.
+        /// </summary>
+        public static string Settings_DisableMissingModWarnings_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_DisableMissingModWarnings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Override AppData Path.
+        /// </summary>
+        public static string Settings_DocumentsFolderPathOverride {
+            get {
+                return ResourceManager.GetString("Settings_DocumentsFolderPathOverride", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur&apos;s Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods..
+        /// </summary>
+        public static string Settings_DocumentsFolderPathOverride_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_DocumentsFolderPathOverride_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Colorblind Support.
+        /// </summary>
+        public static string Settings_EnableColorblindSupport {
+            get {
+                return ResourceManager.GetString("Settings_EnableColorblindSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables some colorblind support, such as displaying icons for toolkit projects (which normally have a green background).
+        /// </summary>
+        public static string Settings_EnableColorblindSupport_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_EnableColorblindSupport_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Data Path.
+        /// </summary>
+        public static string Settings_GameDataPath {
+            get {
+                return ResourceManager.GetString("Settings_GameDataPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path to the Data folder\nExample: Baldur&apos;s Gate 3/Data.
+        /// </summary>
+        public static string Settings_GameDataPath_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_GameDataPath_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Executable Path.
+        /// </summary>
+        public static string Settings_GameExecutablePath {
+            get {
+                return ResourceManager.GetString("Settings_GameExecutablePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path to bg3.exe.
+        /// </summary>
+        public static string Settings_GameExecutablePath_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_GameExecutablePath_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Story Log.
+        /// </summary>
+        public static string Settings_GameStoryLogEnabled {
+            get {
+                return ResourceManager.GetString("Settings_GameStoryLogEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When launching the game, enable the Osiris story log (osiris.log).
+        /// </summary>
+        public static string Settings_GameStoryLogEnabled_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_GameStoryLogEnabled_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Settings_Language {
+            get {
+                return ResourceManager.GetString("Settings_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The language to use in the mod manager.
+        /// </summary>
+        public static string Settings_Language_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Language_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DirectX 11.
+        /// </summary>
+        public static string Settings_LaunchDX11 {
+            get {
+                return ResourceManager.GetString("Settings_LaunchDX11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If enabled, when launching the game, bg3_dx11.exe is used instead.
+        /// </summary>
+        public static string Settings_LaunchDX11_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_LaunchDX11_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch Game - Action.
+        /// </summary>
+        public static string Settings_LaunchType {
+            get {
+                return ResourceManager.GetString("Settings_LaunchType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change how to launch the game.
+        /// </summary>
+        public static string Settings_LaunchType_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_LaunchType_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit to Single Instance.
+        /// </summary>
+        public static string Settings_LimitToSingleInstance {
+            get {
+                return ResourceManager.GetString("Settings_LimitToSingleInstance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button.
+        /// </summary>
+        public static string Settings_LimitToSingleInstance_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_LimitToSingleInstance_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Orders Path.
+        /// </summary>
+        public static string Settings_LoadOrderPath {
+            get {
+                return ResourceManager.GetString("Settings_LoadOrderPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The folder containing mod load order .json files.
+        /// </summary>
+        public static string Settings_LoadOrderPath_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_LoadOrderPath_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internal Logging.
+        /// </summary>
+        public static string Settings_LogEnabled {
+            get {
+                return ResourceManager.GetString("Settings_LogEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable the log for the mod manager.
+        /// </summary>
+        public static string Settings_LogEnabled_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_LogEnabled_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Window Location.
+        /// </summary>
+        public static string Settings_SaveWindowLocation {
+            get {
+                return ResourceManager.GetString("Settings_SaveWindowLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save and restore the window location when the application starts..
+        /// </summary>
+        public static string Settings_SaveWindowLocation_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_SaveWindowLocation_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift Focus on Swap.
+        /// </summary>
+        public static string Settings_ShiftListFocusOnSwap {
+            get {
+                return ResourceManager.GetString("Settings_ShiftListFocusOnSwap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When moving selected mods to the opposite list with Enter, move focus to that list as well.
+        /// </summary>
+        public static string Settings_ShiftListFocusOnSwap_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_ShiftListFocusOnSwap_ToolTip", resourceCulture);
             }
         }
         

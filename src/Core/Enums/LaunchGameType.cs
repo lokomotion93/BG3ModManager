@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using ModManager.Locale;
+
 namespace ModManager;
 public enum LaunchGameType
 {
-	[Display(Name = "Default (Exe)", Description = "Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn't exist,\nallowing you to bypassing the launcher")]
+	[Display(Name = nameof(Resources.LaunchGameType_Exe), Description = nameof(Resources.LaunchGameType_Exe_ToolTip))]
 	Exe,
-	[Display(Name = "Steam", Description = "Open the game by running the Steam launch protocol ('steam://run/1086940')")]
+	[Display(Name = nameof(Resources.LaunchGameType_Steam), Description = nameof(Resources.LaunchGameType_Steam_ToolTip))]
 	Steam,
-	[Display(Name = "Custom", Description = "Open the game by opening a different file or protocol (ex. a batch file or protocol handler like playnite://playnite/start/id)")]
+	[Display(Name = nameof(Resources.LaunchGameType_Custom), Description = nameof(Resources.LaunchGameType_Custom_ToolTip))]
 	Custom
 }

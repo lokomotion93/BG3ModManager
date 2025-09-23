@@ -803,4 +803,220 @@
     <value>_Help</value>
     <comment>Start with an underscore for keyboard accessibility</comment>
   </data>
+  <data name="Settings_GameDataPath" xml:space="preserve">
+    <value>Game Data Path</value>
+  </data>
+  <data name="Settings_GameDataPath_ToolTip" xml:space="preserve">
+    <value>The path to the Data folder\nExample: Baldur's Gate 3/Data</value>
+  </data>
+  <data name="Settings_GameExecutablePath" xml:space="preserve">
+    <value>Game Executable Path</value>
+  </data>
+  <data name="Settings_GameExecutablePath_ToolTip" xml:space="preserve">
+    <value>The path to bg3.exe</value>
+  </data>
+  <data name="Settings_LaunchDX11" xml:space="preserve">
+    <value>DirectX 11</value>
+  </data>
+  <data name="Settings_LaunchDX11_ToolTip" xml:space="preserve">
+    <value>If enabled, when launching the game, bg3_dx11.exe is used instead</value>
+  </data>
+  <data name="Settings_GameStoryLogEnabled" xml:space="preserve">
+    <value>Story Log</value>
+  </data>
+  <data name="Settings_GameStoryLogEnabled_ToolTip" xml:space="preserve">
+    <value>When launching the game, enable the Osiris story log (osiris.log)</value>
+  </data>
+  <data name="Settings_DisableLauncherTelemetry" xml:space="preserve">
+    <value>Launcher - Disable Telemetry</value>
+  </data>
+  <data name="Settings_DisableLauncherTelemetry_ToolTip" xml:space="preserve">
+    <value>Disable the telemetry options in the launcher\nTelemetry is always disabled if mods are active</value>
+  </data>
+  <data name="Settings_DisableLauncherModWarnings" xml:space="preserve">
+    <value>Launcher - Disable Warnings</value>
+  </data>
+  <data name="Settings_DisableLauncherModWarnings_ToolTip" xml:space="preserve">
+    <value>Disable the mod/data mismatch warnings in the launcher</value>
+  </data>
+  <data name="Settings_LaunchType" xml:space="preserve">
+    <value>Launch Game - Action</value>
+  </data>
+  <data name="Settings_LaunchType_ToolTip" xml:space="preserve">
+    <value>Change how to launch the game</value>
+  </data>
+  <data name="Settings_CustomLaunchAction" xml:space="preserve">
+    <value>Launch Game - Custom Action</value>
+  </data>
+  <data name="Settings_CustomLaunchAction_ToolTip" xml:space="preserve">
+    <value>A file path, protocol, or custom process shell command to run</value>
+  </data>
+  <data name="Settings_CustomLaunchArgs" xml:space="preserve">
+    <value>Launch Game - Custom Arguments</value>
+  </data>
+  <data name="Settings_CustomLaunchArgs_ToolTip" xml:space="preserve">
+    <value>Optional additional arguments to path to the custom launch command</value>
+  </data>
+  <data name="Settings_LoadOrderPath" xml:space="preserve">
+    <value>Load Orders Path</value>
+  </data>
+  <data name="Settings_LoadOrderPath_ToolTip" xml:space="preserve">
+    <value>The folder containing mod load order .json files</value>
+  </data>
+  <data name="Settings_LogEnabled" xml:space="preserve">
+    <value>Internal Logging</value>
+  </data>
+  <data name="Settings_LogEnabled_ToolTip" xml:space="preserve">
+    <value>Enable the log for the mod manager</value>
+  </data>
+  <data name="Settings_AutoAddDependenciesWhenExporting" xml:space="preserve">
+    <value>Add Missing Dependencies When Exporting</value>
+  </data>
+  <data name="Settings_AutoAddDependenciesWhenExporting_ToolTip" xml:space="preserve">
+    <value>Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order</value>
+  </data>
+  <data name="Settings_DisableMissingModWarnings" xml:space="preserve">
+    <value>Skip Checking for Missing Mods</value>
+  </data>
+  <data name="Settings_DisableMissingModWarnings_ToolTip" xml:space="preserve">
+    <value>If a load order is missing mods, no warnings will be displayed</value>
+  </data>
+  <data name="Settings_CheckForUpdates" xml:space="preserve">
+    <value>Automatically Check For Updates</value>
+  </data>
+  <data name="Settings_CheckForUpdates_ToolTip" xml:space="preserve">
+    <value>Automatically check for updates when the program starts</value>
+  </data>
+  <data name="Settings_LimitToSingleInstance" xml:space="preserve">
+    <value>Limit to Single Instance</value>
+  </data>
+  <data name="Settings_LimitToSingleInstance_ToolTip" xml:space="preserve">
+    <value>Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button</value>
+  </data>
+  <data name="Settings_DocumentsFolderPathOverride" xml:space="preserve">
+    <value>"Override AppData Path</value>
+  </data>
+  <data name="Settings_DocumentsFolderPathOverride_ToolTip" xml:space="preserve">
+    <value>[EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods.</value>
+  </data>
+  <data name="Settings_EnableColorblindSupport" xml:space="preserve">
+    <value>Colorblind Support</value>
+  </data>
+  <data name="Settings_EnableColorblindSupport_ToolTip" xml:space="preserve">
+    <value>Enables some colorblind support, such as displaying icons for toolkit projects (which normally have a green background)</value>
+  </data>
+  <data name="Settings_ShiftListFocusOnSwap" xml:space="preserve">
+    <value>Shift Focus on Swap</value>
+  </data>
+  <data name="Settings_ShiftListFocusOnSwap_ToolTip" xml:space="preserve">
+    <value>When moving selected mods to the opposite list with Enter, move focus to that list as well</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch" xml:space="preserve">
+    <value>On Game Launch</value>
+  </data>
+  <data name="Settings_ActionOnGameLaunch_ToolTip" xml:space="preserve">
+    <value>When the game launches through the mod manager, this action will be performed</value>
+  </data>
+  <data name="Settings_DebugModeEnabled" xml:space="preserve">
+    <value>Mod Developer Mode</value>
+  </data>
+  <data name="Settings_DebugModeEnabled_ToolTip" xml:space="preserve">
+    <value>This enables features for mod developers, such as being able to copy a mod's UUID in context menus, and additional Script Extender options</value>
+  </data>
+  <data name="Settings_SaveWindowLocation" xml:space="preserve">
+    <value>Save Window Location</value>
+  </data>
+  <data name="Settings_SaveWindowLocation_ToolTip" xml:space="preserve">
+    <value>Save and restore the window location when the application starts.</value>
+  </data>
+  <data name="Settings_DeleteModCrashSanityCheck" xml:space="preserve">
+    <value>Delete ModCrashSanityCheck</value>
+  </data>
+  <data name="Settings_DeleteModCrashSanityCheck_ToolTip" xml:space="preserve">
+    <value>Automatically delete the %LOCALAPPDATA%/Larian Studios/Baldur's Gate 3/ModCrashSanityCheck folder, which may make certain mods deactivate if it exists</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_Language_ToolTip" xml:space="preserve">
+    <value>The language to use in the mod manager</value>
+  </data>
+  <data name="LaunchGameType_Exe" xml:space="preserve">
+    <value>Default (Exe)</value>
+  </data>
+  <data name="LaunchGameType_Exe_ToolTip" xml:space="preserve">
+    <value>Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn't exist,\nallowing you to bypassing the launcher</value>
+  </data>
+  <data name="LaunchGameType_Steam" xml:space="preserve">
+    <value>Steam</value>
+  </data>
+  <data name="LaunchGameType_Steam_ToolTip" xml:space="preserve">
+    <value>Open the game by running the Steam launch protocol ('steam://run/1086940')</value>
+  </data>
+  <data name="LaunchGameType_Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="LaunchGameType_Custom_ToolTip" xml:space="preserve">
+    <value>Open the game by opening a different file or protocol (ex. a batch file or protocol handler like playnite://playnite/start/id)</value>
+  </data>
+  <data name="GameLaunchWindowAction_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="GameLaunchWindowAction_None_ToolTip" xml:space="preserve">
+    <value>Do nothing</value>
+  </data>
+  <data name="GameLaunchWindowAction_Minimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
+  <data name="GameLaunchWindowAction_Minimize_ToolTip" xml:space="preserve">
+    <value>Minimize the window</value>
+  </data>
+  <data name="GameLaunchWindowAction_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="GameLaunchWindowAction_Close_ToolTip" xml:space="preserve">
+    <value>Close the window</value>
+  </data>
+  <data name="ExtenderUpdateChannel_Release" xml:space="preserve">
+    <value>Release</value>
+  </data>
+  <data name="ExtenderUpdateChannel_Release_ToolTip" xml:space="preserve">
+    <value>The default channel</value>
+  </data>
+  <data name="ExtenderUpdateChannel_Devel" xml:space="preserve">
+    <value>Devel</value>
+  </data>
+  <data name="ExtenderUpdateChannel_Devel_ToolTip" xml:space="preserve">
+    <value>An update channel intended for developers, with potentially unstable updates</value>
+  </data>
+  <data name="ExtenderUpdateChannel_Nightly" xml:space="preserve">
+    <value>Nightly</value>
+  </data>
+  <data name="ExtenderUpdateChannel_Nightly_ToolTip" xml:space="preserve">
+    <value>An update channel intended for developers, with bleeding-edge experimental updates</value>
+  </data>
+  <data name="ModSourceType_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="ModSourceType_None_ToolTip" xml:space="preserve">
+    <value>No known mod source</value>
+  </data>
+  <data name="ModSourceType_GitHub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="ModSourceType_GitHub_ToolTip" xml:space="preserve">
+    <value>This mod's update source is from a GitHub repository</value>
+  </data>
+  <data name="ModSourceType_NexusMods" xml:space="preserve">
+    <value>Nexus Mods</value>
+  </data>
+  <data name="ModSourceType_NexusMods_ToolTip" xml:space="preserve">
+    <value>This mod's update source is from NexusMods</value>
+  </data>
+  <data name="ModSourceType_Modio" xml:space="preserve">
+    <value>mod.io</value>
+  </data>
+  <data name="ModSourceType_Modio_ToolTip" xml:space="preserve">
+    <value>This mod's update source is from mod.io</value>
+  </data>
 </root>

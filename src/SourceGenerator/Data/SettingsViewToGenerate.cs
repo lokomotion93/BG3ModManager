@@ -33,6 +33,15 @@ public readonly record struct SettingsViewToGenerate
 		ClassName = $"{DisplayName}.axaml";
 	}
 
+	private static readonly char[] _whiteSpaceChars = [.. Enumerable.Range(0, ushort.MaxValue)
+							.Where(c => char.IsWhiteSpace(Convert.ToChar(c)))
+							.Select(c => Convert.ToChar(c))];
+
+	private static bool HasWhitespace(string text)
+	{
+		return text.IndexOfAny(_whiteSpaceChars) > -1;
+	}
+
 	public readonly string ToCode()
 	{
 		var code = new CodeBuilder();
@@ -130,12 +139,19 @@ public readonly record struct SettingsViewToGenerate
 
 			var textBlockName = $"{entry.PropertyName}TextBlock";
 			var tooltip = entry.ToolTip;
-			if (tooltip != null)
+			var tooltipControlText = string.Empty;
+			if (!string.IsNullOrEmpty(tooltip))
 			{
-				tooltip = SecurityElement.Escape(_replaceLineBreaksPattern.Replace(tooltip, "&#x0a;"));
+				//tooltip = SecurityElement.Escape(_replaceLineBreaksPattern.Replace(tooltip, "&#x0a;"));
+				if(!HasWhitespace(tooltip))
+				{
+					tooltipControlText = $" ToolTip.Tip=\"{{manager:LocaleKey {tooltip}}}\"";
+				}
+				else
+				{
+					tooltipControlText = $" ToolTip.Tip=\"{tooltip}\"";
+				}
 			}
-			var tooltipBinding = tooltip;
-			//var tooltipBinding = $"{{Binding ElementName={textBlockName}, Path=(ToolTip.Tip)}}";
 
 			var controlText = "";
 			var bindTo = !string.IsNullOrEmpty(entry.BindTo) ? entry.BindTo : entry.PropertyName;
@@ -151,16 +167,16 @@ public readonly record struct SettingsViewToGenerate
 			switch (entry.PropertyTypeName)
 			{
 				case "Boolean":
-					controlText = $"<CheckBox x:Name=\"{controlName}CheckBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" IsChecked =\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<CheckBox x:Name=\"{controlName}CheckBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" IsChecked =\"{{Binding {bindTo}}}\"{tooltipControlText}";
 					break;
 				case "String":
-					controlText = $"<controls:EnhancedTextBox x:Name=\"{controlName}TextBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"compact\" Text=\"{{Binding {bindTo}, UpdateSourceTrigger=LostFocus}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<controls:EnhancedTextBox x:Name=\"{controlName}TextBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"compact\" Text=\"{{Binding {bindTo}, UpdateSourceTrigger=LostFocus}}\"{tooltipControlText}";
 					break;
 				case "TimeSpan":
-					controlText = $"<controls:TimeSpanUpDown x:Name=\"{controlName}TimeSpanUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<controls:TimeSpanUpDown x:Name=\"{controlName}TimeSpanUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\"{tooltipControlText}";
 					break;
 				case nameof(Int32):
-					controlText = $"<NumericUpDown x:Name=\"{controlName}NumericUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+					controlText = $"<NumericUpDown x:Name=\"{controlName}NumericUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\"{tooltipControlText}";
 					break;
 				default:
 					if(!string.IsNullOrEmpty(entry.ControlText))
@@ -186,7 +202,7 @@ public readonly record struct SettingsViewToGenerate
 						comboCode.StartScope(string.Empty);
 
 						isSingleLine = false;
-						var comboText = $"<ComboBox x:Name=\"{controlName}ComboBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" SelectedIndex=\"{{Binding {bindTo}, FallbackValue=0}}\" ToolTip.Tip=\"{tooltipBinding}\"";
+						var comboText = $"<ComboBox x:Name=\"{controlName}ComboBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" SelectedIndex=\"{{Binding {bindTo}, FallbackValue=0}}\"{tooltipControlText}";
 						if (!string.IsNullOrEmpty(entry.BindVisibilityTo))
 						{
 							comboText += $" IsVisible=\"{{Binding {entry.BindVisibilityTo}}}\"";
@@ -201,20 +217,36 @@ public readonly record struct SettingsViewToGenerate
 							if (member.Kind == SymbolKind.Field)
 							{
 								var (entryName, entryToolTip, comment) = GetAttributeNameAndToolTip(member);
+								var entryTooltipControlText = string.Empty;
 								if (string.IsNullOrWhiteSpace(entryName))
 								{
 									entryName = member.Name;
 								}
-								if (string.IsNullOrWhiteSpace(entryToolTip))
-								{
-									entryToolTip = string.Empty;
-								}
 								else
 								{
-									entryToolTip = _replaceLineBreaksPattern.Replace(entryToolTip, "&#x0a;");
+									if (!HasWhitespace(entryName))
+									{
+										entryName = $" Content=\"{{manager:LocaleKey {entryName}}}\"";
+									}
+									else
+									{
+										entryName = $" Content=\"{SecurityElement.Escape(entryName)}\"";
+									}
+								}
+								if (!string.IsNullOrWhiteSpace(entryToolTip))
+								{
+									if (!HasWhitespace(entryToolTip))
+									{
+										entryTooltipControlText = $" ToolTip.Tip=\"{{manager:LocaleKey {entryToolTip}}}\"";
+									}
+									else
+									{
+										entryToolTip = _replaceLineBreaksPattern.Replace(entryToolTip, "&#x0a;");
+										entryTooltipControlText = $" ToolTip.Tip=\"{entryToolTip}\"";
+									}
 								}
 								if (!string.IsNullOrWhiteSpace(comment)) comboCode.AppendLine($"<!-- {comment} -->");
-								comboCode.AppendLine($"<ComboBoxItem x:Name=\"{member.Name.Replace(" ", "")}ComboBoxItem\" Content=\"{entryName}\" ToolTip.Tip=\"{entryToolTip}\" />");
+								comboCode.AppendLine($"<ComboBoxItem {entryName}{entryTooltipControlText} Tag=\"{member.Name}\" />");
 							}
 						}
 
@@ -226,7 +258,6 @@ public readonly record struct SettingsViewToGenerate
 					}
 					else
 					{
-						//controlText = $"<TextBlock Tag=\"{entry.PropertyType.TypeKind},{entry.PropertyTypeName}\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\" ToolTip.Tip=\"{tooltipBinding}\"";
 						code.AppendLine(string.Empty);
 						code.AppendLine($"<!-- Failed to generate {entry.PropertyName} -->");
 						code.AppendLine(string.Empty);
@@ -237,7 +268,12 @@ public readonly record struct SettingsViewToGenerate
 
 			if (!string.IsNullOrWhiteSpace(controlText))
 			{
-				var labelLine = $"<TextBlock x:Name=\"{controlName}TextBlock\" Grid.Row=\"{totalRows}\" Grid.Column=\"0\" Classes=\"left\" Text=\"{SecurityElement.Escape(entry.DisplayName)}\" ToolTip.Tip=\"{tooltip}\"";
+				var displayNameControlText = $" Text=\"{entry.DisplayName}\"";
+				if(!HasWhitespace(entry.DisplayName))
+				{
+					displayNameControlText = $" Text=\"{{manager:LocaleKey {entry.DisplayName}}}\"";
+				}
+				var labelLine = $"<TextBlock x:Name=\"{controlName}TextBlock\" Grid.Row=\"{totalRows}\" Grid.Column=\"0\" Classes=\"left\"{displayNameControlText}{tooltipControlText}";
 				if (!string.IsNullOrEmpty(entry.BindVisibilityTo))
 				{
 					labelLine += $" IsVisible=\"{{Binding {entry.BindVisibilityTo}}}\"";
@@ -276,6 +312,7 @@ public readonly record struct SettingsViewToGenerate
 	xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""
 	xmlns:d=""http://schemas.microsoft.com/expression/blend/2008""
 	xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
+	xmlns:manager=""using:ModManager""
 	xmlns:controls=""using:ModManager.Controls""
 	xmlns:vm=""using:{Namespace}""
 	x:DataType=""vm:{TypeName}""

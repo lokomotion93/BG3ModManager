@@ -1,14 +1,16 @@
-﻿using System.ComponentModel;
+﻿using ModManager.Locale;
+
+using System.ComponentModel.DataAnnotations;
 
 namespace ModManager;
 
 [JsonConverter(typeof(JsonStringEnumConverter<GameLaunchWindowAction>))]
 public enum GameLaunchWindowAction
 {
-	[Description("Do nothing")]
+	[Display(Name = nameof(Resources.GameLaunchWindowAction_None), Description = nameof(Resources.GameLaunchWindowAction_None_ToolTip))]
 	None,
-	[Description("Minimize the window")]
+	[Display(Name = nameof(Resources.GameLaunchWindowAction_Minimize), Description = nameof(Resources.GameLaunchWindowAction_Minimize_ToolTip))]
 	Minimize,
-	[Description("Close the window")]
+	[Display(Name = nameof(Resources.GameLaunchWindowAction_Close), Description = nameof(Resources.GameLaunchWindowAction_Close_ToolTip))]
 	Close
 }

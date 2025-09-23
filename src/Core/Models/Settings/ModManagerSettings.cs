@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using ModManager.Locale;
 using ModManager.Util;
 
 using System.ComponentModel;
@@ -14,100 +15,100 @@ namespace ModManager.Models.Settings;
 [DataContract]
 public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializableSettings
 {
-	[SettingsEntry("Game Data Path", "The path to the Data folder\nExample: Baldur's Gate 3/Data")]
+	[SettingsEntry(nameof(Resources.Settings_GameDataPath), nameof(Resources.Settings_GameDataPath_ToolTip))]
 	[DataMember, Reactive] public string? GameDataPath { get; set; }
 
-	[SettingsEntry("Game Executable Path", "The path to bg3.exe")]
+	[SettingsEntry(nameof(Resources.Settings_GameExecutablePath), nameof(Resources.Settings_GameExecutablePath_ToolTip))]
 	[DataMember, Reactive] public string? GameExecutablePath { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("DirectX 11", "If enabled, when launching the game, bg3_dx11.exe is used instead")]
+	[SettingsEntry(nameof(Resources.Settings_LaunchDX11), nameof(Resources.Settings_LaunchDX11_ToolTip))]
 	[DataMember, Reactive] public bool LaunchDX11 { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Story Log", "When launching the game, enable the Osiris story log (osiris.log)")]
+	[SettingsEntry(nameof(Resources.Settings_GameStoryLogEnabled), nameof(Resources.Settings_GameStoryLogEnabled_ToolTip))]
 	[DataMember, Reactive] public bool GameStoryLogEnabled { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Launcher - Disable Telemetry", "Disable the telemetry options in the launcher\nTelemetry is always disabled if mods are active")]
+	[SettingsEntry(nameof(Resources.Settings_DisableLauncherTelemetry), nameof(Resources.Settings_DisableLauncherTelemetry_ToolTip))]
 	[DataMember, Reactive] public bool DisableLauncherTelemetry { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Launcher - Disable Warnings", "Disable the mod/data mismatch warnings in the launcher")]
+	[SettingsEntry(nameof(Resources.Settings_DisableLauncherModWarnings), nameof(Resources.Settings_DisableLauncherModWarnings_ToolTip))]
 	[DataMember, Reactive] public bool DisableLauncherModWarnings { get; set; }
 
 	[DefaultValue(LaunchGameType.Exe)]
-	[SettingsEntry("Launch Game - Action", "Change how to launch the game", bindTo: nameof(LaunchTypeIndex))]
+	[SettingsEntry(nameof(Resources.Settings_LaunchType), nameof(Resources.Settings_LaunchType_ToolTip), bindTo: nameof(LaunchTypeIndex))]
 	[DataMember, Reactive] public LaunchGameType LaunchType { get; set; }
 
 	[DefaultValue("")]
-	[SettingsEntry("Launch Game - Custom Action", "A file path, protocol, or custom process shell command to run", bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
+	[SettingsEntry(nameof(Resources.Settings_CustomLaunchAction), nameof(Resources.Settings_CustomLaunchAction_ToolTip), bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
 	[DataMember, Reactive] public string? CustomLaunchAction { get; set; }
 
 	[DefaultValue("")]
-	[SettingsEntry("Launch Game - Custom Arguments", "Optional additional arguments to path to the custom launch command", bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
+	[SettingsEntry(nameof(Resources.Settings_CustomLaunchArgs), nameof(Resources.Settings_CustomLaunchArgs_ToolTip), bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
 	[DataMember, Reactive] public string? CustomLaunchArgs { get; set; }
 
 	[DefaultValue("Orders")]
-	[SettingsEntry("Load Orders Path", "The folder containing mod load order .json files")]
+	[SettingsEntry(nameof(Resources.Settings_LoadOrderPath), nameof(Resources.Settings_LoadOrderPath_ToolTip))]
 	[DataMember, Reactive] public string? LoadOrderPath { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Internal Logging", "Enable the log for the mod manager", disableAutoGen: true)]
+	[SettingsEntry(nameof(Resources.Settings_LogEnabled), nameof(Resources.Settings_LogEnabled_ToolTip), disableAutoGen: true)]
 	[DataMember, Reactive] public bool LogEnabled { get; set; }
 
 	[DefaultValue(true)]
-	[SettingsEntry("Add Missing Dependencies When Exporting", "Automatically add dependency mods above their dependents in the exported load order, if omitted from the active order")]
+	[SettingsEntry(nameof(Resources.Settings_AutoAddDependenciesWhenExporting), nameof(Resources.Settings_AutoAddDependenciesWhenExporting_ToolTip))]
 	[DataMember, Reactive] public bool AutoAddDependenciesWhenExporting { get; set; }
 
 	[DefaultValue(true)]
-	[SettingsEntry("Automatically Check For Updates", "Automatically check for updates when the program starts")]
+	[SettingsEntry(nameof(Resources.Settings_CheckForUpdates), nameof(Resources.Settings_CheckForUpdates_ToolTip))]
 	[DataMember, Reactive] public bool CheckForUpdates { get; set; }
 
 	[DefaultValue(true)]
-	[SettingsEntry("Limit to Single Instance", "Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button")]
+	[SettingsEntry(nameof(Resources.Settings_LimitToSingleInstance), nameof(Resources.Settings_LimitToSingleInstance_ToolTip))]
 	[DataMember, Reactive] public bool LimitToSingleInstance { get; set; }
 
 	[DefaultValue("")]
-	[SettingsEntry("Override AppData Path", "[EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods.")]
+	[SettingsEntry(nameof(Resources.Settings_DocumentsFolderPathOverride), nameof(Resources.Settings_DocumentsFolderPathOverride_ToolTip))]
 	[DataMember, Reactive] public string? DocumentsFolderPathOverride { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Colorblind Support", "Enables some colorblind support, such as displaying icons for toolkit projects (which normally have a green background)")]
+	[SettingsEntry(nameof(Resources.Settings_EnableColorblindSupport), nameof(Resources.Settings_EnableColorblindSupport_ToolTip))]
 	[DataMember, Reactive] public bool EnableColorblindSupport { get; set; }
 
 	[DefaultValue(true)]
 	[DataMember, Reactive] public bool DarkThemeEnabled { get; set; }
 
 	[DefaultValue(true)]
-	[SettingsEntry("Shift Focus on Swap", "When moving selected mods to the opposite list with Enter, move focus to that list as well")]
+	[SettingsEntry(nameof(Resources.Settings_ShiftListFocusOnSwap), nameof(Resources.Settings_ShiftListFocusOnSwap_ToolTip))]
 	[DataMember, Reactive] public bool ShiftListFocusOnSwap { get; set; }
 
 	[DefaultValue(GameLaunchWindowAction.None)]
-	[SettingsEntry("On Game Launch", "When the game launches through the mod manager, this action will be performed", bindTo: nameof(ActionOnGameLaunchIndex))]
+	[SettingsEntry(nameof(Resources.Settings_ActionOnGameLaunch), nameof(Resources.Settings_ActionOnGameLaunch_ToolTip), bindTo: nameof(ActionOnGameLaunchIndex))]
 	[DataMember, Reactive]
 	public GameLaunchWindowAction ActionOnGameLaunch { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Skip Checking for Missing Mods", "If a load order is missing mods, no warnings will be displayed")]
+	[SettingsEntry(nameof(Resources.Settings_DisableMissingModWarnings), nameof(Resources.Settings_DisableMissingModWarnings_ToolTip))]
 	[DataMember, Reactive] public bool DisableMissingModWarnings { get; set; }
 
 	[DefaultValue(false)]
 	[Reactive] public bool DisplayFileNames { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Mod Developer Mode", "This enables features for mod developers, such as being able to copy a mod's UUID in context menus, and additional Script Extender options", disableAutoGen: true)]
+	[SettingsEntry(nameof(Resources.Settings_DebugModeEnabled), nameof(Resources.Settings_DebugModeEnabled_ToolTip), disableAutoGen: true)]
 	[Reactive, DataMember] public bool DebugModeEnabled { get; set; }
 
 	[DefaultValue("")]
 	[DataMember, Reactive] public string? GameLaunchParams { get; set; }
 
 	[DefaultValue(false)]
-	[SettingsEntry("Save Window Location", "Save and restore the window location when the application starts.")]
+	[SettingsEntry(nameof(Resources.Settings_SaveWindowLocation), nameof(Resources.Settings_SaveWindowLocation_ToolTip))]
 	[DataMember, Reactive] public bool SaveWindowLocation { get; set; }
 
 	[DefaultValue(true)]
-	[SettingsEntry("Delete ModCrashSanityCheck", "Automatically delete the %LOCALAPPDATA%/Larian Studios/Baldur's Gate 3/ModCrashSanityCheck folder, which may make certain mods deactivate if it exists")]
+	[SettingsEntry(nameof(Resources.Settings_DeleteModCrashSanityCheck), nameof(Resources.Settings_DeleteModCrashSanityCheck_ToolTip))]
 	[DataMember, Reactive] public bool DeleteModCrashSanityCheck { get; set; }
 
 	[DataMember, Reactive] public long LastUpdateCheck { get; set; }
@@ -117,7 +118,7 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[DataMember, Reactive] public string? LastExtractOutputPath { get; set; }
 
 	[DefaultValue("en")]
-	[SettingsEntry("Language", "The language to use in the mod manager", disableAutoGen:true)]
+	[SettingsEntry(nameof(Resources.Settings_Language), nameof(Resources.Settings_Language_ToolTip), disableAutoGen:true)]
 	[DataMember, Reactive] public string? Language { get; set; }
 	public ObservableCollectionExtended<CultureInfo> Languages { get; }
 	[Reactive] public CultureInfo? SelectedLanguage { get; set; }
