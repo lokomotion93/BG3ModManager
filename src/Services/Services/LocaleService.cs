@@ -48,6 +48,7 @@ public class LocaleService : ReactiveObject, ILocaleService
 	{
 		if(_subjects.TryGetValue(key, out var existing))
 		{
+			StartNotify();
 			return existing;
 		}
 		var subject = new Subject<string?>();

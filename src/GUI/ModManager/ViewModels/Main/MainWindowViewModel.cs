@@ -3,13 +3,11 @@
 using DynamicData;
 using DynamicData.Binding;
 
-using ModManager.Extensions;
 using ModManager.Locale;
 using ModManager.Models;
 using ModManager.Models.App;
 using ModManager.Models.Mod;
 using ModManager.Models.Mod.Order;
-using ModManager.Models.NexusMods;
 using ModManager.Models.Settings;
 using ModManager.Models.Updates;
 using ModManager.ModUpdater.Cache;

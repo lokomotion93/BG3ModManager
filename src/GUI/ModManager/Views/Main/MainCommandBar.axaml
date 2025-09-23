@@ -106,7 +106,7 @@
 		    Background="Transparent">
 			<WrapPanel Margin="12,0">
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBlock Margin="0,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Profile}" />
+					<TextBlock Margin="0,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Profile}" />
 					<controls:ComboBoxWithRightClick Name="ProfileComboBox"
 					    MaxWidth="150"
 					    AutoScrollToSelectedItem="False"
@@ -120,45 +120,45 @@
 						<FlyoutBase.AttachedFlyout>
 							<MenuFlyout Placement="Pointer" ShowMode="Transient">
 								<MenuItem Header="Profile..." Icon="{materialIcons:MaterialIconExt Kind=AccountBox}">
-									<MenuItem Command="{Binding OpenSelectedProfileFolderCommand}" Header="{x:Static loca:Resources.Button_OpenInFileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
+									<MenuItem Command="{Binding OpenSelectedProfileFolderCommand}" Header="{manager:LocaleKey Button_OpenInFileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
 									<MenuItem Command="{Binding OpenSelectedProfileFolderCommand}"
 									    CommandParameter="dopus"
-									    Header="{x:Static loca:Resources.Button_OpenInDopus}"
+									    Header="{manager:LocaleKey Button_OpenInDopus}"
 									    Icon="{materialIcons:MaterialIconExt Kind=WhiteBalanceSunny, IconForeground=Yellow}"
 									    IsVisible="{Binding HasDopus}" />
-									<MenuItem Command="{Binding CopySelectedProfileFilePathToClipboardCommand}" Header="{x:Static loca:Resources.Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
+									<MenuItem Command="{Binding CopySelectedProfileFilePathToClipboardCommand}" Header="{manager:LocaleKey Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
 								</MenuItem>
 								<MenuItem Header="Saves..." Icon="{materialIcons:MaterialIconExt Kind=ContentSave}">
-									<MenuItem Command="{Binding OpenSelectedProfileSavesFolderCommand}" Header="{x:Static loca:Resources.Button_OpenInFileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
+									<MenuItem Command="{Binding OpenSelectedProfileSavesFolderCommand}" Header="{manager:LocaleKey Button_OpenInFileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
 									<MenuItem Command="{Binding OpenSelectedProfileSavesFolderCommand}"
 									    CommandParameter="dopus"
-									    Header="{x:Static loca:Resources.Button_OpenInDopus}"
+									    Header="{manager:LocaleKey Button_OpenInDopus}"
 									    Icon="{materialIcons:MaterialIconExt Kind=WhiteBalanceSunny, IconForeground=Yellow}"
 									    IsVisible="{Binding HasDopus}" />
-									<MenuItem Command="{Binding CopySelectedProfileSavesPathToClipboardCommand}" Header="{x:Static loca:Resources.Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
+									<MenuItem Command="{Binding CopySelectedProfileSavesPathToClipboardCommand}" Header="{manager:LocaleKey Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
 								</MenuItem>
 							</MenuFlyout>
 						</FlyoutBase.AttachedFlyout>
 					</controls:ComboBoxWithRightClick>
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Order}" />
+					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Order}" />
 					<controls:ComboBoxWithRightClick Name="OrdersComboBox"
 					    MaxWidth="500"
 					    ItemsSource="{Binding ModOrder.ModOrderList}"
 					    SelectedIndex="{Binding ModOrder.SelectedModOrderIndex, FallbackValue=0}">
 						<FlyoutBase.AttachedFlyout>
 							<MenuFlyout Placement="Pointer" ShowMode="Transient">
-								<MenuItem Command="{Binding RenameOrderCommand}" Header="{x:Static loca:Resources.Button_Rename}" Icon="{materialIcons:MaterialIconExt Kind=Rename}" />
-								<MenuItem Command="{Binding OpenSelectedModOrderFilePathCommand}" Header="{x:Static loca:Resources.Button_OpenInFileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
+								<MenuItem Command="{Binding RenameOrderCommand}" Header="{manager:LocaleKey Button_Rename}" Icon="{materialIcons:MaterialIconExt Kind=Rename}" />
+								<MenuItem Command="{Binding OpenSelectedModOrderFilePathCommand}" Header="{manager:LocaleKey Button_OpenInFileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
 								<MenuItem Command="{Binding OpenSelectedModOrderFilePathCommand}"
 								    CommandParameter="dopus"
-								    Header="{x:Static loca:Resources.Button_OpenInDopus}"
+								    Header="{manager:LocaleKey Button_OpenInDopus}"
 								    Icon="{materialIcons:MaterialIconExt Kind=WhiteBalanceSunny, IconForeground=Yellow}"
 								    IsVisible="{Binding HasDopus}" />
 								<MenuItem Command="{Binding CopySelectedModOrderFilePathToClipboardCommand}"
 								    CommandParameter="{Binding ModOrder.SelectedModOrder.FilePath}"
-								    Header="{x:Static loca:Resources.Button_CopyPathToClipboard}"
+								    Header="{manager:LocaleKey Button_CopyPathToClipboard}"
 								    Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
 							</MenuFlyout>
 						</FlyoutBase.AttachedFlyout>
@@ -170,28 +170,28 @@
 					</controls:ComboBoxWithRightClick>
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<Button Command="{Binding SaveOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=ContentSave, IconForeground=LimeGreen}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_SaveOrder_ToolTip}" />
+					<Button Command="{Binding SaveOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=ContentSave, IconForeground=LimeGreen}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_SaveOrder_ToolTip}" />
 
-					<Button Command="{Binding SaveOrderAsCommand}" Content="{materialIcons:MaterialIconExt Kind=ContentSaveEdit}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_SaveOrderAs_ToolTip}" />
+					<Button Command="{Binding SaveOrderAsCommand}" Content="{materialIcons:MaterialIconExt Kind=ContentSaveEdit}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_SaveOrderAs_ToolTip}" />
 
-					<Button Command="{Binding AddNewOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=Add, IconForeground=OrangeRed}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_AddNewOrder_ToolTip}" />
+					<Button Command="{Binding AddNewOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=Add, IconForeground=OrangeRed}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_AddNewOrder_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Export}" />
-					<Button Command="{Binding ExportOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=Export, IconForeground=RoyalBlue}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_ExportOrderToGame_ToolTip}" />
+					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Export}" />
+					<Button Command="{Binding ExportOrderCommand}" Content="{materialIcons:MaterialIconExt Kind=Export, IconForeground=RoyalBlue}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_ExportOrderToGame_ToolTip}" />
 
-					<Button Command="{Binding ExportOrderToZipCommand}" Content="{materialIcons:MaterialIconExt Kind=FolderZip}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_ExportActiveModsToZip_ToolTip}" />
+					<Button Command="{Binding ExportOrderToZipCommand}" Content="{materialIcons:MaterialIconExt Kind=FolderZip}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_ExportActiveModsToZip_ToolTip}" />
 
-					<Button Command="{Binding ExportOrderToArchiveAsCommand}" Content="{materialIcons:MaterialIconExt Kind=ArchiveEdit}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_ExportOrderToArchive_ToolTip}" />
+					<Button Command="{Binding ExportOrderToArchiveAsCommand}" Content="{materialIcons:MaterialIconExt Kind=ArchiveEdit}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_ExportOrderToArchive_ToolTip}" />
 
-					<Button Command="{Binding OrganizeModPaksCommand}" Content="{materialIcons:MaterialIconExt Kind=FileMove, IconForeground={StaticResource MoveModsIconForeground}}" ToolTip.Tip="{x:Static loca:Resources.Keybinding_OrganizeModPaks_ToolTip}" />
+					<Button Command="{Binding OrganizeModPaksCommand}" Content="{materialIcons:MaterialIconExt Kind=FileMove, IconForeground={StaticResource MoveModsIconForeground}}" ToolTip.Tip="{manager:LocaleKey Keybinding_OrganizeModPaks_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Refresh}" />
-					<Button Command="{Binding RefreshCommand}" Content="{materialIcons:MaterialIconExt Kind=Refresh, IconForeground=Red}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_RefreshMods_ToolTip}" />
+					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Refresh}" />
+					<Button Command="{Binding RefreshCommand}" Content="{materialIcons:MaterialIconExt Kind=Refresh, IconForeground=Red}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_RefreshMods_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" IsVisible="{Binding IsDeveloperMode}" Orientation="Horizontal">
-					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Campaign}" />
+					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Campaign}" />
 					<ComboBox x:Name="CampaignComboBox"
 					    MaxWidth="150"
 					    ItemsSource="{Binding ModOrder.AdventureMods}"
@@ -204,42 +204,42 @@
 					</ComboBox>
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Shortcuts}" />
-					<Button Command="{Binding OpenModsFolderCommand}" Content="{materialIcons:MaterialIconExt Kind=FolderOpen, IconForeground=RoyalBlue}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenModsFolder_ToolTip}">
+					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Shortcuts}" />
+					<Button Command="{Binding OpenModsFolderCommand}" Content="{materialIcons:MaterialIconExt Kind=FolderOpen, IconForeground=RoyalBlue}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenModsFolder_ToolTip}">
 						<Button.ContextFlyout>
 							<MenuFlyout>
-								<MenuItem Command="{Binding CopyModsDirectoryPathToClipboardCommand}" Header="{x:Static loca:Resources.Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
+								<MenuItem Command="{Binding CopyModsDirectoryPathToClipboardCommand}" Header="{manager:LocaleKey Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
 							</MenuFlyout>
 						</Button.ContextFlyout>
 					</Button>
-					<Button Command="{Binding OpenLogsFolderCommand}" Content="{materialIcons:MaterialIconExt Kind=Contract, IconForeground=Teal}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenExtenderLogsFolder_ToolTip}">
+					<Button Command="{Binding OpenLogsFolderCommand}" Content="{materialIcons:MaterialIconExt Kind=Contract, IconForeground=Teal}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenExtenderLogsFolder_ToolTip}">
 						<Button.ContextFlyout>
 							<MenuFlyout>
-								<MenuItem Command="{Binding CopyExtenderLogsDirectoryPathToClipboardCommand}" Header="{x:Static loca:Resources.Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
+								<MenuItem Command="{Binding CopyExtenderLogsDirectoryPathToClipboardCommand}" Header="{manager:LocaleKey Button_CopyPathToClipboard}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}" />
 							</MenuFlyout>
 						</Button.ContextFlyout>
 					</Button>
-					<Button Command="{Binding LaunchGameCommand}" Content="{materialIcons:MaterialIconExt Kind=Launch, IconForeground=Red}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_LaunchGame_ToolTip}">
+					<Button Command="{Binding LaunchGameCommand}" Content="{materialIcons:MaterialIconExt Kind=Launch, IconForeground=Red}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_LaunchGame_ToolTip}">
 						<Button.ContextFlyout>
 							<MenuFlyout>
-								<MenuItem Command="{Binding EditExecutablePathCommand}" Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_Button_EditExecutablePath}" Icon="{materialIcons:MaterialIconExt Kind=FileEdit}" />
+								<MenuItem Command="{Binding EditExecutablePathCommand}" Header="{manager:LocaleKey CommandBar_LaunchGameFlyout_Button_EditExecutablePath}" Icon="{materialIcons:MaterialIconExt Kind=FileEdit}" />
 
-								<MenuItem Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_Open_Header}" Icon="{materialIcons:MaterialIconExt Kind=FolderOpen}">
+								<MenuItem Header="{manager:LocaleKey CommandBar_LaunchGameFlyout_Open_Header}" Icon="{materialIcons:MaterialIconExt Kind=FolderOpen}">
 
-									<MenuItem Command="{Binding OpenGameFolderCommand}" Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_Button_OpenGameFolder_FileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
+									<MenuItem Command="{Binding OpenGameFolderCommand}" Header="{manager:LocaleKey CommandBar_LaunchGameFlyout_Button_OpenGameFolder_FileExplorer}" Icon="{materialIcons:MaterialIconExt Kind=OpenInApp}" />
 
 									<MenuItem Command="{Binding OpenGameFolderCommand}"
 									    CommandParameter="dopus"
-									    Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_Button_OpenGameFolder_Dopus}"
+									    Header="{manager:LocaleKey CommandBar_LaunchGameFlyout_Button_OpenGameFolder_Dopus}"
 									    Icon="{materialIcons:MaterialIconExt Kind=WhiteBalanceSunny, IconForeground=Yellow}"
 									    IsVisible="{Binding HasDopus}" />
 								</MenuItem>
 
-								<MenuItem Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_CopyToClipboard_Header}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}">
+								<MenuItem Header="{manager:LocaleKey CommandBar_LaunchGameFlyout_CopyToClipboard_Header}" Icon="{materialIcons:MaterialIconExt Kind=Clipboard}">
 
-									<MenuItem Command="{Binding CopyGameExecutablePathToClipboardCommand}" Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ExecutablePath}" Icon="{materialIcons:MaterialIconExt Kind=File}" />
+									<MenuItem Command="{Binding CopyGameExecutablePathToClipboardCommand}" Header="{manager:LocaleKey CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ExecutablePath}" Icon="{materialIcons:MaterialIconExt Kind=File}" />
 
-									<MenuItem Command="{Binding CopyGameFolderPathToClipboardCommand}" Header="{x:Static loca:Resources.CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ParentFolder}" Icon="{materialIcons:MaterialIconExt Kind=Folder}" />
+									<MenuItem Command="{Binding CopyGameFolderPathToClipboardCommand}" Header="{manager:LocaleKey CommandBar_LaunchGameFlyout_CopyToClipboard_Button_ParentFolder}" Icon="{materialIcons:MaterialIconExt Kind=Folder}" />
 								</MenuItem>
 							</MenuFlyout>
 						</Button.ContextFlyout>
@@ -247,26 +247,26 @@
 					<ComboBox Name="PostLaunchGameComboBox"
 					    AutoScrollToSelectedItem="False"
 					    SelectedIndex="{Binding Settings.ActionOnGameLaunchIndex, FallbackValue=0}"
-					    ToolTip.Tip="{x:Static loca:Resources.Settings_ActionOnGameLaunch_Header_ToolTip}">
-						<ComboBoxItem Content="{x:Static loca:Resources.Settings_ActionOnGameLaunch_Value_None}" ToolTip.Tip="{x:Static loca:Resources.Settings_ActionOnGameLaunch_Value_None_ToolTip}" />
-						<ComboBoxItem Content="{x:Static loca:Resources.Settings_ActionOnGameLaunch_Value_Minimize}" ToolTip.Tip="{x:Static loca:Resources.Settings_ActionOnGameLaunch_Value_Minimize_ToolTip}" />
-						<ComboBoxItem Content="{x:Static loca:Resources.Settings_ActionOnGameLaunch_Value_Close}" ToolTip.Tip="{x:Static loca:Resources.Settings_ActionOnGameLaunch_Value_Close_ToolTip}" />
+					    ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_Header_ToolTip}">
+						<ComboBoxItem Content="{manager:LocaleKey Settings_ActionOnGameLaunch_Value_None}" ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_Value_None_ToolTip}" />
+						<ComboBoxItem Content="{manager:LocaleKey Settings_ActionOnGameLaunch_Value_Minimize}" ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_Value_Minimize_ToolTip}" />
+						<ComboBoxItem Content="{manager:LocaleKey Settings_ActionOnGameLaunch_Value_Close}" ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_Value_Close_ToolTip}" />
 					</ComboBox>
 				</StackPanel>
 
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Links}" />
+					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Links}" />
 
-					<Button Command="{Binding OpenSteamPageCommand}" Content="{materialIcons:MaterialIconExt Kind=Steam}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenSteamPage_ToolTip}" />
+					<Button Command="{Binding OpenSteamPageCommand}" Content="{materialIcons:MaterialIconExt Kind=Steam}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenSteamPage_ToolTip}" />
 
-					<Button Command="{Binding OpenNexusModsCommand}" Content="{StaticResource NexusModsIcon}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenNexusMods_ToolTip}" />
+					<Button Command="{Binding OpenNexusModsCommand}" Content="{StaticResource NexusModsIcon}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenNexusMods_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{x:Static loca:Resources.CommandBar_Section_Support}" />
+					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Support}" />
 
-					<Button Command="{Binding OpenDonationPageCommand}" Content="{materialIcons:MaterialIconExt Kind=Donate, IconForeground=Cyan}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_Donate_ToolTip}" />
+					<Button Command="{Binding OpenDonationPageCommand}" Content="{materialIcons:MaterialIconExt Kind=Donate, IconForeground=Cyan}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_Donate_ToolTip}" />
 
-					<Button Command="{Binding OpenGitHubRepoCommand}" Content="{materialIcons:MaterialIconExt Kind=Github}" ToolTip.Tip="{x:Static loca:Resources.CommandBar_Button_OpenGitHub_ToolTip}" />
+					<Button Command="{Binding OpenGitHubRepoCommand}" Content="{materialIcons:MaterialIconExt Kind=Github}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenGitHub_ToolTip}" />
 				</StackPanel>
 			</WrapPanel>
 		</Border>
