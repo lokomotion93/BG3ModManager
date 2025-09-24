@@ -111,18 +111,19 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 
 		try
 		{
-			if (mod != null && File.Exists(mod.FilePath))
+			var fs = AppServices.FS;
+			if (mod?.FilePath.IsExistingFile() == true)
 			{
 				if (mod.IsLooseMod)
 				{
-					var dir = new FileInfo(mod.FilePath).Directory!;
+					var dir = fs.FileInfo.New(mod.FilePath).Directory!;
 					var length = dir.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(file => file.Length);
 					return ((double)length).Bytes().Humanize();
 				}
 				else
 				{
 					//return StringUtils.BytesToString(new FileInfo(mod.FilePath).Length);
-					var info = new FileInfo(mod.FilePath);
+					var info = fs.FileInfo.New(mod.FilePath);
 					return ((double)info.Length).Bytes().Humanize();
 				}
 			}

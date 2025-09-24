@@ -5,6 +5,7 @@ using ModManager.Models;
 using ModManager.Models.Extender;
 using ModManager.Models.Mod;
 using ModManager.Models.Settings;
+using ModManager.Services;
 using ModManager.Util;
 
 using System.ComponentModel;
@@ -59,6 +60,7 @@ public class SettingsWindowViewModel : ReactiveObject, IClosableViewModel, IRout
 
 	private readonly IInteractionsService _interactions;
 	private readonly ISettingsService _settings;
+	private readonly IFileSystemService _fs;
 
 	public ObservableCollectionExtended<ScriptExtenderUpdateVersion> ScriptExtenderUpdates { get; private set; }
 	[Reactive] public ScriptExtenderUpdateVersion TargetVersion { get; set; }
@@ -221,21 +223,21 @@ public class SettingsWindowViewModel : ReactiveObject, IClosableViewModel, IRout
 	{
 		try
 		{
-			var attr = File.GetAttributes(Settings.GameExecutablePath);
+			var attr = _fs.File.GetAttributes(Settings.GameExecutablePath);
 			if (attr.HasFlag(System.IO.FileAttributes.Directory))
 			{
 				var exeName = "";
 				if (!RegistryHelper.IsGOG)
 				{
-					exeName = Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.Steam.ExePath);
+					exeName = _fs.Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.Steam.ExePath);
 				}
 				else
 				{
-					exeName = Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.GOG.ExePath);
+					exeName = _fs.Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.GOG.ExePath);
 				}
 
-				var exe = Path.Join(Settings.GameExecutablePath, exeName);
-				if (File.Exists(exe))
+				var exe = _fs.Path.Join(Settings.GameExecutablePath, exeName);
+				if (_fs.File.Exists(exe))
 				{
 					Settings.GameExecutablePath = exe;
 				}
@@ -301,13 +303,14 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		});
 	}
 
-	public SettingsWindowViewModel(IInteractionsService interactions, ISettingsService settingsService, IScreen? host = null)
+	public SettingsWindowViewModel(IInteractionsService interactions, ISettingsService settingsService, IFileSystemService fileSystemService, IScreen? host = null)
 	{
 		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
 		_interactions = interactions;
 		_settings = settingsService;
+		_fs = fileSystemService;
 
 		TargetVersion = _emptyVersion;
 		SelectedTabIndex = SettingsWindowTab.Default;
@@ -372,8 +375,8 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 
 		var whenExePath = Settings.WhenAnyValue(x => x.GameExecutablePath);
 
-		whenExePath.Select(x => Path.Join(Path.GetDirectoryName(x), DivinityApp.EXTENDER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderSettingsFilePath);
-		whenExePath.Select(x => Path.Join(Path.GetDirectoryName(x), DivinityApp.EXTENDER_UPDATER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderUpdaterSettingsFilePath);
+		whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderSettingsFilePath);
+		whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_UPDATER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderUpdaterSettingsFilePath);
 
 		var settingsProperties = new HashSet<string>();
 		settingsProperties.UnionWith(Settings.GetSettingsAttributes().Select(x => x.Property.Name));

@@ -743,7 +743,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		}
 		try
 		{
-			await File.WriteAllTextAsync(filePath, outputText, token);
+			await _fs.File.WriteAllTextAsync(filePath, outputText, token);
 			AppServices.Commands.ShowAlert($"Exported order to '{filePath}'", AlertType.Success, 20);
 			return true;
 		}

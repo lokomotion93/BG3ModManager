@@ -66,7 +66,7 @@ public class DeleteFilesViewModel : BaseProgressViewModel, IRoutableViewModel
 						DivinityApp.Log("Deletion stopped.");
 						break;
 					}
-					if (File.Exists(f.FilePath))
+					if (AppServices.FS.File.Exists(f.FilePath))
 					{
 						await UpdateProgress("", $"Deleting {f.FilePath}...");
 #if DEBUG

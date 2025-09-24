@@ -47,7 +47,7 @@ namespace Splat
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.Main.IProgressBarViewModel));
             }
             {
-                global::System.Lazy<ModManager.ViewModels.SettingsWindowViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.SettingsWindowViewModel>(() => new global::ModManager.ViewModels.SettingsWindowViewModel((global::ModManager.IInteractionsService)resolver.GetService(typeof(global::ModManager.IInteractionsService)), (global::ModManager.ISettingsService)resolver.GetService(typeof(global::ModManager.ISettingsService)), (global::ReactiveUI.IScreen)resolver.GetService(typeof(global::ReactiveUI.IScreen))));
+                global::System.Lazy<ModManager.ViewModels.SettingsWindowViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.SettingsWindowViewModel>(() => new global::ModManager.ViewModels.SettingsWindowViewModel((global::ModManager.IInteractionsService)resolver.GetService(typeof(global::ModManager.IInteractionsService)), (global::ModManager.ISettingsService)resolver.GetService(typeof(global::ModManager.ISettingsService)), (global::ModManager.Services.IFileSystemService)resolver.GetService(typeof(global::ModManager.Services.IFileSystemService)), (global::ReactiveUI.IScreen)resolver.GetService(typeof(global::ReactiveUI.IScreen))));
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.ViewModels.SettingsWindowViewModel>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.SettingsWindowViewModel));
             }

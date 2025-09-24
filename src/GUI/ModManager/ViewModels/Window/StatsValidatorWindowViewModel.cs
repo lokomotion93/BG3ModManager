@@ -52,7 +52,7 @@ public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel,
 
 		if (!string.IsNullOrEmpty(message.Location?.FileName))
 		{
-			var baseName = Path.GetFileName(message.Location.FileName);
+			var baseName = AppServices.FS.Path.GetFileName(message.Location.FileName);
 			result += $"{baseName}:{message.Location.StartLine}: ";
 		}
 

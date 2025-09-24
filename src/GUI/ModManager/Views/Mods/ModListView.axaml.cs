@@ -311,7 +311,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				List<string> files = [];
 				foreach (var file in droppedFiles)
 				{
-					var ext = Path.GetExtension(file.Name);
+					var ext = AppServices.FS.Path.GetExtension(file.Name);
 					if (ModImportService.IsImportableFile(ext))
 					{
 						files.Add(file.Path.LocalPath);
@@ -335,7 +335,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		{
 			foreach (var file in files)
 			{
-				var ext = Path.GetExtension(file.Name);
+				var ext = AppServices.FS.Path.GetExtension(file.Name);
 				if(ModImportService.IsImportableFile(ext))
 				{
 					canImport = true;

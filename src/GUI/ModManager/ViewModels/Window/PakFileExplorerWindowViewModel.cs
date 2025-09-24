@@ -89,13 +89,13 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 
 	private void AddFileToTree(string pakPath, string filePath, ConcurrentDictionary<string, ModFileEntry> directories, CancellationToken token, double? fileSize = null)
 	{
-		var immediateParentDirectory = Path.GetDirectoryName(filePath);
+		var immediateParentDirectory = _fs.Path.GetDirectoryName(filePath);
 
 		ModFileEntry? parentDirectory = null;
 
 		if (!string.IsNullOrEmpty(immediateParentDirectory))
 		{
-			immediateParentDirectory = immediateParentDirectory.Replace(Path.DirectorySeparatorChar, '/');
+			immediateParentDirectory = immediateParentDirectory.Replace(_fs.Path.DirectorySeparatorChar, '/');
 
 			if (directories.TryGetValue(immediateParentDirectory, out var parent))
 			{
@@ -226,7 +226,7 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 			_fs.Directory.CreateDirectory(parentFolder);
 		}
 		using var inStream = f.CreateContentReader();
-		await using var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.Read, 32000, FileOptions.Asynchronous);
+		await using var outStream = _fs.FileStream.New(outputPath, FileMode.Create, FileAccess.Write, FileShare.Read, 32000, FileOptions.Asynchronous);
 		await inStream.CopyToAsync(outStream, 32000, token);
 	}
 

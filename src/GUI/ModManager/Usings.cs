@@ -10,7 +10,19 @@ global using Splat;
 
 global using System;
 global using System.Collections.Generic;
-global using System.IO;
+
+//global using System.IO;
+global using Stream = System.IO.Stream;
+global using FileOptions = System.IO.FileOptions;
+global using FileAccess = System.IO.FileAccess;
+global using FileMode = System.IO.FileMode;
+global using FileShare = System.IO.FileShare;
+global using MemoryStream = System.IO.MemoryStream;
+global using StreamReader = System.IO.StreamReader;
+global using StreamWriter = System.IO.StreamWriter;
+global using SearchOption = System.IO.SearchOption;
+global using IOException = System.IO.IOException;
+
 global using System.Linq;
 global using System.Reactive;
 global using System.Reactive.Concurrency;
