@@ -163,8 +163,8 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	private async Task DownloadScriptExtenderAsync(CancellationToken token)
 	{
-		var exeDir = Path.GetDirectoryName(Settings.GameExecutablePath);
-		var dllDestination = Path.Join(exeDir, DivinityApp.EXTENDER_UPDATER_FILE);
+		var exeDir = _fs.Path.GetDirectoryName(Settings.GameExecutablePath);
+		var dllDestination = _fs.Path.Join(exeDir, DivinityApp.EXTENDER_UPDATER_FILE);
 
 		var successes = 0;
 		Stream? webStream = null;
@@ -184,7 +184,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 					if (entry.Name.Equals(DivinityApp.EXTENDER_UPDATER_FILE, StringComparison.OrdinalIgnoreCase))
 					{
 						unzippedEntryStream = entry.Open(); // .Open will return a stream
-						using var fs = File.Create(dllDestination, ARCHIVE_BUFFER, FileOptions.Asynchronous);
+						using var fs = _fs.File.Create(dllDestination, ARCHIVE_BUFFER, FileOptions.Asynchronous);
 						await unzippedEntryStream.CopyToAsync(fs, ARCHIVE_BUFFER, token);
 						successes += 1;
 						break;
@@ -244,20 +244,19 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		{
 			try
 			{
-				var exeDir = Path.GetDirectoryName(Settings.GameExecutablePath);
-				var extenderUpdaterPath = Path.Join(exeDir, DivinityApp.EXTENDER_UPDATER_FILE);
+				var exeDir = _fs.Path.GetDirectoryName(Settings.GameExecutablePath);
+				var extenderUpdaterPath = _fs.Path.Join(exeDir, DivinityApp.EXTENDER_UPDATER_FILE);
 				var toolboxPath = DivinityApp.GetToolboxPath();
 
-				if (File.Exists(toolboxPath) && File.Exists(extenderUpdaterPath)
-					&& _settings.ExtenderUpdaterSettings.UpdaterVersion >= 4
-					&& RuntimeHelper.NetCoreRuntimeGreaterThanOrEqualTo(7))
+				if (_fs.File.Exists(toolboxPath) && _fs.File.Exists(extenderUpdaterPath)
+					&& _settings.ExtenderUpdaterSettings.UpdaterVersion >= 4)
 				{
 					DivinityApp.Log($"Running '{toolboxPath}' to update the script extender.");
 
 					using var process = new Process();
 					var info = process.StartInfo;
 					info.FileName = toolboxPath;
-					info.WorkingDirectory = Path.GetDirectoryName(toolboxPath);
+					info.WorkingDirectory = _fs.Path.GetDirectoryName(toolboxPath);
 					info.Arguments = $"UpdateScriptExtender -u \"{extenderUpdaterPath}\" -b \"{exeDir}\"";
 					info.UseShellExecute = false;
 					info.CreateNoWindow = true;
@@ -275,6 +274,10 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 					}
 					process.ErrorDataReceived -= OnToolboxOutput;
 					process.OutputDataReceived -= OnToolboxOutput;
+				}
+				else
+				{
+					DivinityApp.Log($"Skipping running '{toolboxPath}'");
 				}
 			}
 			catch (Exception ex)
@@ -297,7 +300,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		{
 			if (Settings.GameExecutablePath.IsExistingFile())
 			{
-				var exeDir = Path.GetDirectoryName(Settings.GameExecutablePath);
+				var exeDir = _fs.Path.GetDirectoryName(Settings.GameExecutablePath);
 				var messageText = Loca.MessageBox_ScriptExtenderDownloadConfirmation_Message.SafeFormat(@"Download and install the Script Extender?", PathwayData.ScriptExtenderLatestReleaseUrl, exeDir);
 
 				_interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ScriptExtenderDownloadConfirmation_Title, messageText,
@@ -323,9 +326,9 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	private void CheckExtenderUpdaterVersion()
 	{
-		var extenderUpdaterPath = Path.Join(Path.GetDirectoryName(Settings.GameExecutablePath), DivinityApp.EXTENDER_UPDATER_FILE);
+		var extenderUpdaterPath = _fs.Path.Join(_fs.Path.GetDirectoryName(Settings.GameExecutablePath), DivinityApp.EXTENDER_UPDATER_FILE);
 		DivinityApp.Log($"Looking for Script Extender at '{extenderUpdaterPath}'.");
-		if (File.Exists(extenderUpdaterPath))
+		if (_fs.File.Exists(extenderUpdaterPath))
 		{
 			DivinityApp.Log($"Checking {DivinityApp.EXTENDER_UPDATER_FILE} for Script Extender ASCII bytes.");
 			try
@@ -373,8 +376,8 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	public bool CheckExtenderInstalledVersion(CancellationToken? t)
 	{
-		var extenderAppDataDir = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DivinityApp.EXTENDER_APPDATA_DIRECTORY);
-		if (Directory.Exists(extenderAppDataDir))
+		var extenderAppDataDir = _fs.Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DivinityApp.EXTENDER_APPDATA_DIRECTORY);
+		if (_fs.Directory.Exists(extenderAppDataDir))
 		{
 			var files = FileUtils.EnumerateFiles(extenderAppDataDir, FileUtils.RecursiveOptions, (f) => f.EndsWith(DivinityApp.EXTENDER_APPDATA_DLL, StringComparison.OrdinalIgnoreCase));
 			var isInstalled = false;
@@ -515,7 +518,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	private void TryStartGameExe(string exePath, string workingDirectory, string launchParams = "")
 	{
-		if (!ProcessHelper.TryOpenPath(exePath, File.Exists, launchParams, workingDirectory))
+		if (!ProcessHelper.TryOpenPath(exePath, _fs.File.Exists, launchParams, workingDirectory))
 		{
 			_globalCommands.ShowAlert(Loca.Alert_Error_StartGameExeFailed.SafeFormat($"Failed to start game exe '{exePath}' - Check the 'Game Executable Path' in the preferences", exePath), AlertType.Danger);
 		}
@@ -573,12 +576,12 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				exeArgs.Add($"-modded {isModded}");
 
 				var exePath = Environment.ExpandEnvironmentVariables(Settings.GameExecutablePath);
-				var exeDir = Path.GetDirectoryName(exePath)!;
+				var exeDir = _fs.Path.GetDirectoryName(exePath)!;
 
 				if (Settings.LaunchDX11)
 				{
-					var nextExe = Path.Combine(exeDir, "bg3_dx11.exe");
-					if (File.Exists(nextExe))
+					var nextExe = _fs.Path.Combine(exeDir, "bg3_dx11.exe");
+					if (_fs.File.Exists(nextExe))
 					{
 						exePath = nextExe;
 					}
@@ -663,7 +666,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		{
 			if (path.IsValid())
 			{
-				gameUtils.AddGameProcessName(Path.GetFileNameWithoutExtension(path));
+				gameUtils.AddGameProcessName(_fs.Path.GetFileNameWithoutExtension(path));
 				AppServices.Get<IModSettingsExportService>()?.SetGameVersion(path);
 			}
 		});
@@ -687,7 +690,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		var canOpenGameFolder = Settings.WhenAnyValue(x => x.GameExecutablePath, (p) => !string.IsNullOrEmpty(p) && File.Exists(p));
 		Keys.OpenGameFolder.AddAction(() =>
 		{
-			var folder = Path.GetDirectoryName(Settings.GameExecutablePath);
+			var folder = _fs.Path.GetDirectoryName(Settings.GameExecutablePath);
 			if (Directory.Exists(folder))
 			{
 				FileUtils.TryOpenPath(folder);
@@ -806,9 +809,9 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		LoadAppConfig();
 
 #if DOS2
-		Settings.DefaultExtenderLogDirectory = Path.Join(Pathways.GetLarianStudiosAppDataFolder(), "Divinity Original Sin 2 Definitive Edition", "Extender Logs");
+		Settings.DefaultExtenderLogDirectory = _fs.Path.Join(Pathways.GetLarianStudiosAppDataFolder(), "Divinity Original Sin 2 Definitive Edition", "Extender Logs");
 #else
-		Settings.DefaultExtenderLogDirectory = Path.Join(_pathways.GetLarianStudiosAppDataFolder(), "Baldur's Gate 3", "Extender Logs");
+		Settings.DefaultExtenderLogDirectory = _fs.Path.Join(_pathways.GetLarianStudiosAppDataFolder(), "Baldur's Gate 3", "Extender Logs");
 #endif
 
 		var githubSupportEnabled = AppSettings.Features.GitHub;
@@ -834,13 +837,13 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				{
 					var data = PathwayData;
 					var dir = result.File;
-					var dataDirectory = Path.Join(dir, AppSettings.DefaultPathways.GameDataFolder);
-					var exePath = Path.Join(dir, AppSettings.DefaultPathways.Steam.ExePath);
-					if (!File.Exists(exePath))
+					var dataDirectory = _fs.Path.Join(dir, AppSettings.DefaultPathways.GameDataFolder);
+					var exePath = _fs.Path.Join(dir, AppSettings.DefaultPathways.Steam.ExePath);
+					if (!_fs.File.Exists(exePath))
 					{
-						exePath = Path.Join(dir, AppSettings.DefaultPathways.GOG.ExePath);
+						exePath = _fs.Path.Join(dir, AppSettings.DefaultPathways.GOG.ExePath);
 					}
-					if (Directory.Exists(dataDirectory))
+					if (_fs.Directory.Exists(dataDirectory))
 					{
 						Settings.GameDataPath = dataDirectory;
 						GameDirectoryFound = true;
@@ -849,7 +852,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 					{
 						_globalCommands.ShowAlert(Loca.Alert_Error_Picker_GameDataPath_NoDataFolder, AlertType.Danger);
 					}
-					if (File.Exists(exePath))
+					if (_fs.File.Exists(exePath))
 					{
 						Settings.GameExecutablePath = exePath;
 					}
@@ -920,7 +923,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				directory = Settings.LastImportDirectoryPath;
 			}
 
-			if (!Directory.Exists(directory) && PathwayData.LastSaveFilePath.IsValid() && FileUtils.TryGetDirectoryOrParent(PathwayData.LastSaveFilePath, out var lastDir))
+			if (!_fs.Directory.Exists(directory) && PathwayData.LastSaveFilePath.IsValid() && FileUtils.TryGetDirectoryOrParent(PathwayData.LastSaveFilePath, out var lastDir))
 			{
 				directory = lastDir;
 			}
@@ -1175,15 +1178,15 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		var profileSavesDirectory = "";
 		if (ViewModelLocator.ModOrder.SelectedProfile != null)
 		{
-			profileSavesDirectory = Path.GetFullPath(Path.Join(ViewModelLocator.ModOrder.SelectedProfile.FilePath, "Savegames"));
+			profileSavesDirectory = _fs.Path.GetFullPath(_fs.Path.Join(ViewModelLocator.ModOrder.SelectedProfile.FilePath, "Savegames"));
 		}
 
 		var startPath = "";
 		if (ViewModelLocator.ModOrder.SelectedProfile != null)
 		{
-			var profilePath = Path.GetFullPath(Path.Join(ViewModelLocator.ModOrder.SelectedProfile.FilePath, "Savegames"));
-			var storyPath = Path.Join(profilePath, "Story");
-			if (Directory.Exists(storyPath))
+			var profilePath = _fs.Path.GetFullPath(_fs.Path.Join(ViewModelLocator.ModOrder.SelectedProfile.FilePath, "Savegames"));
+			var storyPath = _fs.Path.Join(profilePath, "Story");
+			if (_fs.Directory.Exists(storyPath))
 			{
 				startPath = storyPath;
 			}
@@ -1194,18 +1197,18 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		}
 
 		var pickFile = await _dialogs.OpenFileAsync(new(
-			"Pick Save to Rename...",
+			Loca.Picker_RenameSave_FileInput_Title,
 			GetInitialStartingDirectory(startPath),
 			[CommonFileTypes.LarianSaveFile]));
 
 		if (pickFile.Success)
 		{
-			var rootFolder = Path.GetDirectoryName(pickFile.File);
-			var rootFileName = Path.GetFileNameWithoutExtension(pickFile.File);
+			var rootFolder = _fs.Path.GetDirectoryName(pickFile.File);
+			var rootFileName = _fs.Path.GetFileNameWithoutExtension(pickFile.File);
 			PathwayData.LastSaveFilePath = rootFolder;
 
 			var renameFile = await _dialogs.SaveFileAsync(new(
-				"Rename Save As...",
+				Loca.Picker_RenameSave_FileOutput_Title,
 				rootFolder,
 				[CommonFileTypes.LarianSaveFile],
 				rootFileName + "_1.lsv",
@@ -1215,7 +1218,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			{
 				AppServices.Get<IFileSystemService>()!.Directory.CreateDirectory(rootFolder);
 
-				rootFolder = Path.GetDirectoryName(renameFile.File);
+				rootFolder = _fs.Path.GetDirectoryName(renameFile.File);
 				PathwayData.LastSaveFilePath = rootFolder;
 				DivinityApp.Log($"Renaming '{pickFile.File}' to '{renameFile.File}'.");
 
@@ -1223,33 +1226,33 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				{
 					try
 					{
-						var previewImage = Path.Join(rootFolder, rootFileName + ".WebP");
-						var renamedImage = Path.Join(rootFolder, Path.GetFileNameWithoutExtension(renameFile.File) + ".WebP");
-						if (File.Exists(previewImage))
+						var previewImage = _fs.Path.Join(rootFolder, rootFileName + ".WebP");
+						var renamedImage = _fs.Path.Join(rootFolder, _fs.Path.GetFileNameWithoutExtension(renameFile.File) + ".WebP");
+						if (_fs.File.Exists(previewImage))
 						{
-							File.Move(previewImage, renamedImage);
+							_fs.File.Move(previewImage, renamedImage);
 							DivinityApp.Log($"Renamed save screenshot '{previewImage}' to '{renamedImage}'.");
 						}
 
-						var originalDirectory = Path.GetDirectoryName(pickFile.File);
-						var desiredDirectory = Path.GetDirectoryName(renameFile.File);
+						var originalDirectory = _fs.Path.GetDirectoryName(pickFile.File);
+						var desiredDirectory = _fs.Path.GetDirectoryName(renameFile.File);
 
 						if (profileSavesDirectory.IsValid() && desiredDirectory.IsValid() && FileUtils.IsSubdirectoryOf(profileSavesDirectory, desiredDirectory))
 						{
 							if (originalDirectory == desiredDirectory)
 							{
-								var dirInfo = new DirectoryInfo(originalDirectory);
-								if (dirInfo != null && dirInfo.Parent != null && dirInfo.Name.Equals(Path.GetFileNameWithoutExtension(pickFile.File)))
+								var dirInfo = _fs.DirectoryInfo.New(originalDirectory);
+								if (dirInfo != null && dirInfo.Parent != null && dirInfo.Name.Equals(_fs.Path.GetFileNameWithoutExtension(pickFile.File)))
 								{
-									desiredDirectory = Path.Join(dirInfo.Parent.FullName, Path.GetFileNameWithoutExtension(renameFile.File));
+									desiredDirectory = _fs.Path.Join(dirInfo.Parent.FullName, _fs.Path.GetFileNameWithoutExtension(renameFile.File));
 									RecycleBinHelper.DeleteFile(pickFile.File, false, false);
-									Directory.Move(originalDirectory, desiredDirectory);
+									_fs.Directory.Move(originalDirectory, desiredDirectory);
 									DivinityApp.Log($"Renamed save folder '{originalDirectory}' to '{desiredDirectory}'.");
 								}
 							}
 						}
 
-						_globalCommands.ShowAlert($"Successfully renamed '{pickFile.File}' to '{renameFile.File}'", AlertType.Success, 15);
+						_globalCommands.ShowAlert(Loca.Alert_Success_RenameSave.SafeFormat($"Successfully renamed '{pickFile.File}' to '{renameFile.File}'", pickFile.File, renameFile.File), AlertType.Success, 15);
 					}
 					catch (Exception ex)
 					{
@@ -1315,7 +1318,6 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 	{
 		if (!IsInitialized)
 		{
-			Progress.Title = "Loading...";
 			RefreshStart();
 		}
 	}
@@ -1351,7 +1353,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 	private async Task ExtractSelectedMods_ChooseFolder()
 	{
 		var result = await _dialogs.OpenFolderAsync(new(
-			"Select folder to extract mod(s) to...",
+			Loca.Picker_ExtractSelectedMods_Title,
 			GetInitialStartingDirectory(Settings.LastExtractOutputPath)));
 
 		if (result.Success && result.File.IsValid())
@@ -1366,14 +1368,14 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 			var totalWork = targetMods.Count;
 			var taskStepAmount = 100d / totalWork;
-			Progress.Title = $"Extracting {totalWork} mods...";
+			Progress.Title = Loca.Progress_ExtractSelectedMods_Title.SafeFormat($"Extracting {totalWork} mods...", totalWork);
 
 			var openOutputPath = result.File;
 
 			var successes = 0;
 
-			var filesToProcess = targetMods.Select(x => x.FilePath);
-			Progress.Start(async token =>
+			List<string> filesToProcess = [.. targetMods.Where(x => x.FilePath.IsValid()).Select(x => x.FilePath)];
+			await Progress.Start(async token =>
 			{
 				await Parallel.ForEachAsync(filesToProcess, token, async (path, t) =>
 				{
@@ -1382,12 +1384,12 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 					try
 					{
 						//Put each pak into its own folder
-						var pakName = Path.GetFileNameWithoutExtension(path);
-						Progress.WorkText += $"Extracting {pakName}...\n";
-						var destination = Path.Join(outputDirectory, pakName);
+						var pakName = _fs.Path.GetFileNameWithoutExtension(path);
+						Progress.WorkText += Loca.Progress_ExtractSelectedMods_ExtractPak.SafeFormat($"Extracting {pakName}...\n", pakName);
+						var destination = _fs.Path.Join(outputDirectory, pakName);
 
 						//In case the foldername == the pak name and we're only extracting one pak
-						if (totalWork == 1 && Path.GetDirectoryName(outputDirectory).Equals(pakName))
+						if (totalWork == 1 && _fs.Path.GetDirectoryName(outputDirectory)?.Equals(pakName) == true)
 						{
 							destination = outputDirectory;
 						}
@@ -1433,8 +1435,9 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		}
 		else
 		{
-			var msg = $"Extract the following mods?\n'{string.Join("\n", _manager.SelectedPakMods.Select(x => $"{x.DisplayName}"))}";
-			var result = await _interactions.ShowMessageBox.Handle(new("Extract Mods?", msg, InteractionMessageBoxType.YesNo));
+			var selectedModNames = string.Join("\n", _manager.SelectedPakMods.Select(x => $"{x.DisplayName}"));
+			var msg = Loca.MessageBox_ExtractSelectedMods_Message.SafeFormat($"Extract the following mods?\n{selectedModNames}", selectedModNames);
+			var result = await _interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ExtractSelectedMods_Title, msg, InteractionMessageBoxType.YesNo));
 			if (result)
 			{
 				await ExtractSelectedMods_ChooseFolder();
@@ -1446,14 +1449,14 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 	{
 		var mod = ViewModelLocator.ModOrder.SelectedAdventureMod;
 
-		if (mod == null || mod.IsLooseMod || mod.IsLarianMod || !File.Exists(mod.FilePath))
+		if (mod == null || mod.IsLooseMod || mod.IsLarianMod || !_fs.File.Exists(mod.FilePath))
 		{
 			var displayName = mod != null ? mod.DisplayName : "";
-			_globalCommands.ShowAlert($"Current adventure mod '{displayName}' is not extractable", AlertType.Warning, 30);
+			_globalCommands.ShowAlert(Loca.Alert_Warning_ExtractSelectedAdventure_NotExtratable.SafeFormat($"Current adventure mod '{displayName}' is not extractable", displayName), AlertType.Warning, 30);
 			return;
 		}
 
-		var result = await _dialogs.OpenFolderAsync(new("Select folder to extract mod to...",
+		var result = await _dialogs.OpenFolderAsync(new(Loca.Picker_ExtractSelectedAdventure_Title,
 			GetInitialStartingDirectory(Settings.LastExtractOutputPath)));
 
 		if (result.Success && result.File.IsValid())
@@ -1464,21 +1467,21 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			var outputDirectory = result.File;
 			DivinityApp.Log($"Extracting adventure mod to '{outputDirectory}'.");
 
-			Progress.Title = $"Extracting {mod.DisplayName}...";
+			Progress.Title = Loca.Progress_ExtractSelectedAdventure_Title.SafeFormat($"Extracting {mod.DisplayName}...", mod.DisplayName);
 
 			var openOutputPath = result.File;
 
 			var path = mod.FilePath;
 			var success = false;
 
-			Progress.Start(async token =>
+			await Progress.Start(async token =>
 			{
 				try
 				{
-					var pakName = Path.GetFileNameWithoutExtension(path);
-					Progress.WorkText = $"Extracting {pakName}...";
-					var destination = Path.Join(outputDirectory, pakName);
-					if (Path.GetDirectoryName(outputDirectory).Equals(pakName))
+					var pakName = _fs.Path.GetFileNameWithoutExtension(path);
+					Progress.WorkText = Loca.Progress_ExtractSelectedMods_ExtractPak.SafeFormat($"Extracting {pakName}...", pakName);
+					var destination = _fs.Path.Join(outputDirectory, pakName);
+					if (_fs.Path.GetDirectoryName(outputDirectory)?.Equals(pakName) == true)
 					{
 						destination = outputDirectory;
 					}
@@ -1494,12 +1497,12 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				{
 					if (success)
 					{
-						_globalCommands.ShowAlert($"Successfully extracted adventure mod to '{result.File}'", AlertType.Success, 20);
+						_globalCommands.ShowAlert(Loca.Alert_Success_ExtractSelectedAdventure.SafeFormat($"Successfully extracted adventure mod to '{result.File}'", result.File), AlertType.Success, 20);
 						ProcessHelper.TryOpenPath(openOutputPath, _fs.Directory.Exists);
 					}
 					else
 					{
-						_globalCommands.ShowAlert($"Error occurred when extracting adventure mod to '{result.File}'", AlertType.Danger, 30);
+						_globalCommands.ShowAlert(Loca.Alert_Error_ExtractSelectedAdventure.SafeFormat($"Error occurred when extracting adventure mod to '{result.File}'", result.File), AlertType.Danger, 30);
 					}
 				});
 			}, true);
@@ -1511,7 +1514,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		AppSettingsLoaded = false;
 		if (!_settings.TryLoadAppSettings(out var ex))
 		{
-			_globalCommands.ShowAlert($"Error loading app settings: {ex.Message}", AlertType.Danger);
+			_globalCommands.ShowAlert(Loca.Alert_Error_LoadAppConfig.SafeFormat($"Error loading app settings: {ex?.Message}", ex?.Message), AlertType.Danger);
 			return;
 		}
 		AppSettingsLoaded = true;
@@ -1519,26 +1522,26 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	private void CreateSteamApiTextFile(string exePath)
 	{
-		var binFolder = Path.GetDirectoryName(exePath);
+		var binFolder = _fs.Path.GetDirectoryName(exePath);
 		// Steam folder check essentially
-		var steamAppiDll = Path.Join(binFolder, "steam_api64.dll");
-		var steamAppidPath = Path.Join(binFolder, "steam_appid.txt");
-		if (!File.Exists(steamAppidPath) && File.Exists(steamAppiDll))
+		var steamApiDLL = _fs.Path.Join(binFolder, "steam_api64.dll");
+		var steamAppIdPath = _fs.Path.Join(binFolder, "steam_appid.txt");
+		if (!_fs.File.Exists(steamAppIdPath) && _fs.File.Exists(steamApiDLL))
 		{
-			File.WriteAllText(steamAppidPath, "1086940");
-			_globalCommands.ShowAlert($"Skip Launcher - Created '{steamAppidPath}'", AlertType.Success, 10);
+			_fs.File.WriteAllText(steamAppIdPath, DivinityApp.STEAM_APPID);
+			_globalCommands.ShowAlert(Loca.Alert_Success_CreateSteamApiTextFile.SafeFormat($"Skip Launcher - Created '{steamAppIdPath}'", steamAppIdPath), AlertType.Success, 10);
 		}
 	}
 
 	private void RemoveSteamApiTextFile(string exePath)
 	{
-		var binFolder = Path.GetDirectoryName(exePath);
-		var steamAppidPath = Path.Join(binFolder, "steam_appid.txt");
-		if (File.Exists(steamAppidPath))
+		var binFolder = _fs.Path.GetDirectoryName(exePath);
+		var steamAppidPath = _fs.Path.Join(binFolder, "steam_appid.txt");
+		if (_fs.File.Exists(steamAppidPath))
 		{
 			try
 			{
-				File.Delete(steamAppidPath);
+				_fs.File.Delete(steamAppidPath);
 				_globalCommands.ShowAlert($"Skip Launcher - Deleted '{steamAppidPath}'", AlertType.Danger, 10);
 			}
 			catch (Exception ex)
@@ -1707,7 +1710,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 							else if (total == 1)
 							{
 								var modFileName = result.Mods.First().FileName;
-								var fileNames = string.Join(", ", files.Select(x => Path.GetFileName(x)));
+								var fileNames = string.Join(", ", files.Select(x => _fs.Path.GetFileName(x)));
 								_globalCommands.ShowAlert($"Successfully imported '{modFileName}' from '{fileNames}'", AlertType.Success, 20);
 							}
 							else

@@ -70,6 +70,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error occurred when extracting adventure mod to &apos;{0}&apos;.
+        /// </summary>
+        public static string Alert_Error_ExtractSelectedAdventure {
+            get {
+                return ResourceManager.GetString("Alert_Error_ExtractSelectedAdventure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game Data folder is not valid. Please set it in the preferences window and refresh.
         /// </summary>
         public static string Alert_Error_GameDataFolderInvalid {
@@ -102,6 +111,15 @@ namespace ModManager.Locale {
         public static string Alert_Error_LaunchGame_NotFound {
             get {
                 return ResourceManager.GetString("Alert_Error_LaunchGame_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading app settings: {0}.
+        /// </summary>
+        public static string Alert_Error_LoadAppConfig {
+            get {
+                return ResourceManager.GetString("Alert_Error_LoadAppConfig", resourceCulture);
             }
         }
         
@@ -151,6 +169,33 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skip Launcher - Created &apos;{0}&apos;.
+        /// </summary>
+        public static string Alert_Success_CreateSteamApiTextFile {
+            get {
+                return ResourceManager.GetString("Alert_Success_CreateSteamApiTextFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully extracted adventure mod to &apos;{0}&apos;.
+        /// </summary>
+        public static string Alert_Success_ExtractSelectedAdventure {
+            get {
+                return ResourceManager.GetString("Alert_Success_ExtractSelectedAdventure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully renamed &apos;{0}&apos; to &apos;{1}&apos;.
+        /// </summary>
+        public static string Alert_Success_RenameSave {
+            get {
+                return ResourceManager.GetString("Alert_Success_RenameSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successfully installed the Extender updater {0} to &apos;{1}&apos;.
         /// </summary>
         public static string Alert_Success_ScriptExtenderInstalled {
@@ -165,6 +210,15 @@ namespace ModManager.Locale {
         public static string Alert_Warning_DocumentsFolderPathOverrideChanged {
             get {
                 return ResourceManager.GetString("Alert_Warning_DocumentsFolderPathOverrideChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current adventure mod &apos;{0}&apos; is not extractable.
+        /// </summary>
+        public static string Alert_Warning_ExtractSelectedAdventure_NotExtratable {
+            get {
+                return ResourceManager.GetString("Alert_Warning_ExtractSelectedAdventure_NotExtratable", resourceCulture);
             }
         }
         
@@ -1447,6 +1501,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extract the following mods?\n{0}.
+        /// </summary>
+        public static string MessageBox_ExtractSelectedMods_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_ExtractSelectedMods_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract Mods?.
+        /// </summary>
+        public static string MessageBox_ExtractSelectedMods_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_ExtractSelectedMods_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BG3MM lacks permission to read one or both of the following paths:\nGame Data Path: ({0})\nGame Executable Path: ({1})..
         /// </summary>
         public static string MessageBox_LoadSettings_PermissionDenied_Message {
@@ -1894,6 +1966,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Select folder to extract mod to...&quot;.
+        /// </summary>
+        public static string Picker_ExtractSelectedAdventure_Title {
+            get {
+                return ResourceManager.GetString("Picker_ExtractSelectedAdventure_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select folder to extract mod(s) to....
+        /// </summary>
+        public static string Picker_ExtractSelectedMods_Title {
+            get {
+                return ResourceManager.GetString("Picker_ExtractSelectedMods_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set the path to the Baldur&apos;s Gate 3 root installation folder.
         /// </summary>
         public static string Picker_GameDataPath_Description {
@@ -1908,6 +1998,24 @@ namespace ModManager.Locale {
         public static string Picker_GameDataPath_Title {
             get {
                 return ResourceManager.GetString("Picker_GameDataPath_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Save to Rename....
+        /// </summary>
+        public static string Picker_RenameSave_FileInput_Title {
+            get {
+                return ResourceManager.GetString("Picker_RenameSave_FileInput_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Save As....
+        /// </summary>
+        public static string Picker_RenameSave_FileOutput_Title {
+            get {
+                return ResourceManager.GetString("Picker_RenameSave_FileOutput_Title", resourceCulture);
             }
         }
         
@@ -1953,6 +2061,33 @@ namespace ModManager.Locale {
         public static string Progress_ExportLoadOrderToArchiveAsync_Title {
             get {
                 return ResourceManager.GetString("Progress_ExportLoadOrderToArchiveAsync_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting {0}....
+        /// </summary>
+        public static string Progress_ExtractSelectedAdventure_Title {
+            get {
+                return ResourceManager.GetString("Progress_ExtractSelectedAdventure_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting {0}...\n.
+        /// </summary>
+        public static string Progress_ExtractSelectedMods_ExtractPak {
+            get {
+                return ResourceManager.GetString("Progress_ExtractSelectedMods_ExtractPak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting {0} mods....
+        /// </summary>
+        public static string Progress_ExtractSelectedMods_Title {
+            get {
+                return ResourceManager.GetString("Progress_ExtractSelectedMods_Title", resourceCulture);
             }
         }
         

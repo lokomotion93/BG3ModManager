@@ -40,6 +40,8 @@ public static class DivinityApp
 
 	public const string HTTP_USER = "BG3ModManagerUser";
 
+	public const string STEAM_APPID = "1086940";
+
 	public const string GITHUB_USER = "LaughingLeader";
 	public const string GITHUB_REPO = "BG3ModManager";
 	public const string GITHUB_RELEASE_ASSET = "BG3ModManager_Latest.zip";

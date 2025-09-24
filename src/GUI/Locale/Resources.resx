@@ -1387,9 +1387,37 @@
 	<data name="Progress_ExportLoadOrderToArchiveAsync_Title" xml:space="preserve">
 		<value>Adding active mods to zip...</value>
 	</data>
+	<data name="Progress_ExtractSelectedMods_Title" xml:space="preserve">
+		<value>Extracting {0} mods...</value>
+		<comment>Placeholders: total mods</comment>
+	</data>
+	<data name="Progress_ExtractSelectedMods_ExtractPak" xml:space="preserve">
+		<value>Extracting {0}...\n</value>
+		<comment>Placeholders: pak file name</comment>
+	</data>
+	<data name="Progress_ExtractSelectedAdventure_Title" xml:space="preserve">
+		<value>Extracting {0}...</value>
+		<comment>Placeholders: mod display name</comment>
+	</data>
 	<data name="Alert_Success_ScriptExtenderInstalled" xml:space="preserve">
 		<value>Successfully installed the Extender updater {0} to '{1}'</value>
 		<comment>Placeholders: latest release url, executable directory</comment>
+	</data>
+	<data name="Alert_Success_RenameSave" xml:space="preserve">
+		<value>Successfully renamed '{0}' to '{1}'</value>
+		<comment>Placeholders: input file, output file</comment>
+	</data>
+	<data name="Alert_Success_ExtractSelectedAdventure" xml:space="preserve">
+		<value>Successfully extracted adventure mod to '{0}'</value>
+		<comment>Placeholders: output folder</comment>
+	</data>
+	<data name="Alert_Success_CreateSteamApiTextFile" xml:space="preserve">
+		<value>Skip Launcher - Created '{0}'</value>
+		<comment>Placeholders: file path</comment>
+	</data>
+	<data name="Alert_Error_ExtractSelectedAdventure" xml:space="preserve">
+		<value>Error occurred when extracting adventure mod to '{0}'</value>
+		<comment>Placeholders: output folder</comment>
 	</data>
 	<data name="Alert_Error_ScriptExtenderInstallationError" xml:space="preserve">
 		<value>Error occurred when installing the Extender updater {0} - Check the log</value>
@@ -1423,6 +1451,12 @@
 	</data>
 	<data name="Alert_Error_ExportLoadOrderToArchiveAs" xml:space="preserve">
 		<value>The current profile or the current mod order is null! Failed to export mod order</value>
+	</data>
+	<data name="Alert_Error_LoadAppConfig" xml:space="preserve">
+		<value>Error loading app settings: {0}</value>
+	</data>
+	<data name="Alert_Warning_ExtractSelectedAdventure_NotExtratable" xml:space="preserve">
+		<value>Current adventure mod '{0}' is not extractable</value>
 	</data>
 	<data name="Alert_Warning_DocumentsFolderPathOverrideChanged" xml:space="preserve">
 		<value>AppData path override set to '{0}' - Make sure to refresh</value>
@@ -1465,6 +1499,13 @@ Directory the zip will be extracted to:
 	<data name="MessageBox_ExportLoadOrderToArchiveAsync_Message" xml:space="preserve">
 		<value>Save active mods to a zip file?\nDepending on the number of mods, this may take some time.</value>
 	</data>
+	<data name="MessageBox_ExtractSelectedMods_Title" xml:space="preserve">
+		<value>Extract Mods?</value>
+	</data>
+	<data name="MessageBox_ExtractSelectedMods_Message" xml:space="preserve">
+		<value>Extract the following mods?\n{0}</value>
+		<comment>Placeholders: selected mods</comment>
+	</data>
 	<data name="Picker_GameDataPath_Title" xml:space="preserve">
 		<value>Set Game Installation Folder</value>
 	</data>
@@ -1473,5 +1514,17 @@ Directory the zip will be extracted to:
 	</data>
 	<data name="Picker_ExportLoadOrderToArchiveAs_Title" xml:space="preserve">
 		<value>Export Load Order As...</value>
+	</data>
+	<data name="Picker_RenameSave_FileInput_Title" xml:space="preserve">
+		<value>Pick Save to Rename...</value>
+	</data>
+	<data name="Picker_RenameSave_FileOutput_Title" xml:space="preserve">
+		<value>Rename Save As...</value>
+	</data>
+	<data name="Picker_ExtractSelectedMods_Title" xml:space="preserve">
+		<value>Select folder to extract mod(s) to...</value>
+	</data>
+	<data name="Picker_ExtractSelectedAdventure_Title" xml:space="preserve">
+		<value>"Select folder to extract mod to..."</value>
 	</data>
 </root>
