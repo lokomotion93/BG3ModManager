@@ -121,7 +121,7 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 
 	public ModOrderContainer ToSerialized()
 	{
-		var container = new ModOrderContainer(UUID) { Name = this.DisplayName, Settings = Settings };
+		var container = new ModOrderContainer(UUID) { Name = Settings.DisplayName, Settings = Settings};
 		if(Children != null)
 		{
 			foreach (var child in Children)
@@ -167,9 +167,13 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 		this.WhenAnyValue(x => x.IsHidden, b => !b).ToUIProperty(this, x => x.IsVisible, true);
 
 		Settings = new(uuid);
-		this.WhenAnyValue(x => x.Settings.DisplayName).ToUIProperty(this, x => x.DisplayName);
-		this.WhenAnyValue(x => x.Settings.Description).ToUIProperty(this, x => x.Description);
+		Settings.WhenAnyValue(x => x.DisplayName).ToUIProperty(this, x => x.DisplayName);
+		Settings.WhenAnyValue(x => x.Description).ToUIProperty(this, x => x.Description);
 		this.WhenAnyValue(x => x.Description, x => x.IsValid()).ToUIProperty(this, x => x.HasDescription, false);
+
+		Settings.WhenAnyValue(x => x.IsExpanded).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.IsExpanded);
+		this.WhenAnyValue(x => x.IsExpanded).BindTo(Settings, x => x.IsExpanded);
+
 		_children.ToObservableChangeSet().CountChanged().Select(_ => GetContainerToolTipTitleText()).ToUIProperty(this, x => x.ContainerToolTipTitleText);
 
 		var modsConn = _children.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));

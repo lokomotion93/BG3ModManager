@@ -433,6 +433,11 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 						var defaultBG = row.Background;
 						row[!BackgroundProperty] = container.Settings.WhenAnyValue(x => x.BackgroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultBG).ToBinding();
 						row[!BorderThicknessProperty] = container.Settings.WhenAnyValue(x => x.BorderThickness).Select(x => x.IsValid() ? Thickness.Parse(x) : modContainerThickness).ToBinding();
+
+						if(container.IsExpanded && row.Rows != null && row.Rows[row.RowIndex] is HierarchicalRow<IModEntry> hierarchicalRow)
+						{
+							hierarchicalRow.IsExpanded = true;
+						}
 					}
 				}
 
