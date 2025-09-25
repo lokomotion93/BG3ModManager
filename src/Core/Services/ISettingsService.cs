@@ -11,6 +11,7 @@ public interface ISettingsService
 	ScriptExtenderSettings ExtenderSettings { get; }
 	ScriptExtenderUpdateConfig ExtenderUpdaterSettings { get; }
 	ModManagerContainerSettings ContainerSettings { get; }
+	InactiveModsConfig InactiveMods { get; }
 
 	bool TrySave(ISerializableSettings settings, out Exception? ex);
 	bool TryLoad(ISerializableSettings settings, out Exception? ex, bool saveIfNotFound = true);

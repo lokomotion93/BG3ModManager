@@ -233,6 +233,10 @@ public class ModOrder : ReactiveObject
 					var container = (ModOrderContainer)entry;
 					var existingContainer = (ModOrderContainer)existing;
 
+					if (existingContainer.Settings != null && container.Settings != null)
+					{
+						existingContainer.Settings.SetFrom(container.Settings);
+					}
 					existingContainer.Name = container.Name;
 					existingContainer.Children.Clear();
 					existingContainer.Children.AddRange(container.Children);
@@ -261,13 +265,7 @@ public class ModOrder : ReactiveObject
 		}
 	}
 
-	public void SetOrder(IEnumerable<IModOrderEntry> nextOrder)
-	{
-		Order.Clear();
-		Order.AddRange(nextOrder);
-	}
-
-	public void SetOrder(ModOrder nextOrder)
+	public void CopyOrder(ModOrder nextOrder)
 	{
 		Order.Clear();
 		Order.AddRange(nextOrder.Order);

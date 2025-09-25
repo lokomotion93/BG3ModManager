@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Runtime.Serialization.DataContracts;
 
 using TextCopy;
 
@@ -696,7 +697,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 					if (_fs.PathEquals(order.FilePath, outputPath))
 					{
 						updatedOrderIndex = i;
-						order.SetOrder(tempOrder);
+						order.CopyOrder(tempOrder);
 						updatedOrder = true;
 						DivinityApp.Log($"Updated saved order '{order.Name}' from '{modOrderName}'");
 					}
@@ -782,7 +783,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 					//Update "Current" order
 					if (!SelectedModOrder.IsModSettings)
 					{
-						ModOrderList.First(x => x.IsModSettings)?.SetOrder(SelectedModOrder.Order);
+						ModOrderList.First(x => x.IsModSettings)?.CopyOrder(SelectedModOrder);
 					}
 
 					List<string> orderList = [];
@@ -811,8 +812,6 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		}
 		return false;
 	}
-
-
 
 	private ProfileData? _lastProfile;
 
@@ -1190,7 +1189,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 	public bool LoadModOrder() => LoadModOrder(SelectedModOrder);
 
-	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container)
+	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container, HashSet<string> addedEntries, Func<ModData, bool> canAddMod)
 	{
 		//TODO fetch from some central container settings location
 		var uiContainer = new ModContainer(container.Id, container.Name ?? string.Empty);
@@ -1199,30 +1198,39 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 			var globalContainerSettings = _settings.ContainerSettings.Containers.Lookup(container.Id);
 			if (globalContainerSettings.HasValue)
 			{
-				uiContainer.Settings.SetFrom(globalContainerSettings.Value);
+				uiContainer.Settings.SetFromDataMember(globalContainerSettings.Value);
 			}
 		}
 		else
 		{
-			uiContainer.Settings.SetFrom(container.Settings);
+			uiContainer.Settings.SetFromDataMember(container.Settings);
 		}
+		uiContainer.Settings.DisplayName = container.Name;
+		addedEntries.Add(container.Id);
 		targetList.Add(uiContainer);
 
 		foreach (var entry in container.Children)
 		{
-			if(entry.Type == ModEntryType.Mod)
+			if(!addedEntries.Contains(entry.Id))
 			{
-				if(_manager.TryGetMod(entry.Id, out var mod))
+				if (entry.Type == ModEntryType.Mod)
 				{
-					uiContainer.Children.Add(mod.ToModInterface());
+					if (_manager.TryGetMod(entry.Id, out var mod) && canAddMod(mod))
+					{
+						addedEntries.Add(entry.Id);
+						uiContainer.Children.Add(mod.ToModInterface());
+					}
 				}
-			}
-			else if(entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
-			{
-				AddNestedMods(uiContainer.Children, subContainer);
+				else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
+				{
+					AddNestedMods(uiContainer.Children, subContainer, addedEntries, canAddMod);
+				}
 			}
 		}
 	}
+
+	private static bool CanAddActiveMod(ModData mod) => mod.CanAddToLoadOrder;
+	private static bool CanAddInactiveMod(ModData mod) => mod.CanAddToLoadOrder && !mod.IsActive;
 
 	public bool LoadModOrder(ModOrder order, List<MissingModData>? missingModsFromProfileOrder = null)
 	{
@@ -1291,27 +1299,47 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		}
 
 		ActiveMods.Clear();
+		var addedActiveMods = new HashSet<string>();
 		foreach (var entry in order.Order)
 		{
 			if(entry.Type == ModEntryType.Mod)
 			{
 				if(modManager.TryGetMod(entry.Id, out var mod))
 				{
+					addedActiveMods.Add(entry.Id);
 					ActiveMods.Add(mod.ToModInterface());
 				}
 			}
 			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
 			{
-				AddNestedMods(ActiveMods, container);
+				AddNestedMods(ActiveMods, container, addedActiveMods, CanAddActiveMod);
 			}
 		}
 
 		InactiveMods.Clear();
-		var inactiveMods = modManager.AddonMods.Where(x => x.CanAddToLoadOrder && !x.IsActive).ToList();
-		if(inactiveMods.Count > 0)
+		var addedInactiveMods = new HashSet<string>();
+		foreach (var entry in _settings.InactiveMods.Order.Order)
 		{
-			foreach (var mod in inactiveMods)
+			if (entry.Type == ModEntryType.Mod)
 			{
+				if (modManager.TryGetMod(entry.Id, out var mod) && CanAddInactiveMod(mod))
+				{
+					addedInactiveMods.Add(entry.Id);
+					InactiveMods.Add(mod.ToModInterface());
+				}
+			}
+			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
+			{
+				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveMod);
+			}
+		}
+
+		var remainingInactiveMods = modManager.AddonMods.Where(x => x.CanAddToLoadOrder && !x.IsActive && !addedInactiveMods.Contains(x.UUID)).ToList();
+		if (remainingInactiveMods.Count > 0)
+		{
+			foreach (var mod in remainingInactiveMods)
+			{
+				addedInactiveMods.Add(mod.UUID);
 				InactiveMods.Add(mod.ToModInterface());
 			}
 		}
@@ -1451,7 +1479,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		{
 			if (SelectedModOrder != null)
 			{
-				SelectedModOrder.SetOrder(order);
+				SelectedModOrder.CopyOrder(order);
 				if (LoadModOrder(SelectedModOrder))
 				{
 					DivinityApp.Log($"Successfully re-loaded order {SelectedModOrder.Name} with save order.");
@@ -1490,7 +1518,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				{
 					if (SelectedModOrder != null)
 					{
-						SelectedModOrder.SetOrder(newOrder);
+						SelectedModOrder.CopyOrder(newOrder);
 						if (LoadModOrder(SelectedModOrder))
 						{
 							AppServices.Commands.ShowAlert($"Successfully overwrote order '{SelectedModOrder.Name}' with with imported order", AlertType.Success, 20);
@@ -1906,6 +1934,21 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 				mod.NexusModsEnabled = x.Item2;
 				mod.ModioEnabled = x.Item3;
 			}
+		});
+
+		var whenInitialized = host.WhenAnyValue(x => x.IsInitialized);
+		var canAutosaveInactive = this.WhenAnyValue(x => x.IsRefreshing, x => x.IsLoadingOrder, (b1, b2) => !b1 && !b2).CombineLatest(whenInitialized).AllTrue();
+
+		Observable.FromEvent<NotifyCollectionChangedEventHandler?, NotifyCollectionChangedEventArgs>(
+			h => (sender, e) => h(e),
+			h => InactiveMods.CollectionChanged += h,
+			h => InactiveMods.CollectionChanged -= h
+		).SkipUntil(canAutosaveInactive)
+		.Throttle(TimeSpan.FromMilliseconds(250))
+		.Subscribe(e =>
+		{
+			_settings.InactiveMods.Order.AddRange(InactiveMods, true);
+			_settings.TrySave(_settings.InactiveMods, out _);
 		});
 	}
 }

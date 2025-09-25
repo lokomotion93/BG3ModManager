@@ -86,7 +86,9 @@ public static class ModelExtensions
 			}
 		}
 	}
-	
+
+	public static void SetFromDataMember<T>(this T target, T from) where T : ReactiveObject => SetFrom<T, DataMemberAttribute>(target, from);
+
 	public static bool Save<T>(this T data, out Exception? error) where T : ISerializableSettings
 	{
 		error = null;

@@ -39,7 +39,7 @@ public class ModEntry : ReactiveObject, IModEntry
 
 	[Reactive] public ModData? Data { get; set; }
 
-	public ModOrderMod ToSerialized() => new(UUID) { Name = DisplayName };
+	public ModOrderMod ToSerialized() => new(UUID) { Name = Data?.Name ?? DisplayName };
 
 	public ModEntry(string uuid)
 	{
