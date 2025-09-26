@@ -1399,6 +1399,12 @@
 		<value>Extracting {0}...</value>
 		<comment>Placeholders: mod display name</comment>
 	</data>
+	<data name="Progress_ImportNexusModsIds_Title" xml:space="preserve">
+		<value>Parsing files for NexusMods ModIds...</value>
+	</data>
+	<data name="Progress_ImportMods_Title" xml:space="preserve">
+		<value>Importing Mods...</value>
+	</data>
 	<data name="Alert_Success_ScriptExtenderInstalled" xml:space="preserve">
 		<value>Successfully installed the Extender updater {0} to '{1}'</value>
 		<comment>Placeholders: latest release url, executable directory</comment>
@@ -1414,6 +1420,41 @@
 	<data name="Alert_Success_CreateSteamApiTextFile" xml:space="preserve">
 		<value>Skip Launcher - Created '{0}'</value>
 		<comment>Placeholders: file path</comment>
+	</data>
+	<data name="Alert_Success_ImportMods_Multiple" xml:space="preserve">
+		<value>Successfully imported {0} mods</value>
+		<comment>Placeholders: total</comment>
+	</data>
+	<data name="Alert_Success_ImportMods_Single" xml:space="preserve">
+		<value>Successfully imported '{0}' from '{1}'</value>
+		<comment>Placeholders: mod name, file names</comment>
+	</data>
+	<data name="Alert_Success_ImportMods_None" xml:space="preserve">
+		<value>Skipped importing mod - No .pak file found</value>
+	</data>
+	<data name="Alert_Warning_ImportMods_Failure" xml:space="preserve">
+		<value>No mods imported. Does the file contain a .pak?</value>
+	</data>
+	<data name="Alert_Error_ImportMods_FailedWithException" xml:space="preserve">
+		<value>Only imported {0}/{1} mods - Check the log</value>
+		<comment>Placeholders: total imported, total files</comment>
+	</data>
+	<data name="Alert_Success_ImportNexusModsIds_Multiple" xml:space="preserve">
+		<value>Successfully imported NexusMods ids for {0} mods</value>
+		<comment>Placeholders: total</comment>
+	</data>
+	<data name="Alert_Success_ImportNexusModsIds_Single" xml:space="preserve">
+		<value>Successfully imported the NexusMods id for '{0}'</value>
+		<comment>Placeholders: mod name</comment>
+	</data>
+	<data name="Alert_Success_ImportNexusModsIds_None" xml:space="preserve">
+		<value>No NexusMods ids found</value>
+	</data>
+	<data name="Alert_Warning_ImportNexusModsIds_Failure" xml:space="preserve">
+		<value>No NexusMods ids found. Does the .zip name contain an id, with a .pak file inside?</value>
+	</data>
+	<data name="Alert_Error_ImportNexusModsIds_FailedWithException" xml:space="preserve">
+		<value>Encountered some errors fetching ids - Check the log</value>
 	</data>
 	<data name="Alert_Error_ExtractSelectedAdventure" xml:space="preserve">
 		<value>Error occurred when extracting adventure mod to '{0}'</value>
@@ -1525,6 +1566,12 @@ Directory the zip will be extracted to:
 		<value>Select folder to extract mod(s) to...</value>
 	</data>
 	<data name="Picker_ExtractSelectedAdventure_Title" xml:space="preserve">
-		<value>"Select folder to extract mod to..."</value>
+		<value>Select folder to extract mod to...</value>
+	</data>
+	<data name="Picker_OpenModImportDialog_Title" xml:space="preserve">
+		<value>Import NexusMods ModId(s) from Archive(s)...</value>
+	</data>
+	<data name="Picker_OpenModIdsImportDialog_Title" xml:space="preserve">
+		<value>Import NexusMods ModId(s) from Archive(s)...</value>
 	</data>
 </root>

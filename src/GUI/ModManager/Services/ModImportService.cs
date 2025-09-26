@@ -411,7 +411,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 	public void ImportMods(IEnumerable<string?> files, int total, bool toActiveList = false)
 	{
-		ViewModel.Progress.Title = "Importing Mods...";
+		ViewModel.Progress.Title = Loca.Progress_ImportMods_Title;
 		var result = new ImportOperationResults()
 		{
 			TotalFiles = total
@@ -446,28 +446,28 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				{
 					if (result.Mods.Count > 1)
 					{
-						AppServices.Commands.ShowAlert($"Successfully imported {total} mods", AlertType.Success, 20);
+						AppServices.Commands.ShowAlert(Loca.Alert_Success_ImportMods_Multiple.SafeFormat($"Successfully imported {total} mods", total), AlertType.Success, 20);
 					}
 					else if (total == 1)
 					{
 						var modFileName = result.Mods.First().FileName;
 						var fileNames = string.Join(", ", files.Select(x => _fs.Path.GetFileName(x)));
-						AppServices.Commands.ShowAlert($"Successfully imported '{modFileName}' from '{fileNames}'", AlertType.Success, 20);
+						AppServices.Commands.ShowAlert(Loca.Alert_Success_ImportMods_Single.SafeFormat($"Successfully imported '{modFileName}' from '{fileNames}'", modFileName, fileNames), AlertType.Success, 20);
 					}
 					else
 					{
-						AppServices.Commands.ShowAlert("Skipped importing mod - No .pak file found", AlertType.Success, 20);
+						AppServices.Commands.ShowAlert(Loca.Alert_Success_ImportMods_None, AlertType.Success, 20);
 					}
 				}
 				else
 				{
 					if (total == 0)
 					{
-						AppServices.Commands.ShowAlert("No mods imported. Does the file contain a .pak?", AlertType.Warning, 60);
+						AppServices.Commands.ShowAlert(Loca.Alert_Warning_ImportMods_Failure, AlertType.Warning, 60);
 					}
 					else
 					{
-						AppServices.Commands.ShowAlert($"Only imported {total}/{result.TotalPaks} mods - Check the log", AlertType.Danger, 60);
+						AppServices.Commands.ShowAlert(Loca.Alert_Error_ImportMods_FailedWithException.SafeFormat($"Only imported {total}/{result.TotalPaks} mods - Check the log", total, result.TotalPaks), AlertType.Danger, 60);
 					}
 				}
 			});
@@ -477,7 +477,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 	public async Task OpenModImportDialog()
 	{
 		var dialogResult = await _dialogService.OpenFileAsync(new OpenFileBrowserDialogRequest(
-			"Import Mods from Archive...",
+			Loca.Picker_OpenModImportDialog_Title,
 			_dialogService.GetInitialStartingDirectory(Settings.LastImportDirectoryPath),
 			_importModFileTypes,
 			null,
@@ -501,7 +501,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 	public async Task OpenModIdsImportDialog()
 	{
 		var dialogResult = await _dialogService.OpenFileAsync(new OpenFileBrowserDialogRequest(
-			"Import NexusMods ModId(s) from Archive(s)",
+			Loca.Picker_OpenModIdsImportDialog_Title,
 			_dialogService.GetInitialStartingDirectory(Settings.LastImportDirectoryPath),
 			_importModFileTypes,
 			null,
@@ -518,7 +518,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				Settings.Save(out _);
 			}
 
-			ViewModel.Progress.Title = "Parsing files for NexusMods ModIds...";
+			ViewModel.Progress.Title = Loca.Progress_ImportNexusModsIds_Title;
 			var result = new ImportOperationResults()
 			{
 				TotalFiles = dialogResult.Total
@@ -543,26 +543,27 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 					{
 						if (result.Mods.Count > 1)
 						{
-							AppServices.Commands.ShowAlert($"Successfully imported NexusMods ids for {total} mods", AlertType.Success, 20);
+							AppServices.Commands.ShowAlert(Loca.Alert_Success_ImportNexusModsIds_Multiple.SafeFormat($"Successfully imported NexusMods ids for {total} mods", total), AlertType.Success, 20);
 						}
 						else if (total == 1)
 						{
-							AppServices.Commands.ShowAlert($"Successfully imported the NexusMods id for '{result.Mods.First().Name}'", AlertType.Success, 20);
+							var modName = result.Mods.FirstOrDefault()?.Name ?? string.Empty;
+							AppServices.Commands.ShowAlert(Loca.Alert_Success_ImportNexusModsIds_Single.SafeFormat($"Successfully imported the NexusMods id for '{modName}'", modName), AlertType.Success, 20);
 						}
 						else
 						{
-							AppServices.Commands.ShowAlert("No NexusMods ids found", AlertType.Success, 20);
+							AppServices.Commands.ShowAlert(Loca.Alert_Success_ImportNexusModsIds_None, AlertType.Success, 20);
 						}
 					}
 					else
 					{
 						if (total == 0)
 						{
-							AppServices.Commands.ShowAlert("No NexusMods ids found. Does the .zip name contain an id, with a .pak file inside?", AlertType.Warning, 60);
+							AppServices.Commands.ShowAlert(Loca.Alert_Warning_ImportNexusModsIds_Failure, AlertType.Warning, 60);
 						}
 						else if (result.Errors.Count > 0)
 						{
-							AppServices.Commands.ShowAlert($"Encountered some errors fetching ids - Check the log", AlertType.Danger, 60);
+							AppServices.Commands.ShowAlert(Loca.Alert_Error_ImportNexusModsIds_FailedWithException, AlertType.Danger, 60);
 						}
 					}
 				});

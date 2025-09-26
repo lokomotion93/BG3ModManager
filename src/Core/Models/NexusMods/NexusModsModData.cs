@@ -1,7 +1,6 @@
 ﻿using NexusModsNET.DataModels;
 
 using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace ModManager.Models.NexusMods;
 
@@ -76,23 +75,15 @@ public class NexusModsModData : ReactiveObject
 		}
 	}
 
-	private static readonly IEnumerable<PropertyInfo> _lazySerializedProperties = typeof(NexusModsModData)
-		.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-		.Where(prop => prop.GetCustomAttribute<DataMemberAttribute>(true) != null);
-
 	public void Update(NexusModsModData data)
 	{
-		foreach (var prop in _lazySerializedProperties)
-		{
-			var value = prop.GetValue(data);
-			if (value != null)
-			{
-				prop.SetValue(this, value);
-				this.RaisePropertyChanged(prop.Name);
-			}
-		}
+		this.SetFrom<NexusModsModData, JsonPropertyNameAttribute>(data);
 		IsUpdated = true;
 	}
+
+	private static readonly IEnumerable<PropertyInfo> _lazySerializedProperties = typeof(NexusModsModData)
+		.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+		.Where(prop => prop.GetCustomAttribute<JsonPropertyNameAttribute>(true) != null);
 
 	public void Update(NexusMod data)
 	{

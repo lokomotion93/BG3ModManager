@@ -97,6 +97,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only imported {0}/{1} mods - Check the log.
+        /// </summary>
+        public static string Alert_Error_ImportMods_FailedWithException {
+            get {
+                return ResourceManager.GetString("Alert_Error_ImportMods_FailedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encountered some errors fetching ids - Check the log.
+        /// </summary>
+        public static string Alert_Error_ImportNexusModsIds_FailedWithException {
+            get {
+                return ResourceManager.GetString("Alert_Error_ImportNexusModsIds_FailedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The &apos;Launch - Custom Action&apos; is empty. Set it in the preferences..
         /// </summary>
         public static string Alert_Error_LaunchGame_CustomActionEmpty {
@@ -187,6 +205,60 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Successfully imported {0} mods.
+        /// </summary>
+        public static string Alert_Success_ImportMods_Multiple {
+            get {
+                return ResourceManager.GetString("Alert_Success_ImportMods_Multiple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipped importing mod - No .pak file found.
+        /// </summary>
+        public static string Alert_Success_ImportMods_None {
+            get {
+                return ResourceManager.GetString("Alert_Success_ImportMods_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully imported &apos;{0}&apos; from &apos;{1}&apos;.
+        /// </summary>
+        public static string Alert_Success_ImportMods_Single {
+            get {
+                return ResourceManager.GetString("Alert_Success_ImportMods_Single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully imported NexusMods ids for {0} mods.
+        /// </summary>
+        public static string Alert_Success_ImportNexusModsIds_Multiple {
+            get {
+                return ResourceManager.GetString("Alert_Success_ImportNexusModsIds_Multiple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No NexusMods ids found.
+        /// </summary>
+        public static string Alert_Success_ImportNexusModsIds_None {
+            get {
+                return ResourceManager.GetString("Alert_Success_ImportNexusModsIds_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully imported the NexusMods id for &apos;{0}&apos;.
+        /// </summary>
+        public static string Alert_Success_ImportNexusModsIds_Single {
+            get {
+                return ResourceManager.GetString("Alert_Success_ImportNexusModsIds_Single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successfully renamed &apos;{0}&apos; to &apos;{1}&apos;.
         /// </summary>
         public static string Alert_Success_RenameSave {
@@ -219,6 +291,24 @@ namespace ModManager.Locale {
         public static string Alert_Warning_ExtractSelectedAdventure_NotExtratable {
             get {
                 return ResourceManager.GetString("Alert_Warning_ExtractSelectedAdventure_NotExtratable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No mods imported. Does the file contain a .pak?.
+        /// </summary>
+        public static string Alert_Warning_ImportMods_Failure {
+            get {
+                return ResourceManager.GetString("Alert_Warning_ImportMods_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No NexusMods ids found. Does the .zip name contain an id, with a .pak file inside?.
+        /// </summary>
+        public static string Alert_Warning_ImportNexusModsIds_Failure {
+            get {
+                return ResourceManager.GetString("Alert_Warning_ImportNexusModsIds_Failure", resourceCulture);
             }
         }
         
@@ -1966,7 +2056,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Select folder to extract mod to...&quot;.
+        ///   Looks up a localized string similar to Select folder to extract mod to....
         /// </summary>
         public static string Picker_ExtractSelectedAdventure_Title {
             get {
@@ -1998,6 +2088,24 @@ namespace ModManager.Locale {
         public static string Picker_GameDataPath_Title {
             get {
                 return ResourceManager.GetString("Picker_GameDataPath_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import NexusMods ModId(s) from Archive(s)....
+        /// </summary>
+        public static string Picker_OpenModIdsImportDialog_Title {
+            get {
+                return ResourceManager.GetString("Picker_OpenModIdsImportDialog_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import NexusMods ModId(s) from Archive(s)....
+        /// </summary>
+        public static string Picker_OpenModImportDialog_Title {
+            get {
+                return ResourceManager.GetString("Picker_OpenModImportDialog_Title", resourceCulture);
             }
         }
         
@@ -2088,6 +2196,24 @@ namespace ModManager.Locale {
         public static string Progress_ExtractSelectedMods_Title {
             get {
                 return ResourceManager.GetString("Progress_ExtractSelectedMods_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Importing Mods....
+        /// </summary>
+        public static string Progress_ImportMods_Title {
+            get {
+                return ResourceManager.GetString("Progress_ImportMods_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parsing files for NexusMods ModIds....
+        /// </summary>
+        public static string Progress_ImportNexusModsIds_Title {
+            get {
+                return ResourceManager.GetString("Progress_ImportNexusModsIds_Title", resourceCulture);
             }
         }
         
