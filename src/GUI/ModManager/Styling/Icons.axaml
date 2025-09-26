@@ -1,12 +1,15 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="using:System">
-	<sys:String x:Key="NexusModsIconPath">/Assets/Icons/nexuslogo.svg</sys:String>
-
-	<Image x:Key="ModioIcon"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:svg="using:Avalonia.Svg.Skia"
+    xmlns:sys="using:System">
+	<!--<sys:String x:Key="NexusModsIconPath">/Assets/Icons/nexuslogo.svg</sys:String>
+	<sys:String x:Key="ModioIconIconPath">/Assets/Icons/modio_Blue.svg</sys:String>-->
+	<!--<Image x:Key="ModioIcon"
 	    Width="16"
 	    Height="16"
 	    Source="{SvgImage /Assets/Icons/modio_Blue.svg}" />
 	<Image x:Key="NexusModsIcon"
 	    Width="16"
 	    Height="16"
-	    Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />
+	    Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />-->
 </ResourceDictionary>

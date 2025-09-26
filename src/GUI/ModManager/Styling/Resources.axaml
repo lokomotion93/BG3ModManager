@@ -98,12 +98,12 @@
 		<MenuItem Command="{Binding Path=OpenNexusModsPageCommand, Source={x:Static manager:AppServices.Commands}}"
 		    CommandParameter="{Binding Data}"
 		    Header="Open NexusMods Page (Browser)..."
-		    Icon="{StaticResource NexusModsIcon}"
+		    Icon="{SvgImage /Assets/Icons/nexuslogo.svg}"
 		    IsVisible="{Binding Data.HasNexusModsLink}" />
 		<MenuItem Command="{Binding Path=OpenModioPageCommand, Source={x:Static manager:AppServices.Commands}}"
 		    CommandParameter="{Binding Data}"
 		    Header="Open mod.io Page (Browser)..."
-		    Icon="{StaticResource ModioIcon}"
+		    Icon="{SvgImage /Assets/Icons/modio_Blue.svg}"
 		    IsVisible="{Binding Data.HasModioLink}" />
 
 		<Separator IsVisible="{Binding Data.CanForceAllowInLoadOrder}" />

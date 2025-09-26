@@ -259,7 +259,7 @@
 
 					<Button Command="{Binding OpenSteamPageCommand}" Content="{materialIcons:MaterialIconExt Kind=Steam}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenSteamPage_ToolTip}" />
 
-					<Button Command="{Binding OpenNexusModsCommand}" Content="{StaticResource NexusModsIcon}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenNexusMods_ToolTip}" />
+					<Button Command="{Binding OpenNexusModsCommand}" Content="{SvgImage /Assets/Icons/nexuslogo.svg}" ToolTip.Tip="{manager:LocaleKey CommandBar_Button_OpenNexusMods_ToolTip}" />
 				</StackPanel>
 				<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
 					<TextBlock Margin="4,0,4,0" VerticalAlignment="Center" Text="{manager:LocaleKey CommandBar_Section_Support}" />
