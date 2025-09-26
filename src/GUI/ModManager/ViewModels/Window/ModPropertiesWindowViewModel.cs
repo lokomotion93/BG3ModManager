@@ -2,6 +2,8 @@
 
 using Humanizer;
 
+using Material.Icons.Avalonia;
+
 using ModManager.Models.Mod;
 using ModManager.Util;
 using ModManager.Windows;
@@ -91,18 +93,15 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 	{
 		HasChanges = false;
 		Mod = null;
-
-
 	}
 
-	private static string ModToTitle(ValueTuple<bool, ModData?> x)
+	private static string ModToTitle(bool hasChanges, ModData? mod)
 	{
-		var (b, mod) = x;
-		var result = b ? "*" : string.Empty;
+		var result = hasChanges ? "*" : string.Empty;
 		result += mod != null ? Loca.Window_ModProperties_TitleWithMod.SafeFormat($"{mod.Name} Properties", mod.Name) : Loca.Window_ModProperties_Title;
 		return result;
 	}
-	private static string GetModType(ModData mod) => mod?.IsLooseMod == true ? Loca.Mod_Type_ToolkitProject : Loca.Mod_Type_Pak;
+	private static string GetModType(ModData mod) => mod.IsLooseMod == true ? Loca.Mod_Type_ToolkitProject : Loca.Mod_Type_Pak;
 	private static string GetModFilePath(ModData mod) => StringUtils.ReplaceSpecialPathways(mod.FilePath) ?? string.Empty;
 
 	private static string GetModSize(ModData mod)
@@ -166,8 +165,10 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 		)
 		.Where(e => e.PropertyName.IsValid() && autoSaveProperties.Contains(e.PropertyName));
 
-		this.WhenAnyValue(x => x.IsVisible, x => x.Locked).Select(x => x.Item1 && !x.Item2)
-		.CombineLatest(whenAutosavePropertiesChange)
+		var whenUserCanModify = this.WhenAnyValue(x => x.Locked, x => x.IsVisible, x => x.Mod, (b1, b2, mod) => !b1 && b2 && mod != null);
+
+		whenAutosavePropertiesChange
+		.SkipUntil(whenUserCanModify)
 		.Subscribe(_ =>
 		{
 			HasChanges = true;
@@ -176,12 +177,14 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 		this.WhenAnyValue(x => x.GitHub).Select(x => !x.IsValid())
 			.ToUIProperty(this, x => x.GitHubPlaceholderLabelVisibility);
 
-		var hasChanges = this.WhenAnyValue(x => x.HasChanges);
-		hasChanges.CombineLatest(whenModSet).Select(ModToTitle).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.Title);
+		var whenHasChanges = this.WhenAnyValue(x => x.HasChanges);
+		this.WhenAnyValue(x => x.HasChanges, x => x.Mod, ModToTitle)
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.BindTo(this, x => x.Title);
 
 		OKCommand = ReactiveCommand.Create(Apply);
 		CancelCommand = ReactiveCommand.Create(OnClose);
-		ApplyCommand = ReactiveCommand.Create(Apply, hasChanges);
+		ApplyCommand = ReactiveCommand.Create(Apply, whenHasChanges);
 	}
 }
 
