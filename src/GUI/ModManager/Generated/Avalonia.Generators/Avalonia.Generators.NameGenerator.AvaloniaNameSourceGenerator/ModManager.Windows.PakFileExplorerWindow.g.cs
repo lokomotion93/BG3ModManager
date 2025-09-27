@@ -9,6 +9,14 @@ namespace ModManager.Windows
     partial class PakFileExplorerWindow
     {
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.Primitives.VisualLayerManager PART_VisualLayerManager;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::SukiUI.Controls.SukiToastHost ToastHost;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::SukiUI.Controls.SukiDialogHost DialogHost;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.Button AddModButton;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::Avalonia.Controls.TreeDataGrid FilesTreeView;
 
         /// <summary>
@@ -34,6 +42,10 @@ namespace ModManager.Windows
 #endif
 
             var __thisNameScope__ = this.FindNameScope();
+            PART_VisualLayerManager = __thisNameScope__?.Find<global::Avalonia.Controls.Primitives.VisualLayerManager>("PART_VisualLayerManager");
+            ToastHost = __thisNameScope__?.Find<global::SukiUI.Controls.SukiToastHost>("ToastHost");
+            DialogHost = __thisNameScope__?.Find<global::SukiUI.Controls.SukiDialogHost>("DialogHost");
+            AddModButton = __thisNameScope__?.Find<global::Avalonia.Controls.Button>("AddModButton");
             FilesTreeView = __thisNameScope__?.Find<global::Avalonia.Controls.TreeDataGrid>("FilesTreeView");
         }
     }

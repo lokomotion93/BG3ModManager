@@ -15,8 +15,8 @@ namespace ModManager.Windows;
 
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
-	private readonly ISukiToastManager _toastManager = new SukiToastManager();
-	private readonly ISukiDialogManager _dialogManager = new SukiDialogManager();
+	private readonly SukiToastManager _toastManager = new();
+	private readonly SukiDialogManager _dialogManager = new();
 
 	private ISukiDialog? _lastDialog = null;
 

@@ -78,8 +78,9 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 	public ObservableCollectionExtended<ModFileEntry> SelectedItems { get; }
 	public ModFileEntry? SelectedItem { get; set; }
 
-	public RxCommandUnit AddModCommand { get; }
+	public RxCommandUnit? AddModCommand { get; set; }
 	public RxCommandUnit OpenFileBrowserCommand { get; }
+	public ReactiveCommand<ShowAlertRequest, Unit>? ShowAlertCommand { get; set; }
 	public ReactiveCommand<object?, Unit> CopyToClipboardCommand { get; }
 	public ReactiveCommand<ModFileEntry, Unit> ExtractFileCommand { get; }
 	public RxCommandUnit ExtractSelectedFilesCommand { get; }
@@ -259,10 +260,12 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 			Dictionary<string, bool> extractPackages = [];
 
 			var tasks = new List<Task>();
+			var total = 0;
 
 			foreach (var modFile in files)
 			{
-				if(modFile.SourcePakFilePath == modFile.FilePath)
+				total++;
+				if (modFile.SourcePakFilePath == modFile.FilePath)
 				{
 					extractPackages[modFile.SourcePakFilePath] = true;
 				}
@@ -308,6 +311,9 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 				}
 
 				await Task.WhenAll(tasks).WaitAsync(token);
+
+				var msg = Loca.Alert_Success_PakFileExplorer_ExtractedFiles.SafeFormat($"Extracted {total} files to {extractToDirectory}", total, extractToDirectory);
+				ShowAlertCommand?.Execute(new ShowAlertRequest(msg, AlertType.Success)).Subscribe();
 			}
 			finally
 			{
@@ -419,14 +425,14 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 
 		CopyToClipboardCommand = _commands.CopyToClipboardCommand;
 
-		AddModCommand = ReactiveCommand.CreateFromTask(async () =>
-		{
-			var results = await AppServices.Interactions.PickMods.Handle(new(Loca.Window_PakFileExplorer_Picker_AddMod_Title));
-			if(results.Confirmed)
-			{
-				await LoadModsAsync(results.Mods, CancellationToken.None);
-			}
-		});
+		//AddModCommand = ReactiveCommand.CreateFromTask(async () =>
+		//{
+		//	var results = await AppServices.Interactions.PickMods.Handle(new(Loca.Window_PakFileExplorer_Picker_AddMod_Title));
+		//	if(results.Confirmed)
+		//	{
+		//		await LoadModsAsync(results.Mods, CancellationToken.None);
+		//	}
+		//});
 
 		OpenFileBrowserCommand = ReactiveCommand.CreateFromTask(async () =>
 		{

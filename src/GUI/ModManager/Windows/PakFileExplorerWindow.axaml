@@ -39,51 +39,59 @@
 		</MenuFlyout>
 	</Window.Resources>
 	<Window.Styles />
-	<Panel>
-		<Grid Margin="4" Grid.IsSharedSizeScope="True" RowDefinitions="Auto,*">
-			<StackPanel Margin="4" Orientation="Horizontal">
-				<Button Classes="icon flat"
-				    Command="{Binding AddModCommand}"
-				    Content="{icons:MaterialIconExt Kind=FileImport, Classes='SpringGreen'}"
-				    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_AddMods_ToolTip}" />
-				<Button Classes="icon flat"
-				    Command="{Binding OpenFileBrowserCommand}"
-				    Content="{icons:MaterialIconExt Kind=FolderOpen, Classes='Tan'}"
-				    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_AddPak_ToolTip}" />
-				<Rectangle Width="1" Margin="2,0" Fill="{DynamicResource SukiBorderBrush}" />
-				<Button Classes="icon flat"
-				    Command="{Binding ClearCommand}"
-				    Content="{icons:MaterialIconExt Kind=CloseBoxMultiple, Classes='Red'}"
-				    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_ClearAll_ToolTip}" />
-			</StackPanel>
-			<TreeDataGrid Name="FilesTreeView"
-			    Grid.Row="1"
-			    AutoDragDropRows="False"
-			    Background="Transparent"
-			    DragDrop.AllowDrop="False"
-			    Focusable="True"
-			    Source="{Binding FileTreeSource}">
-				<TreeDataGrid.Resources>
-					<DataTemplate x:Key="FileNameWithIconCell" x:DataType="mv:ModFileEntry">
-						<Grid ContextFlyout="{StaticResource FileContextMenu}">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="auto" SharedSizeGroup="Icons" />
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
-							<icons:MaterialIcon Grid.Column="0"
-							    VerticalAlignment="Center"
-							    Foreground="{Binding IconColor}"
-							    Kind="{Binding Icon}" />
-							<TextBlock Grid.Column="1"
-							    Margin="4,0,0,0"
-							    VerticalAlignment="Center"
-							    Text="{Binding FileName}"
-							    TextAlignment="Left"
-							    ToolTip.Tip="{Binding FilePath}" />
-						</Grid>
-					</DataTemplate>
-				</TreeDataGrid.Resources>
-			</TreeDataGrid>
-		</Grid>
-	</Panel>
+	<VisualLayerManager Name="PART_VisualLayerManager" IsHitTestVisible="True">
+		<VisualLayerManager.ChromeOverlayLayer>
+			<suki:SukiToastHost Name="ToastHost" MaxToasts="4" Position="BottomLeft" />
+			<suki:SukiDialogHost Name="DialogHost" />
+		</VisualLayerManager.ChromeOverlayLayer>
+		<Panel>
+			<Grid Margin="4" Grid.IsSharedSizeScope="True" RowDefinitions="Auto,*">
+				<StackPanel Margin="4" Orientation="Horizontal">
+					<Button x:Name="AddModButton"
+					    Classes="icon flat"
+					    Command="{Binding AddModCommand}"
+					    Content="{icons:MaterialIconExt Kind=FileImport, Classes='SpringGreen'}"
+					    IsEnabled="True"
+					    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_AddMods_ToolTip}" />
+					<Button Classes="icon flat"
+					    Command="{Binding OpenFileBrowserCommand}"
+					    Content="{icons:MaterialIconExt Kind=FolderOpen, Classes='Tan'}"
+					    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_AddPak_ToolTip}" />
+					<Rectangle Width="1" Margin="2,0" Fill="{DynamicResource SukiBorderBrush}" />
+					<Button Classes="icon flat"
+					    Command="{Binding ClearCommand}"
+					    Content="{icons:MaterialIconExt Kind=CloseBoxMultiple, Classes='Red'}"
+					    ToolTip.Tip="{manager:LocaleKey Window_PakFileExplorer_MenuItem_ClearAll_ToolTip}" />
+				</StackPanel>
+				<TreeDataGrid Name="FilesTreeView"
+				    Grid.Row="1"
+				    AutoDragDropRows="False"
+				    Background="Transparent"
+				    DragDrop.AllowDrop="False"
+				    Focusable="True"
+				    Source="{Binding FileTreeSource}">
+					<TreeDataGrid.Resources>
+						<DataTemplate x:Key="FileNameWithIconCell" x:DataType="mv:ModFileEntry">
+							<Grid ContextFlyout="{StaticResource FileContextMenu}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="auto" SharedSizeGroup="Icons" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<icons:MaterialIcon Grid.Column="0"
+								    VerticalAlignment="Center"
+								    Foreground="{Binding IconColor}"
+								    Kind="{Binding Icon}" />
+								<TextBlock Grid.Column="1"
+								    Margin="4,0,0,0"
+								    VerticalAlignment="Center"
+								    Text="{Binding FileName}"
+								    TextAlignment="Left"
+								    ToolTip.Tip="{Binding FilePath}" />
+							</Grid>
+						</DataTemplate>
+					</TreeDataGrid.Resources>
+				</TreeDataGrid>
+			</Grid>
+		</Panel>
+	</VisualLayerManager>
 </Window>

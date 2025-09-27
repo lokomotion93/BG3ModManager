@@ -1450,6 +1450,14 @@
 	<data name="Alert_Success_ImportNexusModsIds_None" xml:space="preserve">
 		<value>No NexusMods ids found</value>
 	</data>
+	<data name="Alert_Success_PakFileExplorer_LoadedMods" xml:space="preserve">
+		<value>Loaded {0}</value>
+		<comment>Placeholders: File names, separated by semicolons</comment>
+	</data>
+	<data name="Alert_Success_PakFileExplorer_ExtractedFiles" xml:space="preserve">
+		<value>Extracted {0} files to {1}</value>
+		<comment>Placeholders: total files, output directory</comment>
+	</data>
 	<data name="Alert_Warning_ImportNexusModsIds_Failure" xml:space="preserve">
 		<value>No NexusMods ids found. Does the .zip name contain an id, with a .pak file inside?</value>
 	</data>

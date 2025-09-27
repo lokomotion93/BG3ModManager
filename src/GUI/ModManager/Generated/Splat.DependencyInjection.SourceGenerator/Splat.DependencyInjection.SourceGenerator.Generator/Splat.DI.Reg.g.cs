@@ -112,6 +112,16 @@ namespace Splat
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.MessageBoxViewModel));
             }
             {
+                global::System.Lazy<ModManager.ViewModels.Main.FooterViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.Main.FooterViewModel>(() => new global::ModManager.ViewModels.Main.FooterViewModel((global::ModManager.INexusModsService)resolver.GetService(typeof(global::ModManager.INexusModsService))));
+                Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.ViewModels.Main.FooterViewModel>));
+                Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.Main.FooterViewModel));
+            }
+            {
+                global::System.Lazy<ModManager.ViewModels.Mods.ModPickerViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.Mods.ModPickerViewModel>(() => new global::ModManager.ViewModels.Mods.ModPickerViewModel());
+                Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.ViewModels.Mods.ModPickerViewModel>));
+                Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.Mods.ModPickerViewModel));
+            }
+            {
                 global::System.Lazy<ModManager.Views.Main.MainCommandBar> lazy = new global::System.Lazy<ModManager.Views.Main.MainCommandBar>(() => new global::ModManager.Views.Main.MainCommandBar());
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.Views.Main.MainCommandBar>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Views.Main.MainCommandBar));
@@ -130,11 +140,6 @@ namespace Splat
                 global::System.Lazy<ModManager.Views.Main.ModUpdatesView> lazy = new global::System.Lazy<ModManager.Views.Main.ModUpdatesView>(() => new global::ModManager.Views.Main.ModUpdatesView());
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.Views.Main.ModUpdatesView>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Views.Main.ModUpdatesView));
-            }
-            {
-                global::System.Lazy<ModManager.ViewModels.Main.FooterViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.Main.FooterViewModel>(() => new global::ModManager.ViewModels.Main.FooterViewModel((global::ModManager.INexusModsService)resolver.GetService(typeof(global::ModManager.INexusModsService))));
-                Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.ViewModels.Main.FooterViewModel>));
-                Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.Main.FooterViewModel));
             }
             {
                 global::System.Lazy<ModManager.Views.Main.ProgressBarView> lazy = new global::System.Lazy<ModManager.Views.Main.ProgressBarView>(() => new global::ModManager.Views.Main.ProgressBarView());

@@ -259,6 +259,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extracted {0} files to {1}.
+        /// </summary>
+        public static string Alert_Success_PakFileExplorer_ExtractedFiles {
+            get {
+                return ResourceManager.GetString("Alert_Success_PakFileExplorer_ExtractedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded {0}.
+        /// </summary>
+        public static string Alert_Success_PakFileExplorer_LoadedMods {
+            get {
+                return ResourceManager.GetString("Alert_Success_PakFileExplorer_LoadedMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successfully renamed &apos;{0}&apos; to &apos;{1}&apos;.
         /// </summary>
         public static string Alert_Success_RenameSave {
