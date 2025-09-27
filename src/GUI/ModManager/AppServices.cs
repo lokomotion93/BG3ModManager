@@ -1,6 +1,7 @@
 ﻿using ModManager.Services;
 using ModManager.ViewModels;
 using ModManager.ViewModels.Main;
+using ModManager.ViewModels.Mods;
 using ModManager.ViewModels.Settings;
 using ModManager.ViewModels.Window;
 using ModManager.Views;
@@ -66,16 +67,16 @@ public static class AppServices
 		SplatRegistrations.RegisterLazySingleton<VersionGeneratorViewModel>();
 		SplatRegistrations.RegisterLazySingleton<ExportOrderToArchiveViewModel>();
 		SplatRegistrations.RegisterLazySingleton<PakFileExplorerWindowViewModel>();
-
 		SplatRegistrations.RegisterLazySingleton<KeybindingsViewModel>();
-
 		SplatRegistrations.RegisterLazySingleton<MessageBoxViewModel>();
+		SplatRegistrations.RegisterLazySingleton<FooterViewModel>();
+		SplatRegistrations.RegisterLazySingleton<ModPickerViewModel>();
 
 		SplatRegistrations.RegisterLazySingleton<MainCommandBar>();
 		SplatRegistrations.RegisterLazySingleton<DeleteFilesView>();
 		SplatRegistrations.RegisterLazySingleton<ModOrderView>();
 		SplatRegistrations.RegisterLazySingleton<ModUpdatesView>();
-		SplatRegistrations.RegisterLazySingleton<FooterViewModel>();
+
 
 		SplatRegistrations.RegisterLazySingleton<ProgressBarView>();
 
