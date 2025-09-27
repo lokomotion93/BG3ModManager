@@ -258,7 +258,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 			{
 				RxApp.MainThreadScheduler.Schedule(() =>
 				{
-					if (!window.IsVisible) window.Show();
+					if (!window.IsVisible) window.Show(AppServices.Get<MainWindow>());
 				});
 				return true;
 			}

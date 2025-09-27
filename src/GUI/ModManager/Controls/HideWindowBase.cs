@@ -17,12 +17,17 @@ public abstract class HideWindowBase<TViewModel> : ReactiveWindow<TViewModel> wh
 			Background = Brushes.Black;
 		}
 #endif
-		this.Closing += HideWindowBase_Closing;
+		Closing += OnHideWindow;
 	}
 
-	private void HideWindowBase_Closing(object? sender, WindowClosingEventArgs e)
+	public virtual void OnHideWindow(object? sender, WindowClosingEventArgs e)
 	{
-		e.Cancel = true;
-		this.Hide();
+		//Only prevent actual closing when the window itself is closed,
+		//otherwise this would prevent closing the application when closing the parent window
+		if (e.CloseReason == WindowCloseReason.WindowClosing)
+		{
+			e.Cancel = true;
+			this.Hide();
+		}
 	}
 }
