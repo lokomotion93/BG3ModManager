@@ -49,6 +49,8 @@ public partial class MainCommandBar : ReactiveUserControl<MainCommandBarViewMode
 		}
 	}
 
+	private bool _addedMenuItems = false;
+
 	public MainCommandBar()
 	{
 		InitializeComponent();
@@ -72,13 +74,17 @@ public partial class MainCommandBar : ReactiveUserControl<MainCommandBarViewMode
 		{
 			if (ViewModel != null)
 			{
-				RxApp.MainThreadScheduler.Schedule(() =>
+				if(!_addedMenuItems)
 				{
-					foreach (var entry in ViewModel.MenuEntries)
+					RxApp.MainThreadScheduler.Schedule(() =>
 					{
-						AddMenuItem(entry, TopMenu.Items);
-					}
-				});
+						foreach (var entry in ViewModel.MenuEntries)
+						{
+							AddMenuItem(entry, TopMenu.Items);
+						}
+						_addedMenuItems = true;
+					});
+				}
 
 				//Temp fix for ComboBox selected items not updating from bindings
 
@@ -110,7 +116,7 @@ public partial class MainCommandBar : ReactiveUserControl<MainCommandBarViewMode
 							CampaignComboBox.SelectedIndex = ViewModel.ModOrder.SelectedAdventureModIndex;
 						}
 					}
-				});
+				}).DisposeWith(d);
 			}
 		});
 	}

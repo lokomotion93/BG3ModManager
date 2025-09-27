@@ -246,7 +246,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 	public MainCommandBarViewModel()
 	{
-		_menuEntries.ToObservableChangeSet().Bind(out _uiMenuEntries).Subscribe();
+		_menuEntries.ToObservableChangeSet().DisposeMany().Bind(out _uiMenuEntries).Subscribe();
 	}
 
 	private static bool ToggleWindow<T>(bool forceVisible = false) where T : Avalonia.Controls.Window
