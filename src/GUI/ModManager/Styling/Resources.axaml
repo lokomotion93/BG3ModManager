@@ -9,6 +9,7 @@
     xmlns:mod="using:ModManager.Models.Mod"
     xmlns:modView="using:ModManager.Views.Mods"
     xmlns:modconv="using:ModManager.Converters.Mod"
+    xmlns:suki="using:SukiUI"
     xmlns:system="clr-namespace:System;assembly=netstandard"
     xmlns:theme="using:SukiUI.Theme">
 
@@ -56,7 +57,13 @@
 		</Border>
 	</ControlTemplate>
 
-	<MenuFlyout x:Key="EnhancedTextBoxContextFlyout" FlyoutPresenterClasses="TextBox" Placement="Bottom">
+	<MenuFlyout x:Key="EnhancedTextBoxContextFlyout" FlyoutPresenterClasses="controls|EnhancedTextBox" Placement="Bottom">
+		<MenuItem Command="{Binding $parent[controls:EnhancedTextBox].SelectAll}"
+		    Header="Select All"
+		    Icon="{icons:MaterialIconExt Kind=SelectAll}"
+		    InputGesture="{x:Static controls:EnhancedTextBox.SelectAllGesture}"
+		    IsEnabled="{Binding $parent[controls:EnhancedTextBox].CanClear}" />
+		<Separator />
 		<MenuItem Command="{Binding $parent[TextBox].Cut}"
 		    Header="Cut"
 		    Icon="{icons:MaterialIconExt Kind=ContentCut}"
@@ -72,6 +79,7 @@
 		    Icon="{icons:MaterialIconExt Kind=ContentPaste}"
 		    InputGesture="{x:Static TextBox.PasteGesture}"
 		    IsEnabled="{Binding $parent[TextBox].CanPaste}" />
+		<Separator />
 		<MenuItem Command="{Binding $parent[controls:EnhancedTextBox].Clear}"
 		    Header="Clear"
 		    Icon="{icons:MaterialIconExt Kind=Clear}"

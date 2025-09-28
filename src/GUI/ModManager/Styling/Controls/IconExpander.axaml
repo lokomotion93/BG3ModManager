@@ -56,7 +56,6 @@
 											    Grid.Column="2"
 											    Margin="0"
 											    Content="{TemplateBinding Icon}" />
-											<!--<Image Width="16" Height="16" Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />-->
 										</Grid>
 									</ToggleButton>
 								</DockPanel>

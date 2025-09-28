@@ -1,34 +1,17 @@
 ﻿namespace ModManager.Controls;
 public class EnhancedTextBox : TextBox
 {
-	protected override Type StyleKeyOverride => typeof(TextBox);
+	//protected override Type StyleKeyOverride => typeof(TextBox);
 
+	public static KeyGesture? SelectAllGesture => Application.Current?.PlatformSettings?.HotkeyConfiguration.SelectAll.FirstOrDefault();
 	public static KeyGesture ClearGesture { get; } = new KeyGesture(Key.Delete, KeyModifiers.Control);
 
-	public static readonly DirectProperty<EnhancedTextBox, bool> CanClearProperty =
-					AvaloniaProperty.RegisterDirect<EnhancedTextBox, bool>(
-						nameof(CanClear),
-						o => o.CanClear);
+	public static readonly StyledProperty<bool> CanClearProperty = AvaloniaProperty.Register<EnhancedTextBox, bool>(nameof(CanClear));
 
-	private bool _canClear;
-
-	/// <summary>
-	/// Property for determining if the Clear command can be executed.
-	/// </summary>
 	public bool CanClear
 	{
-		get { return _canClear; }
-		private set { SetAndRaise(CanPasteProperty, ref _canClear, value); }
-	}
-
-	protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-	{
-		base.OnPropertyChanged(change);
-
-		if (change.Property == TextProperty && change.NewValue is string text)
-		{
-			CanClear = text.IsValid();
-		}
+		get => GetValue(CanClearProperty);
+		set => SetValue(CanClearProperty, value);
 	}
 
 	protected override void OnKeyDown(KeyEventArgs e)
@@ -46,16 +29,23 @@ public class EnhancedTextBox : TextBox
 		}
 	}
 
-	private static void OnContextRequested(object? sender, ContextRequestedEventArgs e)
+	private void OnContextRequested(ContextRequestedEventArgs e)
 	{
-		if(sender is EnhancedTextBox tb && !tb.IsFocused && tb.ContextFlyout is not null)
+		if(!IsFocused)
 		{
-			tb.Focus();
+			Focus();
 		}
 	}
 
 	public EnhancedTextBox() : base()
 	{
-		ContextRequested += OnContextRequested;
+		this.GetObservable(TextProperty).Select(Validators.IsValid).BindTo(this, x => x.CanClear);
+
+		var hasContextFlyout = this.GetObservable(ContextFlyoutProperty).WhereNotNull();
+		Observable.FromEvent<EventHandler<ContextRequestedEventArgs>, ContextRequestedEventArgs>(
+			h => (sender, e) => h(e),
+			h => ContextRequested += h,
+			h => ContextRequested -= h
+		).SkipUntil(hasContextFlyout).Subscribe(OnContextRequested);
 	}
 }
