@@ -143,9 +143,6 @@
 	<data name="Mod_ExtenderStatus_RequiresDefault" xml:space="preserve">
 		<value>Requires the Script Extender</value>
 	</data>
-	<data name="Mod_ExtenderStatus_DisabledFromConfig" xml:space="preserve">
-		<value>(Enable Extensions in the Script Extender Settings)</value>
-	</data>
 	<data name="Mod_ExtenderStatus_MissingAppData" xml:space="preserve">
 		<value>(Missing %LOCALAPPDATA%\\..\\{0})</value>
 	</data>
@@ -1238,23 +1235,17 @@
 	<data name="Settings_Extender_DisableStoryPatching_ToolTip" xml:space="preserve">
 		<value>Prevents patching story.bin with story.div.osi when loading saves, effectively preventing the Osiris scripts in the save from updating</value>
 	</data>
-	<data name="Settings_Extender_DisableModValidation" xml:space="preserve">
-		<value>Disable Mod Validation</value>
-	</data>
-	<data name="Settings_Extender_DisableModValidation_ToolTip" xml:space="preserve">
-		<value>Disable module hashing when loading mods\nSpeeds up mod loading with no drawbacks</value>
-	</data>
 	<data name="Settings_Extender_EnableAchievements" xml:space="preserve">
 		<value>Achievements</value>
 	</data>
 	<data name="Settings_Extender_EnableAchievements_ToolTip" xml:space="preserve">
 		<value>Enable achievements for modded games</value>
 	</data>
-	<data name="Settings_Extender_EnableExtensions" xml:space="preserve">
-		<value>Extensions</value>
+	<data name="Settings_Extender_ExtendStory" xml:space="preserve">
+		<value>Extend Osiris</value>
 	</data>
-	<data name="Settings_Extender_EnableExtensions_ToolTip" xml:space="preserve">
-		<value>Enables extender API functionality</value>
+	<data name="Settings_Extender_ExtendStory_ToolTip" xml:space="preserve">
+		<value>Enables extending Osiris functionality with the Script Extender, allowing custom functions.</value>
 	</data>
 	<data name="Settings_Extender_SendCrashReports" xml:space="preserve">
 		<value>Send Crash Reports</value>
@@ -1273,12 +1264,6 @@
 	</data>
 	<data name="Settings_Extender_DebuggerPort_ToolTip" xml:space="preserve">
 		<value>Port number the Osiris debugger will listen on\nDefault: 9999</value>
-	</data>
-	<data name="Settings_Extender_DumpNetworkStrings" xml:space="preserve">
-		<value>Dump Network Strings</value>
-	</data>
-	<data name="Settings_Extender_DumpNetworkStrings_ToolTip" xml:space="preserve">
-		<value>Dumps the NetworkFixedString table to LogDirectory\nMainly useful for debugging desync issues</value>
 	</data>
 	<data name="Settings_Extender_DebuggerFlags" xml:space="preserve">
 		<value>Osiris Debugger Flags</value>
@@ -1310,17 +1295,23 @@
 	<data name="Settings_Extender_DefaultToClientConsole_ToolTip" xml:space="preserve">
 		<value>Defaults the extender console to the client-side\nThis is setting is intended for developers</value>
 	</data>
-	<data name="Settings_Extender_ShowPerfWarnings" xml:space="preserve">
-		<value>Show Performance Warnings</value>
-	</data>
-	<data name="Settings_Extender_ShowPerfWarnings_ToolTip" xml:space="preserve">
-		<value>Print warnings to the extender console window, which indicates when the server-side part of the game lags behind (a.k.a. warnings about ticks taking too long).</value>
-	</data>
 	<data name="Settings_Extender_InsanityCheck" xml:space="preserve">
 		<value>Disable ModCrashSanityCheck</value>
 	</data>
 	<data name="Settings_Extender_InsanityCheck_ToolTip" xml:space="preserve">
 		<value>Disables the ModCrashSanityCheck jank that disables mods the next time the game runs</value>
+	</data>
+	<data name="Settings_Extender_EnablePerfMessages" xml:space="preserve">
+		<value>Show Performance Messages</value>
+	</data>
+	<data name="Settings_Extender_EnablePerfMessages_ToolTip" xml:space="preserve">
+		<value>Enable performance messages in the console window, which tracks the execution time of scripts and reports on long timespans.</value>
+	</data>
+	<data name="Settings_Extender_ProfilerWarnings" xml:space="preserve">
+		<value>Show Profiler Warnings</value>
+	</data>
+	<data name="Settings_Extender_ProfilerWarnings_ToolTip" xml:space="preserve">
+		<value>Enable performance warning messages in the console window, which reports on long script executions.</value>
 	</data>
 	<data name="Settings_ExtenderUpdater_UpdateChannel" xml:space="preserve">
 		<value>Update Channel</value>

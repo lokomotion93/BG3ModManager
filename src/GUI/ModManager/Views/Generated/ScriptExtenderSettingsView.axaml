@@ -12,7 +12,7 @@
 	d:DesignHeight="900"
     d:DesignWidth="1600"
 	mc:Ignorable="d">
-	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 		<TextBlock x:Name="CustomProfileTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_CustomProfile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_CustomProfile_ToolTip}" />
 		<controls:EnhancedTextBox x:Name="CustomProfileTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding CustomProfile, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_CustomProfile_ToolTip}"/>
 		
@@ -43,52 +43,49 @@
 		<TextBlock x:Name="DisableLauncherTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_DisableLauncher}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableLauncher_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
 		<CheckBox x:Name="DisableLauncherCheckBox" Grid.Row="9" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableLauncher}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableLauncher_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="DisableModValidationTextBlock" Grid.Row="10" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_DisableModValidation}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableModValidation_ToolTip}" />
-		<CheckBox x:Name="DisableModValidationCheckBox" Grid.Row="10" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableModValidation}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableModValidation_ToolTip}"/>
+		<TextBlock x:Name="DisableStoryMergeTextBlock" Grid.Row="10" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_DisableStoryMerge}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryMerge_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="DisableStoryMergeCheckBox" Grid.Row="10" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableStoryMerge}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryMerge_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="DisableStoryMergeTextBlock" Grid.Row="11" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_DisableStoryMerge}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryMerge_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="DisableStoryMergeCheckBox" Grid.Row="11" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableStoryMerge}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryMerge_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="DisableStoryPatchingTextBlock" Grid.Row="11" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_DisableStoryPatching}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryPatching_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="DisableStoryPatchingCheckBox" Grid.Row="11" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableStoryPatching}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryPatching_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="DisableStoryPatchingTextBlock" Grid.Row="12" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_DisableStoryPatching}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryPatching_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="DisableStoryPatchingCheckBox" Grid.Row="12" Grid.Column="1" Classes="right" IsChecked ="{Binding DisableStoryPatching}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DisableStoryPatching_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="EnableAchievementsTextBlock" Grid.Row="12" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableAchievements}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableAchievements_ToolTip}" />
+		<CheckBox x:Name="EnableAchievementsCheckBox" Grid.Row="12" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableAchievements}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableAchievements_ToolTip}"/>
 		
-		<TextBlock x:Name="DumpNetworkStringsTextBlock" Grid.Row="13" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_DumpNetworkStrings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DumpNetworkStrings_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="DumpNetworkStringsCheckBox" Grid.Row="13" Grid.Column="1" Classes="right" IsChecked ="{Binding DumpNetworkStrings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_DumpNetworkStrings_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="EnableDebuggerTextBlock" Grid.Row="13" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="EnableDebuggerCheckBox" Grid.Row="13" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="EnableAchievementsTextBlock" Grid.Row="14" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableAchievements}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableAchievements_ToolTip}" />
-		<CheckBox x:Name="EnableAchievementsCheckBox" Grid.Row="14" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableAchievements}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableAchievements_ToolTip}"/>
+		<TextBlock x:Name="EnableLoggingTextBlock" Grid.Row="14" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableLogging}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLogging_ToolTip}" />
+		<CheckBox x:Name="EnableLoggingCheckBox" Grid.Row="14" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableLogging}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLogging_ToolTip}"/>
 		
-		<TextBlock x:Name="EnableDebuggerTextBlock" Grid.Row="15" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="EnableDebuggerCheckBox" Grid.Row="15" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="EnableLuaDebuggerTextBlock" Grid.Row="15" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableLuaDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLuaDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="EnableLuaDebuggerCheckBox" Grid.Row="15" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableLuaDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLuaDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="EnableExtensionsTextBlock" Grid.Row="16" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableExtensions}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableExtensions_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="EnableExtensionsCheckBox" Grid.Row="16" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableExtensions}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableExtensions_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="EnablePerfMessagesTextBlock" Grid.Row="16" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnablePerfMessages}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnablePerfMessages_ToolTip}" />
+		<CheckBox x:Name="EnablePerfMessagesCheckBox" Grid.Row="16" Grid.Column="1" Classes="right" IsChecked ="{Binding EnablePerfMessages}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnablePerfMessages_ToolTip}"/>
 		
-		<TextBlock x:Name="EnableLoggingTextBlock" Grid.Row="17" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableLogging}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLogging_ToolTip}" />
-		<CheckBox x:Name="EnableLoggingCheckBox" Grid.Row="17" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableLogging}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLogging_ToolTip}"/>
+		<TextBlock x:Name="ExportDefaultExtenderSettingsTextBlock" Grid.Row="17" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings_ToolTip}" />
+		<CheckBox x:Name="ExportDefaultExtenderSettingsCheckBox" Grid.Row="17" Grid.Column="1" Classes="right" IsChecked ="{Binding ExportDefaultExtenderSettings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings_ToolTip}"/>
 		
-		<TextBlock x:Name="EnableLuaDebuggerTextBlock" Grid.Row="18" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableLuaDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLuaDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="EnableLuaDebuggerCheckBox" Grid.Row="18" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableLuaDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLuaDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		<TextBlock x:Name="ExtendStoryTextBlock" Grid.Row="18" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ExtendStory}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExtendStory_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="ExtendStoryCheckBox" Grid.Row="18" Grid.Column="1" Classes="right" IsChecked ="{Binding ExtendStory}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExtendStory_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="ExportDefaultExtenderSettingsTextBlock" Grid.Row="19" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings_ToolTip}" />
-		<CheckBox x:Name="ExportDefaultExtenderSettingsCheckBox" Grid.Row="19" Grid.Column="1" Classes="right" IsChecked ="{Binding ExportDefaultExtenderSettings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings_ToolTip}"/>
+		<TextBlock x:Name="InsanityCheckTextBlock" Grid.Row="19" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_InsanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_InsanityCheck_ToolTip}" />
+		<CheckBox x:Name="InsanityCheckCheckBox" Grid.Row="19" Grid.Column="1" Classes="right" IsChecked ="{Binding InsanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_InsanityCheck_ToolTip}"/>
 		
-		<TextBlock x:Name="InsanityCheckTextBlock" Grid.Row="20" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_InsanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_InsanityCheck_ToolTip}" />
-		<CheckBox x:Name="InsanityCheckCheckBox" Grid.Row="20" Grid.Column="1" Classes="right" IsChecked ="{Binding InsanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_InsanityCheck_ToolTip}"/>
+		<TextBlock x:Name="LogCompileTextBlock" Grid.Row="20" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogCompile_ToolTip}" />
+		<CheckBox x:Name="LogCompileCheckBox" Grid.Row="20" Grid.Column="1" Classes="right" IsChecked ="{Binding LogCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogCompile_ToolTip}"/>
 		
-		<TextBlock x:Name="LogCompileTextBlock" Grid.Row="21" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogCompile_ToolTip}" />
-		<CheckBox x:Name="LogCompileCheckBox" Grid.Row="21" Grid.Column="1" Classes="right" IsChecked ="{Binding LogCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogCompile_ToolTip}"/>
+		<TextBlock x:Name="LogFailedCompileTextBlock" Grid.Row="21" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogFailedCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogFailedCompile_ToolTip}" />
+		<CheckBox x:Name="LogFailedCompileCheckBox" Grid.Row="21" Grid.Column="1" Classes="right" IsChecked ="{Binding LogFailedCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogFailedCompile_ToolTip}"/>
 		
-		<TextBlock x:Name="LogFailedCompileTextBlock" Grid.Row="22" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogFailedCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogFailedCompile_ToolTip}" />
-		<CheckBox x:Name="LogFailedCompileCheckBox" Grid.Row="22" Grid.Column="1" Classes="right" IsChecked ="{Binding LogFailedCompile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogFailedCompile_ToolTip}"/>
+		<TextBlock x:Name="LogRuntimeTextBlock" Grid.Row="22" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogRuntime}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogRuntime_ToolTip}" />
+		<CheckBox x:Name="LogRuntimeCheckBox" Grid.Row="22" Grid.Column="1" Classes="right" IsChecked ="{Binding LogRuntime}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogRuntime_ToolTip}"/>
 		
-		<TextBlock x:Name="LogRuntimeTextBlock" Grid.Row="23" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogRuntime}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogRuntime_ToolTip}" />
-		<CheckBox x:Name="LogRuntimeCheckBox" Grid.Row="23" Grid.Column="1" Classes="right" IsChecked ="{Binding LogRuntime}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogRuntime_ToolTip}"/>
+		<TextBlock x:Name="ProfilerWarningsTextBlock" Grid.Row="23" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ProfilerWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerWarnings_ToolTip}" />
+		<CheckBox x:Name="ProfilerWarningsCheckBox" Grid.Row="23" Grid.Column="1" Classes="right" IsChecked ="{Binding ProfilerWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerWarnings_ToolTip}"/>
 		
 		<TextBlock x:Name="SendCrashReportsTextBlock" Grid.Row="24" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_SendCrashReports}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_SendCrashReports_ToolTip}" />
 		<CheckBox x:Name="SendCrashReportsCheckBox" Grid.Row="24" Grid.Column="1" Classes="right" IsChecked ="{Binding SendCrashReports}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_SendCrashReports_ToolTip}"/>
-		
-		<TextBlock x:Name="ShowPerfWarningsTextBlock" Grid.Row="25" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ShowPerfWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ShowPerfWarnings_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<CheckBox x:Name="ShowPerfWarningsCheckBox" Grid.Row="25" Grid.Column="1" Classes="right" IsChecked ="{Binding ShowPerfWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ShowPerfWarnings_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 	</Grid>
 </UserControl>

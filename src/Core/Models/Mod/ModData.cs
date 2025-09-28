@@ -231,11 +231,7 @@ public class ModData : ReactiveObject, IModuleShortDesc
 			result.AppendLine(Loca.Mod_ExtenderStatus_RequiresDefault);
 		}
 
-		if (status.HasFlag(ModExtenderStatus.DisabledFromConfig))
-		{
-			result.AppendLine(Loca.Mod_ExtenderStatus_DisabledFromConfig);
-		}
-		else if (status.HasFlag(ModExtenderStatus.MissingAppData))
+		if (status.HasFlag(ModExtenderStatus.MissingAppData))
 		{
 			result.AppendLine(Loca.Mod_ExtenderStatus_MissingAppData.SafeFormat($"(Missing %LOCALAPPDATA%\\..\\{DivinityApp.EXTENDER_APPDATA_DLL})", DivinityApp.EXTENDER_APPDATA_DLL));
 		}
@@ -270,7 +266,7 @@ public class ModData : ReactiveObject, IModuleShortDesc
 	{
 		var result = ScriptExtenderIconType.None;
 
-		if (status.HasFlag(ModExtenderStatus.DisabledFromConfig) || status.HasFlag(ModExtenderStatus.MissingUpdater))
+		if (status.HasFlag(ModExtenderStatus.MissingUpdater))
 		{
 			result = ScriptExtenderIconType.Missing;
 		}

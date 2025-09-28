@@ -1750,15 +1750,6 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (Enable Extensions in the Script Extender Settings).
-        /// </summary>
-        public static string Mod_ExtenderStatus_DisabledFromConfig {
-            get {
-                return ResourceManager.GetString("Mod_ExtenderStatus_DisabledFromConfig", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Currently installed version is v{0}.
         /// </summary>
         public static string Mod_ExtenderStatus_InstalledVersion {
@@ -2758,24 +2749,6 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable Mod Validation.
-        /// </summary>
-        public static string Settings_Extender_DisableModValidation {
-            get {
-                return ResourceManager.GetString("Settings_Extender_DisableModValidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disable module hashing when loading mods\nSpeeds up mod loading with no drawbacks.
-        /// </summary>
-        public static string Settings_Extender_DisableModValidation_ToolTip {
-            get {
-                return ResourceManager.GetString("Settings_Extender_DisableModValidation_ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Disable Story Merge.
         /// </summary>
         public static string Settings_Extender_DisableStoryMerge {
@@ -2808,24 +2781,6 @@ namespace ModManager.Locale {
         public static string Settings_Extender_DisableStoryPatching_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_Extender_DisableStoryPatching_ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dump Network Strings.
-        /// </summary>
-        public static string Settings_Extender_DumpNetworkStrings {
-            get {
-                return ResourceManager.GetString("Settings_Extender_DumpNetworkStrings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dumps the NetworkFixedString table to LogDirectory\nMainly useful for debugging desync issues.
-        /// </summary>
-        public static string Settings_Extender_DumpNetworkStrings_ToolTip {
-            get {
-                return ResourceManager.GetString("Settings_Extender_DumpNetworkStrings_ToolTip", resourceCulture);
             }
         }
         
@@ -2866,24 +2821,6 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extensions.
-        /// </summary>
-        public static string Settings_Extender_EnableExtensions {
-            get {
-                return ResourceManager.GetString("Settings_Extender_EnableExtensions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enables extender API functionality.
-        /// </summary>
-        public static string Settings_Extender_EnableExtensions_ToolTip {
-            get {
-                return ResourceManager.GetString("Settings_Extender_EnableExtensions_ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Log Osiris Scripts.
         /// </summary>
         public static string Settings_Extender_EnableLogging {
@@ -2920,6 +2857,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Performance Messages.
+        /// </summary>
+        public static string Settings_Extender_EnablePerfMessages {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnablePerfMessages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable performance messages in the console window, which tracks the execution time of scripts and reports on long timespans..
+        /// </summary>
+        public static string Settings_Extender_EnablePerfMessages_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_EnablePerfMessages_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Default Values.
         /// </summary>
         public static string Settings_Extender_ExportDefaultExtenderSettings {
@@ -2934,6 +2889,24 @@ namespace ModManager.Locale {
         public static string Settings_Extender_ExportDefaultExtenderSettings_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_Extender_ExportDefaultExtenderSettings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extend Osiris.
+        /// </summary>
+        public static string Settings_Extender_ExtendStory {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ExtendStory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables extending Osiris functionality with the Script Extender, allowing custom functions..
+        /// </summary>
+        public static string Settings_Extender_ExtendStory_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ExtendStory_ToolTip", resourceCulture);
             }
         }
         
@@ -3046,6 +3019,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Profiler Warnings.
+        /// </summary>
+        public static string Settings_Extender_ProfilerWarnings {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable performance warning messages in the console window, which reports on long script executions..
+        /// </summary>
+        public static string Settings_Extender_ProfilerWarnings_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerWarnings_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Crash Reports.
         /// </summary>
         public static string Settings_Extender_SendCrashReports {
@@ -3060,24 +3051,6 @@ namespace ModManager.Locale {
         public static string Settings_Extender_SendCrashReports_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_Extender_SendCrashReports_ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show Performance Warnings.
-        /// </summary>
-        public static string Settings_Extender_ShowPerfWarnings {
-            get {
-                return ResourceManager.GetString("Settings_Extender_ShowPerfWarnings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Print warnings to the extender console window, which indicates when the server-side part of the game lags behind (a.k.a. warnings about ticks taking too long)..
-        /// </summary>
-        public static string Settings_Extender_ShowPerfWarnings_ToolTip {
-            get {
-                return ResourceManager.GetString("Settings_Extender_ShowPerfWarnings_ToolTip", resourceCulture);
             }
         }
         

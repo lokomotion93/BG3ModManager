@@ -936,27 +936,20 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		{
 			if (mod.ScriptExtenderData.Lua)
 			{
-				if (!ExtenderSettings.EnableExtensions)
+				if (ExtenderSettings.ExtenderMajorVersion > -1)
 				{
-					mod.ExtenderModStatus |= ModExtenderStatus.DisabledFromConfig;
-				}
-				else
-				{
-					if (ExtenderSettings.ExtenderMajorVersion > -1)
-					{
-						if (mod.ScriptExtenderData.RequiredVersion > -1 && ExtenderSettings.ExtenderMajorVersion < mod.ScriptExtenderData.RequiredVersion)
-						{
-							mod.ExtenderModStatus |= ModExtenderStatus.MissingRequiredVersion;
-						}
-						else
-						{
-							mod.ExtenderModStatus |= ModExtenderStatus.Fulfilled;
-						}
-					}
-					else
+					if (mod.ScriptExtenderData.RequiredVersion > -1 && ExtenderSettings.ExtenderMajorVersion < mod.ScriptExtenderData.RequiredVersion)
 					{
 						mod.ExtenderModStatus |= ModExtenderStatus.MissingRequiredVersion;
 					}
+					else
+					{
+						mod.ExtenderModStatus |= ModExtenderStatus.Fulfilled;
+					}
+				}
+				else
+				{
+					mod.ExtenderModStatus |= ModExtenderStatus.MissingRequiredVersion;
 				}
 			}
 			else

@@ -716,15 +716,6 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			//Window.ToggleLogging(logEnabled);
 		});
 
-		// Updating extender requirement display
-		ExtenderSettings.WhenAnyValue(x => x.EnableExtensions).ObserveOn(RxApp.MainThreadScheduler).Subscribe((b) =>
-		{
-			if (Settings.SettingsWindowIsOpen)
-			{
-				ViewModelLocator.ModOrder.UpdateExtenderVersionForAllMods();
-			}
-		});
-
 		var actionLaunchChanged = Settings.WhenAnyValue(x => x.ActionOnGameLaunch).Skip(1).ObserveOn(RxApp.MainThreadScheduler);
 		actionLaunchChanged.Subscribe((action) =>
 		{

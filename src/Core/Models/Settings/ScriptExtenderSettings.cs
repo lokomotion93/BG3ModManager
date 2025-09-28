@@ -79,20 +79,15 @@ public class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
 	[DefaultValue(false)]
 	public bool DisableStoryPatching { get; set; }
 
-	[SettingsEntry(nameof(Resources.Settings_Extender_DisableModValidation), nameof(Resources.Settings_Extender_DisableModValidation_ToolTip))]
+	[SettingsEntry(nameof(Resources.Settings_Extender_ExtendStory), nameof(Resources.Settings_Extender_ExtendStory_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember, Reactive]
-	[DefaultValue(true)]
-	public bool DisableModValidation { get; set; }
+	[DefaultValue(false)]
+	public bool ExtendStory { get; set; }
 
 	[SettingsEntry(nameof(Resources.Settings_Extender_EnableAchievements), nameof(Resources.Settings_Extender_EnableAchievements_ToolTip))]
 	[DataMember, Reactive]
 	[DefaultValue(true)]
 	public bool EnableAchievements { get; set; }
-
-	[SettingsEntry(nameof(Resources.Settings_Extender_EnableExtensions), nameof(Resources.Settings_Extender_EnableExtensions_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
-	[DataMember, Reactive]
-	[DefaultValue(true)]
-	public bool EnableExtensions { get; set; }
 
 	[SettingsEntry(nameof(Resources.Settings_Extender_SendCrashReports), nameof(Resources.Settings_Extender_SendCrashReports_ToolTip))]
 	[DataMember, Reactive]
@@ -108,11 +103,6 @@ public class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
 	[DataMember, Reactive]
 	[DefaultValue(9999)]
 	public int DebuggerPort { get; set; }
-
-	[SettingsEntry(nameof(Resources.Settings_Extender_DumpNetworkStrings), nameof(Resources.Settings_Extender_DumpNetworkStrings_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
-	[DataMember, Reactive]
-	[DefaultValue(false)]
-	public bool DumpNetworkStrings { get; set; }
 
 	[SettingsEntry(nameof(Resources.Settings_Extender_DebuggerFlags), nameof(Resources.Settings_Extender_DebuggerFlags_ToolTip))]
 	[DataMember, Reactive]
@@ -139,15 +129,20 @@ public class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
 	[DefaultValue(false)]
 	public bool DefaultToClientConsole { get; set; }
 
-	[SettingsEntry(nameof(Resources.Settings_Extender_ShowPerfWarnings), nameof(Resources.Settings_Extender_ShowPerfWarnings_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
-	[DataMember, Reactive]
-	[DefaultValue(false)]
-	public bool ShowPerfWarnings { get; set; }
-
 	[SettingsEntry(nameof(Resources.Settings_Extender_InsanityCheck), nameof(Resources.Settings_Extender_InsanityCheck_ToolTip))]
 	[DataMember, Reactive]
 	[DefaultValue(false)]
 	public bool InsanityCheck { get; set; }
+
+	[SettingsEntry(nameof(Resources.Settings_Extender_EnablePerfMessages), nameof(Resources.Settings_Extender_EnablePerfMessages_ToolTip))]
+	[DataMember, Reactive]
+	[DefaultValue(true)]
+	public bool EnablePerfMessages { get; set; }
+
+	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerWarnings), nameof(Resources.Settings_Extender_ProfilerWarnings_ToolTip))]
+	[DataMember, Reactive]
+	[DefaultValue(false)]
+	public bool ProfilerWarnings { get; set; }
 
 	public ScriptExtenderSettings()
 	{
