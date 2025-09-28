@@ -393,16 +393,25 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 			.DisposeMany()
 			.Subscribe();
 
+		var nameColumn = new TextBlock();
+		nameColumn[!TextBlock.TextProperty] = AppServices.Locale.EntryToObservable(nameof(Loca.Window_PakFileExplorer_Column_Name), "Name").ToBinding();
+
+		var sizeColumn = new TextBlock();
+		sizeColumn[!TextBlock.TextProperty] = AppServices.Locale.EntryToObservable(nameof(Loca.Window_PakFileExplorer_Column_Size), "Size").ToBinding();
+
+		var extColumn = new TextBlock();
+		extColumn[!TextBlock.TextProperty] = AppServices.Locale.EntryToObservable(nameof(Loca.Window_PakFileExplorer_Column_Ext), "Ext").ToBinding();
+
 		FileTreeSource = new HierarchicalTreeDataGridSource<ModFileEntry>(readOnlyFiles)
 		{
 			Columns =
 			{
 				new HierarchicalExpanderColumn<ModFileEntry>(
 					//new TextColumn<PakFileEntry, string>("Name", x => x.FileName, GridLength.Star),
-					new TemplateColumn<ModFileEntry>("Name", "FileNameWithIconCell", null, GridLength.Star),
+					new TemplateColumn<ModFileEntry>(nameColumn, "FileNameWithIconCell", null, new GridLength(10d, GridUnitType.Star)),
 					x => x.Subfiles, x => x.Subfiles != null && x.Subfiles.Count > 0, x => x.IsExpanded),
-				new TextColumn<ModFileEntry, string>("Size", x => x.Size, GridLength.Auto),
-				new TextColumn<ModFileEntry, string>("Ext", x => x.ExtensionDisplayName, GridLength.Auto),
+				new TextColumn<ModFileEntry, string>(sizeColumn, x => x.Size, GridLength.Auto),
+				new TextColumn<ModFileEntry, string>(extColumn, x => x.ExtensionDisplayName, new GridLength(1d, GridUnitType.Star)),
 			},
 		};
 
