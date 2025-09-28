@@ -12,6 +12,7 @@
     Width="419"
     Height="550"
     x:DataType="vm:ModPropertiesWindowViewModel"
+    Icon="/Assets/BG3ModManager.ico"
     ShowInTaskbar="False"
     mc:Ignorable="d">
 	<Design.DataContext>
@@ -34,12 +35,10 @@
 			<Panel Background="{DynamicResource ModPropertiesBackground}">
 				<TabControl>
 					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_General}">
-						<controls:AutoGrid Margin="10,0" RowCount="8" RowHeight="auto">
-							<controls:AutoGrid.ColumnDefinitions>
-								<ColumnDefinition Width="auto" />
-								<ColumnDefinition Width="*" />
-							</controls:AutoGrid.ColumnDefinitions>
-
+						<controls:AutoGrid Margin="10,0"
+						    ColumnDefinitions="auto,*"
+						    RowCount="8"
+						    RowHeight="auto">
 							<materialIcons:MaterialIcon Name="ModTypeIconControl"
 							    Width="36"
 							    Height="36"
@@ -66,7 +65,7 @@
 							<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_Name}" />
 							<TextBox Classes="readonly-selectable" Text="{Binding ModName}" TextWrapping="Wrap" />
 
-							<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_Description}" />
+							<TextBlock VerticalAlignment="Top" Classes="left" Text="{manager:LocaleKey Window_ModProperties_Section_Description}" />
 							<TextBox MaxHeight="128"
 							    Classes="readonly-selectable"
 							    FontSize="12"
@@ -82,8 +81,44 @@
 							<TextBlock Classes="right" Text="{Binding ModSizeText}" TextWrapping="NoWrap" />
 						</controls:AutoGrid>
 					</TabItem>
-					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_Config}" />
-					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_Notes}" />
+					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_Config}">
+						<StackPanel Orientation="Vertical">
+							<controls:IconExpander ExpandDirection="Down" IsExpanded="True" ToolTip.Tip="{manager:LocaleKey Window_ModProperties_Config_Header_UpdateSources_ToolTip}">
+								<controls:IconExpander.Header>
+									<TextBlock FontSize="16" Text="{manager:LocaleKey Window_ModProperties_Config_Header_UpdateSources_Title}" TextDecorations="Underline" />
+								</controls:IconExpander.Header>
+								<controls:IconExpander.Icon>
+									<materialIcons:MaterialIcon Width="24"
+									    Height="24"
+									    Margin="4"
+									    Foreground="Cyan"
+									    Kind="CogClockwise" />
+								</controls:IconExpander.Icon>
+								<controls:AutoGrid Margin="10,0"
+								    ColumnDefinitions="*,*"
+								    RowCount="3"
+								    RowHeight="auto">
+									<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Config_Section_NexusModsId}" />
+									<!--<controls:EnhancedTextBox Classes="right" Text="{Binding NexusModsId, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" />-->
+									<NumericUpDown Classes="right" Value="{Binding NexusModsId}" />
+
+									<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Config_Section_ModioId}" />
+									<controls:EnhancedTextBox Classes="right" Text="{Binding ModioId, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" />
+
+									<TextBlock Classes="left" Text="{manager:LocaleKey Window_ModProperties_Config_Section_Repository}" />
+									<controls:EnhancedTextBox Classes="right" Text="{Binding Repository, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" />
+								</controls:AutoGrid>
+							</controls:IconExpander>
+						</StackPanel>
+					</TabItem>
+					<TabItem Header="{manager:LocaleKey Window_ModProperties_Tab_Notes}">
+						<controls:EnhancedTextBox AcceptsReturn="True"
+						    AcceptsTab="True"
+						    BorderBrush="LimeGreen"
+						    BorderThickness="2"
+						    CornerRadius="0"
+						    Text="{Binding Notes, UpdateSourceTrigger=LostFocus}" />
+					</TabItem>
 				</TabControl>
 			</Panel>
 			<UniformGrid Grid.Row="1"

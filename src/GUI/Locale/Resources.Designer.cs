@@ -1420,7 +1420,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Keybindings Window.
+        ///   Looks up a localized string similar to Keybindings Window.
         /// </summary>
         public static string Keybinding_ToggleKeybindings {
             get {
@@ -1447,7 +1447,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Mod Files Explorer Window.
+        ///   Looks up a localized string similar to Mod Files Explorer Window.
         /// </summary>
         public static string Keybinding_TogglePakFileExplorerWindow {
             get {
@@ -1456,7 +1456,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Settings Window.
+        ///   Looks up a localized string similar to Settings Window.
         /// </summary>
         public static string Keybinding_ToggleSettingsWindow {
             get {
@@ -1465,7 +1465,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Stats Validator Window.
+        ///   Looks up a localized string similar to Stats Validator Window.
         /// </summary>
         public static string Keybinding_ToggleStatsValidatorWindow {
             get {
@@ -1483,7 +1483,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Updates View.
+        ///   Looks up a localized string similar to Updates.
         /// </summary>
         public static string Keybinding_ToggleUpdatesView {
             get {
@@ -1492,7 +1492,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Version Generator Window.
+        ///   Looks up a localized string similar to Version Generator Window.
         /// </summary>
         public static string Keybinding_ToggleVersionGeneratorWindow {
             get {
@@ -3856,6 +3856,51 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Sources.
+        /// </summary>
+        public static string Window_ModProperties_Config_Header_UpdateSources_Title {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Config_Header_UpdateSources_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These properties affect where the mod manager checks for the mod&apos;s updates..
+        /// </summary>
+        public static string Window_ModProperties_Config_Header_UpdateSources_ToolTip {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Config_Header_UpdateSources_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mod.io Id:.
+        /// </summary>
+        public static string Window_ModProperties_Config_Section_ModioId {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Config_Section_ModioId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NexusMods Id:.
+        /// </summary>
+        public static string Window_ModProperties_Config_Section_NexusModsId {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Config_Section_NexusModsId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository:.
+        /// </summary>
+        public static string Window_ModProperties_Config_Section_Repository {
+            get {
+                return ResourceManager.GetString("Window_ModProperties_Config_Section_Repository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description:.
         /// </summary>
         public static string Window_ModProperties_Section_Description {
@@ -3960,6 +4005,33 @@ namespace ModManager.Locale {
         public static string Window_NXMDownload_Title {
             get {
                 return ResourceManager.GetString("Window_NXMDownload_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ext.
+        /// </summary>
+        public static string Window_PakFileExplorer_Column_Ext {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_Column_Ext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Window_PakFileExplorer_Column_Name {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_Column_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string Window_PakFileExplorer_Column_Size {
+            get {
+                return ResourceManager.GetString("Window_PakFileExplorer_Column_Size", resourceCulture);
             }
         }
         

@@ -20,7 +20,7 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 	[Reactive] public bool HasChanges { get; private set; }
 	[Reactive] public ModData? Mod { get; set; }
 	[Reactive] public string? Notes { get; set; }
-	[Reactive] public string? GitHub { get; set; }
+	[Reactive] public string? Repository { get; set; }
 	[Reactive] public long NexusModsId { get; set; }
 	[Reactive] public string? ModioId { get; set; }
 
@@ -53,14 +53,14 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 		{
 			if (mod.ModManagerConfig != null && mod.ModManagerConfig.IsLoaded)
 			{
-				GitHub = mod.ModManagerConfig.GitHub;
+				Repository = mod.ModManagerConfig.GitHub;
 				NexusModsId = mod.ModManagerConfig.NexusModsId;
 				ModioId = mod.ModManagerConfig.ModioId;
 				Notes = mod.ModManagerConfig.Notes;
 			}
 			else
 			{
-				GitHub = mod.GitHubData.Url;
+				Repository = mod.GitHubData.Url;
 				NexusModsId = mod.NexusModsData.ModId;
 				ModioId = mod.ModioData.NameId;
 				Notes = "";
@@ -79,7 +79,7 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 
 		modConfigService.Mods.AddOrUpdate(Mod.ModManagerConfig);
 
-		Mod.ModManagerConfig.GitHub = GitHub;
+		Mod.ModManagerConfig.GitHub = Repository;
 		Mod.ModManagerConfig.NexusModsId = NexusModsId;
 		Mod.ModManagerConfig.ModioId = ModioId;
 		Mod.ModManagerConfig.Notes = Notes;
@@ -152,7 +152,7 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 
 		var autoSaveProperties = new HashSet<string>()
 		{
-			nameof(GitHub),
+			nameof(Repository),
 			nameof(NexusModsId),
 			nameof(ModioId),
 			nameof(Notes),
@@ -174,7 +174,7 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 			HasChanges = true;
 		});
 
-		this.WhenAnyValue(x => x.GitHub).Select(x => !x.IsValid())
+		this.WhenAnyValue(x => x.Repository).Select(x => !x.IsValid())
 			.ToUIProperty(this, x => x.GitHubPlaceholderLabelVisibility);
 
 		var whenHasChanges = this.WhenAnyValue(x => x.HasChanges);

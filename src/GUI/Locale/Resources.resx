@@ -280,6 +280,21 @@
 	<data name="Window_ModProperties_Section_Size" xml:space="preserve">
 		<value>Size:</value>
 	</data>
+	<data name="Window_ModProperties_Config_Header_UpdateSources_Title" xml:space="preserve">
+		<value>Update Sources</value>
+	</data>
+	<data name="Window_ModProperties_Config_Header_UpdateSources_ToolTip" xml:space="preserve">
+		<value>These properties affect where the mod manager checks for the mod's updates.</value>
+	</data>
+	<data name="Window_ModProperties_Config_Section_NexusModsId" xml:space="preserve">
+		<value>NexusMods Id:</value>
+	</data>
+	<data name="Window_ModProperties_Config_Section_ModioId" xml:space="preserve">
+		<value>mod.io Id:</value>
+	</data>
+	<data name="Window_ModProperties_Config_Section_Repository" xml:space="preserve">
+		<value>Repository:</value>
+	</data>
 	<data name="Window_ModProperties_Tab_General" xml:space="preserve">
 		<value>General</value>
 	</data>
@@ -378,6 +393,15 @@
 	</data>
 	<data name="Window_PakFileExplorer_Picker_ExtractFiles_Title" xml:space="preserve">
 		<value>Extract File(s) To...</value>
+	</data>
+	<data name="Window_PakFileExplorer_Column_Name" xml:space="preserve">
+		<value>Name</value>
+	</data>
+	<data name="Window_PakFileExplorer_Column_Size" xml:space="preserve">
+		<value>Size</value>
+	</data>
+	<data name="Window_PakFileExplorer_Column_Ext" xml:space="preserve">
+		<value>Ext</value>
 	</data>
 	<data name="Window_StatsValidator_Title" xml:space="preserve">
 		<value>Stats Validator</value>
@@ -711,22 +735,22 @@
 		<value>Save Settings</value>
 	</data>
 	<data name="Keybinding_ToggleUpdatesView" xml:space="preserve">
-		<value>Toggle Updates View</value>
+		<value>Updates</value>
 	</data>
 	<data name="Keybinding_TogglePakFileExplorerWindow" xml:space="preserve">
-		<value>Toggle Mod Files Explorer Window</value>
+		<value>Mod Files Explorer Window</value>
 	</data>
 	<data name="Keybinding_ToggleStatsValidatorWindow" xml:space="preserve">
-		<value>Toggle Stats Validator Window</value>
+		<value>Stats Validator Window</value>
 	</data>
 	<data name="Keybinding_ToggleSettingsWindow" xml:space="preserve">
-		<value>Toggle Settings Window</value>
+		<value>Settings Window</value>
 	</data>
 	<data name="Keybinding_ToggleKeybindings" xml:space="preserve">
-		<value>Toggle Keybindings Window</value>
+		<value>Keybindings Window</value>
 	</data>
 	<data name="Keybinding_ToggleVersionGeneratorWindow" xml:space="preserve">
-		<value>Toggle Version Generator Window</value>
+		<value>Version Generator Window</value>
 	</data>
 	<data name="Keybinding_ToggleVersionGeneratorWindow_ToolTip" xml:space="preserve">
 		<value>A tool for mod authors to generate version numbers for a mod's meta.lsx</value>
