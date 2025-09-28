@@ -5,7 +5,10 @@ using Avalonia.Media;
 
 using DynamicData.Binding;
 
+using Material.Icons.Avalonia;
+
 using ModManager.Models.Menu;
+using ModManager.Styling;
 using ModManager.ViewModels.Main;
 
 namespace ModManager.Views.Main;
@@ -20,6 +23,15 @@ public partial class MainCommandBar : ReactiveUserControl<MainCommandBarViewMode
 			{
 				Command = menuEntry.Command,
 			};
+			if(menuEntry.MaterialIcon != null)
+			{
+				var icon = new MaterialIcon() { Kind = menuEntry.MaterialIcon.Value };
+				if(menuEntry.IconForeground.IsValid())
+				{
+					icon.Foreground = ColorBrushCache.GetBrush(menuEntry.IconForeground);
+				}
+				menuItem.Icon = icon;
+			}
 			if(menuEntry.UseAccessShortcut || menuEntry.DisplayName?.StartsWith('_') == true)
 			{
 				var tb = new AccessText();

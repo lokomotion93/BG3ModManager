@@ -1,5 +1,7 @@
 ﻿using DynamicData.Binding;
 
+using Material.Icons;
+
 using System.Windows.Input;
 
 namespace ModManager.Models.Menu;
@@ -9,7 +11,17 @@ public class MenuEntry : ReactiveObject, IMenuEntry
 	[Reactive] public string? ToolTip { get; set; }
 	[Reactive] public ICommand? Command { get; set; }
 	[Reactive] public bool UseAccessShortcut { get; set; }
+	[Reactive] public MaterialIconKind? MaterialIcon { get; set; }
+	[Reactive] public string? IconForeground { get; set; }
+
 	public ObservableCollectionExtended<IMenuEntry>? Children { get; set; }
+
+	public MenuEntry WithIcon(MaterialIconKind kind, string? foregroundColor = null)
+	{
+		MaterialIcon = kind;
+		if (foregroundColor != null) IconForeground = foregroundColor;
+		return this;
+	}
 
 	public MenuEntry(string? name = null, ICommand? command = null, string? tooltip = null, bool useLocalization = false, bool useAccessShortcut = false)
 	{

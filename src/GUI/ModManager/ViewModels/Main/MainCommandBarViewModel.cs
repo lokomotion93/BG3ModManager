@@ -1,6 +1,8 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using Material.Icons;
+
 using ModManager.Locale;
 using ModManager.Models;
 using ModManager.Models.App;
@@ -822,10 +824,10 @@ public partial class MainCommandBarViewModel : ReactiveObject
 				]},
 			new MenuEntry(nameof(Resources.TopMenu_View), useLocalization: true, useAccessShortcut:true){
 				Children = [
-					MenuEntry.FromKeybinding(ToggleUpdatesViewCommand, nameof(ToggleUpdatesViewCommand), keybindings),
-					MenuEntry.FromKeybinding(ToggleVersionGeneratorWindowCommand, nameof(ToggleVersionGeneratorWindowCommand), keybindings),
-					MenuEntry.FromKeybinding(TogglePakFileExplorerWindowCommand, nameof(TogglePakFileExplorerWindowCommand), keybindings),
-					MenuEntry.FromKeybinding(ToggleStatsValidatorWindowCommand, nameof(ToggleStatsValidatorWindowCommand), keybindings),
+					MenuEntry.FromKeybinding(ToggleUpdatesViewCommand, nameof(ToggleUpdatesViewCommand), keybindings).WithIcon(MaterialIconKind.Update, "#00FF00"),
+					MenuEntry.FromKeybinding(ToggleVersionGeneratorWindowCommand, nameof(ToggleVersionGeneratorWindowCommand), keybindings).WithIcon(MaterialIconKind.GeneratorPortable, "#78D9FF"),
+					MenuEntry.FromKeybinding(TogglePakFileExplorerWindowCommand, nameof(TogglePakFileExplorerWindowCommand), keybindings).WithIcon(MaterialIconKind.Files, "#A800FF"),
+					MenuEntry.FromKeybinding(ToggleStatsValidatorWindowCommand, nameof(ToggleStatsValidatorWindowCommand), keybindings).WithIcon(MaterialIconKind.FileChart, "#FF7800"),
 				]},
 			new MenuEntry(nameof(Resources.TopMenu_Go), useLocalization: true, useAccessShortcut:true){
 				Children = [
