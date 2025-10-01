@@ -12,7 +12,7 @@
 	d:DesignHeight="900"
     d:DesignWidth="1600"
 	mc:Ignorable="d">
-	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Grid.IsSharedSizeScope="True">
 		<TextBlock x:Name="UpdateChannelTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ExtenderUpdater_UpdateChannel}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_UpdateChannel_ToolTip}" />
 		<ComboBox x:Name="UpdateChannelComboBox" Grid.Row="0" Grid.Column="1" Classes="right" SelectedIndex="{Binding UpdateChannelIndex, FallbackValue=0}" ToolTip.Tip="{manager:LocaleKey Settings_ExtenderUpdater_UpdateChannel_ToolTip}">
 			<ComboBoxItem Content="{manager:LocaleKey ExtenderUpdateChannel_Release}" ToolTip.Tip="{manager:LocaleKey ExtenderUpdateChannel_Release_ToolTip}" Tag="Release" />

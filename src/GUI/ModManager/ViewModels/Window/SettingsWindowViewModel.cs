@@ -392,6 +392,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		SaveSettingsCommand = ReactiveCommand.Create(SaveSettings, whenVisible);
 		Observable.Merge(whenSettings, whenExtenderSettings, whenExtenderUpdaterSettings)
 			.Where(e => settingsProperties.Contains(e.EventArgs.PropertyName))
+			.SkipUntil(whenVisible)
 			.Throttle(TimeSpan.FromMilliseconds(100))
 			.Do(x => DivinityApp.Log($"Autosaving due to {x.EventArgs.PropertyName} changing"))
 			.Select(x => Unit.Default)
@@ -497,7 +498,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		.Select(prop => prop.Name)
 		.ToArray();
 
-		this.WhenAnyPropertyChanged(properties).Subscribe((c) =>
+		this.WhenAnyPropertyChanged(properties).SkipUntil(whenVisible).Subscribe((c) =>
 		{
 			CanSaveSettings = true;
 		});
@@ -508,7 +509,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		.Select(prop => prop.Name)
 		.ToArray();
 
-		UpdateSettings.WhenAnyPropertyChanged(updateProperties).Subscribe((c) =>
+		UpdateSettings.WhenAnyPropertyChanged(updateProperties).SkipUntil(whenVisible).Subscribe((c) =>
 		{
 			CanSaveSettings = true;
 		});
@@ -519,7 +520,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		.Select(prop => prop.Name)
 		.ToArray();
 
-		ExtenderSettings.WhenAnyPropertyChanged(extenderProperties).Subscribe((c) =>
+		ExtenderSettings.WhenAnyPropertyChanged(extenderProperties).SkipUntil(whenVisible).Subscribe((c) =>
 		{
 			CanSaveSettings = true;
 			Settings.RaisePropertyChanged(nameof(ModManagerSettings.ExtenderLogDirectory));
@@ -531,9 +532,33 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		.Select(prop => prop.Name)
 		.ToArray();
 
-		ExtenderUpdaterSettings.WhenAnyPropertyChanged(extenderUpdaterProperties).Subscribe((c) =>
+		ExtenderUpdaterSettings.WhenAnyPropertyChanged(extenderUpdaterProperties).SkipUntil(whenVisible).Subscribe((c) =>
 		{
 			CanSaveSettings = true;
+		});
+
+		ExtenderSettings.ProfilerLoadThreshold.GetChangeObservable(whenVisible).Subscribe(x =>
+		{
+			ExtenderSettings.ProfilerLoadThresholdWarn = x.Item1;
+			ExtenderSettings.ProfilerLoadThresholdError = x.Item2;
+		});
+
+		ExtenderSettings.ProfilerLoadCallbackThreshold.GetChangeObservable(whenVisible).Subscribe(x =>
+		{
+			ExtenderSettings.ProfilerLoadCallbackThresholdWarn = x.Item1;
+			ExtenderSettings.ProfilerLoadCallbackThresholdError = x.Item2;
+		});
+
+		ExtenderSettings.ProfilerCallbackThreshold.GetChangeObservable(whenVisible).Subscribe(x =>
+		{
+			ExtenderSettings.ProfilerCallbackThresholdWarn = x.Item1;
+			ExtenderSettings.ProfilerCallbackThresholdError = x.Item2;
+		});
+
+		ExtenderSettings.ProfilerClientCallbackThreshold.GetChangeObservable(whenVisible).Subscribe(x =>
+		{
+			ExtenderSettings.ProfilerClientCallbackThresholdWarn = x.Item1;
+			ExtenderSettings.ProfilerClientCallbackThresholdError = x.Item2;
 		});
 	}
 }

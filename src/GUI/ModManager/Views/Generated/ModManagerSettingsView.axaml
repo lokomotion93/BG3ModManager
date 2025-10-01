@@ -12,7 +12,7 @@
 	d:DesignHeight="900"
     d:DesignWidth="1600"
 	mc:Ignorable="d">
-	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Grid.IsSharedSizeScope="True">
 		<TextBlock x:Name="DocumentsFolderPathOverrideTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DocumentsFolderPathOverride}" ToolTip.Tip="{manager:LocaleKey Settings_DocumentsFolderPathOverride_ToolTip}" />
 		<controls:EnhancedTextBox x:Name="DocumentsFolderPathOverrideTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding DocumentsFolderPathOverride, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_DocumentsFolderPathOverride_ToolTip}"/>
 		

@@ -101,6 +101,18 @@ namespace ModManager.Views.Generated
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::Avalonia.Controls.CheckBox LogRuntimeCheckBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.TextBlock OptickTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.CheckBox OptickCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.TextBlock ProfilerCallbackThresholdTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.TextBlock ProfilerClientCallbackThresholdTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.TextBlock ProfilerLoadCallbackThresholdTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.TextBlock ProfilerLoadThresholdTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::Avalonia.Controls.TextBlock ProfilerWarningsTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::Avalonia.Controls.CheckBox ProfilerWarningsCheckBox;
@@ -170,6 +182,12 @@ namespace ModManager.Views.Generated
             LogFailedCompileCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("LogFailedCompileCheckBox");
             LogRuntimeTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LogRuntimeTextBlock");
             LogRuntimeCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("LogRuntimeCheckBox");
+            OptickTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("OptickTextBlock");
+            OptickCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("OptickCheckBox");
+            ProfilerCallbackThresholdTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ProfilerCallbackThresholdTextBlock");
+            ProfilerClientCallbackThresholdTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ProfilerClientCallbackThresholdTextBlock");
+            ProfilerLoadCallbackThresholdTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ProfilerLoadCallbackThresholdTextBlock");
+            ProfilerLoadThresholdTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ProfilerLoadThresholdTextBlock");
             ProfilerWarningsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ProfilerWarningsTextBlock");
             ProfilerWarningsCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("ProfilerWarningsCheckBox");
             SendCrashReportsTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("SendCrashReportsTextBlock");

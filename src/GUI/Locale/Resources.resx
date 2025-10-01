@@ -1301,6 +1301,12 @@
 	<data name="Settings_Extender_InsanityCheck_ToolTip" xml:space="preserve">
 		<value>Disables the ModCrashSanityCheck jank that disables mods the next time the game runs</value>
 	</data>
+	<data name="Settings_Extender_Optick" xml:space="preserve">
+		<value>Optick Analyzer</value>
+	</data>
+	<data name="Settings_Extender_Optick_ToolTip" xml:space="preserve">
+		<value>Enable attachment to the optick performance analyzer, which will profile scripted functions. Requires the 'Optick' program to be running.</value>
+	</data>
 	<data name="Settings_Extender_EnablePerfMessages" xml:space="preserve">
 		<value>Show Performance Messages</value>
 	</data>
@@ -1312,6 +1318,36 @@
 	</data>
 	<data name="Settings_Extender_ProfilerWarnings_ToolTip" xml:space="preserve">
 		<value>Enable performance warning messages in the console window, which reports on long script executions.</value>
+	</data>
+	<data name="Settings_Extender_ProfilerLoadThreshold" xml:space="preserve">
+		<value>Profiler Load Threshold</value>
+	</data>
+	<data name="Settings_Extender_ProfilerLoadThreshold_ToolTip" xml:space="preserve">
+		<value>The warn/error threshold (in milliseconds) to display profiler load warnings.</value>
+	</data>
+	<data name="Settings_Extender_ProfilerLoadCallbackThreshold" xml:space="preserve">
+		<value>Profiler Load Callback Threshold</value>
+	</data>
+	<data name="Settings_Extender_ProfilerLoadCallbackThreshold_ToolTip" xml:space="preserve">
+		<value>The warn/error threshold (in milliseconds) to display profiler load callback warnings.</value>
+	</data>
+	<data name="Settings_Extender_ProfilerCallbackThreshold" xml:space="preserve">
+		<value>Profiler Callback Threshold</value>
+	</data>
+	<data name="Settings_Extender_ProfilerCallbackThreshold_ToolTip" xml:space="preserve">
+		<value>The warn/error threshold (in milliseconds) to display profiler callback warnings.</value>
+	</data>
+	<data name="Settings_Extender_ProfilerClientCallbackThreshold" xml:space="preserve">
+		<value>Profiler Client Callback Threshold</value>
+	</data>
+	<data name="Settings_Extender_ProfilerClientCallbackThreshold_ToolTip" xml:space="preserve">
+		<value>The warn/error threshold (in milliseconds) to display profiler client-side callback warnings.</value>
+	</data>
+	<data name="Settings_Extender_Threshold_Warn" xml:space="preserve">
+		<value>Warning</value>
+	</data>
+	<data name="Settings_Extender_Threshold_Error" xml:space="preserve">
+		<value>Error</value>
 	</data>
 	<data name="Settings_ExtenderUpdater_UpdateChannel" xml:space="preserve">
 		<value>Update Channel</value>

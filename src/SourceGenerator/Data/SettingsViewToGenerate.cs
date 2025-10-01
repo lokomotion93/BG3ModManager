@@ -140,7 +140,7 @@ public readonly record struct SettingsViewToGenerate
 			var textBlockName = $"{entry.PropertyName}TextBlock";
 			var tooltip = entry.ToolTip;
 			var tooltipControlText = string.Empty;
-			if (!string.IsNullOrEmpty(tooltip))
+			if (!string.IsNullOrWhiteSpace(tooltip))
 			{
 				//tooltip = SecurityElement.Escape(_replaceLineBreaksPattern.Replace(tooltip, "&#x0a;"));
 				if(!HasWhitespace(tooltip))
@@ -177,6 +177,36 @@ public readonly record struct SettingsViewToGenerate
 					break;
 				case nameof(Int32):
 					controlText = $"<NumericUpDown x:Name=\"{controlName}NumericUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\"{tooltipControlText}";
+					break;
+				case "ScriptExtenderProfilerThreshold":
+					var stackPanelCode = new CodeBuilder();
+					stackPanelCode.StartScope(string.Empty);
+					stackPanelCode.StartScope(string.Empty);
+					var stackPanelText = $"<Grid Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\"{tooltipControlText}";
+					if (!string.IsNullOrEmpty(entry.BindVisibilityTo))
+					{
+						stackPanelText += $" IsVisible=\"{{Binding {entry.BindVisibilityTo}}}\"";
+					}
+					stackPanelText += ">";
+					stackPanelCode.AppendLine(stackPanelText);
+					stackPanelCode.StartScope(string.Empty);
+					stackPanelCode.AppendLine("<Grid.ColumnDefinitions>");
+					stackPanelCode.StartScope(string.Empty);
+					stackPanelCode.AppendLine("<ColumnDefinition Width=\"Auto\" />");
+					stackPanelCode.AppendLine("<ColumnDefinition SharedSizeGroup=\"Warn\" />");
+					stackPanelCode.AppendLine("<ColumnDefinition Width=\"*\" />");
+					stackPanelCode.AppendLine("<ColumnDefinition SharedSizeGroup=\"Error\" />");
+					stackPanelCode.EndScope(string.Empty);
+					stackPanelCode.AppendLine("</Grid.ColumnDefinitions>");
+					stackPanelCode.AppendLine("<TextBlock Classes=\"threshold warn\" Text=\"{manager:LocaleKey Settings_Extender_Threshold_Warn}\" />");
+					stackPanelCode.AppendLine($"<NumericUpDown Grid.Column=\"1\" Classes=\"threshold warn\" Value=\"{{Binding {bindTo}.Warn, FallbackValue=0}}\" />");
+					stackPanelCode.AppendLine("<TextBlock Grid.Column=\"2\" Classes=\"threshold error\" Text=\"{manager:LocaleKey Settings_Extender_Threshold_Error}\" />");
+					stackPanelCode.AppendLine($"<NumericUpDown Grid.Column=\"3\" Classes=\"threshold error\" Value=\"{{Binding {bindTo}.Error, FallbackValue=0}}\" />");
+					stackPanelCode.EndScope(string.Empty);
+					stackPanelCode.AppendLine("</Grid>");
+					isMultiLine = true;
+					isSingleLine = false;
+					controlText = stackPanelCode.ToString().Trim();
 					break;
 				default:
 					if(!string.IsNullOrEmpty(entry.ControlText))
@@ -319,7 +349,7 @@ public readonly record struct SettingsViewToGenerate
 	d:DesignHeight=""900""
     d:DesignWidth=""1600""
 	mc:Ignorable=""d"">
-	<Grid ColumnDefinitions=""*,*"" RowDefinitions=""{rowDefinitionsStr}"">
+	<Grid ColumnDefinitions=""*,*"" RowDefinitions=""{rowDefinitionsStr}"" Grid.IsSharedSizeScope=""True"">
 		{code.ToString().Trim()}
 	</Grid>
 </UserControl>";

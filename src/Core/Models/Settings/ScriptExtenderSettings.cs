@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 
+using ModManager.Json;
 using ModManager.Locale;
+using ModManager.Models.Extender;
 namespace ModManager.Models.Settings;
 
 [DataContract]
@@ -134,20 +136,74 @@ public class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
 	[DefaultValue(false)]
 	public bool InsanityCheck { get; set; }
 
-	[SettingsEntry(nameof(Resources.Settings_Extender_EnablePerfMessages), nameof(Resources.Settings_Extender_EnablePerfMessages_ToolTip))]
+	[SettingsEntry(nameof(Resources.Settings_Extender_Optick), nameof(Resources.Settings_Extender_Optick_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
+	[DataMember, Reactive]
+	[DefaultValue(true)]
+	public bool Optick { get; set; }
+
+	[SettingsEntry(nameof(Resources.Settings_Extender_EnablePerfMessages), nameof(Resources.Settings_Extender_EnablePerfMessages_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember, Reactive]
 	[DefaultValue(true)]
 	public bool EnablePerfMessages { get; set; }
 
-	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerWarnings), nameof(Resources.Settings_Extender_ProfilerWarnings_ToolTip))]
+	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerWarnings), nameof(Resources.Settings_Extender_ProfilerWarnings_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember, Reactive]
 	[DefaultValue(false)]
 	public bool ProfilerWarnings { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(50000u)]
+	public uint ProfilerLoadThresholdWarn { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(50000u)]
+	public uint ProfilerLoadThresholdError { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(50000u)]
+	public uint ProfilerLoadCallbackThresholdWarn { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(50000u)]
+	public uint ProfilerLoadCallbackThresholdError { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(1500u)]
+	public uint ProfilerCallbackThresholdWarn { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(5000u)]
+	public uint ProfilerCallbackThresholdError { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(1000u)]
+	public uint ProfilerClientCallbackThresholdWarn { get; set; }
+
+	[DataMember, Reactive]
+	[DefaultValue(2000u)]
+	public uint ProfilerClientCallbackThresholdError { get; set; }
+
+	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerLoadThreshold), nameof(Resources.Settings_Extender_ProfilerLoadThreshold_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
+	public ScriptExtenderProfilerThreshold ProfilerLoadThreshold { get; }
+
+	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerLoadCallbackThreshold), nameof(Resources.Settings_Extender_ProfilerLoadCallbackThreshold_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
+	public ScriptExtenderProfilerThreshold ProfilerLoadCallbackThreshold { get; }
+
+	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerCallbackThreshold), nameof(Resources.Settings_Extender_ProfilerCallbackThreshold_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
+	public ScriptExtenderProfilerThreshold ProfilerCallbackThreshold { get; }
+
+	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerClientCallbackThreshold), nameof(Resources.Settings_Extender_ProfilerClientCallbackThreshold_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
+	public ScriptExtenderProfilerThreshold ProfilerClientCallbackThreshold { get; }
 
 	public ScriptExtenderSettings()
 	{
 		this.SetToDefault();
 		ExtenderVersion = string.Empty;
 		ExtenderMajorVersion = -1;
+
+		ProfilerLoadThreshold = new();
+		ProfilerLoadCallbackThreshold = new();
+		ProfilerCallbackThreshold = new();
+		ProfilerClientCallbackThreshold = new();
 	}
 }

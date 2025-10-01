@@ -6,6 +6,7 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:rxui="using:Avalonia.ReactiveUI"
     xmlns:suki="using:SukiUI.Controls"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:theme="using:SukiUI.Theme">
 
 	<!--  Default EnhancedTextBox styles, derived from SukiUI  -->
@@ -231,6 +232,10 @@
 		<Setter Property="HorizontalAlignment" Value="Left" />
 	</Style>
 
+	<Style Selector="Grid.right">
+		<Setter Property="HorizontalAlignment" Value="Left" />
+	</Style>
+
 	<Style Selector="Separator">
 		<Setter Property="Margin" Value="0,0,0,8" />
 		<Setter Property="Background" Value="{DynamicResource SukiControlBorderBrush}" />
@@ -315,5 +320,33 @@
 				</Border>
 			</ControlTemplate>
 		</Setter>
+	</Style>
+
+	<Style Selector="TextBlock.threshold">
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="TextAlignment" Value="Center" />
+		<Setter Property="Padding" Value="4,0" />
+	</Style>
+
+	<Style Selector="TextBlock.threshold.warn">
+		<Setter Property="Foreground" Value="Yellow" />
+	</Style>
+
+	<Style Selector="TextBlock.threshold.error">
+		<Setter Property="Foreground" Value="Red" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
+	</Style>
+
+	<Style Selector="NumericUpDown.threshold">
+		<Setter Property="Minimum" Value="0" />
+		<Setter Property="Maximum" Value="4294967295" />
+		<Setter Property="Increment" Value="1" />
+		<Setter Property="FormatString" Value="\{0\} ms" />
+		<Setter Property="Margin" Value="4,0,16,0" />
+		<Setter Property="Padding" Value="2,0" />
+	</Style>
+
+	<Style Selector="NumericUpDown.threshold.error">
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
 	</Style>
 </Styles>

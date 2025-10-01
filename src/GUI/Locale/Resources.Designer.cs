@@ -3019,6 +3019,96 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Optick Analyzer.
+        /// </summary>
+        public static string Settings_Extender_Optick {
+            get {
+                return ResourceManager.GetString("Settings_Extender_Optick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable attachment to the optick performance analyzer, which will profile scripted functions. Requires the &apos;Optick&apos; program to be running..
+        /// </summary>
+        public static string Settings_Extender_Optick_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_Optick_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiler Callback Threshold.
+        /// </summary>
+        public static string Settings_Extender_ProfilerCallbackThreshold {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerCallbackThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The warn/error threshold (in milliseconds) to display profiler callback warnings..
+        /// </summary>
+        public static string Settings_Extender_ProfilerCallbackThreshold_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerCallbackThreshold_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiler Client Callback Threshold.
+        /// </summary>
+        public static string Settings_Extender_ProfilerClientCallbackThreshold {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerClientCallbackThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The warn/error threshold (in milliseconds) to display profiler client-side callback warnings..
+        /// </summary>
+        public static string Settings_Extender_ProfilerClientCallbackThreshold_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerClientCallbackThreshold_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiler Load Callback Threshold.
+        /// </summary>
+        public static string Settings_Extender_ProfilerLoadCallbackThreshold {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerLoadCallbackThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The warn/error threshold (in milliseconds) to display profiler load callback warnings..
+        /// </summary>
+        public static string Settings_Extender_ProfilerLoadCallbackThreshold_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerLoadCallbackThreshold_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiler Load Threshold.
+        /// </summary>
+        public static string Settings_Extender_ProfilerLoadThreshold {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerLoadThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The warn/error threshold (in milliseconds) to display profiler load warnings..
+        /// </summary>
+        public static string Settings_Extender_ProfilerLoadThreshold_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Extender_ProfilerLoadThreshold_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Profiler Warnings.
         /// </summary>
         public static string Settings_Extender_ProfilerWarnings {
@@ -3051,6 +3141,24 @@ namespace ModManager.Locale {
         public static string Settings_Extender_SendCrashReports_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_Extender_SendCrashReports_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Settings_Extender_Threshold_Error {
+            get {
+                return ResourceManager.GetString("Settings_Extender_Threshold_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Settings_Extender_Threshold_Warn {
+            get {
+                return ResourceManager.GetString("Settings_Extender_Threshold_Warn", resourceCulture);
             }
         }
         

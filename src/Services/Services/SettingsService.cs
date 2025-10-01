@@ -301,5 +301,21 @@ public class SettingsService : ReactiveObject, ISettingsService
 			.ObserveOn(RxApp.MainThreadScheduler)
 			.Select(_ => Unit.Default)
 			.InvokeCommand(_autoSaveModConfigCommand);
+
+		ExtenderSettings.WhenAnyValue(x => x.ProfilerLoadThresholdWarn, x => x.ProfilerLoadThresholdError)
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.Subscribe(ExtenderSettings.ProfilerLoadThreshold.Update);
+
+		ExtenderSettings.WhenAnyValue(x => x.ProfilerLoadCallbackThresholdWarn, x => x.ProfilerLoadCallbackThresholdError)
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.Subscribe(ExtenderSettings.ProfilerLoadCallbackThreshold.Update);
+
+		ExtenderSettings.WhenAnyValue(x => x.ProfilerCallbackThresholdWarn, x => x.ProfilerCallbackThresholdError)
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.Subscribe(ExtenderSettings.ProfilerCallbackThreshold.Update);
+
+		ExtenderSettings.WhenAnyValue(x => x.ProfilerClientCallbackThresholdWarn, x => x.ProfilerClientCallbackThresholdError)
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.Subscribe(ExtenderSettings.ProfilerClientCallbackThreshold.Update);
 	}
 }

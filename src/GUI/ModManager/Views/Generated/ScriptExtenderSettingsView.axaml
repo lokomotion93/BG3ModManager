@@ -12,7 +12,7 @@
 	d:DesignHeight="900"
     d:DesignWidth="1600"
 	mc:Ignorable="d">
-	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Grid.IsSharedSizeScope="True">
 		<TextBlock x:Name="CustomProfileTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_CustomProfile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_CustomProfile_ToolTip}" />
 		<controls:EnhancedTextBox x:Name="CustomProfileTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding CustomProfile, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_CustomProfile_ToolTip}"/>
 		
@@ -61,8 +61,8 @@
 		<TextBlock x:Name="EnableLuaDebuggerTextBlock" Grid.Row="15" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnableLuaDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLuaDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
 		<CheckBox x:Name="EnableLuaDebuggerCheckBox" Grid.Row="15" Grid.Column="1" Classes="right" IsChecked ="{Binding EnableLuaDebugger}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnableLuaDebugger_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="EnablePerfMessagesTextBlock" Grid.Row="16" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnablePerfMessages}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnablePerfMessages_ToolTip}" />
-		<CheckBox x:Name="EnablePerfMessagesCheckBox" Grid.Row="16" Grid.Column="1" Classes="right" IsChecked ="{Binding EnablePerfMessages}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnablePerfMessages_ToolTip}"/>
+		<TextBlock x:Name="EnablePerfMessagesTextBlock" Grid.Row="16" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_EnablePerfMessages}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnablePerfMessages_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="EnablePerfMessagesCheckBox" Grid.Row="16" Grid.Column="1" Classes="right" IsChecked ="{Binding EnablePerfMessages}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_EnablePerfMessages_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
 		<TextBlock x:Name="ExportDefaultExtenderSettingsTextBlock" Grid.Row="17" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings_ToolTip}" />
 		<CheckBox x:Name="ExportDefaultExtenderSettingsCheckBox" Grid.Row="17" Grid.Column="1" Classes="right" IsChecked ="{Binding ExportDefaultExtenderSettings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ExportDefaultExtenderSettings_ToolTip}"/>
@@ -82,10 +82,69 @@
 		<TextBlock x:Name="LogRuntimeTextBlock" Grid.Row="22" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogRuntime}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogRuntime_ToolTip}" />
 		<CheckBox x:Name="LogRuntimeCheckBox" Grid.Row="22" Grid.Column="1" Classes="right" IsChecked ="{Binding LogRuntime}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogRuntime_ToolTip}"/>
 		
-		<TextBlock x:Name="ProfilerWarningsTextBlock" Grid.Row="23" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ProfilerWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerWarnings_ToolTip}" />
-		<CheckBox x:Name="ProfilerWarningsCheckBox" Grid.Row="23" Grid.Column="1" Classes="right" IsChecked ="{Binding ProfilerWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerWarnings_ToolTip}"/>
+		<TextBlock x:Name="OptickTextBlock" Grid.Row="23" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_Optick}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_Optick_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="OptickCheckBox" Grid.Row="23" Grid.Column="1" Classes="right" IsChecked ="{Binding Optick}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_Optick_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
-		<TextBlock x:Name="SendCrashReportsTextBlock" Grid.Row="24" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_SendCrashReports}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_SendCrashReports_ToolTip}" />
-		<CheckBox x:Name="SendCrashReportsCheckBox" Grid.Row="24" Grid.Column="1" Classes="right" IsChecked ="{Binding SendCrashReports}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_SendCrashReports_ToolTip}"/>
+		<TextBlock x:Name="ProfilerCallbackThresholdTextBlock" Grid.Row="24" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ProfilerCallbackThreshold}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerCallbackThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<Grid Grid.Row="24" Grid.Column="1" Classes="right" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerCallbackThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition SharedSizeGroup="Warn" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition SharedSizeGroup="Error" />
+			</Grid.ColumnDefinitions>
+			<TextBlock Classes="threshold warn" Text="{manager:LocaleKey Settings_Extender_Threshold_Warn}" />
+			<NumericUpDown Grid.Column="1" Classes="threshold warn" Value="{Binding ProfilerCallbackThreshold.Warn, FallbackValue=0}" />
+			<TextBlock Grid.Column="2" Classes="threshold error" Text="{manager:LocaleKey Settings_Extender_Threshold_Error}" />
+			<NumericUpDown Grid.Column="3" Classes="threshold error" Value="{Binding ProfilerCallbackThreshold.Error, FallbackValue=0}" />
+		</Grid>
+		
+		<TextBlock x:Name="ProfilerClientCallbackThresholdTextBlock" Grid.Row="25" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ProfilerClientCallbackThreshold}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerClientCallbackThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<Grid Grid.Row="25" Grid.Column="1" Classes="right" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerClientCallbackThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition SharedSizeGroup="Warn" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition SharedSizeGroup="Error" />
+			</Grid.ColumnDefinitions>
+			<TextBlock Classes="threshold warn" Text="{manager:LocaleKey Settings_Extender_Threshold_Warn}" />
+			<NumericUpDown Grid.Column="1" Classes="threshold warn" Value="{Binding ProfilerClientCallbackThreshold.Warn, FallbackValue=0}" />
+			<TextBlock Grid.Column="2" Classes="threshold error" Text="{manager:LocaleKey Settings_Extender_Threshold_Error}" />
+			<NumericUpDown Grid.Column="3" Classes="threshold error" Value="{Binding ProfilerClientCallbackThreshold.Error, FallbackValue=0}" />
+		</Grid>
+		
+		<TextBlock x:Name="ProfilerLoadCallbackThresholdTextBlock" Grid.Row="26" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ProfilerLoadCallbackThreshold}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerLoadCallbackThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<Grid Grid.Row="26" Grid.Column="1" Classes="right" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerLoadCallbackThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition SharedSizeGroup="Warn" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition SharedSizeGroup="Error" />
+			</Grid.ColumnDefinitions>
+			<TextBlock Classes="threshold warn" Text="{manager:LocaleKey Settings_Extender_Threshold_Warn}" />
+			<NumericUpDown Grid.Column="1" Classes="threshold warn" Value="{Binding ProfilerLoadCallbackThreshold.Warn, FallbackValue=0}" />
+			<TextBlock Grid.Column="2" Classes="threshold error" Text="{manager:LocaleKey Settings_Extender_Threshold_Error}" />
+			<NumericUpDown Grid.Column="3" Classes="threshold error" Value="{Binding ProfilerLoadCallbackThreshold.Error, FallbackValue=0}" />
+		</Grid>
+		
+		<TextBlock x:Name="ProfilerLoadThresholdTextBlock" Grid.Row="27" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ProfilerLoadThreshold}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerLoadThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<Grid Grid.Row="27" Grid.Column="1" Classes="right" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerLoadThreshold_ToolTip}" IsVisible="{Binding DevOptionsEnabled}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition SharedSizeGroup="Warn" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition SharedSizeGroup="Error" />
+			</Grid.ColumnDefinitions>
+			<TextBlock Classes="threshold warn" Text="{manager:LocaleKey Settings_Extender_Threshold_Warn}" />
+			<NumericUpDown Grid.Column="1" Classes="threshold warn" Value="{Binding ProfilerLoadThreshold.Warn, FallbackValue=0}" />
+			<TextBlock Grid.Column="2" Classes="threshold error" Text="{manager:LocaleKey Settings_Extender_Threshold_Error}" />
+			<NumericUpDown Grid.Column="3" Classes="threshold error" Value="{Binding ProfilerLoadThreshold.Error, FallbackValue=0}" />
+		</Grid>
+		
+		<TextBlock x:Name="ProfilerWarningsTextBlock" Grid.Row="28" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ProfilerWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerWarnings_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
+		<CheckBox x:Name="ProfilerWarningsCheckBox" Grid.Row="28" Grid.Column="1" Classes="right" IsChecked ="{Binding ProfilerWarnings}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ProfilerWarnings_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		
+		<TextBlock x:Name="SendCrashReportsTextBlock" Grid.Row="29" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_SendCrashReports}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_SendCrashReports_ToolTip}" />
+		<CheckBox x:Name="SendCrashReportsCheckBox" Grid.Row="29" Grid.Column="1" Classes="right" IsChecked ="{Binding SendCrashReports}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_SendCrashReports_ToolTip}"/>
 	</Grid>
 </UserControl>
