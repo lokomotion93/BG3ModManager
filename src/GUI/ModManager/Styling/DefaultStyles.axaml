@@ -349,4 +349,24 @@
 	<Style Selector="NumericUpDown.threshold.error">
 		<Setter Property="HorizontalAlignment" Value="Stretch" />
 	</Style>
+
+	<Style Selector="Button.hamburger">
+		<Setter Property="Content">
+			<Setter.Value>
+				<Template>
+					<materialIcons:MaterialIcon Kind="Menu" />
+				</Template>
+			</Setter.Value>
+		</Setter>
+
+		<Style Selector="^:pointerover">
+			<Setter Property="Content">
+				<Setter.Value>
+					<Template>
+						<materialIcons:MaterialIcon Kind="MenuOpen" />
+					</Template>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Style>
 </Styles>

@@ -118,11 +118,11 @@
 	</UserControl.Resources>
 	<UserControl.ContextFlyout>
 		<MenuFlyout>
-			<MenuItem Command="{Binding AddContainerCommand}" Header="{manager:LocaleKey ModListView_AddContainer}" />
+			<MenuItem Command="{Binding AddContainerCommand}" Header="{manager:LocaleKey ModListView_AddContainer}" Icon="{materialIcons:MaterialIconExt Kind=Plus, IconForeground=Lime}" />
 		</MenuFlyout>
 	</UserControl.ContextFlyout>
 	<Grid RowDefinitions="auto,*">
-		<Grid ColumnDefinitions="auto,auto,auto,*">
+		<Grid ColumnDefinitions="auto,auto,auto,*,auto">
 			<TextBlock Padding="4"
 			    VerticalAlignment="Center"
 			    Classes="Title"
@@ -154,6 +154,17 @@
 			    HorizontalAlignment="Left"
 			    VerticalAlignment="Center"
 			    Text="{Binding FilterResultText}" />
+
+			<Button x:Name="AdditionalActionsMenuButton"
+			    Grid.Column="4"
+			    BorderThickness="0"
+			    Classes="hamburger">
+				<Button.Flyout>
+					<controls:CloseableMenuFlyout>
+						<MenuItem Command="{Binding AddContainerCommand}" Header="{manager:LocaleKey ModListView_AddContainer}" Icon="{materialIcons:MaterialIconExt Kind=Plus, IconForeground=Lime}" />
+					</controls:CloseableMenuFlyout>
+				</Button.Flyout>
+			</Button>
 		</Grid>
 		<TreeDataGrid Name="ModsTreeDataGrid"
 		    Grid.Row="1"

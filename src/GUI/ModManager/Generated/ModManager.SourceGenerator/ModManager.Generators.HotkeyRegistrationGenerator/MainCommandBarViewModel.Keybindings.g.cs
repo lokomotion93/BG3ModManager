@@ -74,5 +74,7 @@ public partial class MainCommandBarViewModel
 		keys.RegisterCommand("MainCommandBarViewModel_StopSpeakingCommand", "Keybinding_StopSpeaking", StopSpeakingCommand, Avalonia.Input.Key.Home, Avalonia.Input.KeyModifiers.None | Avalonia.Input.KeyModifiers.Control | Avalonia.Input.KeyModifiers.Shift);
 		keys.RegisterCommand("MainCommandBarViewModel_CheckForUpdatesCommand", "Keybinding_CheckForUpdates", CheckForUpdatesCommand, Avalonia.Input.Key.F7);
 		keys.RegisterCommand("MainCommandBarViewModel_OrganizeModPaksCommand", "Keybinding_OrganizeModPaks", OrganizeModPaksCommand);
+		keys.RegisterCommand("MainCommandBarViewModel_CreateCacheCommand", "Keybinding_CreateCache", CreateCacheCommand);
+		keys.RegisterCommand("MainCommandBarViewModel_DeleteCacheCommand", "Keybinding_DeleteCache", DeleteCacheCommand);
 	}
 }

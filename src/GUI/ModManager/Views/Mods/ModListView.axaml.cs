@@ -9,6 +9,7 @@ using Avalonia.VisualTree;
 
 using DynamicData;
 
+using ModManager.Controls;
 using ModManager.Models.Mod;
 using ModManager.Services;
 using ModManager.Styling;
@@ -366,6 +367,14 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		AddHandler(DragDrop.DragOverEvent, OnDragOver);
 		AddHandler(DragDrop.DropEvent, OnDrop);
+
+		AdditionalActionsMenuButton.Click += (o, e) =>
+		{
+			if(AdditionalActionsMenuButton.Flyout is ICloseableFlyout flyout)
+			{
+				flyout.Toggle(AdditionalActionsMenuButton);
+			}
+		};
 
 		this.WhenActivated(d =>
 		{
