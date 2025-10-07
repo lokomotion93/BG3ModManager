@@ -9,9 +9,12 @@
 	"b77b6210-ac50-4cb1-a3d5-5702fb9c744c",
 	"cb555efe-2d9e-131f-8195-a89329d218ea",
 	"e0a4d990-7b9b-8fa9-d7c6-04017c6cf5b1",
+	"77a2155f-4b35-4f0c-e7ff-4338f91426a4",
+	"6efc8f44-cc2a-0273-d4b1-681d3faa411b",
 	"e842840a-2449-588c-b0c4-22122cfce31b",
 	"ed539163-bb70-431b-96a7-f5b2eda5376b",
 	"ee4989eb-aab8-968f-8674-812ea2f4bfd7",
+	"bf19bab4-4908-ef39-9065-ced469c0f877",
 	"ee5a55ff-eb38-0b27-c5b0-f358dc306d34"
   ],
   "IgnoreBuiltinPath": [
@@ -108,9 +111,25 @@
 	  "Description": ""
 	},
 	{
+	  "Name": "DiceSet_05",
+	  "UUID": "6efc8f44-cc2a-0273-d4b1-681d3faa411b",
+	  "Folder": "DiceSet_05",
+	  "Version": 36028797018963968,
+	  "Author": "Larian Studios",
+	  "Description": ""
+	},
+	{
 	  "Name": "DiceSet_06",
 	  "UUID": "ee4989eb-aab8-968f-8674-812ea2f4bfd7",
 	  "Folder": "DiceSet_06",
+	  "Version": 36028797018963968,
+	  "Author": "Larian Studios",
+	  "Description": ""
+	},
+	{
+	  "Name": "DiceSet_07",
+	  "UUID": "bf19bab4-4908-ef39-9065-ced469c0f877",
+	  "Folder": "DiceSet_07",
 	  "Version": 36028797018963968,
 	  "Author": "Larian Studios",
 	  "Description": ""
