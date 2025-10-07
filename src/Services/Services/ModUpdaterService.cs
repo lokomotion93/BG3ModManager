@@ -75,7 +75,7 @@ public class ModUpdaterService : ReactiveObject, IModUpdaterService
 		return false;
 	}
 
-	public async Task<bool> SaveCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)
+	public async Task SaveCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)
 	{
 		if (Modio.IsEnabled)
 		{
@@ -101,7 +101,6 @@ public class ModUpdaterService : ReactiveObject, IModUpdaterService
 			}
 			await GitHub.SaveCacheAsync(true, currentAppVersion, token);
 		}
-		return false;
 	}
 
 	public async Task ForceSaveAllCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)

@@ -857,10 +857,10 @@
 	<data name="Keybinding_SaveCache" xml:space="preserve">
 		<value>Save Cache</value>
 	</data>
-	<data name="Keybinding_CreateCache" xml:space="preserve">
-		<value>Save All Mods to Cache</value>
+	<data name="Keybinding_GenerateCache" xml:space="preserve">
+		<value>Generate Cache...</value>
 	</data>
-	<data name="Keybinding_CreateCache_ToolTip" xml:space="preserve">
+	<data name="Keybinding_GenerateCache_ToolTip" xml:space="preserve">
 		<value>Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods. Normally, only configured mods are saved (i.e. a mod with a Nexus Mods id set).</value>
 	</data>
 	<data name="Keybinding_DeleteCache" xml:space="preserve">
@@ -882,7 +882,7 @@
 		<comment>Start with an underscore for keyboard accessibility</comment>
 	</data>
 	<data name="TopMenu_Edit_Cache" xml:space="preserve">
-		<value>Cache...</value>
+		<value>Mod Cache...</value>
 	</data>
 	<data name="TopMenu_Settings" xml:space="preserve">
 		<value>_Settings</value>
@@ -1527,6 +1527,15 @@
 		<value>Extracted {0} files to {1}</value>
 		<comment>Placeholders: total files, output directory</comment>
 	</data>
+	<data name="Alert_Success_SaveCache" xml:space="preserve">
+		<value>Saved mods cache to the BG3MM Data folder:
+{0}</value>
+		<comment>Placeholders: Cache files</comment>
+	</data>
+	<data name="Alert_Success_GenerateCache" xml:space="preserve">
+		<value>Generated mods cache for all mods in the BG3MM Data folder: {0}</value>
+		<comment>Placeholders: Cache files</comment>
+	</data>
 	<data name="Alert_Warning_ImportNexusModsIds_Failure" xml:space="preserve">
 		<value>No NexusMods ids found. Does the .zip name contain an id, with a .pak file inside?</value>
 	</data>
@@ -1587,7 +1596,7 @@
 		<value>No cache to delete.</value>
 	</data>
 	<data name="Alert_Error_DeleteCacheFailed" xml:space="preserve">
-		<value>Error deleting workshop cache:\n{0}</value>
+		<value>Error deleting mod cache:\n{0}</value>
 		<comment>Placeholders: Exception message</comment>
 	</data>
 	<data name="MessageBox_LoadSettings_PermissionDenied_Title" xml:space="preserve">
@@ -1634,6 +1643,12 @@ Directory the zip will be extracted to:
 	<data name="MessageBox_ExtractSelectedMods_Message" xml:space="preserve">
 		<value>Extract the following mods?\n{0}</value>
 		<comment>Placeholders: selected mods</comment>
+	</data>
+	<data name="MessageBox_GenerateCache_Title" xml:space="preserve">
+		<value>Generate Cache?</value>
+	</data>
+	<data name="MessageBox_GenerateCache_Message" xml:space="preserve">
+		<value>Generate cache for all mods? This will create empty entries for mods that have no Nexus Mods id, mod.io id, or GitHub url set. This can allow you to edit these cache files manually, to directly set these ids, if desired.</value>
 	</data>
 	<data name="MessageBox_DeleteCache_Title" xml:space="preserve">
 		<value>Delete Cache?</value>

@@ -222,8 +222,8 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding(nameof(Resources.Keybinding_SaveCache), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? SaveCacheCommand { get; private set; }
 
-	[Keybinding(nameof(Resources.Keybinding_CreateCache), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_CreateCache_ToolTip))]
-	public RxCommandUnit? CreateCacheCommand { get; private set; }
+	[Keybinding(nameof(Resources.Keybinding_GenerateCache), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_GenerateCache_ToolTip))]
+	public RxCommandUnit? GenerateCacheCommand { get; private set; }
 
 	[Keybinding(nameof(Resources.Keybinding_DeleteCache), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_DeleteCache_ToolTip))]
 	public RxCommandUnit? DeleteCacheCommand { get; private set; }
@@ -783,14 +783,37 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		SaveCacheCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
+			var updater = AppServices.Updater;
 			var userMods = AppServices.Mods.UserMods;
-			await AppServices.Updater.SaveCacheAsync(userMods, main.Version, CancellationToken.None);
+
+			await updater.SaveCacheAsync(userMods, main.Version, CancellationToken.None);
+
+			List<string> cacheFileNames = [];
+			if (updater.GitHub.IsEnabled) cacheFileNames.Add(updater.GitHub.FileName);
+			if (updater.Modio.IsEnabled) cacheFileNames.Add(updater.Modio.FileName);
+			if (updater.NexusMods.IsEnabled) cacheFileNames.Add(updater.NexusMods.FileName);
+			var cacheFileNamesStr = string.Join(Environment.NewLine, cacheFileNames);
+
+			AppServices.Commands.ShowAlert(Loca.Alert_Success_SaveCache.SafeFormat($"Saved mods cache to the BG3MM Data folder:\n{cacheFileNamesStr}", cacheFileNamesStr), AlertType.Success, 10, Loca.Keybinding_SaveCache);
 		}, canExecuteCommands);
 
-		CreateCacheCommand = ReactiveCommand.CreateFromTask(async () =>
+		GenerateCacheCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
-			var userMods = AppServices.Mods.UserMods;
-			await AppServices.Updater.ForceSaveAllCacheAsync(userMods, main.Version, CancellationToken.None);
+			var result = await AppServices.Interactions.ShowMessageBox.Handle(new(
+				Loca.MessageBox_GenerateCache_Title,
+				Loca.MessageBox_GenerateCache_Message,
+				InteractionMessageBoxType.Information | InteractionMessageBoxType.YesNo));
+
+			if (result)
+			{
+				var updater = AppServices.Updater;
+				var userMods = AppServices.Mods.UserMods;
+
+				await AppServices.Updater.ForceSaveAllCacheAsync(userMods, main.Version, CancellationToken.None);
+				var cacheFileNamesStr = string.Join(';', updater.GitHub.FileName, updater.Modio.FileName, updater.NexusMods.FileName);
+
+				AppServices.Commands.ShowAlert(Loca.Alert_Success_GenerateCache.SafeFormat($"Generated mods cache for all mods in the BG3MM Data folder: {cacheFileNamesStr}", cacheFileNamesStr), AlertType.Success, 10, Loca.Keybinding_GenerateCache);
+			}
 		}, canExecuteCommands);
 
 		DeleteCacheCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -815,7 +838,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 				}
 				catch (Exception ex)
 				{
-					AppServices.Commands.ShowAlert(Loca.Alert_Error_DeleteCacheFailed.SafeFormat($"Error deleting workshop cache:\n{ex}", ex), AlertType.Danger);
+					AppServices.Commands.ShowAlert(Loca.Alert_Error_DeleteCacheFailed.SafeFormat($"Error deleting mod cache:\n{ex}", ex), AlertType.Danger);
 				}
 			}
 		}, canExecuteCommands);
@@ -854,10 +877,10 @@ public partial class MainCommandBarViewModel : ReactiveObject
 					new MenuSeparator(),
 					new MenuEntry(nameof(Resources.TopMenu_Edit_Cache), useLocalization: true){
 					Children = [
-						MenuEntry.FromKeybinding(SaveCacheCommand, nameof(SaveCacheCommand), keybindings),
-						MenuEntry.FromKeybinding(CreateCacheCommand, nameof(CreateCacheCommand), keybindings),
+						MenuEntry.FromKeybinding(SaveCacheCommand, nameof(SaveCacheCommand), keybindings).WithIcon(MaterialIconKind.ContentSaveAll, "#006DFF"),
+						MenuEntry.FromKeybinding(GenerateCacheCommand, nameof(GenerateCacheCommand), keybindings).WithIcon(MaterialIconKind.ContentDuplicate, "#FF9200"),
 						new MenuSeparator(),
-						MenuEntry.FromKeybinding(DeleteCacheCommand, nameof(DeleteCacheCommand), keybindings),
+						MenuEntry.FromKeybinding(DeleteCacheCommand, nameof(DeleteCacheCommand), keybindings).WithIcon(MaterialIconKind.FileDocumentRemove, "#FF0000"),
 					]},
 					new MenuSeparator(),
 					MenuEntry.FromKeybinding(MoveSelectedModsCommand, nameof(MoveSelectedModsCommand), keybindings),

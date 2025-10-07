@@ -61,7 +61,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error deleting workshop cache:\n{0}.
+        ///   Looks up a localized string similar to Error deleting mod cache:\n{0}.
         /// </summary>
         public static string Alert_Error_DeleteCacheFailed {
             get {
@@ -223,6 +223,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generated mods cache for all mods in the BG3MM Data folder: {0}.
+        /// </summary>
+        public static string Alert_Success_GenerateCache {
+            get {
+                return ResourceManager.GetString("Alert_Success_GenerateCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successfully imported {0} mods.
         /// </summary>
         public static string Alert_Success_ImportMods_Multiple {
@@ -300,6 +309,16 @@ namespace ModManager.Locale {
         public static string Alert_Success_RenameSave {
             get {
                 return ResourceManager.GetString("Alert_Success_RenameSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved mods cache to the BG3MM Data folder:
+        ///{0}.
+        /// </summary>
+        public static string Alert_Success_SaveCache {
+            get {
+                return ResourceManager.GetString("Alert_Success_SaveCache", resourceCulture);
             }
         }
         
@@ -961,24 +980,6 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save All Mods to Cache.
-        /// </summary>
-        public static string Keybinding_CreateCache {
-            get {
-                return ResourceManager.GetString("Keybinding_CreateCache", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods. Normally, only configured mods are saved (i.e. a mod with a Nexus Mods id set)..
-        /// </summary>
-        public static string Keybinding_CreateCache_ToolTip {
-            get {
-                return ResourceManager.GetString("Keybinding_CreateCache_ToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete Cache....
         /// </summary>
         public static string Keybinding_DeleteCache {
@@ -1128,6 +1129,24 @@ namespace ModManager.Locale {
         public static string Keybinding_FocusInactiveMods {
             get {
                 return ResourceManager.GetString("Keybinding_FocusInactiveMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate Cache....
+        /// </summary>
+        public static string Keybinding_GenerateCache {
+            get {
+                return ResourceManager.GetString("Keybinding_GenerateCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods. Normally, only configured mods are saved (i.e. a mod with a Nexus Mods id set)..
+        /// </summary>
+        public static string Keybinding_GenerateCache_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_GenerateCache_ToolTip", resourceCulture);
             }
         }
         
@@ -1713,6 +1732,24 @@ namespace ModManager.Locale {
         public static string MessageBox_ExtractSelectedMods_Title {
             get {
                 return ResourceManager.GetString("MessageBox_ExtractSelectedMods_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate cache for all mods? This will create empty entries for mods that have no Nexus Mods id, mod.io id, or GitHub url set. This can allow you to edit these cache files manually, to directly set these ids, if desired..
+        /// </summary>
+        public static string MessageBox_GenerateCache_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_GenerateCache_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate Cache?.
+        /// </summary>
+        public static string MessageBox_GenerateCache_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_GenerateCache_Title", resourceCulture);
             }
         }
         
@@ -3748,7 +3785,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cache....
+        ///   Looks up a localized string similar to Mod Cache....
         /// </summary>
         public static string TopMenu_Edit_Cache {
             get {

@@ -1,5 +1,7 @@
 ﻿using Avalonia.Input;
 
+using Material.Icons;
+
 namespace ModManager;
 public class KeybindingAttribute : Attribute
 {
