@@ -159,7 +159,8 @@
 		<value>Currently installed version is v{0}</value>
 	</data>
 	<data name="Mod_ExtenderStatus_NotFoundInfo" xml:space="preserve">
-		<value>No installed Script Extender version found\nIf you've already downloaded it, try opening the game once to complete the installation process</value>
+		<value>No installed Script Extender version found
+If you've already downloaded it, try opening the game once to complete the installation process</value>
 	</data>
 	<data name="Mod_StringFormatPattern" xml:space="preserve">
 		<value>Name({0}) Version({1}) Author({2}) UUID({3}) File({4})</value>
@@ -183,7 +184,8 @@
 		<value>Larian Studios</value>
 	</data>
 	<data name="Mod_MissingDependenciesToolTip" xml:space="preserve">
-		<value>Missing Dependencies:\n{0}</value>
+		<value>Missing Dependencies:
+{0}</value>
 	</data>
 	<data name="Mod_Type_ToolkitProject" xml:space="preserve">
 		<value>Toolkit Project</value>
@@ -222,7 +224,8 @@
 		<value>Skip</value>
 	</data>
 	<data name="Window_AppUpdate_Available" xml:space="preserve">
-		<value>{0} {1} is now available.\nYou have version {2} installed.</value>
+		<value>{0} {1} is now available.
+You have version {2} installed.</value>
 		<comment>AppTitle, Version, CurrentVersion</comment>
 	</data>
 	<data name="Window_AppUpdate_UpToDate" xml:space="preserve">
@@ -852,7 +855,8 @@
 		<value>Organize Mod Paks</value>
 	</data>
 	<data name="Keybinding_OrganizeModPaks_ToolTip" xml:space="preserve">
-		<value>Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder.</value>
+		<value>Automatically reorganize mod paks.
+Inactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder.</value>
 	</data>
 	<data name="Keybinding_SaveCache" xml:space="preserve">
 		<value>Save Cache</value>
@@ -921,7 +925,8 @@
 		<value>Game Data Path</value>
 	</data>
 	<data name="Settings_GameDataPath_ToolTip" xml:space="preserve">
-		<value>The path to the Data folder\nExample: Baldur's Gate 3/Data</value>
+		<value>The path to the Data folder
+Example: Baldur's Gate 3/Data</value>
 	</data>
 	<data name="Settings_GameExecutablePath" xml:space="preserve">
 		<value>Game Executable Path</value>
@@ -945,7 +950,8 @@
 		<value>Launcher - Disable Telemetry</value>
 	</data>
 	<data name="Settings_DisableLauncherTelemetry_ToolTip" xml:space="preserve">
-		<value>Disable the telemetry options in the launcher\nTelemetry is always disabled if mods are active</value>
+		<value>Disable the telemetry options in the launcher
+Telemetry is always disabled if mods are active</value>
 	</data>
 	<data name="Settings_DisableLauncherModWarnings" xml:space="preserve">
 		<value>Launcher - Disable Warnings</value>
@@ -999,13 +1005,16 @@
 		<value>Limit to Single Instance</value>
 	</data>
 	<data name="Settings_LimitToSingleInstance_ToolTip" xml:space="preserve">
-		<value>Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button</value>
+		<value>Prevent the mod manager from launching multiple instances of the game
+This can be bypassed by holding Shift when clicking on the launch button</value>
 	</data>
 	<data name="Settings_DocumentsFolderPathOverride" xml:space="preserve">
 		<value>Override AppData Path</value>
 	</data>
 	<data name="Settings_DocumentsFolderPathOverride_ToolTip" xml:space="preserve">
-		<value>[EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods.</value>
+		<value>[EXPERIMENTAL]
+Override the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3
+This folder is used when exporting load orders, loading profiles, and loading mods.</value>
 	</data>
 	<data name="Settings_EnableColorblindSupport" xml:space="preserve">
 		<value>Colorblind Support</value>
@@ -1095,7 +1104,8 @@
 		<value>Minimum Update Time Period</value>
 	</data>
 	<data name="Settings_MinimumUpdateTimePeriod_ToolTip" xml:space="preserve">
-		<value>Prevent checking for updates for individual mods until this amount of time has passed since the last check\nThis is to prevent hitting API limits too quickly</value>
+		<value>Prevent checking for updates for individual mods until this amount of time has passed since the last check
+This is to prevent hitting API limits too quickly</value>
 	</data>
 	<data name="Settings_AllowAdultContent" xml:space="preserve">
 		<value>Allow Adult Content</value>
@@ -1107,7 +1117,9 @@
 		<value>Default (Exe)</value>
 	</data>
 	<data name="LaunchGameType_Exe_ToolTip" xml:space="preserve">
-		<value>Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn't exist,\nallowing you to bypassing the launcher</value>
+		<value>Open the game exe directly,
+and create a steam_appid.txt in the bin folder if it doesn't exist,
+allowing you to bypassing the launcher</value>
 	</data>
 	<data name="LaunchGameType_Steam" xml:space="preserve">
 		<value>Steam</value>
@@ -1191,19 +1203,22 @@
 		<value>Developer Mode</value>
 	</data>
 	<data name="Settings_Extender_DeveloperMode_ToolTip" xml:space="preserve">
-		<value>Enables various debug functionality for development purposes\nThis can be checked by mods to enable additional log messages and more</value>
+		<value>Enables various debug functionality for development purposes
+This can be checked by mods to enable additional log messages and more</value>
 	</data>
 	<data name="Settings_Extender_CustomProfile" xml:space="preserve">
 		<value>Custom Profile</value>
 	</data>
 	<data name="Settings_Extender_CustomProfile_ToolTip" xml:space="preserve">
-		<value>Use a profile other than Public\nThis should be the profile folder name</value>
+		<value>Use a profile other than Public
+This should be the profile folder name</value>
 	</data>
 	<data name="Settings_Extender_CreateConsole" xml:space="preserve">
 		<value>Create Console Window</value>
 	</data>
 	<data name="Settings_Extender_CreateConsole_ToolTip" xml:space="preserve">
-		<value>Creates a console window that logs extender internals\nMainly useful for debugging</value>
+		<value>Creates a console window that logs extender internals
+Mainly useful for debugging</value>
 	</data>
 	<data name="Settings_Extender_LogFailedCompile" xml:space="preserve">
 		<value>Log Working Story Errors</value>
@@ -1221,13 +1236,14 @@
 		<value>Log Script Compilation</value>
 	</data>
 	<data name="Settings_Extender_LogCompile_ToolTip" xml:space="preserve">
-		<value>Log Osiris story compilation to a log file</value>
+		<value>Log osiris script compilation to a log file</value>
 	</data>
 	<data name="Settings_Extender_LogDirectory" xml:space="preserve">
 		<value>Log Directory</value>
 	</data>
 	<data name="Settings_Extender_LogDirectory_ToolTip" xml:space="preserve">
-		<value>Directory where the generated Osiris logs will be stored\nDefault is Documents\\OsirisLogs</value>
+		<value>Directory where the generated Osiris logs will be stored
+Default: %LOCALAPPDATA%/Larian Studios/Baldur's Gate 3/Extender Logs</value>
 	</data>
 	<data name="Settings_Extender_LogRuntime" xml:space="preserve">
 		<value>Log Runtime</value>
@@ -1239,13 +1255,15 @@
 		<value>Disable Launcher</value>
 	</data>
 	<data name="Settings_Extender_DisableLauncher_ToolTip" xml:space="preserve">
-		<value>Prevents the exe from force-opening the launcher\nMay not work correctly if extender auto-updating is enabled, or the --skip-launcher launch param is set</value>
+		<value>Prevents the exe from force-opening the launcher
+May not work correctly if extender auto-updating is enabled, or the --skip-launcher launch param is set</value>
 	</data>
 	<data name="Settings_Extender_DisableStoryMerge" xml:space="preserve">
 		<value>Disable Story Merge</value>
 	</data>
 	<data name="Settings_Extender_DisableStoryMerge_ToolTip" xml:space="preserve">
-		<value>Prevents story.div.osi merging, which automatically happens when mods are present\nMay only occur when loading a save</value>
+		<value>Prevents story.div.osi merging, which automatically happens when mods are present
+May only occur when loading a save</value>
 	</data>
 	<data name="Settings_Extender_DisableStoryPatching" xml:space="preserve">
 		<value>Disable Story Patching</value>
@@ -1281,13 +1299,15 @@
 		<value>Osiris Debugger Port</value>
 	</data>
 	<data name="Settings_Extender_DebuggerPort_ToolTip" xml:space="preserve">
-		<value>Port number the Osiris debugger will listen on\nDefault: 9999</value>
+		<value>Port number the Osiris debugger will listen on
+Default: 9999</value>
 	</data>
 	<data name="Settings_Extender_DebuggerFlags" xml:space="preserve">
 		<value>Osiris Debugger Flags</value>
 	</data>
 	<data name="Settings_Extender_DebuggerFlags_ToolTip" xml:space="preserve">
-		<value>Debugger flags to set\nDefault: 0</value>
+		<value>Debugger flags to set
+Default: 0</value>
 	</data>
 	<data name="Settings_Extender_EnableLuaDebugger" xml:space="preserve">
 		<value>Lua Debugger</value>
@@ -1299,7 +1319,8 @@
 		<value>Lua Builtin Directory</value>
 	</data>
 	<data name="Settings_Extender_LuaBuiltinResourceDirectory_ToolTip" xml:space="preserve">
-		<value>An additional directory where the Script Extender will check for builtin scripts\nThis setting is meant for developers, to make it easier to test builtin script changes</value>
+		<value>An additional directory where the Script Extender will check for builtin scripts
+This setting is meant for developers, to make it easier to test builtin script changes</value>
 	</data>
 	<data name="Settings_Extender_ClearOnReset" xml:space="preserve">
 		<value>Clear Console On Reset</value>
@@ -1311,7 +1332,8 @@
 		<value>Default to Client Side</value>
 	</data>
 	<data name="Settings_Extender_DefaultToClientConsole_ToolTip" xml:space="preserve">
-		<value>Defaults the extender console to the client-side\nThis is setting is intended for developers</value>
+		<value>Defaults the extender console to the client-side
+This is setting is intended for developers</value>
 	</data>
 	<data name="Settings_Extender_InsanityCheck" xml:space="preserve">
 		<value>Disable ModCrashSanityCheck</value>
@@ -1461,7 +1483,8 @@
 		<comment>Placeholders: total mods</comment>
 	</data>
 	<data name="Progress_ExtractSelectedMods_ExtractPak" xml:space="preserve">
-		<value>Extracting {0}...\n</value>
+		<value>Extracting {0}...
+</value>
 		<comment>Placeholders: pak file name</comment>
 	</data>
 	<data name="Progress_ExtractSelectedAdventure_Title" xml:space="preserve">
@@ -1596,14 +1619,17 @@
 		<value>No cache to delete.</value>
 	</data>
 	<data name="Alert_Error_DeleteCacheFailed" xml:space="preserve">
-		<value>Error deleting mod cache:\n{0}</value>
+		<value>Error deleting mod cache:
+{0}</value>
 		<comment>Placeholders: Exception message</comment>
 	</data>
 	<data name="MessageBox_LoadSettings_PermissionDenied_Title" xml:space="preserve">
 		<value>File Permission Issue</value>
 	</data>
 	<data name="MessageBox_LoadSettings_PermissionDenied_Message" xml:space="preserve">
-		<value>BG3MM lacks permission to read one or both of the following paths:\nGame Data Path: ({0})\nGame Executable Path: ({1}).</value>
+		<value>BG3MM lacks permission to read one or both of the following paths:
+Game Data Path: ({0})
+Game Executable Path: ({1}).</value>
 	</data>
 	<data name="MessageBox_ScriptExtenderDownloadConfirmation_Title" xml:space="preserve">
 		<value>Download &amp; Install the Script Extender?</value>
@@ -1622,26 +1648,31 @@ Directory the zip will be extracted to:
 		<value>Script Extender Installation</value>
 	</data>
 	<data name="MessageBox_ScriptExtenderDownloadCompleted_Message" xml:space="preserve">
-		<value>The Script Extender has been successfully downloaded.\n\nPlease start the game once to complete the installation process.</value>
+		<value>The Script Extender has been successfully downloaded.
+
+Please start the game once to complete the installation process.</value>
 	</data>
 	<data name="MessageBox_CustomLaunchError_Title" xml:space="preserve">
 		<value>Custom Launch Error</value>
 	</data>
 	<data name="MessageBox_CustomLaunchError_Message" xml:space="preserve">
-		<value>Error running custom launch '{0}' with args '{1}':\n{2}</value>
+		<value>Error running custom launch '{0}' with args '{1}':
+{2}</value>
 		<comment>Placeholders: launch action, launch args, exception message</comment>
 	</data>
 	<data name="MessageBox_ExportLoadOrderToArchiveAsync_Title" xml:space="preserve">
 		<value>Confirm Archive Creation</value>
 	</data>
 	<data name="MessageBox_ExportLoadOrderToArchiveAsync_Message" xml:space="preserve">
-		<value>Save active mods to a zip file?\nDepending on the number of mods, this may take some time.</value>
+		<value>Save active mods to a zip file?
+Depending on the number of mods, this may take some time.</value>
 	</data>
 	<data name="MessageBox_ExtractSelectedMods_Title" xml:space="preserve">
 		<value>Extract Mods?</value>
 	</data>
 	<data name="MessageBox_ExtractSelectedMods_Message" xml:space="preserve">
-		<value>Extract the following mods?\n{0}</value>
+		<value>Extract the following mods?
+{0}</value>
 		<comment>Placeholders: selected mods</comment>
 	</data>
 	<data name="MessageBox_GenerateCache_Title" xml:space="preserve">

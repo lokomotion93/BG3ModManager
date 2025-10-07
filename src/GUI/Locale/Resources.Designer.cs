@@ -61,7 +61,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error deleting mod cache:\n{0}.
+        ///   Looks up a localized string similar to Error deleting mod cache:
+        ///{0}.
         /// </summary>
         public static string Alert_Error_DeleteCacheFailed {
             get {
@@ -1340,7 +1341,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder..
+        ///   Looks up a localized string similar to Automatically reorganize mod paks.
+        ///Inactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder..
         /// </summary>
         public static string Keybinding_OrganizeModPaks_ToolTip {
             get {
@@ -1637,7 +1639,9 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open the game exe directly,\nand create a steam_appid.txt in the bin folder if it doesn&apos;t exist,\nallowing you to bypassing the launcher.
+        ///   Looks up a localized string similar to Open the game exe directly,
+        ///and create a steam_appid.txt in the bin folder if it doesn&apos;t exist,
+        ///allowing you to bypassing the launcher.
         /// </summary>
         public static string LaunchGameType_Exe_ToolTip {
             get {
@@ -1664,7 +1668,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error running custom launch &apos;{0}&apos; with args &apos;{1}&apos;:\n{2}.
+        ///   Looks up a localized string similar to Error running custom launch &apos;{0}&apos; with args &apos;{1}&apos;:
+        ///{2}.
         /// </summary>
         public static string MessageBox_CustomLaunchError_Message {
             get {
@@ -1700,7 +1705,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save active mods to a zip file?\nDepending on the number of mods, this may take some time..
+        ///   Looks up a localized string similar to Save active mods to a zip file?
+        ///Depending on the number of mods, this may take some time..
         /// </summary>
         public static string MessageBox_ExportLoadOrderToArchiveAsync_Message {
             get {
@@ -1718,7 +1724,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extract the following mods?\n{0}.
+        ///   Looks up a localized string similar to Extract the following mods?
+        ///{0}.
         /// </summary>
         public static string MessageBox_ExtractSelectedMods_Message {
             get {
@@ -1754,7 +1761,9 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BG3MM lacks permission to read one or both of the following paths:\nGame Data Path: ({0})\nGame Executable Path: ({1})..
+        ///   Looks up a localized string similar to BG3MM lacks permission to read one or both of the following paths:
+        ///Game Data Path: ({0})
+        ///Game Executable Path: ({1})..
         /// </summary>
         public static string MessageBox_LoadSettings_PermissionDenied_Message {
             get {
@@ -1772,7 +1781,9 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Script Extender has been successfully downloaded.\n\nPlease start the game once to complete the installation process..
+        ///   Looks up a localized string similar to The Script Extender has been successfully downloaded.
+        ///
+        ///Please start the game once to complete the installation process..
         /// </summary>
         public static string MessageBox_ScriptExtenderDownloadCompleted_Message {
             get {
@@ -1922,7 +1933,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No installed Script Extender version found\nIf you&apos;ve already downloaded it, try opening the game once to complete the installation process.
+        ///   Looks up a localized string similar to No installed Script Extender version found
+        ///If you&apos;ve already downloaded it, try opening the game once to complete the installation process.
         /// </summary>
         public static string Mod_ExtenderStatus_NotFoundInfo {
             get {
@@ -1949,7 +1961,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing Dependencies:\n{0}.
+        ///   Looks up a localized string similar to Missing Dependencies:
+        ///{0}.
         /// </summary>
         public static string Mod_MissingDependenciesToolTip {
             get {
@@ -2318,7 +2331,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extracting {0}...\n.
+        ///   Looks up a localized string similar to Extracting {0}...
+        ///.
         /// </summary>
         public static string Progress_ExtractSelectedMods_ExtractPak {
             get {
@@ -2669,7 +2683,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable the telemetry options in the launcher\nTelemetry is always disabled if mods are active.
+        ///   Looks up a localized string similar to Disable the telemetry options in the launcher
+        ///Telemetry is always disabled if mods are active.
         /// </summary>
         public static string Settings_DisableLauncherTelemetry_ToolTip {
             get {
@@ -2705,7 +2720,9 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [EXPERIMENTAL]\nOverride the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur&apos;s Gate 3\nThis folder is used when exporting load orders, loading profiles, and loading mods..
+        ///   Looks up a localized string similar to [EXPERIMENTAL]
+        ///Override the default location to %LOCALAPPDATA%\\Larian Studios\\Baldur&apos;s Gate 3
+        ///This folder is used when exporting load orders, loading profiles, and loading mods..
         /// </summary>
         public static string Settings_DocumentsFolderPathOverride_ToolTip {
             get {
@@ -2759,7 +2776,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creates a console window that logs extender internals\nMainly useful for debugging.
+        ///   Looks up a localized string similar to Creates a console window that logs extender internals
+        ///Mainly useful for debugging.
         /// </summary>
         public static string Settings_Extender_CreateConsole_ToolTip {
             get {
@@ -2777,7 +2795,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use a profile other than Public\nThis should be the profile folder name.
+        ///   Looks up a localized string similar to Use a profile other than Public
+        ///This should be the profile folder name.
         /// </summary>
         public static string Settings_Extender_CustomProfile_ToolTip {
             get {
@@ -2795,7 +2814,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debugger flags to set\nDefault: 0.
+        ///   Looks up a localized string similar to Debugger flags to set
+        ///Default: 0.
         /// </summary>
         public static string Settings_Extender_DebuggerFlags_ToolTip {
             get {
@@ -2813,7 +2833,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Port number the Osiris debugger will listen on\nDefault: 9999.
+        ///   Looks up a localized string similar to Port number the Osiris debugger will listen on
+        ///Default: 9999.
         /// </summary>
         public static string Settings_Extender_DebuggerPort_ToolTip {
             get {
@@ -2831,7 +2852,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Defaults the extender console to the client-side\nThis is setting is intended for developers.
+        ///   Looks up a localized string similar to Defaults the extender console to the client-side
+        ///This is setting is intended for developers.
         /// </summary>
         public static string Settings_Extender_DefaultToClientConsole_ToolTip {
             get {
@@ -2849,7 +2871,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enables various debug functionality for development purposes\nThis can be checked by mods to enable additional log messages and more.
+        ///   Looks up a localized string similar to Enables various debug functionality for development purposes
+        ///This can be checked by mods to enable additional log messages and more.
         /// </summary>
         public static string Settings_Extender_DeveloperMode_ToolTip {
             get {
@@ -2867,7 +2890,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prevents the exe from force-opening the launcher\nMay not work correctly if extender auto-updating is enabled, or the --skip-launcher launch param is set.
+        ///   Looks up a localized string similar to Prevents the exe from force-opening the launcher
+        ///May not work correctly if extender auto-updating is enabled, or the --skip-launcher launch param is set.
         /// </summary>
         public static string Settings_Extender_DisableLauncher_ToolTip {
             get {
@@ -2885,7 +2909,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prevents story.div.osi merging, which automatically happens when mods are present\nMay only occur when loading a save.
+        ///   Looks up a localized string similar to Prevents story.div.osi merging, which automatically happens when mods are present
+        ///May only occur when loading a save.
         /// </summary>
         public static string Settings_Extender_DisableStoryMerge_ToolTip {
             get {
@@ -3065,7 +3090,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log Osiris story compilation to a log file.
+        ///   Looks up a localized string similar to Log osiris script compilation to a log file.
         /// </summary>
         public static string Settings_Extender_LogCompile_ToolTip {
             get {
@@ -3083,7 +3108,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory where the generated Osiris logs will be stored\nDefault is Documents\\OsirisLogs.
+        ///   Looks up a localized string similar to Directory where the generated Osiris logs will be stored
+        ///Default: %LOCALAPPDATA%/Larian Studios/Baldur&apos;s Gate 3/Extender Logs.
         /// </summary>
         public static string Settings_Extender_LogDirectory_ToolTip {
             get {
@@ -3137,7 +3163,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An additional directory where the Script Extender will check for builtin scripts\nThis setting is meant for developers, to make it easier to test builtin script changes.
+        ///   Looks up a localized string similar to An additional directory where the Script Extender will check for builtin scripts
+        ///This setting is meant for developers, to make it easier to test builtin script changes.
         /// </summary>
         public static string Settings_Extender_LuaBuiltinResourceDirectory_ToolTip {
             get {
@@ -3443,7 +3470,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The path to the Data folder\nExample: Baldur&apos;s Gate 3/Data.
+        ///   Looks up a localized string similar to The path to the Data folder
+        ///Example: Baldur&apos;s Gate 3/Data.
         /// </summary>
         public static string Settings_GameDataPath_ToolTip {
             get {
@@ -3551,7 +3579,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prevent the mod manager from launching multiple instances of the game\nThis can be bypassed by holding Shift when clicking on the launch button.
+        ///   Looks up a localized string similar to Prevent the mod manager from launching multiple instances of the game
+        ///This can be bypassed by holding Shift when clicking on the launch button.
         /// </summary>
         public static string Settings_LimitToSingleInstance_ToolTip {
             get {
@@ -3605,7 +3634,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prevent checking for updates for individual mods until this amount of time has passed since the last check\nThis is to prevent hitting API limits too quickly.
+        ///   Looks up a localized string similar to Prevent checking for updates for individual mods until this amount of time has passed since the last check
+        ///This is to prevent hitting API limits too quickly.
         /// </summary>
         public static string Settings_MinimumUpdateTimePeriod_ToolTip {
             get {
@@ -3938,7 +3968,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} {1} is now available.\nYou have version {2} installed..
+        ///   Looks up a localized string similar to {0} {1} is now available.
+        ///You have version {2} installed..
         /// </summary>
         public static string Window_AppUpdate_Available {
             get {
