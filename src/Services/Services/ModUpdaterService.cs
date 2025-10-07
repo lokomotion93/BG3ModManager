@@ -33,17 +33,16 @@ public class ModUpdaterService : ReactiveObject, IModUpdaterService
 		WriteIndented = false
 	};
 
-	public async Task<bool> UpdateInfoAsync(IEnumerable<ModData> mods, CancellationToken token)
+	public async Task UpdateInfoAsync(IEnumerable<ModData> mods, CancellationToken token)
 	{
 		IsRefreshing = true;
 		if (Modio.IsEnabled) await Modio.Update(mods, token);
 		if (NexusMods.IsEnabled) await NexusMods.Update(mods, token);
 		if (GitHub.IsEnabled) await GitHub.Update(mods, token);
 		IsRefreshing = false;
-		return false;
 	}
 
-	public async Task<bool> LoadCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)
+	public async Task LoadCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)
 	{
 		await Modio.LoadCacheAsync(currentAppVersion, token);
 		await NexusMods.LoadCacheAsync(currentAppVersion, token);
@@ -71,8 +70,6 @@ public class ModUpdaterService : ReactiveObject, IModUpdaterService
 			}
 			return Unit.Default;
 		}, RxApp.MainThreadScheduler);
-
-		return false;
 	}
 
 	public async Task SaveCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)

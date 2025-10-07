@@ -13,8 +13,8 @@ public interface IModUpdaterService
 	NexusModsCacheHandler NexusMods { get; }
 	ModioCacheHandler Modio { get; }
 	GitHubModsCacheHandler GitHub { get; }
-	Task<bool> UpdateInfoAsync(IEnumerable<ModData> mods, CancellationToken token);
-	Task<bool> LoadCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token);
+	Task UpdateInfoAsync(IEnumerable<ModData> mods, CancellationToken token);
+	Task LoadCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token);
 	Task SaveCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token);
 	Task ForceSaveAllCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token);
 

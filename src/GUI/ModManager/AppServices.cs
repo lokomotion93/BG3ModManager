@@ -26,6 +26,7 @@ public static class AppServices
 	public static IScreenReaderService ScreenReader => Get<IScreenReaderService>()!;
 	public static AppKeysService Keybindings => Get<AppKeysService>()!;
 
+	public static IEnvironmentService Env => Get<IEnvironmentService>()!;
 	public static IFileSystemService FS => Get<IFileSystemService>()!;
 	public static IDirectoryOpusService Dopus => Get<IDirectoryOpusService>()!;
 

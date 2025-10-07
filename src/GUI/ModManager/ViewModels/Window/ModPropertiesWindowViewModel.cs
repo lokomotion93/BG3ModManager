@@ -85,6 +85,16 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 		Mod.ModManagerConfig.Notes = Notes;
 		Mod.ApplyModConfig(Mod.ModManagerConfig);
 
+		if (NexusModsId > DivinityApp.NEXUSMODS_MOD_ID_START || ModioId.IsValid() || Repository.IsValid())
+		{
+			RxApp.MainThreadScheduler.ScheduleAsync(async (sch, token) =>
+			{
+				var updateMods = new ModData[1] { Mod };
+				await AppServices.Updater.UpdateInfoAsync(updateMods, token);
+				await AppServices.Updater.SaveCacheAsync(updateMods, AppServices.Env.AppVersion.ToString(), token);
+			});
+		}
+
 		//Should be called automatically when the mod config is updated
 		//AppServices.Get<ISettingsService>().ModConfig.TrySave();
 	}
