@@ -95,9 +95,27 @@ public class ModUpdaterService : ReactiveObject, IModUpdaterService
 		}
 		if (GitHub.IsEnabled)
 		{
+			foreach (var mod in mods.Where(x => x.GitHubData.IsEnabled))
+			{
+				GitHub.CacheData.Mods[mod.UUID] = mod.GitHubData;
+			}
 			await GitHub.SaveCacheAsync(true, currentAppVersion, token);
 		}
 		return false;
+	}
+
+	public async Task ForceSaveAllCacheAsync(IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)
+	{
+		foreach(var mod in mods)
+		{
+			if(mod.ModioData.Data == null) mod.ModioData.Data = new();
+			Modio.CacheData.Mods[mod.UUID] = mod.ModioData.Data;
+			NexusMods.CacheData.Mods[mod.UUID] = mod.NexusModsData;
+			GitHub.CacheData.Mods[mod.UUID] = mod.GitHubData;
+		}
+		await Modio.SaveCacheAsync(true, currentAppVersion, token);
+		await NexusMods.SaveCacheAsync(true, currentAppVersion, token);
+		await GitHub.SaveCacheAsync(true, currentAppVersion, token);
 	}
 
 	public bool DeleteCache()

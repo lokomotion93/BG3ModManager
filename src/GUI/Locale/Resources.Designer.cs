@@ -61,6 +61,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error deleting workshop cache:\n{0}.
+        /// </summary>
+        public static string Alert_Error_DeleteCacheFailed {
+            get {
+                return ResourceManager.GetString("Alert_Error_DeleteCacheFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The current profile or the current mod order is null! Failed to export mod order.
         /// </summary>
         public static string Alert_Error_ExportLoadOrderToArchiveAs {
@@ -196,6 +205,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted local cache in {0}.
+        /// </summary>
+        public static string Alert_Success_DeleteCache {
+            get {
+                return ResourceManager.GetString("Alert_Success_DeleteCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successfully extracted adventure mod to &apos;{0}&apos;.
         /// </summary>
         public static string Alert_Success_ExtractSelectedAdventure {
@@ -291,6 +309,15 @@ namespace ModManager.Locale {
         public static string Alert_Success_ScriptExtenderInstalled {
             get {
                 return ResourceManager.GetString("Alert_Success_ScriptExtenderInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No cache to delete..
+        /// </summary>
+        public static string Alert_Warning_DeleteCacheSkipped {
+            get {
+                return ResourceManager.GetString("Alert_Warning_DeleteCacheSkipped", resourceCulture);
             }
         }
         
@@ -934,6 +961,42 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save All Mods to Cache.
+        /// </summary>
+        public static string Keybinding_CreateCache {
+            get {
+                return ResourceManager.GetString("Keybinding_CreateCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods. Normally, only configured mods are saved (i.e. a mod with a Nexus Mods id set)..
+        /// </summary>
+        public static string Keybinding_CreateCache_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_CreateCache_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Cache....
+        /// </summary>
+        public static string Keybinding_DeleteCache {
+            get {
+                return ResourceManager.GetString("Keybinding_DeleteCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the Nexus Mods and mod.io cache files in the settings folder..
+        /// </summary>
+        public static string Keybinding_DeleteCache_ToolTip {
+            get {
+                return ResourceManager.GetString("Keybinding_DeleteCache_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Selected Mods....
         /// </summary>
         public static string Keybinding_DeleteSelectedMods {
@@ -1330,6 +1393,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save Cache.
+        /// </summary>
+        public static string Keybinding_SaveCache {
+            get {
+                return ResourceManager.GetString("Keybinding_SaveCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Order.
         /// </summary>
         public static string Keybinding_SaveOrder {
@@ -1587,6 +1659,24 @@ namespace ModManager.Locale {
         public static string MessageBox_CustomLaunchError_Title {
             get {
                 return ResourceManager.GetString("MessageBox_CustomLaunchError_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete mod manager mod cache data? This cannot be undone..
+        /// </summary>
+        public static string MessageBox_DeleteCache_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_DeleteCache_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Cache?.
+        /// </summary>
+        public static string MessageBox_DeleteCache_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_DeleteCache_Title", resourceCulture);
             }
         }
         
@@ -3654,6 +3744,15 @@ namespace ModManager.Locale {
         public static string TopMenu_Edit {
             get {
                 return ResourceManager.GetString("TopMenu_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cache....
+        /// </summary>
+        public static string TopMenu_Edit_Cache {
+            get {
+                return ResourceManager.GetString("TopMenu_Edit_Cache", resourceCulture);
             }
         }
         

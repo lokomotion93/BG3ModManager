@@ -854,6 +854,21 @@
 	<data name="Keybinding_OrganizeModPaks_ToolTip" xml:space="preserve">
 		<value>Automatically reorganize mod paks.\nInactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disabled folder) will be moved to the Mods folder.</value>
 	</data>
+	<data name="Keybinding_SaveCache" xml:space="preserve">
+		<value>Save Cache</value>
+	</data>
+	<data name="Keybinding_CreateCache" xml:space="preserve">
+		<value>Save All Mods to Cache</value>
+	</data>
+	<data name="Keybinding_CreateCache_ToolTip" xml:space="preserve">
+		<value>Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods. Normally, only configured mods are saved (i.e. a mod with a Nexus Mods id set).</value>
+	</data>
+	<data name="Keybinding_DeleteCache" xml:space="preserve">
+		<value>Delete Cache...</value>
+	</data>
+	<data name="Keybinding_DeleteCache_ToolTip" xml:space="preserve">
+		<value>Delete the Nexus Mods and mod.io cache files in the settings folder.</value>
+	</data>
 	<data name="Window_Main_Title" xml:space="preserve">
 		<value>BG3ModManager {0}</value>
 		<comment>Includes version</comment>
@@ -865,6 +880,9 @@
 	<data name="TopMenu_Edit" xml:space="preserve">
 		<value>_Edit</value>
 		<comment>Start with an underscore for keyboard accessibility</comment>
+	</data>
+	<data name="TopMenu_Edit_Cache" xml:space="preserve">
+		<value>Cache...</value>
 	</data>
 	<data name="TopMenu_Settings" xml:space="preserve">
 		<value>_Settings</value>
@@ -1561,6 +1579,17 @@
 	<data name="Alert_Warning_DocumentsFolderPathOverrideChanged" xml:space="preserve">
 		<value>AppData path override set to '{0}' - Make sure to refresh</value>
 	</data>
+	<data name="Alert_Success_DeleteCache" xml:space="preserve">
+		<value>Deleted local cache in {0}</value>
+		<comment>Placeholders: The settings folder path</comment>
+	</data>
+	<data name="Alert_Warning_DeleteCacheSkipped" xml:space="preserve">
+		<value>No cache to delete.</value>
+	</data>
+	<data name="Alert_Error_DeleteCacheFailed" xml:space="preserve">
+		<value>Error deleting workshop cache:\n{0}</value>
+		<comment>Placeholders: Exception message</comment>
+	</data>
 	<data name="MessageBox_LoadSettings_PermissionDenied_Title" xml:space="preserve">
 		<value>File Permission Issue</value>
 	</data>
@@ -1605,6 +1634,12 @@ Directory the zip will be extracted to:
 	<data name="MessageBox_ExtractSelectedMods_Message" xml:space="preserve">
 		<value>Extract the following mods?\n{0}</value>
 		<comment>Placeholders: selected mods</comment>
+	</data>
+	<data name="MessageBox_DeleteCache_Title" xml:space="preserve">
+		<value>Delete Cache?</value>
+	</data>
+	<data name="MessageBox_DeleteCache_Message" xml:space="preserve">
+		<value>Delete mod manager mod cache data? This cannot be undone.</value>
 	</data>
 	<data name="Picker_GameDataPath_Title" xml:space="preserve">
 		<value>Set Game Installation Folder</value>

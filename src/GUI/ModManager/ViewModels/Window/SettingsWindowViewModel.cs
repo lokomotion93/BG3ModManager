@@ -438,34 +438,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 			});
 		});
 
-		ClearCacheCommand = ReactiveCommand.Create(() =>
-		{
-			_interactions.ShowMessageBox.Handle(new(
-				"Confirm Delete Cache",
-				$"Delete local mod cache?\nThis cannot be undone.",
-				InteractionMessageBoxType.Warning | InteractionMessageBoxType.YesNo))
-			.Subscribe(result =>
-			{
-				if (result)
-				{
-					try
-					{
-						if (AppServices.Get<IModUpdaterService>().DeleteCache())
-						{
-							AppServices.Commands.ShowAlert($"Deleted local cache in {DivinityApp.GetAppDirectory("Data")}", AlertType.Success, 20);
-						}
-						else
-						{
-							AppServices.Commands.ShowAlert($"No cache to delete.", AlertType.Warning, 20);
-						}
-					}
-					catch (Exception ex)
-					{
-						AppServices.Commands.ShowAlert($"Error deleting workshop cache:\n{ex}", AlertType.Danger);
-					}
-				}
-			});
-		});
+		ClearCacheCommand = ViewModelLocator.CommandBar.DeleteCacheCommand!;
 
 		AddLaunchParamCommand = ReactiveCommand.Create((string param) =>
 		{

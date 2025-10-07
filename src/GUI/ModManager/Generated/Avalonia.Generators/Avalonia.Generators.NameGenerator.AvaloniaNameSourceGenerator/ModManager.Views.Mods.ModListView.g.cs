@@ -13,6 +13,8 @@ namespace ModManager.Views.Mods
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::ModManager.Controls.EnhancedTextBox FilterTextBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.Button AdditionalActionsMenuButton;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::Avalonia.Controls.TreeDataGrid ModsTreeDataGrid;
 
         /// <summary>
@@ -32,6 +34,7 @@ namespace ModManager.Views.Mods
             var __thisNameScope__ = this.FindNameScope();
             FilterExpander = __thisNameScope__?.Find<global::Avalonia.Controls.Expander>("FilterExpander");
             FilterTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("FilterTextBox");
+            AdditionalActionsMenuButton = __thisNameScope__?.Find<global::Avalonia.Controls.Button>("AdditionalActionsMenuButton");
             ModsTreeDataGrid = __thisNameScope__?.Find<global::Avalonia.Controls.TreeDataGrid>("ModsTreeDataGrid");
         }
     }

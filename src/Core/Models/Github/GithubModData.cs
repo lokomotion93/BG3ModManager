@@ -2,10 +2,11 @@
 
 namespace ModManager.Models.GitHub;
 
+[DataContract]
 public class GitHubModData : ReactiveObject
 {
-	[Reactive] public string? Url { get; set; }
-	[Reactive] public GitHubLatestReleaseData LatestRelease { get; set; }
+	[Reactive, DataMember] public string? Url { get; set; }
+	[Reactive, DataMember] public GitHubLatestReleaseData LatestRelease { get; set; }
 
 	/// <summary>
 	/// True if Url is set.

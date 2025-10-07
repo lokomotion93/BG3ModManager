@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 using Modio.Models;
 
 namespace ModManager.Models.Modio;
+
+[DataContract]
 public class ModioModData : ReactiveObject
 {
 	[MemberNotNullWhen(true, nameof(IsEnabled))]
-	[Reactive] public ModioMod? Data { get; set; }
+	[Reactive, DataMember] public ModioMod? Data { get; set; }
 
-	[Reactive] public uint Id { get; set; }
-	[Reactive] public string? NameId { get; set; }
+	[Reactive, DataMember] public uint Id { get; set; }
+	[Reactive, DataMember] public string? NameId { get; set; }
 	[Reactive] public bool IsEnabled { get; private set; }
 
 	[ObservableAsProperty] public string? Description { get; }

@@ -219,6 +219,15 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding(nameof(Resources.Keybinding_OrganizeModPaks), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_OrganizeModPaks_ToolTip))]
 	public RxCommandUnit? OrganizeModPaksCommand { get; private set; }
 
+	[Keybinding(nameof(Resources.Keybinding_SaveCache), Key.None, KeyModifiers.None)]
+	public RxCommandUnit? SaveCacheCommand { get; private set; }
+
+	[Keybinding(nameof(Resources.Keybinding_CreateCache), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_CreateCache_ToolTip))]
+	public RxCommandUnit? CreateCacheCommand { get; private set; }
+
+	[Keybinding(nameof(Resources.Keybinding_DeleteCache), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_DeleteCache_ToolTip))]
+	public RxCommandUnit? DeleteCacheCommand { get; private set; }
+
 	//Context Menu commands
 
 	public ReactiveCommand<string?, bool>? OpenSelectedProfileFolderCommand { get; private set; }
@@ -772,6 +781,45 @@ public partial class MainCommandBarViewModel : ReactiveObject
 			}
 		}, canExecuteCommands);
 
+		SaveCacheCommand = ReactiveCommand.CreateFromTask(async () =>
+		{
+			var userMods = AppServices.Mods.UserMods;
+			await AppServices.Updater.SaveCacheAsync(userMods, main.Version, CancellationToken.None);
+		}, canExecuteCommands);
+
+		CreateCacheCommand = ReactiveCommand.CreateFromTask(async () =>
+		{
+			var userMods = AppServices.Mods.UserMods;
+			await AppServices.Updater.ForceSaveAllCacheAsync(userMods, main.Version, CancellationToken.None);
+		}, canExecuteCommands);
+
+		DeleteCacheCommand = ReactiveCommand.CreateFromTask(async () =>
+		{
+			var result = await AppServices.Interactions.ShowMessageBox.Handle(new(
+				Loca.MessageBox_DeleteCache_Title,
+				Loca.MessageBox_DeleteCache_Message,
+				InteractionMessageBoxType.Warning | InteractionMessageBoxType.YesNo));
+			if (result)
+			{
+				try
+				{
+					if (AppServices.Updater.DeleteCache())
+					{
+						var settingsDir = DivinityApp.GetAppDirectory("Data");
+						AppServices.Commands.ShowAlert(Loca.Alert_Success_DeleteCache.SafeFormat($"Deleted local cache in {settingsDir}", settingsDir), AlertType.Success, 20);
+					}
+					else
+					{
+						AppServices.Commands.ShowAlert(Loca.Alert_Warning_DeleteCacheSkipped, AlertType.Warning, 20);
+					}
+				}
+				catch (Exception ex)
+				{
+					AppServices.Commands.ShowAlert(Loca.Alert_Error_DeleteCacheFailed.SafeFormat($"Error deleting workshop cache:\n{ex}", ex), AlertType.Danger);
+				}
+			}
+		}, canExecuteCommands);
+
 		//MenuEntry.FromKeybinding(ImportNexusModsIdsCommand, nameof(ImportNexusModsIdsCommand), keybindings),
 		_menuEntries.AddRange([
 			new MenuEntry(nameof(Resources.TopMenu_File), useLocalization: true, useAccessShortcut:true){
@@ -803,6 +851,14 @@ public partial class MainCommandBarViewModel : ReactiveObject
 			new MenuEntry(nameof(Resources.TopMenu_Edit), useLocalization: true, useAccessShortcut:true){
 				Children = [
 					MenuEntry.FromKeybinding(OrganizeModPaksCommand, nameof(OrganizeModPaksCommand), keybindings),
+					new MenuSeparator(),
+					new MenuEntry(nameof(Resources.TopMenu_Edit_Cache), useLocalization: true){
+					Children = [
+						MenuEntry.FromKeybinding(SaveCacheCommand, nameof(SaveCacheCommand), keybindings),
+						MenuEntry.FromKeybinding(CreateCacheCommand, nameof(CreateCacheCommand), keybindings),
+						new MenuSeparator(),
+						MenuEntry.FromKeybinding(DeleteCacheCommand, nameof(DeleteCacheCommand), keybindings),
+					]},
 					new MenuSeparator(),
 					MenuEntry.FromKeybinding(MoveSelectedModsCommand, nameof(MoveSelectedModsCommand), keybindings),
 					MenuEntry.FromKeybinding(FocusActiveModsCommand, nameof(FocusActiveModsCommand), keybindings),
