@@ -133,6 +133,7 @@ public class ModData : ReactiveObject, IModuleShortDesc
 	[ObservableAsProperty] public string? ModDisplayTypeForeground { get; }
 	[ObservableAsProperty] public string? LastModifiedDateText { get; }
 	[ObservableAsProperty] public string? Notes { get; }
+	[ObservableAsProperty] public string? OsirisStatusIconPath { get; }
 	[ObservableAsProperty] public string? OsirisStatusToolTipText { get; }
 	[ObservableAsProperty] public string? ScriptExtenderSupportToolTipText { get; }
 
@@ -148,14 +149,16 @@ public class ModData : ReactiveObject, IModuleShortDesc
 	[ObservableAsProperty] public bool HasModioLink { get; }
 	[ObservableAsProperty] public bool HasNexusModsLink { get; }
 	[ObservableAsProperty] public bool HasNotes { get; }
-	[ObservableAsProperty] public bool HasOsirisStatus { get; }
 	[ObservableAsProperty] public bool HasDependencies { get; }
 	[ObservableAsProperty] public bool HasConflicts { get; }
 	[ObservableAsProperty] public bool HasToolTip { get; }
 	[ObservableAsProperty] public bool HasInvalidUUID { get; }
 	[ObservableAsProperty] public bool HasMissingDependency { get; }
 	[ObservableAsProperty] public string? MissingDependencyToolTip { get; }
+	[ObservableAsProperty] public bool HasOsirisStatus { get; }
 	[ObservableAsProperty] public bool HasToolkitIcon { get; }
+	[ObservableAsProperty] public bool HasLooseModIcon { get; }
+	[ObservableAsProperty] public bool HasOverrideIcon { get; }
 
 	[ObservableAsProperty] public ScriptExtenderIconType ExtenderIcon { get; }
 
@@ -413,6 +416,16 @@ public class ModData : ReactiveObject, IModuleShortDesc
 	{
 		ForceAllowInLoadOrder = b;
 		IsActive = b && IsForceLoaded;
+	}
+
+	private static string? OsirisStatusToIconPath(DivinityOsirisModStatus status)
+	{
+		return status switch
+		{
+			DivinityOsirisModStatus.SCRIPTS => "avares://ModManager/Assets/Icons/Osiris_16x.png",
+			DivinityOsirisModStatus.MODFIXER => "avares://ModManager/Assets/Icons/Osiris_ModFixer_16x.png",
+			_ => null,
+		};
 	}
 
 	private static string OsirisStatusToTooltipText(DivinityOsirisModStatus status)
@@ -723,9 +736,19 @@ public class ModData : ReactiveObject, IModuleShortDesc
 			.Select(CheckForInvalidUUID)
 			.ToUIPropertyImmediate(this, x => x.HasInvalidUUID);
 
-		this.WhenAnyValue(x => x.IsLooseMod, x => x.DisplayExtraIcons)
+		var whenDisplayExtraIcons = this.WhenAnyValue(x => x.DisplayExtraIcons);
+
+		this.WhenAnyValue(x => x.IsToolkitProject).CombineLatest(whenDisplayExtraIcons)
 			.AllTrue()
 			.ToUIPropertyImmediate(this, x => x.HasToolkitIcon);
+
+		this.WhenAnyValue(x => x.IsLooseMod, x => x.IsToolkitProject, (b1,b2) => b1 && !b2).CombineLatest(whenDisplayExtraIcons)
+			.AllTrue()
+			.ToUIPropertyImmediate(this, x => x.HasLooseModIcon);
+
+		this.WhenAnyValue(x => x.IsForceLoaded).CombineLatest(whenDisplayExtraIcons)
+			.AllTrue()
+			.ToUIPropertyImmediate(this, x => x.HasOverrideIcon);
 
 		this.WhenAnyValue(x => x.IsActive, x => x.IsForceLoaded, x => x.IsForceLoadedMergedMod, x => x.ForceAllowInLoadOrder).Subscribe((b) =>
 		{
@@ -776,6 +799,7 @@ public class ModData : ReactiveObject, IModuleShortDesc
 
 		var whenOsirisStatusChanges = this.WhenAnyValue(x => x.OsirisModStatus);
 		whenOsirisStatusChanges.Select(x => x != DivinityOsirisModStatus.NONE).ToUIProperty(this, x => x.HasOsirisStatus);
+		whenOsirisStatusChanges.Select(OsirisStatusToIconPath).ToUIProperty(this, x => x.OsirisStatusIconPath);
 		whenOsirisStatusChanges.Select(OsirisStatusToTooltipText).ToUIProperty(this, x => x.OsirisStatusToolTipText);
 
 		this.WhenAnyValue(x => x.ExtenderModStatus).Select(ExtenderModStatusToIcon).ToUIPropertyImmediate(this, x => x.ExtenderIcon);

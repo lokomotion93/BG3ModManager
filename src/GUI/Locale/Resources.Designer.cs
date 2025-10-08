@@ -1143,7 +1143,8 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods. Normally, only configured mods are saved (i.e. a mod with a Nexus Mods id set)..
+        ///   Looks up a localized string similar to Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods.
+        ///Normally, only configured mods are saved to cache (i.e. a mod with a Nexus Mods id set)..
         /// </summary>
         public static string Keybinding_GenerateCache_ToolTip {
             get {
@@ -2084,6 +2085,42 @@ namespace ModManager.Locale {
         public static string ModContainer_ToolTip_Children {
             get {
                 return ResourceManager.GetString("ModContainer_ToolTip_Children", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This mod has an invalid UUID, and will likely fail to load.
+        /// </summary>
+        public static string ModEntry_ToolTip_HasInvalidUUID {
+            get {
+                return ResourceManager.GetString("ModEntry_ToolTip_HasInvalidUUID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has Override Files.
+        /// </summary>
+        public static string ModEntry_ToolTip_HasOverride {
+            get {
+                return ResourceManager.GetString("ModEntry_ToolTip_HasOverride", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Loose Mod (Not a .pak).
+        /// </summary>
+        public static string ModEntry_ToolTip_IsLooseMod {
+            get {
+                return ResourceManager.GetString("ModEntry_ToolTip_IsLooseMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Toolkit Project.
+        /// </summary>
+        public static string ModEntry_ToolTip_IsToolkitProject {
+            get {
+                return ResourceManager.GetString("ModEntry_ToolTip_IsToolkitProject", resourceCulture);
             }
         }
         

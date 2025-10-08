@@ -10,6 +10,8 @@ namespace ModManager.Views.Mods
     {
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::Avalonia.Controls.Panel MainPanel;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Material.Icons.Avalonia.MaterialIcon ExtenderStatusImage;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -27,6 +29,7 @@ namespace ModManager.Views.Mods
 
             var __thisNameScope__ = this.FindNameScope();
             MainPanel = __thisNameScope__?.Find<global::Avalonia.Controls.Panel>("MainPanel");
+            ExtenderStatusImage = __thisNameScope__?.Find<global::Material.Icons.Avalonia.MaterialIcon>("ExtenderStatusImage");
         }
     }
 }

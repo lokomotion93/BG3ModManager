@@ -288,7 +288,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		if (IsInitialized && !IsRefreshing)
 		{
 			CheckExtenderInstalledVersion(t);
-			if (updateMods) RxApp.MainThreadScheduler.Schedule(ViewModelLocator.ModOrder.UpdateExtenderVersionForAllMods);
+			if (updateMods) RxApp.MainThreadScheduler.Schedule(ViewModelLocator.ModOrder.UpdateModStatusForAllMods);
 		}
 	}
 
@@ -496,7 +496,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 			CheckExtenderUpdaterVersion();
 			CheckExtenderInstalledVersion(token);
-			ViewModelLocator.ModOrder.UpdateExtenderVersionForAllMods();
+			ViewModelLocator.ModOrder.UpdateModStatusForAllMods();
 
 			return Unit.Default;
 		}, RxApp.MainThreadScheduler);

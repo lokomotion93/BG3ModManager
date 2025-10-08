@@ -4,13 +4,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:labs="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
+    xmlns:local="using:ModManager.Views.Mods"
+    xmlns:manager="using:ModManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mod="using:ModManager.Models.Mod"
-    d:DesignHeight="450"
+    d:DesignHeight="36"
     d:DesignWidth="800"
     x:DataType="mod:ModEntry"
     IsHitTestVisible="True"
     mc:Ignorable="d">
+	<Design.DataContext>
+		<local:DesignModEntry />
+	</Design.DataContext>
 	<UserControl.Styles>
 		<Style Selector="TextBlock">
 			<Style Selector="^:pointerover">
@@ -18,7 +23,11 @@
 			</Style>
 		</Style>
 	</UserControl.Styles>
-	<Panel Name="MainPanel" Background="Transparent" DataContext="{Binding Data}">
+	<Panel Name="MainPanel"
+	    x:DataType="mod:ModData"
+	    Background="Transparent"
+	    DataContext="{Binding Data}"
+	    ToolTip.ShowDelay="600">
 		<Panel.Styles>
 			<Style Selector="ToolTip">
 				<Setter Property="Width" Value="{StaticResource ModEntryToolTipWidth}" />
@@ -165,6 +174,76 @@
 				    Stretch="UniformToFill" />
 			</StackPanel>
 		</ToolTip.Tip>
-		<TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
+		<Grid ColumnDefinitions="*,auto">
+			<TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
+			<Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0">
+				<StackPanel Orientation="Horizontal">
+					<StackPanel.Styles>
+						<Style Selector="icons|MaterialIcon">
+							<Setter Property="Margin" Value="0,0,4,0" />
+							<Setter Property="Effect">
+								<Setter.Value>
+									<DropShadowDirectionEffect BlurRadius="4"
+									    Direction="330"
+									    Opacity="0.8"
+									    ShadowDepth="2"
+									    Color="Black" />
+								</Setter.Value>
+							</Setter>
+						</Style>
+						<Style Selector="labs|AsyncImage">
+							<Setter Property="Margin" Value="0,0,4,0" />
+							<Setter Property="Effect">
+								<Setter.Value>
+									<DropShadowDirectionEffect BlurRadius="4"
+									    Direction="330"
+									    Opacity="0.8"
+									    ShadowDepth="2"
+									    Color="Black" />
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</StackPanel.Styles>
+					<labs:AsyncImage Width="16"
+					    Height="16"
+					    IsVisible="{Binding HasOsirisStatus}"
+					    RenderOptions.BitmapInterpolationMode="HighQuality"
+					    Source="{Binding OsirisStatusIconPath}"
+					    Stretch="UniformToFill"
+					    ToolTip.Tip="{Binding OsirisStatusToolTipText}" />
+					<Panel IsVisible="{Binding HasExtenderStatus}" ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}">
+						<Rectangle Width="16" Height="16" Fill="Transparent" />
+						<icons:MaterialIcon x:Name="ExtenderStatusImage" />
+					</Panel>
+					<Panel IsVisible="{Binding HasToolkitIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_IsToolkitProject}">
+						<Rectangle Width="16" Height="16" Fill="Transparent" />
+						<icons:MaterialIcon Foreground="SpringGreen" Kind="Tools" />
+					</Panel>
+					<Panel IsVisible="{Binding HasLooseModIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_IsLooseMod}">
+						<Rectangle Width="16" Height="16" Fill="Transparent" />
+						<icons:MaterialIcon Foreground="Moccasin" Kind="Folder" />
+					</Panel>
+					<Panel IsVisible="{Binding HasOverrideIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_HasOverride}">
+						<Rectangle Width="16" Height="16" Fill="Transparent" />
+						<icons:MaterialIcon Foreground="Gold" Kind="FlashAlert" />
+					</Panel>
+					<icons:MaterialIcon Foreground="Red"
+					    IsVisible="{Binding HasMissingDependency}"
+					    Kind="FileQuestion"
+					    ToolTip.Tip="{Binding MissingDependencyToolTip}" />
+					<icons:MaterialIcon Foreground="Red"
+					    IsVisible="{Binding HasInvalidUUID}"
+					    Kind="FileDocumentAlert"
+					    ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_HasInvalidUUID}" />
+					<!--<labs:AsyncImage x:Name="ExtenderStatusImage"
+					    Width="16"
+					    Height="16"
+					    IsVisible="{Binding HasExtenderStatus}"
+					    RenderOptions.BitmapInterpolationMode="HighQuality"
+					    Stretch="UniformToFill"
+					    ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}" />-->
+				</StackPanel>
+			</Border>
+		</Grid>
 	</Panel>
 </UserControl>

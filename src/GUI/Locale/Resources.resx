@@ -865,7 +865,8 @@ Inactive mods will be moved to Mods_Disabled, and active mods (in the Mods_Disab
 		<value>Generate Cache...</value>
 	</data>
 	<data name="Keybinding_GenerateCache_ToolTip" xml:space="preserve">
-		<value>Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods. Normally, only configured mods are saved (i.e. a mod with a Nexus Mods id set).</value>
+		<value>Write all available mods to the various cache files in the settings folder, allowing you to manually set the ids of installed mods.
+Normally, only configured mods are saved to cache (i.e. a mod with a Nexus Mods id set).</value>
 	</data>
 	<data name="Keybinding_DeleteCache" xml:space="preserve">
 		<value>Delete Cache...</value>
@@ -1192,6 +1193,18 @@ allowing you to bypassing the launcher</value>
 	</data>
 	<data name="ModSourceType_Modio_ToolTip" xml:space="preserve">
 		<value>This mod's update source is from mod.io</value>
+	</data>
+	<data name="ModEntry_ToolTip_IsToolkitProject" xml:space="preserve">
+		<value>Is Toolkit Project</value>
+	</data>
+	<data name="ModEntry_ToolTip_IsLooseMod" xml:space="preserve">
+		<value>Is Loose Mod (Not a .pak)</value>
+	</data>
+	<data name="ModEntry_ToolTip_HasInvalidUUID" xml:space="preserve">
+		<value>This mod has an invalid UUID, and will likely fail to load</value>
+	</data>
+	<data name="ModEntry_ToolTip_HasOverride" xml:space="preserve">
+		<value>Has Override Files</value>
 	</data>
 	<data name="Settings_Extender_ExportDefaultExtenderSettings" xml:space="preserve">
 		<value>Export Default Values</value>

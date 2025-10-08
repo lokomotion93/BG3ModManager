@@ -36,7 +36,6 @@
 		<PackageReference Include="Xaml.Behaviors.Interactions" />
 		<PackageReference Include="Avalonia.Labs.Controls" />
 		<PackageReference Include="Material.Icons.Avalonia" />
-		<PackageReference Include="AsyncImageLoader.Avalonia" />
 		<PackageReference Include="ConfigureAwait.Fody" PrivateAssets="all" />
 		<PackageReference Include="DynamicData" />
 		<PackageReference Include="Humanizer.Core" />

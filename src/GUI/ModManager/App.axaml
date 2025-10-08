@@ -60,7 +60,6 @@
 		<labs:ControlThemes />
 		<suki:SukiTheme ThemeColor="Blue" />
 		<materialIcons:MaterialIconStyles />
-		<StyleInclude Source="avares://AsyncImageLoader.Avalonia/AdvancedImage.axaml" />
 		<StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
 		<StyleInclude Source="avares://ModManager/Styling/DefaultStyles.axaml" />
 	</Application.Styles>

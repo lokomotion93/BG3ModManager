@@ -1,9 +1,9 @@
 <UserControl x:Class="ModManager.Views.Main.FooterView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
     xmlns:controls="using:ModManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
     xmlns:locale="using:ModManager.Locale"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="using:SukiUI.Controls"
@@ -30,11 +30,11 @@
 							    VerticalAlignment="Center"
 							    Text="{Binding NexusModsLimitsText}"
 							    TextAlignment="Center" />
-							<Image Width="16"
+							<labs:AsyncImage Width="16"
 							    Height="16"
 							    Margin="4,0"
-							    asyncImageLoader:ImageLoader.Source="{Binding NexusModsProfileBitmapUri}"
 							    IsVisible="{Binding HasNexusModsProfileAvatar}"
+							    Source="{Binding NexusModsProfileBitmapUri}"
 							    Stretch="UniformToFill" />
 						</StackPanel>
 					</controls:IconExpander>

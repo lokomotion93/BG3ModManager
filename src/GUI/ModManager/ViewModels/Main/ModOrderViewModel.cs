@@ -969,7 +969,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 		}
 	}
 
-	public void UpdateExtenderVersionForAllMods()
+	public void UpdateModStatusForAllMods()
 	{
 		if (_manager.AddonMods.Count > 0)
 		{
@@ -977,6 +977,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 
 			foreach (var mod in _manager.AllMods)
 			{
+				mod.DisplayExtraIcons = Settings.EnableColorblindSupport;
 				UpdateModExtenderStatus(mod);
 			}
 		}
