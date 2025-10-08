@@ -3,6 +3,7 @@
     xmlns:controls="using:ModManager.Controls"
     xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+    xmlns:labs="using:Avalonia.Labs.Controls"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:rxui="using:Avalonia.ReactiveUI"
     xmlns:suki="using:SukiUI.Controls"
@@ -368,5 +369,9 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+	</Style>
+
+	<Style Selector="labs|AsyncImage">
+		<Setter Property="IsCacheEnabled" Value="True" />
 	</Style>
 </Styles>
