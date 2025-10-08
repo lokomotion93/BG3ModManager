@@ -158,9 +158,10 @@
 			<Button x:Name="AdditionalActionsMenuButton"
 			    Grid.Column="4"
 			    BorderThickness="0"
-			    Classes="hamburger">
+			    Classes="hamburger"
+			    ClickMode="Release">
 				<Button.Flyout>
-					<controls:CloseableMenuFlyout>
+					<controls:CloseableMenuFlyout Placement="AnchorAndGravity" PlacementGravity="BottomRight" ShowMode="Transient">
 						<MenuItem Command="{Binding AddContainerCommand}" Header="{manager:LocaleKey ModListView_AddContainer}" Icon="{materialIcons:MaterialIconExt Kind=Plus, IconForeground=Lime}" />
 					</controls:CloseableMenuFlyout>
 				</Button.Flyout>
