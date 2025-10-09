@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿using ModManager.Services;
+
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace ModManager;
@@ -13,9 +16,30 @@ public static class EnumExtensions
 		var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
 		if (member != null)
 		{
-			return member.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty;
+			if(member.GetCustomAttribute<DescriptionAttribute>() is DescriptionAttribute descriptionAttribute)
+			{
+				return descriptionAttribute.Description ?? string.Empty;
+			}
+			else if(member.GetCustomAttribute<DisplayAttribute>() is DisplayAttribute displayAttribute && displayAttribute.Description.IsValid())
+			{
+				return displayAttribute.Description;
+			}
 		}
-		return "";
+		return string.Empty;
+	}
+
+	/// <summary>
+	/// Get an enum's Description attribute value.
+	/// </summary>
+	public static string GetName(this Enum enumValue)
+	{
+		var valueStr = enumValue.ToString();
+		var member = enumValue.GetType().GetMember(valueStr).FirstOrDefault();
+		if (member != null && member.GetCustomAttribute<DisplayAttribute>() is DisplayAttribute displayAttribute && displayAttribute.Name.IsValid())
+		{
+			return displayAttribute.Name;
+		}
+		return valueStr;
 	}
 
 	public static bool IsConfirmation(this InteractionMessageBoxType messageBoxType)
