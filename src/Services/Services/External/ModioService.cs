@@ -115,18 +115,22 @@ public class ModioService : ReactiveObject, IModioService
 		return updateResult;
 	}
 
-	public async Task<Dictionary<string, Download>> GetLatestDownloadsForModsAsync(IEnumerable<ModData> mods, CancellationToken token)
+	public async Task<Dictionary<string, Modio.Models.File>> GetLatestDownloadsForModsAsync(IEnumerable<ModData> mods, CancellationToken token)
 	{
-		var downloads = new Dictionary<string, Download>();
+		var downloads = new Dictionary<string, Modio.Models.File>();
 		var result = await FetchModInfoAsync(mods, token);
 		if(result.Success)
 		{
 			foreach(var mod in result.UpdatedMods)
 			{
-				var download = mod.ModioData.Data?.Modfile?.Download;
-				if(download != null)
+				var modFile = mod.ModioData.Data?.Modfile;
+				if(modFile != null && modFile.Download != null)
 				{
-					downloads.Add(mod.UUID!, download);
+					//mod.Version < file.ModVersion || mod.LastModified?.ToUnixTimeSeconds() < file.UploadedTimestamp)
+					if ((Version.TryParse(modFile.Version, out var fileVersion) && mod.Version < fileVersion) || mod.LastModified?.ToUnixTimeSeconds() < modFile.DateAdded)
+					{
+						downloads.Add(mod.UUID!, modFile);
+					}
 				}
 			}
 		}

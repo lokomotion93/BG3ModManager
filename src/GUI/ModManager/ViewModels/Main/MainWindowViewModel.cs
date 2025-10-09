@@ -1015,12 +1015,18 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			{
 				foreach (var update in updates.Values)
 				{
+					var displayVersion = update.File.ModVersion;
+					if(System.Version.TryParse(displayVersion, out _))
+					{
+						//Versions may be like 1.3.0, so this ensures it remains in the same format
+						displayVersion = new LarianVersion(displayVersion)?.ToString() ?? update.File.ModVersion;
+					}
 					var updateData = new ModUpdateData(update.Mod, new ModDownloadData()
 					{
 						DownloadPath = update.DownloadLink.Uri.ToString(),
 						DownloadPathType = ModDownloadPathType.URL,
 						DownloadSourceType = ModSourceType.NEXUSMODS,
-						Version = update.File.ModVersion,
+						Version = displayVersion,
 						Date = DateUtils.UnixTimeStampToDateTime(update.File.UploadedTimestamp)
 					});
 					if (!isPremium)
@@ -1061,12 +1067,15 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				{
 					if (_manager.TryGetMod(kvp.Key, out var mod))
 					{
+						var downloadFile = kvp.Value;
 						//TODO
 						var updateData = new ModUpdateData(mod, new ModDownloadData()
 						{
-							DownloadPath = kvp.Value.BinaryUrl?.ToString(),
+							DownloadPath = downloadFile.Download?.BinaryUrl?.ToString(),
 							DownloadPathType = ModDownloadPathType.URL,
-							DownloadSourceType = ModSourceType.MODIO
+							DownloadSourceType = ModSourceType.MODIO,
+							Version = downloadFile.Version,
+							Date = DateUtils.UnixTimeStampToDateTime(downloadFile.DateAdded)
 						});
 						ViewModelLocator.ModUpdates.Add(updateData);
 					}

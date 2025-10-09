@@ -208,9 +208,9 @@ public class ModUpdaterService : ReactiveObject, IModUpdaterService
 	}
 
 	//TODO
-	public async Task<Dictionary<string, Modio.Models.Download>> GetModioUpdatesAsync(ModManagerSettings settings, IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)
+	public async Task<Dictionary<string, Modio.Models.File>> GetModioUpdatesAsync(ModManagerSettings settings, IEnumerable<ModData> mods, string currentAppVersion, CancellationToken token)
 	{
-		var results = new Dictionary<string, Modio.Models.Download>();
+		var results = new Dictionary<string, Modio.Models.File>();
 		try
 		{
 			if (!Modio.CacheData.CacheUpdated)

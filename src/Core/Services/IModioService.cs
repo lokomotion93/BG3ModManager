@@ -12,6 +12,6 @@ public interface IModioService
 	bool CanFetchData { get; }
 
 	Task<UpdateResult> FetchModInfoAsync(IEnumerable<ModData> mods, CancellationToken token);
-	Task<Dictionary<string, Download>> GetLatestDownloadsForModsAsync(IEnumerable<ModData> mods, CancellationToken token);
+	Task<Dictionary<string, Modio.Models.File>> GetLatestDownloadsForModsAsync(IEnumerable<ModData> mods, CancellationToken token);
 	Task<List<string>> DownloadFilesForModsAsync(IEnumerable<ModData> mods, CancellationToken token);
 }
