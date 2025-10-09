@@ -45,6 +45,7 @@ public class Hyperlink : ContentControl
 		if (textBlock != null)
 		{
 			TextElement = textBlock;
+			TextElement.Text = TransformText(Url, DisplayText);
 		}
 	}
 
@@ -61,7 +62,7 @@ public class Hyperlink : ContentControl
 	private static string TransformText(Uri? url, string? displayText)
 	{
 		if (displayText.IsValid()) return displayText;
-		if (url != null) return url.ToString();
+		if (url.IsValid()) return url.ToString();
 		return string.Empty;
 	}
 
