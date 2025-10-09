@@ -1,10 +1,11 @@
 ﻿using ModManager.Models.Mod;
+using ModManager.Services;
 
 using System.Globalization;
 
 namespace ModManager.Models.Updates;
 
-public class DivinityModUpdateData : ReactiveObject, ISelectable
+public class ModUpdateData : ReactiveObject, ISelectable
 {
 	[Reactive] public ModData Mod { get; set; }
 	[Reactive] public ModDownloadData DownloadData { get; set; }
@@ -12,13 +13,14 @@ public class DivinityModUpdateData : ReactiveObject, ISelectable
 	[Reactive] public bool CanDrag { get; set; }
 	[Reactive] public bool IsHidden { get; set; }
 	public bool IsDraggable => false;
+	[Reactive] public string? SourceText { get; private set; }
 
 	[ObservableAsProperty] public ModSourceType Source { get; }
 	[ObservableAsProperty] public bool IsEditorMod { get; }
+	[ObservableAsProperty] public string? DisplayName { get; }
 	[ObservableAsProperty] public string? Author { get; }
 	[ObservableAsProperty] public string? CurrentVersion { get; }
 	[ObservableAsProperty] public string? UpdateVersion { get; }
-	[ObservableAsProperty] public string? SourceText { get; }
 	[ObservableAsProperty] public Uri? UpdateLink { get; }
 	[ObservableAsProperty] public string? LocalFilePath { get; }
 	[ObservableAsProperty] public string? LocalFileDateText { get; }
@@ -63,7 +65,9 @@ public class DivinityModUpdateData : ReactiveObject, ISelectable
 		return result;
 	}
 
-	public DivinityModUpdateData(ModData mod, ModDownloadData downloadData)
+	private IDisposable? _sourceTextObs = null;
+
+	public ModUpdateData(ModData mod, ModDownloadData downloadData)
 	{
 		IsSelected = true;
 		CanDrag = true;
@@ -71,6 +75,7 @@ public class DivinityModUpdateData : ReactiveObject, ISelectable
 		Mod = mod;
 		DownloadData = downloadData;
 
+		this.WhenAnyValue(x => x.Mod.DisplayName).ToUIProperty(this, x => x.DisplayName);
 		this.WhenAnyValue(x => x.Mod.IsLooseMod).ToUIProperty(this, x => x.IsEditorMod);
 		this.WhenAnyValue(x => x.Mod.AuthorDisplayName).ToUIProperty(this, x => x.Author);
 		this.WhenAnyValue(x => x.Mod.Version.Version).ToUIProperty(this, x => x.CurrentVersion);
@@ -78,16 +83,27 @@ public class DivinityModUpdateData : ReactiveObject, ISelectable
 		this.WhenAnyValue(x => x.Mod.LastModified).Select(DateToString).ToUIProperty(this, x => x.LocalFileDateText);
 
 		var whenSource = this.WhenAnyValue(x => x.DownloadData.DownloadSourceType);
-		whenSource.ToPropertyEx(this, x => x.Source);
-		whenSource.Select(x => x.GetDescription()).ToPropertyEx(this, x => x.SourceText);
+		whenSource.ToUIProperty(this, x => x.Source);
+		whenSource.Select(x => x.GetName()).Subscribe(key =>
+		{
+			_sourceTextObs?.Dispose();
+			if (key.IsValid())
+			{
+				var locaService = Locator.Current.GetService<ILocaleService>();
+				if(locaService != null)
+				{
+					_sourceTextObs = locaService.EntryToObservable(key).BindTo(this, x => x.SourceText);
+				}
+			}
+		});
 
 		this.WhenAnyValue(x => x.DownloadData.DownloadPath).ToUIProperty(this, x => x.UpdateFilePath);
 		this.WhenAnyValue(x => x.DownloadData.Date).Select(DateToString).ToUIProperty(this, x => x.UpdateDateText);
 		this.WhenAnyValue(x => x.DownloadData.Version).ToUIProperty(this, x => x.UpdateVersion);
 
-		this.WhenAnyValue(x => x.Mod, x => x.Source).Select(SourceToLink).ToPropertyEx(this, x => x.UpdateLink);
+		this.WhenAnyValue(x => x.Mod, x => x.Source).Select(SourceToLink).ToUIProperty(this, x => x.UpdateLink);
 
 
-		this.WhenAnyValue(x => x.DownloadData.Description, x => x.UpdateLink, GetUpdateTooltip).ToPropertyEx(this, x => x.UpdateToolTip);
+		this.WhenAnyValue(x => x.DownloadData.Description, x => x.UpdateLink, GetUpdateTooltip).ToUIProperty(this, x => x.UpdateToolTip);
 	}
 }
