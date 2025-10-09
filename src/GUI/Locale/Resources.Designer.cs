@@ -495,6 +495,51 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Column_Date {
+            get {
+                return ResourceManager.GetString("Column_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ext.
+        /// </summary>
+        public static string Column_Ext {
+            get {
+                return ResourceManager.GetString("Column_Ext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Column_Name {
+            get {
+                return ResourceManager.GetString("Column_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string Column_Size {
+            get {
+                return ResourceManager.GetString("Column_Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string Column_Version {
+            get {
+                return ResourceManager.GetString("Column_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New Order.
         /// </summary>
         public static string CommandBar_Button_AddNewOrder_ToolTip {
@@ -2233,7 +2278,34 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Updates.
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        public static string ModUpdatesView_Column_DownloadPath {
+            get {
+                return ResourceManager.GetString("ModUpdatesView_Column_DownloadPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Release Date.
+        /// </summary>
+        public static string ModUpdatesView_Column_UpdateDate {
+            get {
+                return ResourceManager.GetString("ModUpdatesView_Column_UpdateDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        public static string ModUpdatesView_Column_UpdateSource {
+            get {
+                return ResourceManager.GetString("ModUpdatesView_Column_UpdateSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod Updates.
         /// </summary>
         public static string ModUpdatesView_Title {
             get {
@@ -4308,33 +4380,6 @@ namespace ModManager.Locale {
         public static string Window_NXMDownload_Title {
             get {
                 return ResourceManager.GetString("Window_NXMDownload_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ext.
-        /// </summary>
-        public static string Window_PakFileExplorer_Column_Ext {
-            get {
-                return ResourceManager.GetString("Window_PakFileExplorer_Column_Ext", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Window_PakFileExplorer_Column_Name {
-            get {
-                return ResourceManager.GetString("Window_PakFileExplorer_Column_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Size.
-        /// </summary>
-        public static string Window_PakFileExplorer_Column_Size {
-            get {
-                return ResourceManager.GetString("Window_PakFileExplorer_Column_Size", resourceCulture);
             }
         }
         

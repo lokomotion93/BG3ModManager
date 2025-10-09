@@ -394,15 +394,6 @@ You have version {2} installed.</value>
 	<data name="Window_PakFileExplorer_Picker_ExtractFiles_Title" xml:space="preserve">
 		<value>Extract File(s) To...</value>
 	</data>
-	<data name="Window_PakFileExplorer_Column_Name" xml:space="preserve">
-		<value>Name</value>
-	</data>
-	<data name="Window_PakFileExplorer_Column_Size" xml:space="preserve">
-		<value>Size</value>
-	</data>
-	<data name="Window_PakFileExplorer_Column_Ext" xml:space="preserve">
-		<value>Ext</value>
-	</data>
 	<data name="Window_StatsValidator_Title" xml:space="preserve">
 		<value>Stats Validator</value>
 	</data>
@@ -496,6 +487,21 @@ You have version {2} installed.</value>
 	<data name="Window_SettingsWindow_Button_ClearKey_ToolTip" xml:space="preserve">
 		<value>Clear Keybinding</value>
 	</data>
+	<data name="Column_Name" xml:space="preserve">
+		<value>Name</value>
+	</data>
+	<data name="Column_Version" xml:space="preserve">
+		<value>Version</value>
+	</data>
+	<data name="Column_Date" xml:space="preserve">
+		<value>Date</value>
+	</data>
+	<data name="Column_Size" xml:space="preserve">
+		<value>Size</value>
+	</data>
+	<data name="Column_Ext" xml:space="preserve">
+		<value>Ext</value>
+	</data>
 	<data name="ModListView_AddContainer" xml:space="preserve">
 		<value>Add Container...</value>
 	</data>
@@ -509,10 +515,19 @@ You have version {2} installed.</value>
 		<value>Rename...</value>
 	</data>
 	<data name="ModUpdatesView_Title" xml:space="preserve">
-		<value>Updates</value>
+		<value>Mod Updates</value>
 	</data>
 	<data name="ModUpdatesView_UpdateModsButton" xml:space="preserve">
 		<value>Update Selected Mods</value>
+	</data>
+	<data name="ModUpdatesView_Column_UpdateDate" xml:space="preserve">
+		<value>Release Date</value>
+	</data>
+	<data name="ModUpdatesView_Column_UpdateSource" xml:space="preserve">
+		<value>Source</value>
+	</data>
+	<data name="ModUpdatesView_Column_DownloadPath" xml:space="preserve">
+		<value>URL</value>
 	</data>
 	<data name="ModContainer_ToolTip_Children" xml:space="preserve">
 		<value>Container ({0} Children)</value>

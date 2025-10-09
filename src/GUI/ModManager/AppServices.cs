@@ -33,6 +33,8 @@ public static class AppServices
 
 	public static ILocaleService Locale => Get<ILocaleService>()!;
 
+	public static ControlFactoryService ControlFactory => Get<ControlFactoryService>()!;
+
 	static AppServices()
 	{
 		var resolver = Locator.CurrentMutable;
@@ -43,6 +45,8 @@ public static class AppServices
 		SplatRegistrations.RegisterLazySingleton<ModImportService>();
 		SplatRegistrations.RegisterLazySingleton<IDialogService, DialogService>();
 		SplatRegistrations.RegisterLazySingleton<AppKeysService>();
+
+		SplatRegistrations.RegisterLazySingleton<ControlFactoryService>();
 
 		//SplatRegistrations.Register<ModListDropHandler>();
 		//SplatRegistrations.Register<ModListDragHandler>();

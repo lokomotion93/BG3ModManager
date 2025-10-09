@@ -385,6 +385,7 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 		_commands ??= AppServices.Commands;
 		_fs ??= AppServices.FS;
 		_dialogService ??= AppServices.Dialog;
+		var cf = AppServices.ControlFactory;
 
 		ObservableCollectionExtended<ModFileEntry> readOnlyFiles = [];
 		Files.Connect()
@@ -393,25 +394,16 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 			.DisposeMany()
 			.Subscribe();
 
-		var nameColumn = new TextBlock();
-		nameColumn[!TextBlock.TextProperty] = AppServices.Locale.EntryToObservable(nameof(Loca.Window_PakFileExplorer_Column_Name), "Name").ToBinding();
-
-		var sizeColumn = new TextBlock();
-		sizeColumn[!TextBlock.TextProperty] = AppServices.Locale.EntryToObservable(nameof(Loca.Window_PakFileExplorer_Column_Size), "Size").ToBinding();
-
-		var extColumn = new TextBlock();
-		extColumn[!TextBlock.TextProperty] = AppServices.Locale.EntryToObservable(nameof(Loca.Window_PakFileExplorer_Column_Ext), "Ext").ToBinding();
-
 		FileTreeSource = new HierarchicalTreeDataGridSource<ModFileEntry>(readOnlyFiles)
 		{
 			Columns =
 			{
 				new HierarchicalExpanderColumn<ModFileEntry>(
 					//new TextColumn<PakFileEntry, string>("Name", x => x.FileName, GridLength.Star),
-					new TemplateColumn<ModFileEntry>(nameColumn, "FileNameWithIconCell", null, new GridLength(10d, GridUnitType.Star)),
+					new TemplateColumn<ModFileEntry>(cf.LocalizedTextBlock(nameof(Loca.Column_Name), "Name"), "FileNameWithIconCell", null, new GridLength(10d, GridUnitType.Star)),
 					x => x.Subfiles, x => x.Subfiles != null && x.Subfiles.Count > 0, x => x.IsExpanded),
-				new TextColumn<ModFileEntry, string>(sizeColumn, x => x.Size, GridLength.Auto),
-				new TextColumn<ModFileEntry, string>(extColumn, x => x.ExtensionDisplayName, new GridLength(1d, GridUnitType.Star)),
+				new TextColumn<ModFileEntry, string>(cf.LocalizedTextBlock(nameof(Loca.Column_Size), "Size"), x => x.Size, GridLength.Auto),
+				new TextColumn<ModFileEntry, string>(cf.LocalizedTextBlock(nameof(Loca.Column_Ext), "Ext"), x => x.ExtensionDisplayName, new GridLength(1d, GridUnitType.Star)),
 			},
 		};
 

@@ -194,18 +194,19 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 			IsTextSearchEnabled = true,
 		};
 
+		var cf = AppServices.ControlFactory;
+
 		Updates = new FlatTreeDataGridSource<ModUpdateData>(readonlyUpdates)
 		{
 			Columns =
 			{
 				//Avalonia.Controls.Models.TreeDataGrid.
 				new CheckBoxColumn<ModUpdateData>(checkboxHeader, x => x.IsSelected, (entry, b) => entry.IsSelected = b, GridLength.Auto, checkboxHeaderOptions),
-				new TextColumn<ModUpdateData, string>("Name", x => x.DisplayName, GridLength.Auto),
-				new TextColumn<ModUpdateData, string>("Current Version", x => x.CurrentVersion, GridLength.Auto),
-				new TextColumn<ModUpdateData, string>("New Version", x => x.UpdateVersion, GridLength.Auto),
-				new TextColumn<ModUpdateData, string>("Date", x => x.UpdateDateText, GridLength.Auto),
-				new TextColumn<ModUpdateData, string>("Source", x => x.SourceText, GridLength.Auto),
-				new TemplateColumn<ModUpdateData>("Path", "DownloadSourcePathCell", null, GridLength.Star, templateColOptions),
+				new TemplateColumn<ModUpdateData>(cf.LocalizedTextBlock(nameof(Loca.Column_Name), "Name"), "NameCell", null, new GridLength(1d, GridUnitType.Star)),
+				new TemplateColumn<ModUpdateData>(cf.LocalizedTextBlock(nameof(Loca.Column_Version), "Version"), "VersionCell", null, GridLength.Auto),
+				new TextColumn<ModUpdateData, string>(cf.LocalizedTextBlock(nameof(Loca.ModUpdatesView_Column_UpdateDate), "Release Date"), x => x.UpdateDateText, GridLength.Auto),
+				new TextColumn<ModUpdateData, string>(cf.LocalizedTextBlock(nameof(Loca.ModUpdatesView_Column_UpdateSource), "Source"), x => x.SourceText, GridLength.Auto),
+				new TemplateColumn<ModUpdateData>(cf.LocalizedTextBlock(nameof(Loca.ModUpdatesView_Column_DownloadPath), "Link"), "DownloadSourcePathCell", null, new GridLength(3d, GridUnitType.Star), templateColOptions),
 			},
 		};
 
@@ -238,7 +239,7 @@ public class DesignModUpdatesViewModel : ModUpdatesViewModel
 {
 	public void AddTestEntries(ILocaleService localeService)
 	{
-		Add(new ModUpdateData(new ModData("0") { Name = "Test Mod", Author = "LaughingLeader" },
+		Add(new ModUpdateData(new ModData("0") { Name = "Test Mod", Author = "LaughingLeader", Version = new(1,0,0,0) },
 			new ModDownloadData()
 			{
 				DownloadPath = "https://github.com/LaughingLeader/TestBG3Mod/releases/latest",
@@ -254,6 +255,24 @@ public class DesignModUpdatesViewModel : ModUpdatesViewModel
 				DownloadPathType = ModDownloadPathType.URL,
 				DownloadSourceType = ModSourceType.NEXUSMODS,
 				Version = "0.1.0.0",
+				Date = DateTimeOffset.Now
+			}));
+		Add(new ModUpdateData(new ModData("2") { Name = "Test Mod 3 With a Bigger Name", Author = "Unknown", Version = new(1, 10, 0, 55) },
+			new ModDownloadData()
+			{
+				DownloadPath = "",
+				DownloadPathType = ModDownloadPathType.URL,
+				DownloadSourceType = ModSourceType.MODIO,
+				Version = "1.10.0.128",
+				Date = DateTimeOffset.Now
+			}));
+		Add(new ModUpdateData(new ModData("3") { Name = "_TM 4", Author = "", Version = new(2, 4, 26, 6) },
+			new ModDownloadData()
+			{
+				DownloadPath = "https://google.com",
+				DownloadPathType = ModDownloadPathType.URL,
+				DownloadSourceType = ModSourceType.MODIO,
+				Version = "2.4.24.0",
 				Date = DateTimeOffset.Now
 			}));
 	}

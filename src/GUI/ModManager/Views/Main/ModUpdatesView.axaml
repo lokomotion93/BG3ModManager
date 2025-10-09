@@ -21,6 +21,8 @@
 	<UserControl.Styles>
 		<Style Selector="controls|Hyperlink TextBlock">
 			<Setter Property="TextTrimming" Value="CharacterEllipsis" />
+			<Setter Property="Padding" Value="4,2" />
+			<Setter Property="VerticalAlignment" Value="Center" />
 		</Style>
 	</UserControl.Styles>
 	<suki:GlassCard CornerRadius="0" IsOpaque="True">
@@ -44,11 +46,44 @@
 			    CanUserResizeColumns="True"
 			    CanUserSortColumns="True"
 			    Focusable="True"
+			    Grid.IsSharedSizeScope="True"
 			    Source="{Binding Updates}">
 				<TreeDataGrid.Resources>
+					<DataTemplate x:Key="VersionCell" x:DataType="models:ModUpdateData">
+						<Border Padding="4,2">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" SharedSizeGroup="CurrentVersion" />
+									<ColumnDefinition Width="auto" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0"
+								    HorizontalAlignment="Left"
+								    VerticalAlignment="Center"
+								    Text="{Binding CurrentVersion}" />
+								<materialIcons:MaterialIcon Grid.Column="1"
+								    Margin="4,0"
+								    VerticalAlignment="Center"
+								    Classes="shadow"
+								    Foreground="SpringGreen"
+								    Kind="ArrowRightThin" />
+								<TextBlock Grid.Column="2"
+								    HorizontalAlignment="Left"
+								    VerticalAlignment="Center"
+								    Text="{Binding UpdateVersion}" />
+							</Grid>
+						</Border>
+					</DataTemplate>
+					<DataTemplate x:Key="NameCell" x:DataType="models:ModUpdateData">
+						<TextBlock Padding="4,2"
+						    VerticalAlignment="Center"
+						    Text="{Binding DisplayName}"
+						    TextAlignment="Left"
+						    TextTrimming="CharacterEllipsis"
+						    ToolTip.Tip="{Binding DisplayName}" />
+					</DataTemplate>
 					<DataTemplate x:Key="DownloadSourcePathCell" x:DataType="models:ModUpdateData">
 						<controls:Hyperlink ToolTip.Tip="{Binding UpdateFilePath}" Url="{Binding UpdateFilePath}" />
-						<!--<TextBlock Text="{Binding UpdateFilePath}" />-->
 					</DataTemplate>
 				</TreeDataGrid.Resources>
 			</TreeDataGrid>
@@ -56,7 +91,25 @@
 			    HorizontalAlignment="Center"
 			    VerticalAlignment="Center"
 			    Orientation="Horizontal">
-				<Button Command="{Binding UpdateModsCommand}" Content="{manager:LocaleKey ModUpdatesView_UpdateModsButton}" />
+				<Button Command="{Binding UpdateModsCommand}">
+					<Button.Background>
+						<LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+							<GradientStop Offset="0.0" Color="SpringGreen" />
+							<GradientStop Offset="1.0" Color="LimeGreen" />
+						</LinearGradientBrush>
+					</Button.Background>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Padding="0,0,4,0" Classes="shadow" Text="{manager:LocaleKey ModUpdatesView_UpdateModsButton}" />
+						<materialIcons:MaterialIcon Classes="shadow" Kind="DownloadBox">
+							<materialIcons:MaterialIcon.Foreground>
+								<LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+									<GradientStop Offset="0.0" Color="Salmon" />
+									<GradientStop Offset="1.0" Color="SandyBrown" />
+								</LinearGradientBrush>
+							</materialIcons:MaterialIcon.Foreground>
+						</materialIcons:MaterialIcon>
+					</StackPanel>
+				</Button>
 			</StackPanel>
 		</Grid>
 	</suki:GlassCard>
