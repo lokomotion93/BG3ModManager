@@ -25,231 +25,231 @@ namespace ModManager.ViewModels.Main;
 public partial class MainCommandBarViewModel : ReactiveObject
 {
 	[Keybinding(nameof(Resources.Keybinding_AddNewOrder), Key.M)]
-	public RxCommandUnit? AddNewOrderCommand { get; private set; }
+	public RxCommandUnit? AddNewOrderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_CheckForAppUpdates), Key.U)]
-	public RxCommandUnit? CheckForAppUpdatesCommand { get; private set; }
+	public RxCommandUnit? CheckForAppUpdatesCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_CheckAllModUpdates), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_CheckAllModUpdates_ToolTip))]
-	public RxCommandUnit? CheckAllModUpdatesCommand { get; private set; }
+	public RxCommandUnit? CheckAllModUpdatesCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_CheckForGitHubModUpdates), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? CheckForGitHubModUpdatesCommand { get; private set; }
+	public RxCommandUnit? CheckForGitHubModUpdatesCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_CheckForNexusModsUpdates), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? CheckForNexusModsUpdatesCommand { get; private set; }
+	public RxCommandUnit? CheckForNexusModsUpdatesCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_CheckForModioUpdates), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? CheckForModioUpdatesCommand { get; private set; }
+	public RxCommandUnit? CheckForModioUpdatesCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExportOrder), Key.E, KeyModifiers.Control, nameof(Resources.Keybinding_ExportOrder_ToolTip))]
-	public RxBoolCommandUnit? ExportOrderCommand { get; private set; }
+	public RxBoolCommandUnit? ExportOrderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExportOrderToTextFile), Key.E, KeyModifiers.Control | KeyModifiers.Shift)]
-	public RxCommandUnit? ExportOrderToTextFileCommand { get; private set; }
+	public RxCommandUnit? ExportOrderToTextFileCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExportOrderToZip), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_ExportOrderToZip_ToolTip))]
-	public RxCommandUnit? ExportOrderToZipCommand { get; private set; }
+	public RxCommandUnit? ExportOrderToZipCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExportOrderToArchiveAs), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_ExportOrderToArchiveAs_ToolTip))]
-	public RxCommandUnit? ExportOrderToArchiveAsCommand { get; private set; }
+	public RxCommandUnit? ExportOrderToArchiveAsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_RenameOrder), Key.R, KeyModifiers.Control | KeyModifiers.Shift, nameof(Resources.Keybinding_RenameOrder_ToolTip))]
-	public RxCommandUnit? RenameOrderCommand { get; private set; }
+	public RxCommandUnit? RenameOrderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_LaunchGame), Key.G, KeyModifiers.Control)]
-	public RxCommandUnit? LaunchGameCommand { get; private set; }
+	public RxCommandUnit? LaunchGameCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenDonationPage), Key.F10, KeyModifiers.None)]
-	public RxCommandUnit? OpenDonationPageCommand { get; private set; }
+	public RxCommandUnit? OpenDonationPageCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenGitHubRepo), Key.F11, KeyModifiers.None)]
-	public RxCommandUnit? OpenGitHubRepoCommand { get; private set; }
+	public RxCommandUnit? OpenGitHubRepoCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenModsFolder), Key.D1, KeyModifiers.Control)]
-	public ReactiveCommand<string?, bool>? OpenModsFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenModsFolderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenExtenderLogsFolder), Key.D2, KeyModifiers.Control)]
-	public ReactiveCommand<string?, bool>? OpenLogsFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenLogsFolderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenNexusMods), Key.D3, KeyModifiers.Control)]
-	public RxBoolCommandUnit? OpenNexusModsCommand { get; private set; }
+	public RxBoolCommandUnit? OpenNexusModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenSteamPage), Key.D4, KeyModifiers.Control)]
-	public RxBoolCommandUnit? OpenSteamPageCommand { get; private set; }
+	public RxBoolCommandUnit? OpenSteamPageCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_RefreshMods), Key.F5, KeyModifiers.None)]
-	public RxCommandUnit? RefreshCommand { get; private set; }
+	public RxCommandUnit? RefreshCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ReloadMods), Key.F5, KeyModifiers.Shift, nameof(Resources.Keybinding_ReloadMods_ToolTip))]
-	public RxCommandUnit? ReloadModsCommand { get; private set; }
+	public RxCommandUnit? ReloadModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_RefreshModUpdates), Key.F6, KeyModifiers.None)]
-	public RxCommandUnit? RefreshModUpdatesCommand { get; private set; }
+	public RxCommandUnit? RefreshModUpdatesCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_RenameSave), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? RenameSaveCommand { get; private set; }
+	public RxCommandUnit? RenameSaveCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SaveOrder), Key.S, KeyModifiers.Control)]
-	public RxBoolCommandUnit? SaveOrderCommand { get; private set; }
+	public RxBoolCommandUnit? SaveOrderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SaveOrderAs), Key.S, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxBoolCommandUnit? SaveOrderAsCommand { get; private set; }
+	public RxBoolCommandUnit? SaveOrderAsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SaveSettings), Key.S, KeyModifiers.Control | KeyModifiers.Shift)]
-	public RxCommandUnit? SaveSettingsSilentlyCommand { get; private set; }
+	public RxCommandUnit? SaveSettingsSilentlyCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleUpdatesView), Key.U, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxCommandUnit? ToggleUpdatesViewCommand { get; private set; }
+	public RxCommandUnit? ToggleUpdatesViewCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_TogglePakFileExplorerWindow), Key.P, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxBoolCommandUnit? TogglePakFileExplorerWindowCommand { get; private set; }
+	public RxBoolCommandUnit? TogglePakFileExplorerWindowCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleStatsValidatorWindow), Key.OemBackslash, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxBoolCommandUnit? ToggleStatsValidatorWindowCommand { get; private set; }
+	public RxBoolCommandUnit? ToggleStatsValidatorWindowCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleSettingsWindow), Key.OemComma, KeyModifiers.Control)]
-	public RxBoolCommandUnit? ToggleSettingsWindowCommand { get; private set; }
+	public RxBoolCommandUnit? ToggleSettingsWindowCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleKeybindings), Key.OemComma, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxBoolCommandUnit? ToggleKeybindingsCommand { get; private set; }
+	public RxBoolCommandUnit? ToggleKeybindingsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleVersionGeneratorWindow), Key.G, KeyModifiers.Control, nameof(Resources.Keybinding_ToggleVersionGeneratorWindow_ToolTip))]
-	public RxBoolCommandUnit? ToggleVersionGeneratorWindowCommand { get; private set; }
+	public RxBoolCommandUnit? ToggleVersionGeneratorWindowCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleAboutWindow), Key.F1, KeyModifiers.None)]
-	public RxBoolCommandUnit? ToggleAboutWindowCommand { get; private set; }
+	public RxBoolCommandUnit? ToggleAboutWindowCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleThemeMode), Key.OemComma, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxCommandUnit? ToggleThemeModeCommand { get; private set; }
+	public RxCommandUnit? ToggleThemeModeCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ImportMods), Key.O, KeyModifiers.Control)]
-	public RxCommandUnit? ImportModsCommand { get; private set; }
+	public RxCommandUnit? ImportModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ImportNexusModsIds), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ImportNexusModsIdsCommand { get; private set; }
+	public RxCommandUnit? ImportNexusModsIdsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_AddNewOrder), Key.N, KeyModifiers.Control)]
-	public RxCommandUnit? NewOrderCommand { get; private set; }
+	public RxCommandUnit? NewOrderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SaveOrder), Key.S, KeyModifiers.Control)]
-	public RxCommandUnit? SaveCommand { get; private set; }
+	public RxCommandUnit? SaveCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SaveOrderAs), Key.S, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxCommandUnit? SaveAsCommand { get; private set; }
+	public RxCommandUnit? SaveAsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromSave), Key.I, KeyModifiers.Control)]
-	public RxCommandUnit? ImportOrderFromSaveCommand { get; private set; }
+	public RxCommandUnit? ImportOrderFromSaveCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromSaveAsNew), Key.I, KeyModifiers.Control | KeyModifiers.Shift)]
-	public RxCommandUnit? ImportOrderFromSaveAsNewCommand { get; private set; }
+	public RxCommandUnit? ImportOrderFromSaveAsNewCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromFile), Key.O, KeyModifiers.Control | KeyModifiers.Shift)]
-	public RxCommandUnit? ImportOrderFromFileCommand { get; private set; }
+	public RxCommandUnit? ImportOrderFromFileCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ImportOrderFromZipFile), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ImportOrderFromZipFileCommand { get; private set; }
+	public RxCommandUnit? ImportOrderFromZipFileCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_MoveSelectedMods), Key.Enter, KeyModifiers.None)]
-	public RxCommandUnit? MoveSelectedModsCommand { get; private set; }
+	public RxCommandUnit? MoveSelectedModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_FocusActiveMods), Key.Left, KeyModifiers.None)]
-	public RxCommandUnit? FocusActiveModsCommand { get; private set; }
+	public RxCommandUnit? FocusActiveModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_FocusInactiveMods), Key.Right, KeyModifiers.None)]
-	public RxCommandUnit? FocusInactiveModsCommand { get; private set; }
+	public RxCommandUnit? FocusInactiveModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SwapListFocus), Key.Tab, KeyModifiers.None)]
-	public RxCommandUnit? SwapListFocusCommand { get; private set; }
+	public RxCommandUnit? SwapListFocusCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_MoveToTop), Key.PageUp, KeyModifiers.Control)]
-	public RxCommandUnit? MoveToTopCommand { get; private set; }
+	public RxCommandUnit? MoveToTopCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_MoveToBottom), Key.PageDown, KeyModifiers.Control)]
-	public RxCommandUnit? MoveToBottomCommand { get; private set; }
+	public RxCommandUnit? MoveToBottomCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleFilterFocus), Key.F, KeyModifiers.Control)]
-	public RxCommandUnit? ToggleFilterFocusCommand { get; private set; }
+	public RxCommandUnit? ToggleFilterFocusCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleFileNameDisplay), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ToggleFileNameDisplayCommand { get; private set; }
+	public RxCommandUnit? ToggleFileNameDisplayCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_DeleteSelectedMods), Key.Delete, KeyModifiers.None)]
-	public RxCommandUnit? DeleteSelectedModsCommand { get; private set; }
+	public RxCommandUnit? DeleteSelectedModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenGameFolder), Key.D2, KeyModifiers.Control)]
-	public ReactiveCommand<string?, bool>? OpenGameFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenGameFolderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenSavesFolder), Key.D3, KeyModifiers.Control)]
-	public ReactiveCommand<string?, bool>? OpenSavesFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSavesFolderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OpenExtenderDataFolder), Key.D4, KeyModifiers.Control)]
-	public ReactiveCommand<string?, bool>? OpenExtenderDataFolderCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenExtenderDataFolderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_DownloadScriptExtender), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? DownloadScriptExtenderCommand { get; private set; }
+	public RxCommandUnit? DownloadScriptExtenderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleNXMLinkDownloader), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_ToggleNXMLinkDownloader_ToolTip))]
-	public RxBoolCommandUnit? ToggleNXMLinkDownloaderCommand { get; private set; }
+	public RxBoolCommandUnit? ToggleNXMLinkDownloaderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ToggleCollectionDownloaderWindow), Key.None, KeyModifiers.None)]
-	public RxBoolCommandUnit? ToggleCollectionDownloaderWindowCommand { get; private set; }
+	public RxBoolCommandUnit? ToggleCollectionDownloaderWindowCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExtractAllSelectedMods), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ExtractAllSelectedModsCommand { get; private set; }
+	public RxCommandUnit? ExtractAllSelectedModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedActiveMods), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ExtractSelectedActiveModsCommand { get; private set; }
+	public RxCommandUnit? ExtractSelectedActiveModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedInactiveMods), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ExtractSelectedInactiveModsCommand { get; private set; }
+	public RxCommandUnit? ExtractSelectedInactiveModsCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedAdventure), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ExtractSelectedAdventureCommand { get; private set; }
+	public RxCommandUnit? ExtractSelectedAdventureCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SpeakActiveModOrder), Key.Home, KeyModifiers.Control)]
-	public RxCommandUnit? SpeakActiveModOrderCommand { get; private set; }
+	public RxCommandUnit? SpeakActiveModOrderCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_StopSpeaking), Key.Home, KeyModifiers.Control | KeyModifiers.Shift)]
-	public RxCommandUnit? StopSpeakingCommand { get; private set; }
+	public RxCommandUnit? StopSpeakingCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_CheckForUpdates), Key.F7, KeyModifiers.None)]
-	public RxCommandUnit? CheckForUpdatesCommand { get; private set; }
+	public RxCommandUnit? CheckForUpdatesCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_OrganizeModPaks), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_OrganizeModPaks_ToolTip))]
-	public RxCommandUnit? OrganizeModPaksCommand { get; private set; }
+	public RxCommandUnit? OrganizeModPaksCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_SaveCache), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? SaveCacheCommand { get; private set; }
+	public RxCommandUnit? SaveCacheCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_GenerateCache), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_GenerateCache_ToolTip))]
-	public RxCommandUnit? GenerateCacheCommand { get; private set; }
+	public RxCommandUnit? GenerateCacheCommand { get; }
 
 	[Keybinding(nameof(Resources.Keybinding_DeleteCache), Key.None, KeyModifiers.None, nameof(Resources.Keybinding_DeleteCache_ToolTip))]
-	public RxCommandUnit? DeleteCacheCommand { get; private set; }
+	public RxCommandUnit? DeleteCacheCommand { get; }
 
 	//Context Menu commands
 
-	public ReactiveCommand<string?, bool>? OpenSelectedProfileFolderCommand { get; private set; }
-	public RxCommandUnit? CopySelectedProfileFilePathToClipboardCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSelectedProfileFolderCommand { get; }
+	public RxCommandUnit? CopySelectedProfileFilePathToClipboardCommand { get; }
 
-	public ReactiveCommand<string?, bool>? OpenSelectedProfileSavesFolderCommand { get; private set; }
-	public RxCommandUnit? CopySelectedProfileSavesPathToClipboardCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSelectedProfileSavesFolderCommand { get; }
+	public RxCommandUnit? CopySelectedProfileSavesPathToClipboardCommand { get; }
 
-	public ReactiveCommand<string?, bool>? OpenSelectedModOrderFilePathCommand { get; private set; }
-	public RxCommandUnit? CopySelectedModOrderFilePathToClipboardCommand { get; private set; }
-	public RxCommandUnit? CopyModsDirectoryPathToClipboardCommand { get; private set; }
-	public RxCommandUnit? CopyExtenderLogsDirectoryPathToClipboardCommand { get; private set; }
-	public RxCommandUnit? CopyGameExecutablePathToClipboardCommand { get; private set; }
-	public RxCommandUnit? CopyGameFolderPathToClipboardCommand { get; private set; }
-	public RxCommandUnit? EditExecutablePathCommand { get; private set; }
+	public ReactiveCommand<string?, bool>? OpenSelectedModOrderFilePathCommand { get; }
+	public RxCommandUnit? CopySelectedModOrderFilePathToClipboardCommand { get; }
+	public RxCommandUnit? CopyModsDirectoryPathToClipboardCommand { get; }
+	public RxCommandUnit? CopyExtenderLogsDirectoryPathToClipboardCommand { get; }
+	public RxCommandUnit? CopyGameExecutablePathToClipboardCommand { get; }
+	public RxCommandUnit? CopyGameFolderPathToClipboardCommand { get; }
+	public RxCommandUnit? EditExecutablePathCommand { get; }
 
 	private readonly ObservableCollectionExtended<IMenuEntry> _menuEntries = [];
 
 	private readonly ReadOnlyObservableCollection<IMenuEntry> _uiMenuEntries;
 	public ReadOnlyObservableCollection<IMenuEntry> MenuEntries => _uiMenuEntries;
 
-	[Reactive] public IModOrderViewModel? ModOrder { get; protected set; }
+	[Reactive] public ModOrderViewModel? ModOrder { get; protected set; }
 	[Reactive] public bool HighlightExtenderDownload { get; private set; }
 	[Reactive] public bool HasDopus { get; private set; }
 	[Reactive] public bool IsDeveloperMode { get; private set; }
@@ -257,7 +257,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 	public MainCommandBarViewModel()
 	{
-		_menuEntries.ToObservableChangeSet().DisposeMany().Bind(out _uiMenuEntries).Subscribe();
+		_menuEntries.ToObservableChangeSet().DisposeMany().ObserveOn(RxApp.MainThreadScheduler).Bind(out _uiMenuEntries).Subscribe();
 	}
 
 	private static bool ToggleWindow<T>(bool forceVisible = false) where T : Avalonia.Controls.Window
@@ -326,10 +326,10 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		var isModOrderView = main.WhenAnyValue(x => x.Views.CurrentView, x => x == modOrder);
 		var canExecuteModOrderCommands = canExecuteCommands.CombineLatest(isModOrderView).AllTrue();
 
-		var hasActiveMods = modOrder.WhenAnyValue(x => x.TotalActiveMods, x => x > 0);
+		var hasActiveMods = ModOrder.WhenAnyValue(x => x.TotalActiveMods, x => x > 0);
 		var canExecuteHasActive = canExecuteModOrderCommands.CombineLatest(hasActiveMods).AllTrue();
 
-		AddNewOrderCommand = ReactiveCommand.Create(() => modOrder.AddNewModOrder(), canExecuteModOrderCommands);
+		AddNewOrderCommand = ReactiveCommand.Create(() => ModOrder.AddNewModOrder(), canExecuteModOrderCommands);
 
 		CheckForAppUpdatesCommand = ReactiveCommand.Create(() =>
 		{
@@ -971,8 +971,13 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 public class DesignMainCommandBarViewModel : MainCommandBarViewModel
 {
-	public DesignMainCommandBarViewModel() : base()
+	public DesignMainCommandBarViewModel() : base(ViewModelLocator.Main, ModelGlobals.ModOrderViewModel, AppServices.ModImporter, AppServices.FS, AppServices.Dopus, AppServices.Interactions)
 	{
-		ModOrder = new DesignModOrderViewModel();
+
 	}
+
+	//public DesignMainCommandBarViewModel() : base()
+	//{
+	//	ModOrder = new DesignModOrderViewModel();
+	//}
 }

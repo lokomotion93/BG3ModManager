@@ -24,17 +24,17 @@ using TextCopy;
 
 namespace ModManager.ViewModels.Main;
 
-public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderViewModel
+public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 {
 	public string UrlPathSegment => "modorder";
 	public IScreen HostScreen { get; }
 
-	private readonly IModManagerService _manager;
-	private readonly IDialogService _dialogs;
-	private readonly ISettingsService _settings;
-	private readonly IFileSystemService _fs;
+	protected readonly IModManagerService _manager;
+	protected readonly IDialogService _dialogs;
+	protected readonly ISettingsService _settings;
+	protected readonly IFileSystemService _fs;
 
-	private readonly IFileWatcherWrapper _modSettingsWatcher;
+	protected readonly IFileWatcherWrapper _modSettingsWatcher;
 
 	private bool HasExported { get; set; }
 
@@ -50,7 +50,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	//public ModListDropHandler DropHandler { get; }
 	//public ModListDragHandler DragHandler { get; }
 
-	private readonly SourceCache<ProfileData, string> profiles = new(x => x.FilePath);
+	protected readonly SourceCache<ProfileData, string> profiles = new(x => x.FilePath);
 
 	private readonly ReadOnlyObservableCollection<ProfileData> _uiprofiles;
 	public ReadOnlyObservableCollection<ProfileData> Profiles => _uiprofiles;
@@ -118,7 +118,6 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	public ReactiveCommand<ModOrder, Unit> DeleteOrderCommand { get; }
 	public RxCommandUnit CopyOrderToClipboardCommand { get; }
 	public ReactiveCommand<ModOrder, Unit> OrderJustLoadedCommand { get; }
-	public RxCommandUnit MoveModsCommand { get; }
 
 	private static string GetLaunchGameTooltip(ValueTuple<string?, bool, bool, bool> x)
 	{
@@ -1947,53 +1946,19 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel, IModOrderVi
 	}
 }
 
-public class DesignModOrderViewModel : IModOrderViewModel
+public class DesignModOrderViewModel : ModOrderViewModel
 {
-	public ObservableCollectionExtended<IModEntry> ActiveMods { get; }
-	public ObservableCollectionExtended<IModEntry> InactiveMods { get; }
-
-	private ObservableCollectionExtended<ModData> _testAdventureMods = [];
-	private readonly ReadOnlyObservableCollection<ModData> _adventureMods;
-	public ReadOnlyObservableCollection<ModData> AdventureMods => _adventureMods;
-
-	private ObservableCollectionExtended<ProfileData> _testProfiles = [];
-
-	private readonly ReadOnlyObservableCollection<ProfileData> _profiles;
-	public ReadOnlyObservableCollection<ProfileData> Profiles => _profiles;
-	public ObservableCollectionExtended<ModOrder> ModOrderList { get; }
-	public bool IsLocked { get; }
-
-	public int SelectedProfileIndex { get; set; }
-	public int SelectedModOrderIndex { get; set; }
-	public int SelectedAdventureModIndex { get; set; }
-
-	public ProfileData? SelectedProfile { get; set; }
-	public ModOrder? SelectedModOrder { get; set; }
-	public ModData? SelectedAdventureMod { get; set; }
-
-	public void AddActiveMod(IModEntry mod) => throw new NotImplementedException();
-	public void ClearMissingMods() => throw new NotImplementedException();
-	public void DeleteMod(IModEntry mod) => throw new NotImplementedException();
-	public void DeleteSelectedMods(IModEntry contextMenuMod) => throw new NotImplementedException();
-	public void RemoveActiveMod(IModEntry mod) => throw new NotImplementedException();
-
-	public DesignModOrderViewModel()
+	public DesignModOrderViewModel() : base(ViewModelLocator.Main, AppServices.Mods, AppServices.FileWatcher, AppServices.Dialog, AppServices.Updater, AppServices.Settings, AppServices.FS)
 	{
-		ActiveMods = [];
-		InactiveMods = [];
-		ModOrderList = [];
-
-		_testAdventureMods.ToObservableChangeSet().Bind(out _adventureMods).Subscribe();
-
-		_testProfiles.ToObservableChangeSet().Bind(out _profiles).Subscribe();
-		_testProfiles.Add(new ProfileData()
+		var testProfile = new ProfileData()
 		{
 			Name = "Public",
 			FolderName = "Public",
 			ProfileName = "Public",
 			UUID = "Test",
 			FilePath = "%LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\\PlayerProfiles\\Public\\profile8.lsf"
-		});
+		};
+		profiles.AddOrUpdate(testProfile);
 
 		ModOrderList.Add(new ModOrder()
 		{
@@ -2001,14 +1966,18 @@ public class DesignModOrderViewModel : IModOrderViewModel
 			FilePath = "%LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\\PlayerProfiles\\Public\\modsettings.lsx"
 		});
 
-		_testAdventureMods.Add(new ModData("cb555efe-2d9e-131f-8195-a89329d218ea")
+		var campaignMod = new ModData(_manager.MainCampaignGuid)
 		{
-			Name = "Main"
-		});
+			Name = "Main",
+			IsLarianMod = true,
+			ModType = "Adventure",
+			IsHidden = true,
+		};
+		_manager.Add(campaignMod);
 
-		SelectedProfile = _testProfiles[0];
+		SelectedProfile = testProfile;
 		SelectedModOrder = ModOrderList[0];
-		SelectedAdventureMod = _testAdventureMods[0];
+		SelectedAdventureMod = campaignMod;
 
 		SelectedProfileIndex = 0;
 		SelectedModOrderIndex = 0;

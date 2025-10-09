@@ -4,6 +4,7 @@ using DynamicData.Binding;
 
 using ModManager.Models;
 using ModManager.Models.Mod;
+using ModManager.ViewModels.Main;
 
 using System;
 using System.Collections.Generic;
@@ -46,9 +47,13 @@ namespace ModManager
 			}
 		}
 
+		public static DesignModOrderViewModel ModOrderViewModel { get; }
+
 		static ModelGlobals()
 		{
 			TestMods = [];
+
+			ModOrderViewModel = new();
 
 			var ran = new Random(1337);
 
