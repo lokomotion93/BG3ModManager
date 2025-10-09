@@ -979,7 +979,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				{
 					if (_manager.TryGetMod(kvp.Key, out var mod))
 					{
-						var updateData = new DivinityModUpdateData(mod, new ModDownloadData()
+						var updateData = new ModUpdateData(mod, new ModDownloadData()
 						{
 							DownloadPath = kvp.Value.BrowserDownloadLink,
 							DownloadPathType = ModDownloadPathType.URL,
@@ -1015,7 +1015,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			{
 				foreach (var update in updates.Values)
 				{
-					var updateData = new DivinityModUpdateData(update.Mod, new ModDownloadData()
+					var updateData = new ModUpdateData(update.Mod, new ModDownloadData()
 					{
 						DownloadPath = update.DownloadLink.Uri.ToString(),
 						DownloadPathType = ModDownloadPathType.URL,
@@ -1062,7 +1062,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 					if (_manager.TryGetMod(kvp.Key, out var mod))
 					{
 						//TODO
-						var updateData = new DivinityModUpdateData(mod, new ModDownloadData()
+						var updateData = new ModUpdateData(mod, new ModDownloadData()
 						{
 							DownloadPath = kvp.Value.BinaryUrl?.ToString(),
 							DownloadPathType = ModDownloadPathType.URL,
@@ -1286,13 +1286,13 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		ViewModelLocator.DeleteFiles.WhenAnyValue(x => x.IsVisible).ToUIProperty(this, x => x.IsDeletingFiles);
 		ViewModelLocator.ModUpdates.WhenAnyValue(x => x.TotalUpdates, total => total > 0).BindTo(this, x => x.ModUpdatesAvailable);
 
-		ViewModelLocator.ModUpdates.CloseView = new Action<bool>((bool refresh) =>
-		{
-			ViewModelLocator.ModUpdates.Clear();
-			//TODO Replace with reloading the individual mods that changed
-			if (refresh) Dispatcher.UIThread.Invoke(RefreshStart, DispatcherPriority.Background);
-			Window.Activate();
-		});
+		//ViewModelLocator.ModUpdates.CloseView = new Action<bool>((bool refresh) =>
+		//{
+		//	ViewModelLocator.ModUpdates.Clear();
+		//	//TODO Replace with reloading the individual mods that changed
+		//	if (refresh) Dispatcher.UIThread.Invoke(RefreshStart, DispatcherPriority.Background);
+		//	Window.Activate();
+		//});
 
 		var loaded = await LoadSettings();
 		if(!loaded)

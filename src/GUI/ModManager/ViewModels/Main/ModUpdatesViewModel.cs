@@ -1,7 +1,17 @@
-﻿using DynamicData;
+﻿using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
+
+using DynamicData;
+using DynamicData.Binding;
+
+using Material.Icons;
+using Material.Icons.Avalonia;
 
 using ModManager.Models.Mod;
 using ModManager.Models.Updates;
+using ModManager.Services;
 
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
@@ -10,7 +20,7 @@ namespace ModManager.ViewModels.Main;
 
 public class CopyModUpdatesTask
 {
-	public List<DivinityModUpdateData>? Updates { get; set; }
+	public List<ModUpdateData>? Updates { get; set; }
 	public string? DocumentsFolder { get; set; }
 	public string? ModPakFolder { get; set; }
 	public int TotalProcessed { get; set; }
@@ -30,10 +40,8 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 		public bool Success { get; set; }
 	}
 
-	private readonly SourceList<DivinityModUpdateData> Mods = new();
-
-	private readonly ReadOnlyObservableCollection<DivinityModUpdateData> _updates;
-	public ReadOnlyObservableCollection<DivinityModUpdateData> Updates => _updates;
+	private readonly SourceList<ModUpdateData> UpdatesSource = new();
+	public ITreeDataGridSource<ModUpdateData> Updates { get; }
 
 	[ObservableAsProperty] public bool AnySelected { get; }
 	[ObservableAsProperty] public bool AllSelected { get; }
@@ -41,22 +49,20 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 
 	public RxCommandUnit UpdateModsCommand { get; }
 	public ReactiveCommand<bool, Unit> ToggleSelectCommand { get; }
+	public RxCommandUnit CloseCommand { get; }
 
-	public Action<bool> CloseView { get; set; }
-
-	public void Add(DivinityModUpdateData mod) => Mods.Add(mod);
-
-	public void Add(IEnumerable<DivinityModUpdateData> mods) => Mods.AddRange(mods);
+	public void Add(ModUpdateData mod) => UpdatesSource.Add(mod);
+	public void Add(IEnumerable<ModUpdateData> mods) => UpdatesSource.AddRange(mods);
 
 	public void Clear()
 	{
-		Mods.Clear();
+		UpdatesSource.Clear();
 		Unlocked = true;
 	}
 
 	public void SelectAll(bool select = true)
 	{
-		foreach (var x in Mods.Items)
+		foreach (var x in UpdatesSource.Items)
 		{
 			x.IsSelected = select;
 		}
@@ -73,7 +79,7 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 			InteractionMessageBoxType.YesNo));
 		if (result)
 		{
-			var updates = Mods.Items.Where(x => x.IsSelected).ToList();
+			var updates = UpdatesSource.Items.Where(x => x.IsSelected).ToList();
 
 			Unlocked = false;
 
@@ -81,13 +87,13 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 			{
 				DocumentsFolder = documentsFolder,
 				ModPakFolder = modPakFolder,
-				Updates = Mods.Items.Where(x => x.IsSelected).ToList(),
+				Updates = UpdatesSource.Items.Where(x => x.IsSelected).ToList(),
 				TotalProcessed = 0
 			});
 		}
 	}
 
-	private async Task<UpdateTaskResult> AwaitDownloadPartition(IEnumerator<DivinityModUpdateData> partition, double progressIncrement,
+	private async Task<UpdateTaskResult> AwaitDownloadPartition(IEnumerator<ModUpdateData> partition, double progressIncrement,
 		string outputFolder, CancellationToken token)
 	{
 		var result = new UpdateTaskResult();
@@ -121,7 +127,7 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 		}, true);
 	}
 
-	private void UpdateLastUpdated(UpdateTaskResult[] results)
+	private static void UpdateLastUpdated(UpdateTaskResult[] results)
 	{
 		var settings = AppServices.Get<ISettingsService>();
 		settings.UpdateLastUpdated(results.Where(x => x.Success == true).Select(x => x.ModId).ToList());
@@ -129,9 +135,20 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 
 	private void FinishUpdating()
 	{
+		CloseCommand.Execute().Subscribe();
+	}
+
+	private void OnClose()
+	{
 		Unlocked = true;
 		JustUpdated = true;
-		CloseView?.Invoke(true);
+		if(HostScreen != null)
+		{
+			RxApp.MainThreadScheduler.ScheduleAsync(async (sch, token) =>
+			{
+				await HostScreen.Router.NavigateBack.Execute();
+			});
+		}
 	}
 
 	internal ModUpdatesViewModel(IScreen? host = null)
@@ -141,15 +158,61 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 		Unlocked = true;
 		AllSelected = true;
 
-		Mods.CountChanged.ToUIProperty(this, x => x.TotalUpdates);
+		CloseCommand = ReactiveCommand.Create(OnClose);
 
-		var modsConnection = Mods.Connect();
+		UpdatesSource.CountChanged.ToUIProperty(this, x => x.TotalUpdates);
 
-		modsConnection.ObserveOn(RxApp.MainThreadScheduler).Bind(out _updates).DisposeMany().Subscribe();
+		var updatesConnection = UpdatesSource.Connect().ObserveOn(RxApp.MainThreadScheduler);
 
-		var selectedMods = modsConnection.AutoRefresh(x => x.IsSelected).ToCollection();
-		selectedMods.Select(x => x.Any(y => y.IsSelected)).ToUIProperty(this, x => x.AnySelected);
-		selectedMods.Select(x => x.All(y => y.IsSelected)).ToUIProperty(this, x => x.AllSelected);
+		ObservableCollectionExtended<ModUpdateData> readonlyUpdates = [];
+		updatesConnection.DisposeMany().Bind(readonlyUpdates).Subscribe();
+
+		//var checkboxHeader = new Button() {
+		//	VerticalAlignment = VerticalAlignment.Center,
+		//	HorizontalAlignment = HorizontalAlignment.Center,
+		//	Content = new MaterialIcon() { Kind = MaterialIconKind.CheckAll, Foreground = Brushes.SpringGreen },
+		//};
+		//checkboxHeader.Classes.Add("icon");
+		//checkboxHeader.Classes.Add("flat");
+		var checkboxHeader = new CheckBox()
+		{
+			VerticalAlignment = VerticalAlignment.Center,
+			HorizontalAlignment = HorizontalAlignment.Left,
+			IsChecked = true
+		};
+
+		var checkboxHeaderOptions = new CheckBoxColumnOptions<ModUpdateData>()
+		{
+			CanUserResizeColumn = false,
+			CanUserSortColumn = false,
+		};
+
+		var templateColOptions = new TemplateColumnOptions<ModUpdateData>()
+		{
+			CanUserResizeColumn = true,
+			CanUserSortColumn = true,
+			IsTextSearchEnabled = true,
+		};
+
+		Updates = new FlatTreeDataGridSource<ModUpdateData>(readonlyUpdates)
+		{
+			Columns =
+			{
+				//Avalonia.Controls.Models.TreeDataGrid.
+				new CheckBoxColumn<ModUpdateData>(checkboxHeader, x => x.IsSelected, (entry, b) => entry.IsSelected = b, GridLength.Auto, checkboxHeaderOptions),
+				new TextColumn<ModUpdateData, string>("Name", x => x.DisplayName, GridLength.Auto),
+				new TextColumn<ModUpdateData, string>("Current Version", x => x.CurrentVersion, GridLength.Auto),
+				new TextColumn<ModUpdateData, string>("New Version", x => x.UpdateVersion, GridLength.Auto),
+				new TextColumn<ModUpdateData, string>("Date", x => x.UpdateDateText, GridLength.Auto),
+				new TextColumn<ModUpdateData, string>("Source", x => x.SourceText, GridLength.Auto),
+				new TemplateColumn<ModUpdateData>("Path", "DownloadSourcePathCell", null, GridLength.Star, templateColOptions),
+			},
+		};
+
+		var selectedConn = updatesConnection.AutoRefresh(x => x.IsSelected).ToCollection().Throttle(TimeSpan.FromMilliseconds(50)).ObserveOn(RxApp.MainThreadScheduler);
+		selectedConn.Select(x => x.Any(x => x.IsSelected)).ToUIProperty(this, x => x.AnySelected, initialValue: false);
+		selectedConn.Select(x => x.All(x => x.IsSelected)).ToUIProperty(this, x => x.AllSelected, initialValue: true);
+		this.WhenAnyValue(x => x.AllSelected).Subscribe(b => checkboxHeader.IsChecked = b);
 
 		var anySelectedObservable = this.WhenAnyValue(x => x.AnySelected);
 
@@ -157,37 +220,47 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 
 		ToggleSelectCommand = ReactiveCommand.Create<bool>(b =>
 		{
-			foreach (var x in Updates)
+			foreach (var x in UpdatesSource.Items)
 			{
 				x.IsSelected = b;
 			}
 		});
+
+		Observable.FromEventPattern<RoutedEventArgs>(checkboxHeader, nameof(checkboxHeader.Click))
+			.Select(_ => checkboxHeader.IsChecked == true)
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.InvokeCommand(ToggleSelectCommand);
 	}
 }
 
 
 public class DesignModUpdatesViewModel : ModUpdatesViewModel
 {
-	public DesignModUpdatesViewModel() : base()
+	public void AddTestEntries(ILocaleService localeService)
 	{
-		Add(new DivinityModUpdateData(new ModData("0") { Name = "Test Mod", Author = "LaughingLeader" },
+		Add(new ModUpdateData(new ModData("0") { Name = "Test Mod", Author = "LaughingLeader" },
 			new ModDownloadData()
 			{
-				DownloadPath = "",
+				DownloadPath = "https://github.com/LaughingLeader/TestBG3Mod/releases/latest",
 				DownloadPathType = ModDownloadPathType.URL,
 				DownloadSourceType = ModSourceType.GITHUB,
 				Version = "1.0.0.1",
 				Date = DateTimeOffset.Now
 			}));
-		Add(new DivinityModUpdateData(new ModData("1") { Name = "Test Mod 2", Author = "LaughingLeader" },
+		Add(new ModUpdateData(new ModData("1") { Name = "Test Mod 2", Author = "LaughingLeader" },
 			new ModDownloadData()
 			{
-				DownloadPath = "",
+				DownloadPath = "https://www.nexusmods.com/Core/Libs/Common/Widgets/DownloadPopUp?id=-1&game_id=-1&nmm=1",
 				DownloadPathType = ModDownloadPathType.URL,
 				DownloadSourceType = ModSourceType.NEXUSMODS,
 				Version = "0.1.0.0",
 				Date = DateTimeOffset.Now
 			}));
+	}
+
+	public DesignModUpdatesViewModel() : base()
+	{
+		
 	}
 }
 

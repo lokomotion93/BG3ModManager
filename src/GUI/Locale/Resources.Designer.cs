@@ -2233,6 +2233,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        public static string ModUpdatesView_Title {
+            get {
+                return ResourceManager.GetString("ModUpdatesView_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Selected Mods.
+        /// </summary>
+        public static string ModUpdatesView_UpdateModsButton {
+            get {
+                return ResourceManager.GetString("ModUpdatesView_UpdateModsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Load Order As....
         /// </summary>
         public static string Picker_ExportLoadOrderToArchiveAs_Title {

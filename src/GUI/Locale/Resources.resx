@@ -508,6 +508,12 @@ You have version {2} installed.</value>
 	<data name="ModListView_RenameContainer" xml:space="preserve">
 		<value>Rename...</value>
 	</data>
+	<data name="ModUpdatesView_Title" xml:space="preserve">
+		<value>Updates</value>
+	</data>
+	<data name="ModUpdatesView_UpdateModsButton" xml:space="preserve">
+		<value>Update Selected Mods</value>
+	</data>
 	<data name="ModContainer_ToolTip_Children" xml:space="preserve">
 		<value>Container ({0} Children)</value>
 	</data>

@@ -1,11 +1,63 @@
-<UserControl
-	x:Class="ModManager.Views.Main.ModUpdatesView"
-	xmlns="https://github.com/avaloniaui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:vm="using:ModManager.ViewModels.Main"
-	d:DesignHeight="450"
-	d:DesignWidth="800"
-	x:DataType="vm:ModUpdatesViewModel"
-	mc:Ignorable="d" />
+<rxui:ReactiveUserControl x:Class="ModManager.Views.Main.ModUpdatesView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:ModManager.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:manager="using:ModManager"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:ModManager.Models.Updates"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:suki="using:SukiUI.Controls"
+    xmlns:vm="using:ModManager.ViewModels.Main"
+    d:DesignHeight="1080"
+    d:DesignWidth="1920"
+    x:DataType="vm:ModUpdatesViewModel"
+    x:TypeArguments="vm:ModUpdatesViewModel"
+    mc:Ignorable="d">
+	<Design.DataContext>
+		<vm:DesignModUpdatesViewModel />
+	</Design.DataContext>
+	<UserControl.Styles>
+		<Style Selector="controls|Hyperlink TextBlock">
+			<Setter Property="TextTrimming" Value="CharacterEllipsis" />
+		</Style>
+	</UserControl.Styles>
+	<suki:GlassCard CornerRadius="0" IsOpaque="True">
+		<Grid RowDefinitions="auto,auto,*,auto">
+			<Button Margin="0,-12,-12,0"
+			    HorizontalAlignment="Right"
+			    VerticalAlignment="Top"
+			    Background="Transparent"
+			    BorderThickness="0"
+			    Classes="icon flat"
+			    Command="{Binding CloseCommand}"
+			    Content="{materialIcons:MaterialIconExt Kind=Close, IconForeground=Red}" />
+			<TextBlock Grid.Row="1"
+			    VerticalAlignment="Center"
+			    FontSize="24"
+			    Text="{manager:LocaleKey ModUpdatesView_Title}"
+			    TextAlignment="Center" />
+			<TreeDataGrid Grid.Row="2"
+			    AutoDragDropRows="False"
+			    Background="Transparent"
+			    CanUserResizeColumns="True"
+			    CanUserSortColumns="True"
+			    Focusable="True"
+			    Source="{Binding Updates}">
+				<TreeDataGrid.Resources>
+					<DataTemplate x:Key="DownloadSourcePathCell" x:DataType="models:ModUpdateData">
+						<controls:Hyperlink ToolTip.Tip="{Binding UpdateFilePath}" Url="{Binding UpdateFilePath}" />
+						<!--<TextBlock Text="{Binding UpdateFilePath}" />-->
+					</DataTemplate>
+				</TreeDataGrid.Resources>
+			</TreeDataGrid>
+			<StackPanel Grid.Row="3"
+			    HorizontalAlignment="Center"
+			    VerticalAlignment="Center"
+			    Orientation="Horizontal">
+				<Button Command="{Binding UpdateModsCommand}" Content="{manager:LocaleKey ModUpdatesView_UpdateModsButton}" />
+			</StackPanel>
+		</Grid>
+	</suki:GlassCard>
+</rxui:ReactiveUserControl>

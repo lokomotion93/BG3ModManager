@@ -11,13 +11,13 @@ public class CloseableMenuFlyout : MenuFlyout, ICloseableFlyout
 
 	public void Toggle(Control target, bool showAtPointer = false)
 	{
-		if (IsOpen)
+		if (!IsOpen)
 		{
-			Close();
+			ShowAt(target, showAtPointer);
 		}
 		else
 		{
-			ShowAt(target, showAtPointer);
+			Close();
 		}
 	}
 }
