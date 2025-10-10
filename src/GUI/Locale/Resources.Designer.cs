@@ -1613,15 +1613,6 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Dark/Light Mode.
-        /// </summary>
-        public static string Keybinding_ToggleThemeMode {
-            get {
-                return ResourceManager.GetString("Keybinding_ToggleThemeMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Updates.
         /// </summary>
         public static string Keybinding_ToggleUpdatesView {
@@ -3843,6 +3834,24 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Settings_Theme {
+            get {
+                return ResourceManager.GetString("Settings_Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The color theme to use in the mod manager.
+        /// </summary>
+        public static string Settings_Theme_ToolTip {
+            get {
+                return ResourceManager.GetString("Settings_Theme_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update GitHub Mods.
         /// </summary>
         public static string Settings_UpdateGitHubMods {
@@ -3911,6 +3920,51 @@ namespace ModManager.Locale {
         public static string Settings_UpdateScriptExtender_ToolTip {
             get {
                 return ResourceManager.GetString("Settings_UpdateScriptExtender_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baldur&apos;s Drip.
+        /// </summary>
+        public static string Theme_BaldursDrip {
+            get {
+                return ResourceManager.GetString("Theme_BaldursDrip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catppuccin - Mocha.
+        /// </summary>
+        public static string Theme_Catppuccin_Mocha {
+            get {
+                return ResourceManager.GetString("Theme_Catppuccin_Mocha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string Theme_Dark {
+            get {
+                return ResourceManager.GetString("Theme_Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dracula.
+        /// </summary>
+        public static string Theme_Dracula {
+            get {
+                return ResourceManager.GetString("Theme_Dracula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string Theme_Light {
+            get {
+                return ResourceManager.GetString("Theme_Light", resourceCulture);
             }
         }
         

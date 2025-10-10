@@ -779,9 +779,6 @@ You have version {2} installed.</value>
 	<data name="Keybinding_ToggleAboutWindow" xml:space="preserve">
 		<value>About</value>
 	</data>
-	<data name="Keybinding_ToggleThemeMode" xml:space="preserve">
-		<value>Toggle Dark/Light Mode</value>
-	</data>
 	<data name="Keybinding_ImportMods" xml:space="preserve">
 		<value>Import Mods...</value>
 	</data>
@@ -1135,6 +1132,12 @@ This is to prevent hitting API limits too quickly</value>
 	<data name="Settings_AllowAdultContent_ToolTip" xml:space="preserve">
 		<value>Allow adult content when downloading collections from NexusMods</value>
 	</data>
+	<data name="Settings_Theme" xml:space="preserve">
+		<value>Theme</value>
+	</data>
+	<data name="Settings_Theme_ToolTip" xml:space="preserve">
+		<value>The color theme to use in the mod manager</value>
+	</data>
 	<data name="LaunchGameType_Exe" xml:space="preserve">
 		<value>Default (Exe)</value>
 	</data>
@@ -1470,6 +1473,21 @@ This is setting is intended for developers</value>
 	</data>
 	<data name="Settings_ExtenderUpdater_ValidateSignature" xml:space="preserve">
 		<value>Validate Signature</value>
+	</data>
+	<data name="Theme_BaldursDrip" xml:space="preserve">
+		<value>Baldur's Drip</value>
+	</data>
+	<data name="Theme_Dracula" xml:space="preserve">
+		<value>Dracula</value>
+	</data>
+	<data name="Theme_Catppuccin_Mocha" xml:space="preserve">
+		<value>Catppuccin - Mocha</value>
+	</data>
+	<data name="Theme_Dark" xml:space="preserve">
+		<value>Dark</value>
+	</data>
+	<data name="Theme_Light" xml:space="preserve">
+		<value>Light</value>
 	</data>
 	<data name="Progress_Loading_Title" xml:space="preserve">
 		<value>Loading...</value>

@@ -1,8 +1,11 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Styling;
 
 using ModManager.Services;
 using ModManager.Windows;
+
+using SukiUI;
 
 using System.Globalization;
 
@@ -52,6 +55,10 @@ public partial class App : Application
 			Locator.CurrentMutable.RegisterConstant(new WindowManagerService(mainWindow, AppServices.Interactions));
 
 			RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
+
+			SukiTheme.GetInstance().ChangeBaseTheme(ThemeVariant.Light);
+			SukiTheme.GetInstance().ChangeBaseTheme(ThemeVariant.Dark);
+			SplatRegistrations.RegisterConstant(new ColorThemeService(AppServices.Settings, AppServices.Locale));
 		}
 
 		base.OnFrameworkInitializationCompleted();

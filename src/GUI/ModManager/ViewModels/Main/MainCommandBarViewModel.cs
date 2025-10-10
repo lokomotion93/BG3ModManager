@@ -120,9 +120,6 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding(nameof(Resources.Keybinding_ToggleAboutWindow), Key.F1, KeyModifiers.None)]
 	public RxBoolCommandUnit? ToggleAboutWindowCommand { get; }
 
-	[Keybinding(nameof(Resources.Keybinding_ToggleThemeMode), Key.OemComma, KeyModifiers.Control | KeyModifiers.Alt)]
-	public RxCommandUnit? ToggleThemeModeCommand { get; }
-
 	[Keybinding(nameof(Resources.Keybinding_ImportMods), Key.O, KeyModifiers.Control)]
 	public RxCommandUnit? ImportModsCommand { get; }
 
@@ -461,11 +458,6 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		ToggleNXMLinkDownloaderCommand = ReactiveCommand.Create(ToggleWindow<NxmDownloadWindow>, canExecuteCommands);
 		ToggleCollectionDownloaderWindowCommand = ReactiveCommand.Create(ToggleWindow<NexusModsCollectionDownloadWindow>, canExecuteCommands);
-
-		ToggleThemeModeCommand = ReactiveCommand.Create(() =>
-		{
-			AppServices.Settings.ManagerSettings.DarkThemeEnabled = !AppServices.Settings.ManagerSettings.DarkThemeEnabled;
-		}, canExecuteCommands);
 
 		ImportModsCommand = ReactiveCommand.CreateFromTask(modImporter.OpenModImportDialog, canExecuteCommands);
 		ImportNexusModsIdsCommand = ReactiveCommand.CreateFromTask(modImporter.OpenModIdsImportDialog, canExecuteCommands);
@@ -899,7 +891,6 @@ public partial class MainCommandBarViewModel : ReactiveObject
 				Children = [
 					MenuEntry.FromKeybinding(ToggleSettingsWindowCommand, nameof(ToggleSettingsWindowCommand), keybindings),
 					MenuEntry.FromKeybinding(ToggleKeybindingsCommand, nameof(ToggleKeybindingsCommand), keybindings),
-					MenuEntry.FromKeybinding(ToggleThemeModeCommand, nameof(ToggleThemeModeCommand), keybindings),
 				]},
 			new MenuEntry(nameof(Resources.TopMenu_View), useLocalization: true, useAccessShortcut:true){
 				Children = [

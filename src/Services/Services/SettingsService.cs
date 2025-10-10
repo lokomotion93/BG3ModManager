@@ -263,6 +263,11 @@ public class SettingsService : ReactiveObject, ISettingsService
 			x => x.ActionOnGameLaunchIndex,
 			x => x.ActionOnGameLaunch);
 
+		ManagerSettings.BindEnumToIndex(
+			ManagerSettings.WhenAnyValue(x => x.Theme),
+			ManagerSettings.WhenAnyValue(x => x.ThemeIndex).SkipUntil(settingsWindowIsOpen),
+			x => x.ThemeIndex,
+			x => x.Theme);
 
 		ManagerSettings.WhenAnyValue(x => x.SelectedLanguage).SkipUntil(settingsWindowIsOpen).Select(x => x?.Name).BindTo(ManagerSettings, x => x.Language);
 		ManagerSettings.WhenAnyValue(x => x.Language).WhereNotNull().ObserveOn(RxApp.MainThreadScheduler).Subscribe(langName =>

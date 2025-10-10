@@ -297,6 +297,42 @@
 		<Setter Property="Foreground" Value="SpringGreen" />
 	</Style>
 
+	<Style Selector="materialIcons|MaterialIcon.shadow">
+		<Setter Property="Effect">
+			<Setter.Value>
+				<DropShadowDirectionEffect BlurRadius="4"
+				    Direction="330"
+				    Opacity="0.8"
+				    ShadowDepth="2"
+				    Color="Black" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="TextBlock.shadowlite">
+		<Setter Property="Effect">
+			<Setter.Value>
+				<DropShadowDirectionEffect BlurRadius="4"
+				    Direction="330"
+				    Opacity="0.25"
+				    ShadowDepth="2"
+				    Color="Black" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="TextBlock.shadow">
+		<Setter Property="Effect">
+			<Setter.Value>
+				<DropShadowDirectionEffect BlurRadius="4"
+				    Direction="330"
+				    Opacity="0.8"
+				    ShadowDepth="2"
+				    Color="Black" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<Style Selector="ListBoxItem.Condensed">
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="Padding" Value="0" />

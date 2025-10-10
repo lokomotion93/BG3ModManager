@@ -88,6 +88,10 @@ namespace ModManager.Views.Generated
         internal global::Avalonia.Controls.TextBlock ShiftListFocusOnSwapTextBlock;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
         internal global::Avalonia.Controls.CheckBox ShiftListFocusOnSwapCheckBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.TextBlock ThemeTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        internal global::Avalonia.Controls.ComboBox ThemeComboBox;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -144,6 +148,8 @@ namespace ModManager.Views.Generated
             SaveWindowLocationCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("SaveWindowLocationCheckBox");
             ShiftListFocusOnSwapTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ShiftListFocusOnSwapTextBlock");
             ShiftListFocusOnSwapCheckBox = __thisNameScope__?.Find<global::Avalonia.Controls.CheckBox>("ShiftListFocusOnSwapCheckBox");
+            ThemeTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ThemeTextBlock");
+            ThemeComboBox = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBox>("ThemeComboBox");
         }
     }
 }

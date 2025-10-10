@@ -1,0 +1,71 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="using:SukiUI.Controls"
+    xmlns:themes="using:ModManager.Services">
+	<Design.PreviewWith>
+		<suki:GlassCard CornerRadius="0" IsOpaque="True">
+			<Border Padding="20" Background="Black">
+				<StackPanel Spacing="10">
+					<ComboBox PlaceholderText="Select an item">
+						<ComboBoxItem>Item 1</ComboBoxItem>
+						<ComboBoxItem>Item 2</ComboBoxItem>
+					</ComboBox>
+					<ComboBox Width="200"
+					    HorizontalContentAlignment="Center"
+					    IsEnabled="False"
+					    SelectedIndex="1">
+						<ComboBoxItem>Item 1</ComboBoxItem>
+						<ComboBoxItem>Item 2</ComboBoxItem>
+					</ComboBox>
+					<Border Height="210"
+					    Background="{DynamicResource PopupGradientBrush}"
+					    BorderBrush="{DynamicResource SukiLightBorderBrush}"
+					    BorderThickness="2">
+						<TreeView>
+							<TreeViewItem Header="blub">
+								<TreeViewItem Header="blub" />
+								<TreeViewItem Header="blub" />
+							</TreeViewItem>
+							<TreeViewItem Header="blub" />
+							<TreeViewItem Header="blub" />
+						</TreeView>
+					</Border>
+				</StackPanel>
+			</Border>
+		</suki:GlassCard>
+	</Design.PreviewWith>
+	<ResourceDictionary.ThemeDictionaries>
+		<ResourceDictionary x:Key="Dark">
+			<Color x:Key="SukiStrongBackground">#1e1e2e</Color>
+			<Color x:Key="SukiCardBackground">#181825</Color>
+			<Color x:Key="SukiPopupBackground">#11111b</Color>
+			<Color x:Key="SukiGlassCardBackground">#1e1e2e</Color>
+			<Color x:Key="SukiGlassCardOpaqueBackground">#1e1e2e</Color>
+			<Color x:Key="SukiControlTouchBackground">#45475a</Color>
+			<Color x:Key="SukiDialogBackground">#6c7086</Color>
+
+			<Color x:Key="SukiBorderBrush">#b4befe</Color>
+			<Color x:Key="SukiControlBorderBrush">#b4befe</Color>
+			<Color x:Key="SukiMediumBorderBrush">#b4befe</Color>
+			<Color x:Key="SukiLightBorderBrush">#b4befe</Color>
+			<Color x:Key="GlassBorderBrush">#45475a</Color>
+
+			<Color x:Key="SukiText">#cdd6f4</Color>
+			<Color x:Key="SukiLowText">#bac2de</Color>
+			<Color x:Key="SukiMuteText">#a6adc8</Color>
+			<Color x:Key="SukiDisabledText">#caa6adc8</Color>
+
+			<Color x:Key="ModListHoveredTextForeground">#1ECC5B</Color>
+			<Color x:Key="ModListHoveredCellBackground">#77583b</Color>
+			<Color x:Key="ModListHoveredCellSelectedBackground">#c0b8b0</Color>
+			<Color x:Key="ModListHoveredCellBorder">#523c28</Color>
+			<Color x:Key="ModListCardBackground">#E1282A36</Color>
+			<Color x:Key="ModPropertiesBackground">#000000</Color>
+
+			<Color x:Key="ProgressionBarBackgroundColor">#1e1e2e</Color>
+			<Color x:Key="ProgressionBarForegroundColor">#f5c2e7</Color>
+
+			<SolidColorBrush x:Key="TreeDataGridSelectedCellBackgroundBrush" Color="#f5e0dc" />
+		</ResourceDictionary>
+	</ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

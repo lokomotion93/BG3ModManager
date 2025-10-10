@@ -76,8 +76,9 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[SettingsEntry(nameof(Resources.Settings_EnableColorblindSupport), nameof(Resources.Settings_EnableColorblindSupport_ToolTip))]
 	[DataMember, Reactive] public bool EnableColorblindSupport { get; set; }
 
-	[DefaultValue(true)]
-	[DataMember, Reactive] public bool DarkThemeEnabled { get; set; }
+	[DefaultValue(ColorThemeType.BaldursDrip)]
+	[SettingsEntry(nameof(Resources.Settings_Theme), nameof(Resources.Settings_Theme_ToolTip), bindTo: nameof(ThemeIndex))]
+	[DataMember, Reactive] public ColorThemeType Theme { get; set; }
 
 	[DefaultValue(true)]
 	[SettingsEntry(nameof(Resources.Settings_ShiftListFocusOnSwap), nameof(Resources.Settings_ShiftListFocusOnSwap_ToolTip))]
@@ -132,6 +133,7 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 
 	[Reactive] public int LaunchTypeIndex { get; set; }
 	[Reactive] public int ActionOnGameLaunchIndex { get; set; }
+	[Reactive] public int ThemeIndex { get; set; }
 
 	[ObservableAsProperty] public bool IsCustomLaunchEnabled { get; }
 
@@ -155,6 +157,10 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 		if (TryGetExtraProperty(AdditionalFields, "LaunchThroughSteam", out bool launchThroughSteam) && launchThroughSteam == true)
 		{
 			LaunchType = LaunchGameType.Steam;
+		}
+		if (TryGetExtraProperty(AdditionalFields, "DarkThemeEnabled", out bool? darkThemeEnabled) && darkThemeEnabled == false)
+		{
+			Theme = ColorThemeType.Light;
 		}
 	}
 

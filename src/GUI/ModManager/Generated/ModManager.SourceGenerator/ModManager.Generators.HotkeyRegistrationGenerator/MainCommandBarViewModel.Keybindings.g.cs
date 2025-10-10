@@ -41,7 +41,6 @@ public partial class MainCommandBarViewModel
 		keys.RegisterCommand("MainCommandBarViewModel_ToggleKeybindingsCommand", "Keybinding_ToggleKeybindings", ToggleKeybindingsCommand, Avalonia.Input.Key.OemComma, Avalonia.Input.KeyModifiers.None | Avalonia.Input.KeyModifiers.Alt | Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_ToggleVersionGeneratorWindowCommand", "Keybinding_ToggleVersionGeneratorWindow", ToggleVersionGeneratorWindowCommand, Avalonia.Input.Key.G, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_ToggleAboutWindowCommand", "Keybinding_ToggleAboutWindow", ToggleAboutWindowCommand, Avalonia.Input.Key.F1);
-		keys.RegisterCommand("MainCommandBarViewModel_ToggleThemeModeCommand", "Keybinding_ToggleThemeMode", ToggleThemeModeCommand, Avalonia.Input.Key.OemComma, Avalonia.Input.KeyModifiers.None | Avalonia.Input.KeyModifiers.Alt | Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_ImportModsCommand", "Keybinding_ImportMods", ImportModsCommand, Avalonia.Input.Key.O, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_ImportNexusModsIdsCommand", "Keybinding_ImportNexusModsIds", ImportNexusModsIdsCommand);
 		keys.RegisterCommand("MainCommandBarViewModel_NewOrderCommand", "Keybinding_AddNewOrder", NewOrderCommand, Avalonia.Input.Key.N, Avalonia.Input.KeyModifiers.Control);

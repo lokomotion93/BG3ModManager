@@ -154,6 +154,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				IsInitialized = true;
 			}
 			_globalCommands.CanExecuteCommands = true;
+			//AppServices.Get<ColorThemeService>().ChangeTheme("Dracula");
 		}, RxApp.MainThreadScheduler);
 
 		//RxApp.MainThreadScheduler.Schedule(ViewModelLocator.ModOrder.LoadCurrentProfile);

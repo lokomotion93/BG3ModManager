@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:themes="using:ModManager.Services">
 	<Design.PreviewWith>
 		<Border Padding="20" Background="Black">
 			<StackPanel Spacing="10">
@@ -7,9 +7,9 @@
 					<ComboBoxItem>Item 2</ComboBoxItem>
 				</ComboBox>
 				<ComboBox Width="200"
-					HorizontalContentAlignment="Center"
-					IsEnabled="False"
-					SelectedIndex="1">
+				    HorizontalContentAlignment="Center"
+				    IsEnabled="False"
+				    SelectedIndex="1">
 					<ComboBoxItem>Item 1</ComboBoxItem>
 					<ComboBoxItem>Item 2</ComboBoxItem>
 				</ComboBox>
@@ -18,8 +18,6 @@
 	</Design.PreviewWith>
 	<ResourceDictionary.ThemeDictionaries>
 		<ResourceDictionary x:Key="Dark">
-			<!--<Color x:Key="SukiBackground">#282A36</Color>-->
-			<!--<Color x:Key="SukiLightBackground">#282A36</Color>-->
 			<Color x:Key="SukiStrongBackground">#282A36</Color>
 			<Color x:Key="SukiCardBackground">#282A36</Color>
 			<Color x:Key="SukiGlassCardBackground">#282A36</Color>
@@ -36,6 +34,24 @@
 			<Color x:Key="SukiText">#F8F8F2</Color>
 			<Color x:Key="SukiLowText">#C8F8F2</Color>
 			<Color x:Key="SukiDisabledText">#ca727272</Color>
+
+			<LinearGradientBrush x:Key="PopupGradientBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+				<GradientStop Offset="1" Color="#00000000" />
+				<GradientStop Offset="0.5" Color="#00000000" />
+				<GradientStop Offset="0" Color="#90000000" />
+			</LinearGradientBrush>
+
+			<Color x:Key="ModListHoveredTextForeground">#1ECC5B</Color>
+			<Color x:Key="ModListHoveredCellBackground">#77583b</Color>
+			<Color x:Key="ModListHoveredCellSelectedBackground">#c0b8b0</Color>
+			<Color x:Key="ModListHoveredCellBorder">#523c28</Color>
+			<Color x:Key="ModListCardBackground">#E1282A36</Color>
+			<Color x:Key="ModPropertiesBackground">#000000</Color>
+
+			<Color x:Key="ProgressionBarBackgroundColor">#2c343a</Color>
+			<Color x:Key="ProgressionBarForegroundColor">#6600FF</Color>
+
+			<SolidColorBrush x:Key="TreeDataGridSelectedCellBackgroundBrush" Color="#523c28" />
 		</ResourceDictionary>
 	</ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>

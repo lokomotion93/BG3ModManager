@@ -5,6 +5,7 @@ using ModManager.ViewModels;
 using ModManager.Windows;
 
 using SukiUI;
+using SukiUI.Models;
 
 using System.Reactive.Subjects;
 
@@ -45,7 +46,7 @@ public class WindowWrapper<T> where T : Window
 
 	public void Toggle() => Toggle(!Window.IsVisible);
 
-	public WindowWrapper(Window ownerWindow = null)
+	public WindowWrapper(Window? ownerWindow = null)
 	{
 		Window = AppServices.Get<T>()!;
 		_owner = ownerWindow ?? Window;
@@ -68,15 +69,6 @@ public class WindowManagerService
 	public MainWindow MainWindow { get; }
 
 	private readonly List<Window> _windows = [];
-
-	public void UpdateColorScheme(ThemeVariant theme)
-	{
-		//foreach (var window in _windows)
-		//{
-		//	window.RequestedThemeVariant = theme;
-		//	//ResourceLocator.SetColorScheme(window.Resources, theme);
-		//}
-	}
 
 	public void RestoreSavedWindowPosition()
 	{
@@ -138,26 +130,6 @@ public class WindowManagerService
 		//_windows.Add(Settings.Window);
 		//_windows.Add(VersionGenerator.Window);
 		//_windows.Add(StatsValidator.Window);
-
-		//Settings.OnToggle.Subscribe(b =>
-		//{
-		//	if (b)
-		//	{
-		//		if (Settings.Window.ViewModel == null)
-		//		{
-		//			Settings.Window.Init(Main.Window.ViewModel);
-		//		}
-		//	}
-		//	Main.Window.ViewModel.Settings.SettingsWindowIsOpen = b;
-		//});
-
-		AppServices.Settings.ManagerSettings.WhenAnyValue(x => x.DarkThemeEnabled).Subscribe(darkMode =>
-		{
-			var themeVariant = darkMode ? ThemeVariant.Dark : ThemeVariant.Light;
-			App.Current.RequestedThemeVariant = themeVariant;
-			SukiTheme.GetInstance().ChangeBaseTheme(themeVariant);
-			UpdateColorScheme(themeVariant);
-		});
 
 		interactions.ValidateModStats.RegisterHandler(async context =>
 		{
