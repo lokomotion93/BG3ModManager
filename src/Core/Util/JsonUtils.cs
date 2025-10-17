@@ -20,7 +20,7 @@ namespace ModManager.Util;
 /// </summary>
 public class DataContractDefaultValueResolver : DefaultJsonTypeInfoResolver
 {
-	private static Lazy<DataContractDefaultValueResolver> s_defaultInstance = new(() => new DataContractDefaultValueResolver());
+	private static readonly Lazy<DataContractDefaultValueResolver> s_defaultInstance = new(() => new DataContractDefaultValueResolver());
 
 	public static DataContractDefaultValueResolver Default => s_defaultInstance.Value;
 
@@ -66,11 +66,25 @@ public class DataContractDefaultValueResolver : DefaultJsonTypeInfoResolver
 			bindingFlags |= BindingFlags.NonPublic;
 		}
 
+		var hasExtensionData = false;
+
 		foreach (MemberInfo memberInfo in EnumerateFieldsAndProperties(jsonTypeInfo.Type, bindingFlags))
 		{
 			if (memberInfo == null)
 			{
 				continue;
+			}
+
+			//Required to get JsonExtensionData to work
+			var extensionProp = memberInfo.GetCustomAttribute<JsonExtensionDataAttribute>();
+			if (extensionProp != null && !hasExtensionData && memberInfo is PropertyInfo extPropInfo)
+			{
+				JsonPropertyInfo extJsonPropInfo = jsonTypeInfo.CreateJsonPropertyInfo(extPropInfo.PropertyType, extPropInfo.Name);
+				extJsonPropInfo.Get = extPropInfo.GetValue;
+				extJsonPropInfo.Set = extPropInfo.SetValue;
+				extJsonPropInfo.IsExtensionData = true;
+				hasExtensionData = true;
+				yield return extJsonPropInfo;
 			}
 
 			DefaultValueAttribute? defaultAttr = null;
@@ -104,8 +118,7 @@ public class DataContractDefaultValueResolver : DefaultJsonTypeInfoResolver
 				getValue = fieldInfo.GetValue;
 				setValue = fieldInfo.SetValue;
 			}
-			else
-			if (memberInfo.MemberType == MemberTypes.Property && memberInfo is PropertyInfo propertyInfo)
+			else if (memberInfo.MemberType == MemberTypes.Property && memberInfo is PropertyInfo propertyInfo)
 			{
 				propertyName = attr?.Name ?? propertyInfo.Name;
 				propertyType = propertyInfo.PropertyType;
@@ -203,9 +216,8 @@ public static class JsonUtils
 		WriteIndented = true,
 		DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
 		TypeInfoResolver = DataContractDefaultValueResolver.Default,
-		//TypeInfoResolver = ModManagerJsonContext.Default,
 		PropertyNameCaseInsensitive = true,
-		RespectNullableAnnotations = true,
+		RespectNullableAnnotations = true
 	};
 
 	public static JsonSerializerOptions DefaultSerializerSettings => _defaultSerializerSettings;
@@ -327,5 +339,30 @@ public static class JsonUtils
 			DivinityApp.Log($"Error deserializing AbstractFileInfo:\n{ex}");
 		}
 		return default;
+	}
+
+	public static bool TryGetExtraProperty<T>(IDictionary<string, object> additionalProperties, string key, [NotNullWhen(true)] out T? value)
+	{
+		value = default;
+		if (additionalProperties.TryGetValue(key, out var entryObj))
+		{
+			if(entryObj is JsonElement element)
+			{
+				try
+				{
+					value = element.Deserialize<T>(_defaultSerializerSettings);
+				}
+				catch(Exception ex)
+				{
+					DivinityApp.Log($"Error converting json element ({element}) to type ({typeof(T)}):{ex}");
+				}
+			}
+			else if(entryObj is T entry)
+			{
+				value = entry;
+			}
+			return value != null;
+		}
+		return false;
 	}
 }
