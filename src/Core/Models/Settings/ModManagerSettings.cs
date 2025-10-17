@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 namespace ModManager.Models.Settings;
 
 [DataContract]
-public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializableSettings
+public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializableSettings, IJsonOnDeserialized
 {
 	[SettingsEntry(nameof(Resources.Settings_GameDataPath), nameof(Resources.Settings_GameDataPath_ToolTip))]
 	[DataMember, Reactive] public string? GameDataPath { get; set; }
@@ -138,29 +138,20 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[ObservableAsProperty] public bool IsCustomLaunchEnabled { get; }
 
 	[JsonExtensionData]
-	private IDictionary<string, object> AdditionalFields { get; set; } = new Dictionary<string, object>();
+	private IDictionary<string, object>? Extras { get; set; }
 
-	private static bool TryGetExtraProperty<T>(IDictionary<string, object> additionalProperties, string key, [NotNullWhen(true)] out T? value)
+	void IJsonOnDeserialized.OnDeserialized()
 	{
-		value = default;
-		if (additionalProperties.TryGetValue(key, out var entryObj) && entryObj is T entry)
+		if(Extras?.Count > 0)
 		{
-			value = entry;
-			return value != null;
-		}
-		return false;
-	}
-
-	[OnDeserialized]
-	private void OnDeserialized(StreamingContext context)
-	{
-		if (TryGetExtraProperty(AdditionalFields, "LaunchThroughSteam", out bool launchThroughSteam) && launchThroughSteam == true)
-		{
-			LaunchType = LaunchGameType.Steam;
-		}
-		if (TryGetExtraProperty(AdditionalFields, "DarkThemeEnabled", out bool? darkThemeEnabled) && darkThemeEnabled == false)
-		{
-			Theme = ColorThemeType.Light;
+			if (JsonUtils.TryGetExtraProperty(Extras, "LaunchThroughSteam", out bool launchThroughSteam) && launchThroughSteam == true)
+			{
+				LaunchType = LaunchGameType.Steam;
+			}
+			if (JsonUtils.TryGetExtraProperty(Extras, "DarkThemeEnabled", out bool? darkThemeEnabled) && darkThemeEnabled == false)
+			{
+				Theme = ColorThemeType.Light;
+			}
 		}
 	}
 
