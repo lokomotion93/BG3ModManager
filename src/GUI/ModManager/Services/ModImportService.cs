@@ -628,7 +628,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 			var modManager = AppServices.Mods;
 
-			var modPaks = new List<ModData>(modManager.AllMods.Where(x => selectedModOrder.Order.Any(o => o.Id == x.UUID)));
+			var modPaks = new List<ModData>(modManager.AllMods.Where(x => selectedModOrder.Entries.Any(o => o.Id == x.UUID)));
 			modPaks.AddRange(modManager.ForceLoadedMods.Where(x => !x.IsForceLoadedMergedMod));
 
 			var incrementProgress = 100d / modPaks.Count;

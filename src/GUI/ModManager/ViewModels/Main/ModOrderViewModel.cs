@@ -246,7 +246,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		var lastOrderName = "";
 		if (SelectedModOrder != null)
 		{
-			lastActiveOrder = [.. SelectedModOrder.Order];
+			lastActiveOrder = [.. SelectedModOrder.Entries];
 			lastOrderName = SelectedModOrder.Name;
 		}
 
@@ -336,7 +336,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			{
 				if (!lastAdventureMod.IsValid())
 				{
-					var activeAdventureMod = SelectedModOrder?.Order.FirstOrDefault(x => modManager.GetModType(x.Id) == "Adventure");
+					var activeAdventureMod = SelectedModOrder?.Entries.FirstOrDefault(x => modManager.GetModType(x.Id) == "Adventure");
 					if (activeAdventureMod != null)
 					{
 						lastAdventureMod = activeAdventureMod.Id;
@@ -748,11 +748,11 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			DeleteModCrashSanityCheck();
 
 			var outputPath = _fs.Path.Join(SelectedProfile.FilePath, "modsettings.lsx");
-			var finalOrder = ModDataLoader.BuildOutputList(SelectedModOrder.Order, _manager.AllMods, Settings.AutoAddDependenciesWhenExporting, SelectedAdventureMod);
+			var finalOrder = ModDataLoader.BuildOutputList(SelectedModOrder.Entries, _manager.AllMods, Settings.AutoAddDependenciesWhenExporting, SelectedAdventureMod);
 			var result = await AppServices.Get<IModSettingsExportService>().ExportModSettingsToFileAsync(SelectedProfile.FilePath, finalOrder, token);
 
 			var dir = AppServices.Pathways.GetLarianStudiosAppDataFolder();
-			if (SelectedModOrder.Order.Count > 0)
+			if (SelectedModOrder.Entries.Count > 0)
 			{
 				await ModDataLoader.UpdateLauncherPreferencesAsync(dir, false, false, token, true);
 			}
@@ -787,7 +787,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 					List<string> orderList = [];
 					if (SelectedAdventureMod != null) orderList.Add(SelectedAdventureMod.UUID);
-					orderList.AddRange(SelectedModOrder.Order.Select(x => x.Id));
+					orderList.AddRange(SelectedModOrder.Entries.Select(x => x.Id));
 
 					SelectedProfile.ActiveMods.Clear();
 					SelectedProfile.ActiveMods.AddRange(orderList.Select(x => ModuleShortDescFromUUID(x)));
@@ -990,7 +990,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		if (SelectedModOrder != null)
 		{
-			SelectedModOrder.Order.Clear();
+			SelectedModOrder.Entries.Clear();
 			SelectedModOrder.AddRange(ActiveMods, true);
 		}
 	}
@@ -1089,7 +1089,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	public void ClearMissingMods()
 	{
 		var modManager = _manager;
-		var totalRemoved = SelectedModOrder != null ? SelectedModOrder.Order.RemoveAll(x => !modManager.ModExists(x.Id)) : 0;
+		var totalRemoved = SelectedModOrder != null ? SelectedModOrder.Entries.RemoveAll(x => !modManager.ModExists(x.Id)) : 0;
 
 		if (totalRemoved > 0)
 		{
@@ -1103,7 +1103,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		if (removeFromLoadOrder)
 		{
-			SelectedModOrder.Order.RemoveAll(x => deletedMods.Contains(x.Id));
+			SelectedModOrder.Entries.RemoveAll(x => deletedMods.Contains(x.Id));
 			SelectedProfile.ActiveMods.RemoveAll(x => deletedMods.Contains(x.UUID));
 		}
 
@@ -1241,7 +1241,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		modManager.DeselectAllMods();
 
-		DivinityApp.Log($"Loading mod order '{order.Name}':\n{string.Join(";", order.Order.Select(x => x.Name))}");
+		DivinityApp.Log($"Loading mod order '{order.Name}':\n{string.Join(";", order.Entries.Select(x => x.Name))}");
 		var missingResults = new MissingModsResults();
 		if (missingModsFromProfileOrder != null && missingModsFromProfileOrder.Count > 0)
 		{
@@ -1293,7 +1293,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		ActiveMods.Clear();
 		var addedActiveMods = new HashSet<string>();
-		foreach (var entry in order.Order)
+		foreach (var entry in order.Entries)
 		{
 			if(entry.Type == ModEntryType.Mod)
 			{
@@ -1311,7 +1311,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		InactiveMods.Clear();
 		var addedInactiveMods = new HashSet<string>();
-		foreach (var entry in _settings.InactiveMods.Order.Order)
+		foreach (var entry in _settings.InactiveMods.Order.Entries)
 		{
 			if (entry.Type == ModEntryType.Mod)
 			{
@@ -1443,7 +1443,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			var newOrder = ModDataLoader.GetLoadOrderFromSave(result.File, GetOrdersDirectory());
 			if (newOrder != null)
 			{
-				DivinityApp.Log($"Imported mod order: {string.Join(Environment.NewLine + "\t", newOrder.Order.Select(x => x.Name))}");
+				DivinityApp.Log($"Imported mod order: {string.Join(Environment.NewLine + "\t", newOrder.Entries.Select(x => x.Name))}");
 				return newOrder;
 			}
 			else
@@ -1506,7 +1506,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			var newOrder = ModDataLoader.LoadOrderFromFile(result.File, _manager.AllMods);
 			if (newOrder != null)
 			{
-				DivinityApp.Log($"Imported mod order:\n{string.Join(Environment.NewLine + "\t", newOrder.Order.Select(x => x.Name))}");
+				DivinityApp.Log($"Imported mod order:\n{string.Join(Environment.NewLine + "\t", newOrder.Entries.Select(x => x.Name))}");
 				if (newOrder.IsDecipheredOrder)
 				{
 					if (SelectedModOrder != null)

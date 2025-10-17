@@ -160,7 +160,7 @@ public static class ImportUtils
 					{
 						options.Result.Orders.Add(order);
 						order.Name = entry.FileName;
-						DivinityApp.Log($"Imported mod order from archive: {string.Join(@"\n\t", order.Order.Select(x => x.Name))}");
+						DivinityApp.Log($"Imported mod order from archive: {string.Join(@"\n\t", order.Entries.Select(x => x.Name))}");
 					}
 				}
 			}
@@ -296,7 +296,7 @@ public static class ImportUtils
 						{
 							options.Result.Orders.Add(order);
 							order.Name = entry.FileName;
-							DivinityApp.Log($"Imported mod order from archive: {string.Join(@"\n\t", order.Order.Select(x => x.Name))}");
+							DivinityApp.Log($"Imported mod order from archive: {string.Join(@"\n\t", order.Entries.Select(x => x.Name))}");
 						}
 					}
 				}

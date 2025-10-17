@@ -1207,7 +1207,7 @@ public static partial class ModDataLoader
 								//TODO Missing mod data
 							}
 						}
-						DivinityApp.Log(string.Join("\n", order.Order.Select(x => x.Id)));
+						DivinityApp.Log(string.Join("\n", order.Entries.Select(x => x.Id)));
 						var modGUIDs = allMods.Select(x => x.UUID).ToHashSet();
 						order.Name = _fs.Path.GetFileNameWithoutExtension(loadOrderFile);
 						return order;
@@ -1512,7 +1512,7 @@ public static partial class ModDataLoader
 							}
 						}
 
-						if (loadOrder.Order.Count > 0)
+						if (loadOrder.Entries.Count > 0)
 						{
 							return loadOrder;
 						}

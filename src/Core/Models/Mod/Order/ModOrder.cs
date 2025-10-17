@@ -1,9 +1,10 @@
 ﻿using ModManager.Models.Mod.Game;
+using ModManager.Util;
 
 namespace ModManager.Models.Mod.Order;
 
 [DataContract]
-public class ModOrder : ReactiveObject
+public class ModOrder : ReactiveObject, IJsonOnDeserialized
 {
 	[Reactive] public string? Name { get; set; }
 	[Reactive] public string? FilePath { get; set; }
@@ -19,7 +20,7 @@ public class ModOrder : ReactiveObject
 
 	[ObservableAsProperty] public string? LastModified { get; }
 
-	[DataMember] public List<IModOrderEntry> Order { get; set; } = [];
+	[DataMember] public List<IModOrderEntry> Entries { get; set; } = [];
 	[DataMember] public Version? ModManagerVersion { get; set; }
 
 	private static int FindNestedIndex(ModOrderContainer container, int indexModifier, string id)
@@ -46,9 +47,9 @@ public class ModOrder : ReactiveObject
 
 	public int GetIndex(string id)
 	{
-		for(var i = 0; i < Order.Count; i++)
+		for(var i = 0; i < Entries.Count; i++)
 		{
-			var entry = Order[i];
+			var entry = Entries[i];
 
 			if (entry.Id == id)
 			{
@@ -86,7 +87,7 @@ public class ModOrder : ReactiveObject
 	public List<IModOrderEntry> GetFlattenedEntries()
 	{
 		var entries = new List<IModOrderEntry>();
-		foreach(var entry in Order)
+		foreach(var entry in Entries)
 		{
 			if(entry.Type == ModEntryType.Mod)
 			{
@@ -103,7 +104,7 @@ public class ModOrder : ReactiveObject
 	public HashSet<string> GetModIds()
 	{
 		var ids = new HashSet<string>();
-		foreach (var entry in Order)
+		foreach (var entry in Entries)
 		{
 			if (entry.Type == ModEntryType.Mod)
 			{
@@ -127,22 +128,22 @@ public class ModOrder : ReactiveObject
 	{
 		try
 		{
-			if (Order != null && entry != null)
+			if (Entries != null && entry != null)
 			{
 				if (force)
 				{
-					Order.Add(entry);
+					Entries.Add(entry);
 				}
 				else
 				{
-					foreach (var x in Order)
+					foreach (var x in Entries)
 					{
 						if (x.Id.Equals(entry.Id))
 						{
 							return;
 						}
 					}
-					Order.Add(entry);
+					Entries.Add(entry);
 				}
 			}
 		}
@@ -171,7 +172,7 @@ public class ModOrder : ReactiveObject
 	{
 		if(replace)
 		{
-			Order.Clear();
+			Entries.Clear();
 		}
 		foreach (var entry in entries)
 		{
@@ -183,7 +184,7 @@ public class ModOrder : ReactiveObject
 	{
 		if (replace)
 		{
-			Order.Clear();
+			Entries.Clear();
 		}
 		foreach (var entry in entries)
 		{
@@ -195,9 +196,9 @@ public class ModOrder : ReactiveObject
 	{
 		try
 		{
-			if (Order != null && Order.Count > 0)
+			if (Entries != null && Entries.Count > 0)
 			{
-				Order.RemoveAll(x => x.Id == id);
+				Entries.RemoveAll(x => x.Id == id);
 			}
 		}
 		catch (Exception ex)
@@ -208,18 +209,18 @@ public class ModOrder : ReactiveObject
 
 	public void RemoveRange(IEnumerable<IModOrderEntry> entries)
 	{
-		if (Order.Count > 0 && entries != null)
+		if (Entries.Count > 0 && entries != null)
 		{
 			var uuids = entries.Select(x => x.Id).ToHashSet();
-			Order.RemoveAll(x => uuids.Contains(x.Id));
+			Entries.RemoveAll(x => uuids.Contains(x.Id));
 		}
 	}
 
 	public void Update(IModOrderEntry entry)
 	{
-		if (Order != null && Order.Count > 0)
+		if (Entries != null && Entries.Count > 0)
 		{
-			var existing = Order.FirstOrDefault(x => x.Id.Equals(entry.Id) && x.Type == entry.Type);
+			var existing = Entries.FirstOrDefault(x => x.Id.Equals(entry.Id) && x.Type == entry.Type);
 			if(existing != null)
 			{
 				if(entry.Type == ModEntryType.Mod)
@@ -254,9 +255,9 @@ public class ModOrder : ReactiveObject
 	{
 		try
 		{
-			if (Order.Count > 1)
+			if (Entries.Count > 1)
 			{
-				Order.Sort(comparison);
+				Entries.Sort(comparison);
 			}
 		}
 		catch (Exception ex)
@@ -267,8 +268,8 @@ public class ModOrder : ReactiveObject
 
 	public void CopyOrder(ModOrder nextOrder)
 	{
-		Order.Clear();
-		Order.AddRange(nextOrder.Order);
+		Entries.Clear();
+		Entries.AddRange(nextOrder.Entries);
 	}
 
 	private static void AddContainerIds(ref List<string> targetList, ModOrderContainer container)
@@ -288,10 +289,10 @@ public class ModOrder : ReactiveObject
 
 	public bool OrderEquals(IEnumerable<string> orderList)
 	{
-		if (Order.Count > 0)
+		if (Entries.Count > 0)
 		{
 			var ids = new List<string>();
-			foreach (var entry in Order)
+			foreach (var entry in Entries)
 			{
 				if (entry.Type == ModEntryType.Mod && entry is ModOrderMod mod)
 				{
@@ -312,9 +313,27 @@ public class ModOrder : ReactiveObject
 		return new ModOrder()
 		{
 			Name = Name,
-			Order = [.. Order],
+			Entries = [.. Entries],
 			LastModifiedDate = LastModifiedDate
 		};
+	}
+
+	[JsonExtensionData]
+	private Dictionary<string, object>? Extras { get; set; }
+
+	void IJsonOnDeserialized.OnDeserialized()
+	{
+		if (Extras?.Count > 0)
+		{
+			//Renamed Order to "Entries" so it isn't serialized As Order.Order
+			if (JsonUtils.TryGetExtraProperty(Extras, "Order", out List<IModOrderEntry>? order) && order != null)
+			{
+				foreach (var entry in order)
+				{
+					Add(entry);
+				}
+			}
+		}
 	}
 
 	public ModOrder()
