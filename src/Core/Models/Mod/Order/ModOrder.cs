@@ -328,10 +328,8 @@ public class ModOrder : ReactiveObject, IJsonOnDeserialized
 			//Renamed Order to "Entries" so it isn't serialized As Order.Order
 			if (JsonUtils.TryGetExtraProperty(Extras, "Order", out List<IModOrderEntry>? order) && order != null)
 			{
-				foreach (var entry in order)
-				{
-					Add(entry);
-				}
+				AddRange(order);
+				Extras.Remove("Order");
 			}
 		}
 	}

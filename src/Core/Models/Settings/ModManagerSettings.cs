@@ -147,10 +147,15 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 			if (JsonUtils.TryGetExtraProperty(Extras, "LaunchThroughSteam", out bool launchThroughSteam) && launchThroughSteam == true)
 			{
 				LaunchType = LaunchGameType.Steam;
+				Extras.Remove("LaunchThroughSteam");
 			}
 			if (JsonUtils.TryGetExtraProperty(Extras, "DarkThemeEnabled", out bool? darkThemeEnabled) && darkThemeEnabled == false)
 			{
-				Theme = ColorThemeType.Light;
+				if(darkThemeEnabled == false)
+				{
+					Theme = ColorThemeType.Light;
+				}
+				Extras.Remove("DarkThemeEnabled");
 			}
 		}
 	}
