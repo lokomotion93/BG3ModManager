@@ -1,4 +1,4 @@
-<rxui:ReactiveUserControl x:Class="ModManager.Views.Main.ModUpdatesView"
+<UserControl x:Class="ModManager.Views.Main.ModUpdatesView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ModManager.Controls"
@@ -7,13 +7,12 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:ModManager.Models.Updates"
-    xmlns:rxui="http://reactiveui.net"
+    xmlns:rxui="using:using:Avalonia.ReactiveUI"
     xmlns:suki="using:SukiUI.Controls"
     xmlns:vm="using:ModManager.ViewModels.Main"
     d:DesignHeight="1080"
     d:DesignWidth="1920"
     x:DataType="vm:ModUpdatesViewModel"
-    x:TypeArguments="vm:ModUpdatesViewModel"
     mc:Ignorable="d">
 	<Design.DataContext>
 		<vm:DesignModUpdatesViewModel />
@@ -113,4 +112,4 @@
 			</StackPanel>
 		</Grid>
 	</suki:GlassCard>
-</rxui:ReactiveUserControl>
+</UserControl>

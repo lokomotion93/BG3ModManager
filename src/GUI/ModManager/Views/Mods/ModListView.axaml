@@ -1,4 +1,4 @@
-<rxui:ReactiveUserControl x:Class="ModManager.Views.Mods.ModListView"
+<UserControl x:Class="ModManager.Views.Mods.ModListView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ModManager.Controls"
@@ -16,7 +16,6 @@
     d:DesignHeight="800"
     d:DesignWidth="700"
     x:DataType="vm:ModListViewModel"
-    x:TypeArguments="vm:ModListViewModel"
     Background="Transparent"
     mc:Ignorable="d">
 	<Design.DataContext>
@@ -174,4 +173,4 @@
 		    Focusable="True"
 		    Source="{Binding Mods}" />
 	</Grid>
-</rxui:ReactiveUserControl>
+</UserControl>
