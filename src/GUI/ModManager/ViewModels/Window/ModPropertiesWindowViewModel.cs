@@ -73,17 +73,18 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 	public void Apply()
 	{
 		if (Mod?.ModManagerConfig == null) throw new NullReferenceException($"ModManagerConfig is null for mod ({Mod})");
-		var modConfigService = AppServices.Get<ISettingsService>().ModConfig;
-
 		if (!Mod.ModManagerConfig.Id.IsValid()) Mod.ModManagerConfig.Id = Mod.UUID;
-
-		modConfigService.Mods.AddOrUpdate(Mod.ModManagerConfig);
 
 		Mod.ModManagerConfig.GitHub = Repository;
 		Mod.ModManagerConfig.NexusModsId = NexusModsId;
 		Mod.ModManagerConfig.ModioId = ModioId;
 		Mod.ModManagerConfig.Notes = Notes;
 		Mod.ApplyModConfig(Mod.ModManagerConfig);
+
+		var settings = AppServices.Settings;
+
+		settings.ModConfig.Mods.AddOrUpdate(Mod.ModManagerConfig);
+		settings.TrySave(settings.ModConfig, out _);
 
 		if (NexusModsId > DivinityApp.NEXUSMODS_MOD_ID_START || ModioId.IsValid() || Repository.IsValid())
 		{
@@ -94,9 +95,6 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 				await AppServices.Updater.SaveCacheAsync(updateMods, AppServices.Env.AppVersion.ToString(), token);
 			});
 		}
-
-		//Should be called automatically when the mod config is updated
-		//AppServices.Get<ISettingsService>().ModConfig.TrySave();
 	}
 
 	public void OnClose()
