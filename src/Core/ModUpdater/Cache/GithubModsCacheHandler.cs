@@ -22,7 +22,20 @@ public class GitHubModsCacheHandler : ReactiveObject, IExternalModCacheHandler<G
 
 	public void OnCacheUpdated(GitHubModsCachedData cachedData)
 	{
-
+		foreach (var entry in cachedData.Mods)
+		{
+			if (CacheData.Mods.TryGetValue(entry.Key, out var existing))
+			{
+				if (existing.LatestRelease.Date < entry.Value.LatestRelease.Date)
+				{
+					CacheData.Mods[entry.Key] = entry.Value;
+				}
+			}
+			else
+			{
+				CacheData.Mods[entry.Key] = entry.Value;
+			}
+		}
 	}
 
 	public async Task<bool> Update(IEnumerable<ModData> mods, CancellationToken token)
