@@ -1,4 +1,6 @@
-﻿using ModManager.Extensions;
+﻿using DynamicData;
+
+using ModManager.Extensions;
 using ModManager.Json;
 using ModManager.Models.Interfaces;
 using ModManager.Models.Mod;
@@ -15,12 +17,26 @@ namespace ModManager;
 public static class ModelExtensions
 {
 	private static readonly Dictionary<string, PropertyInfo[]> _typeDataMemberProperties;
+	private static readonly Dictionary<Type, Dictionary<string, UpdatePropertyCallback>> _updatePropertyActions;
+
+	public delegate void UpdatePropertyCallback(object target, object? existing, object? newValue);
 
 	private static void AddTypeProperties(Type type)
 	{
 		var name = type.Name;
 		var props = type.GetRuntimeProperties().Where(prop => Attribute.IsDefined(prop, typeof(DataMemberAttribute))).ToArray();
 		_typeDataMemberProperties.Add(name, props);
+	}
+
+	private static bool TryGetPropertyUpdater(Type dataType, string property, [NotNullWhen(true)] out UpdatePropertyCallback? action)
+	{
+		action = null;
+		if(_updatePropertyActions.TryGetValue(dataType, out var actions) && actions.TryGetValue(property, out var propAction))
+		{
+			action = propAction;
+			return true;
+		}
+		return false;
 	}
 
 	static ModelExtensions()
@@ -32,6 +48,11 @@ public static class ModelExtensions
 		AddTypeProperties(typeof(ScriptExtenderSettings));
 		AddTypeProperties(typeof(ScriptExtenderUpdateConfig));
 		AddTypeProperties(typeof(ModManagerContainerSettings));
+
+		_updatePropertyActions = [];
+		_updatePropertyActions.Add(typeof(UserModConfig), new(){
+			[nameof(UserModConfig.Mods)] = UserModConfig.UpdateMods
+		});
 	}
 
 	private static PropertyInfo[]? GetDataMemberProperties(Type type)
@@ -149,7 +170,7 @@ public static class ModelExtensions
 					if (settings != null)
 					{
 						var props = GetDataMemberProperties(outputType);
-						if(props != null)
+						if (props != null)
 						{
 							foreach(var prop in props)
 							{
@@ -158,7 +179,14 @@ public static class ModelExtensions
 								if (value != null && existing != value)
 								{
 									data.RaisePropertyChanging(prop.Name);
-									prop.SetValue(data, value);
+									if(TryGetPropertyUpdater(outputType, prop.Name, out var action))
+									{
+										action.Invoke(data, existing, value);
+									}
+									else
+									{
+										prop.SetValue(data, value);
+									}
 									data.RaisePropertyChanged(prop.Name);
 								}
 							}

@@ -3,10 +3,6 @@
 using ModManager.Json;
 using ModManager.Models.Mod;
 
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Windows.Input;
-
 namespace ModManager.Models.Settings;
 
 [DataContract]
@@ -17,6 +13,15 @@ public class UserModConfig : BaseSettings<UserModConfig>, ISerializableSettings
 	public SourceCache<ModConfig, string> Mods { get; set; }
 
 	[DataMember] public Dictionary<string, long> LastUpdated { get; set; }
+
+	public static void UpdateMods(object data, object? existing, object? newValue)
+	{
+		if (existing is SourceCache<ModConfig, string> existingMods && newValue is SourceCache<ModConfig, string> newMods)
+		{
+			existingMods.Clear();
+			existingMods.AddOrUpdate(newMods.Items);
+		}
+	}
 
 	public UserModConfig() : base("usermodconfig.json")
 	{

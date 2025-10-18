@@ -90,11 +90,11 @@ public class ModManagerService : ReactiveObject, IModManagerService
 
 	public void ApplyUserModConfig()
 	{
-		var settings = Locator.Current.GetService<ISettingsService>().ModConfig;
+		var userModConfig = Locator.Current.GetService<ISettingsService>()!.ModConfig;
 
 		foreach (var mod in AddonMods)
 		{
-			var config = settings.Mods.Lookup(mod.UUID);
+			var config = userModConfig.Mods.Lookup(mod.UUID);
 			if (config.HasValue)
 			{
 				mod.ApplyModConfig(config.Value);

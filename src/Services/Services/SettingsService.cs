@@ -33,9 +33,6 @@ public class SettingsService : ReactiveObject, ISettingsService
 	private readonly List<ISerializableSettings> _loadSettings;
 	private readonly List<ISerializableSettings> _saveSettings;
 
-	private readonly ReactiveCommand<Unit,bool> _autoSaveModConfigCommand;
-
-
 	public bool TryLoadAppSettings(out Exception? error)
 	{
 		error = null;
@@ -290,22 +287,6 @@ public class SettingsService : ReactiveObject, ISettingsService
 			ExtenderUpdaterSettings.WhenAnyValue(x => x.UpdateChannelIndex).SkipUntil(settingsWindowIsOpen),
 			x => x.UpdateChannelIndex,
 			x => x.UpdateChannel);
-
-		var props = typeof(ModConfig)
-		.GetRuntimeProperties()
-		.Where(prop => Attribute.IsDefined(prop, typeof(ReactiveAttribute)))
-		.Select(prop => prop.Name)
-		.ToArray();
-
-		_autoSaveModConfigCommand = ReactiveCommand.Create(() => ModConfig.Save(out _));
-
-		ModConfig.Mods
-			.Connect()
-			.WhenAnyPropertyChanged(props)
-			.Throttle(TimeSpan.FromMilliseconds(25))
-			.ObserveOn(RxApp.MainThreadScheduler)
-			.Select(_ => Unit.Default)
-			.InvokeCommand(_autoSaveModConfigCommand);
 
 		ExtenderSettings.WhenAnyValue(x => x.ProfilerLoadThresholdWarn, x => x.ProfilerLoadThresholdError)
 			.ObserveOn(RxApp.MainThreadScheduler)
