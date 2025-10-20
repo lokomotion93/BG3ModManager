@@ -391,7 +391,7 @@ public class NexusModsService : ReactiveObject, INexusModsService
 				{
 					DivinityApp.Log("Fetching NexusMods user profile info...");
 					_fetchProfileInfoTask?.Dispose();
-					_fetchProfileInfoTask = RxApp.TaskpoolScheduler.ScheduleAsync(FetchUserProfileInfoAsync);
+					_fetchProfileInfoTask = RxApp.TaskpoolScheduler.ScheduleAsync(TimeSpan.FromMilliseconds(25), FetchUserProfileInfoAsync);
 				}
 			}
 			else
@@ -400,8 +400,5 @@ public class NexusModsService : ReactiveObject, INexusModsService
 				_fetchProfileInfoTask?.Dispose();
 			}
 		});
-#if DEBUG
-		ApiKey = Environment.GetEnvironmentVariable("NEXUSMODS_API_KEY", EnvironmentVariableTarget.User);
-#endif
 	}
 }
