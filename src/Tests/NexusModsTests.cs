@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 
 using ReactiveUI;
 
+using Splat;
+
 using System.Reactive.Concurrency;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -24,18 +26,21 @@ public class NexusModsTests : BaseTest
 
 	public NexusModsTests(ITestOutputHelper output) : base(output)
 	{
-		var apiKey = Environment.GetEnvironmentVariable("NEXUS_API_KEY");
-		Assert.True(!String.IsNullOrEmpty(apiKey), "Set the NEXUS_API_KEY environment variable in order to run automated NexusMods tests");
+		var apiKey = Environment.GetEnvironmentVariable("NEXUSMODS_API_KEY");
+		Assert.False(String.IsNullOrEmpty(apiKey), "Set the NEXUSMODS_API_KEY environment variable in order to run automated NexusMods tests.");
 
 		var assembly = Assembly.GetExecutingAssembly();
 		var appName = ((AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute), false)).Product;
 		var version = assembly.GetName().Version.ToString();
 		var productName = Regex.Replace(appName.Trim(), @"\s+", String.Empty);
 
+		var envService = new EnvironmentService();
+		Locator.CurrentMutable.RegisterConstant(envService);
 		_service = new NexusModsService(new EnvironmentService())
 		{
 			ApiKey = apiKey
 		};
+		Locator.CurrentMutable.RegisterConstant<HttpClient>(new AppHttpClient(envService));
 
 		_mods =
 		[
@@ -91,12 +96,13 @@ public class NexusModsTests : BaseTest
 			DownloadPath = url,
 			DownloadPathType = ModDownloadPathType.URL,
 			DownloadSourceType = ModSourceType.NEXUSMODS,
+			IsIndirectDownload = false,
 			Version = downloadLink.File.ModVersion,
 			Date = DateUtils.UnixTimeStampToDateTime(downloadLink.File.UploadedTimestamp)
 		};
 		var outputDirectory = DivinityApp.GetAppDirectory("Temp");
 		var downloadResult = await downloadData.DownloadAsync(null, outputDirectory, cts.Token);
-		Assert.True(downloadResult.Success, "Failed to download file");
+		Assert.True(downloadResult.Success, $"Failed to download file from url ({url})");
 		var info = new FileInfo(downloadResult.OutputFilePath);
 		Assert.True(info.Exists && info.Length >= 1390000, $"Output pak size ({info?.Length}) does not match expected size 1.39 MB");
 		info.Delete();
