@@ -1372,6 +1372,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			Progress.Title = Loca.Progress_ExtractSelectedMods_Title.SafeFormat($"Extracting {totalWork} mods...", totalWork);
 
 			var openOutputPath = result.File;
+			var doOpenOutput = true;
 
 			var successes = 0;
 
@@ -1409,13 +1410,31 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 						DivinityApp.Log($"Error extracting package: {ex}");
 					}
 					Progress.Value += taskStepAmount;
+
+					if(_settings.ManagerSettings.Confirmations.OpenExtractedModFolder == null)
+					{
+						var doOpenFolderResult = await AppServices.Interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ExtractSelectedMods_OpenOutputFolder_Title, Loca.MessageBox_ExtractSelectedMods_OpenOutputFolder_Message, InteractionMessageBoxType.YesNo | InteractionMessageBoxType.Remember));
+						doOpenOutput = doOpenFolderResult.Result;
+						if(doOpenFolderResult.RememberChoice)
+						{
+							_settings.ManagerSettings.Confirmations.OpenExtractedModFolder = doOpenOutput;
+							_settings.QueueSave(_settings.ManagerSettings, TimeSpan.FromMilliseconds(250));
+						}
+					}
+					else
+					{
+						doOpenOutput = _settings.ManagerSettings.Confirmations.OpenExtractedModFolder == true;
+					}
 				});
 				RxApp.MainThreadScheduler.Schedule(() =>
 				{
 					if (successes >= totalWork)
 					{
 						_globalCommands.ShowAlert($"Successfully extracted all selected mods to '{result.File}'", AlertType.Success, 20);
-						ProcessHelper.TryOpenPath(openOutputPath, _fs.Directory.Exists);
+						if(doOpenOutput)
+						{
+							ProcessHelper.TryOpenPath(openOutputPath, _fs.Directory.Exists);
+						}
 					}
 					else
 					{

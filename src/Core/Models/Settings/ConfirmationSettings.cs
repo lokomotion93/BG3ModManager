@@ -10,4 +10,5 @@ namespace ModManager.Models.Settings;
 public class ConfirmationSettings : ReactiveObject
 {
 	[Reactive, DataMember] public bool DisableAdminModeWarning { get; set; }
+	[Reactive, DataMember] public bool? OpenExtractedModFolder { get; set; }
 }
