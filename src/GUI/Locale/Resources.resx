@@ -217,11 +217,41 @@ If you've already downloaded it, try opening the game once to complete the insta
 	<data name="Window_AppUpdate_Title" xml:space="preserve">
 		<value>Updates</value>
 	</data>
+	<data name="Button_Cancel" xml:space="preserve">
+		<value>Cancel</value>
+	</data>
+	<data name="Button_OK" xml:space="preserve">
+		<value>OK</value>
+	</data>
+	<data name="Button_Apply" xml:space="preserve">
+		<value>Apply</value>
+	</data>
+	<data name="Button_Download" xml:space="preserve">
+		<value>Download</value>
+	</data>
+	<data name="Button_Reset" xml:space="preserve">
+		<value>Reset</value>
+	</data>
+	<data name="Button_ResetToDefault_ToolTip" xml:space="preserve">
+		<value>Reset to Default</value>
+	</data>
+	<data name="Button_Clear" xml:space="preserve">
+		<value>Clear</value>
+	</data>
 	<data name="Button_Close" xml:space="preserve">
 		<value>Close</value>
 	</data>
 	<data name="Button_Skip" xml:space="preserve">
 		<value>Skip</value>
+	</data>
+	<data name="Button_Confirm" xml:space="preserve">
+		<value>Confirm</value>
+	</data>
+	<data name="Button_Yes" xml:space="preserve">
+		<value>Yes</value>
+	</data>
+	<data name="Button_No" xml:space="preserve">
+		<value>No</value>
 	</data>
 	<data name="Window_AppUpdate_Available" xml:space="preserve">
 		<value>{0} {1} is now available.
@@ -297,27 +327,6 @@ You have version {2} installed.</value>
 	</data>
 	<data name="Window_ModProperties_Tab_General" xml:space="preserve">
 		<value>General</value>
-	</data>
-	<data name="Button_Cancel" xml:space="preserve">
-		<value>Cancel</value>
-	</data>
-	<data name="Button_OK" xml:space="preserve">
-		<value>OK</value>
-	</data>
-	<data name="Button_Apply" xml:space="preserve">
-		<value>Apply</value>
-	</data>
-	<data name="Button_Download" xml:space="preserve">
-		<value>Download</value>
-	</data>
-	<data name="Button_Reset" xml:space="preserve">
-		<value>Reset</value>
-	</data>
-	<data name="Button_ResetToDefault_ToolTip" xml:space="preserve">
-		<value>Reset to Default</value>
-	</data>
-	<data name="Button_Clear" xml:space="preserve">
-		<value>Clear</value>
 	</data>
 	<data name="Confirmation_PressAny" xml:space="preserve">
 		<value>Press Any Key...</value>
@@ -531,6 +540,9 @@ You have version {2} installed.</value>
 	</data>
 	<data name="ModContainer_ToolTip_Children" xml:space="preserve">
 		<value>Container ({0} Children)</value>
+	</data>
+	<data name="MessageBox_DontAskAgain" xml:space="preserve">
+		<value>Don't Ask Again</value>
 	</data>
 	<data name="CommandBar_Button_ExportOrderToArchive_ToolTip" xml:space="preserve">
 		<value>Export Active Mods to Zip As...</value>
@@ -1738,6 +1750,12 @@ Depending on the number of mods, this may take some time.</value>
 	</data>
 	<data name="MessageBox_DeleteCache_Message" xml:space="preserve">
 		<value>Delete mod manager mod cache data? This cannot be undone.</value>
+	</data>
+	<data name="MessageBox_ExtractSelectedMods_OpenOutputFolder_Title" xml:space="preserve">
+		<value>Open Output Folder?</value>
+	</data>
+	<data name="MessageBox_ExtractSelectedMods_OpenOutputFolder_Message" xml:space="preserve">
+		<value>Open the output folder for extracted mods?</value>
 	</data>
 	<data name="Picker_GameDataPath_Title" xml:space="preserve">
 		<value>Set Game Installation Folder</value>

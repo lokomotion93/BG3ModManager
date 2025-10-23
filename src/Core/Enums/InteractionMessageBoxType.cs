@@ -8,5 +8,6 @@ public enum InteractionMessageBoxType
 	Error = 2,
 	Information = 3,
 	YesNo = 8,
-	Input = 16
+	Input = 16,
+	Remember = 32
 }

@@ -414,6 +414,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string Button_Confirm {
+            get {
+                return ResourceManager.GetString("Button_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy Path to Clipboard....
         /// </summary>
         public static string Button_CopyPathToClipboard {
@@ -428,6 +437,15 @@ namespace ModManager.Locale {
         public static string Button_Download {
             get {
                 return ResourceManager.GetString("Button_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string Button_No {
+            get {
+                return ResourceManager.GetString("Button_No", resourceCulture);
             }
         }
         
@@ -491,6 +509,15 @@ namespace ModManager.Locale {
         public static string Button_Skip {
             get {
                 return ResourceManager.GetString("Button_Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Button_Yes {
+            get {
+                return ResourceManager.GetString("Button_Yes", resourceCulture);
             }
         }
         
@@ -1742,6 +1769,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t Ask Again.
+        /// </summary>
+        public static string MessageBox_DontAskAgain {
+            get {
+                return ResourceManager.GetString("MessageBox_DontAskAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save active mods to a zip file?
         ///Depending on the number of mods, this may take some time..
         /// </summary>
@@ -1767,6 +1803,24 @@ namespace ModManager.Locale {
         public static string MessageBox_ExtractSelectedMods_Message {
             get {
                 return ResourceManager.GetString("MessageBox_ExtractSelectedMods_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the output folder for extracted mods?.
+        /// </summary>
+        public static string MessageBox_ExtractSelectedMods_OpenOutputFolder_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_ExtractSelectedMods_OpenOutputFolder_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Output Folder?.
+        /// </summary>
+        public static string MessageBox_ExtractSelectedMods_OpenOutputFolder_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_ExtractSelectedMods_OpenOutputFolder_Title", resourceCulture);
             }
         }
         

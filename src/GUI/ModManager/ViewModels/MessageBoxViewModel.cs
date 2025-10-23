@@ -9,6 +9,7 @@ public class MessageBoxViewModel : ReactiveObject, IDialogViewModel
 	[Reactive] public string? Title { get; set; }
 	[Reactive] public string? Message { get; set; }
 	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public bool ShowRememberChoice { get; set; }
 	[Reactive] public ISukiDialog? Dialog { get; set; }
 	[Reactive] public bool IsInput { get; set; }
 	[Reactive] public string? InputText { get; set; }
@@ -17,8 +18,8 @@ public class MessageBoxViewModel : ReactiveObject, IDialogViewModel
 
 	[Reactive] public InteractionMessageBoxType MessageBoxType { get; set; }
 
-	[ObservableAsProperty] public string? ConfirmButtonText { get; }
-	[ObservableAsProperty] public string? CancelButtonText { get; }
+	[Reactive] public string? ConfirmButtonText { get; private set; }
+	[Reactive] public string? CancelButtonText { get; private set; }
 	[ObservableAsProperty] public bool CancelVisibility { get; }
 
 	public RxCommandUnit ConfirmCommand { get; }
@@ -40,34 +41,51 @@ public class MessageBoxViewModel : ReactiveObject, IDialogViewModel
 
 	private void Close(bool result)
 	{
-		Result.OnNext(new(result, InputText));
+		Result.OnNext(new(result, InputText, ShowRememberChoice));
 		Dialog?.Dismiss();
 	}
 
-	private static string MessageBoxTypeToConfirmationText(InteractionMessageBoxType type)
+	private static string MessageBoxTypeToConfirmationKey(InteractionMessageBoxType type)
 	{
 		if (type.HasFlag(InteractionMessageBoxType.Input))
 		{
-			return "Confirm";
+			return nameof(Loca.Button_Confirm);
 		}
 		else if (type.HasFlag(InteractionMessageBoxType.YesNo))
 		{
-			return "Yes";
+			return nameof(Loca.Button_Yes);
 		}
-		return "OK";
+		return nameof(Loca.Button_OK);
 	}
 
-	private static string MessageBoxTypeToCancelText(InteractionMessageBoxType type)
+	private static string MessageBoxTypeToCancelKey(InteractionMessageBoxType type)
 	{
 		if (type.HasFlag(InteractionMessageBoxType.Input))
 		{
-			return "Cancel";
+			return nameof(Loca.Button_Cancel);
 		}
 		else if (type.HasFlag(InteractionMessageBoxType.YesNo))
 		{
-			return "No";
+			return nameof(Loca.Button_No);
 		}
-		return "Close";
+		return nameof(Loca.Button_Close);
+	}
+
+	private IDisposable? _confirmationKeyDisp;
+	private IDisposable? _cancelKeyDisp;
+
+	private void UpdateTextBindings(InteractionMessageBoxType interactionType)
+	{
+		var confirmationKey = MessageBoxTypeToConfirmationKey(interactionType);
+		var cancelKey = MessageBoxTypeToCancelKey(interactionType);
+
+		_confirmationKeyDisp?.Dispose();
+		_cancelKeyDisp?.Dispose();
+
+		_confirmationKeyDisp = AppServices.Locale.EntryToObservable(confirmationKey).BindTo(this, x => x.ConfirmButtonText);
+		_cancelKeyDisp = AppServices.Locale.EntryToObservable(cancelKey).BindTo(this, x => x.CancelButtonText);
+
+		ShowRememberChoice = interactionType.HasFlag(InteractionMessageBoxType.Remember);
 	}
 
 	public MessageBoxViewModel()
@@ -85,9 +103,8 @@ public class MessageBoxViewModel : ReactiveObject, IDialogViewModel
 			}
 		});
 
-		var whenTypeChanges = this.WhenAnyValue(x => x.MessageBoxType);
-		whenTypeChanges.Select(MessageBoxTypeToConfirmationText).ToUIProperty(this, x => x.ConfirmButtonText, "OK");
-		whenTypeChanges.Select(MessageBoxTypeToCancelText).ToUIProperty(this, x => x.CancelButtonText, "Close");
+		var whenTypeChanges = this.WhenAnyValue(x => x.MessageBoxType).ObserveOn(RxApp.MainThreadScheduler);
+		whenTypeChanges.Subscribe(UpdateTextBindings);
 		whenTypeChanges.Select(x => x.IsConfirmation()).ToUIProperty(this, x => x.CancelVisibility);
 	}
 }
@@ -109,5 +126,6 @@ In id condimentum nibh. Quisque ac nulla id quam ultrices pulvinar eu iaculis ip
 		Title = "Confirm Deletion";
 		Message = "Really delete file(s)?\nThis cannot be undone.\n" + _longText;
 		MessageBoxType = InteractionMessageBoxType.Error | InteractionMessageBoxType.YesNo;
+		ShowRememberChoice = true;
 	}
 }

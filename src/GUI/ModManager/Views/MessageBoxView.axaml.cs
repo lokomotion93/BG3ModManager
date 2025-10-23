@@ -1,3 +1,5 @@
+using Avalonia.Media;
+
 using ModManager.ViewModels;
 
 namespace ModManager.Views;
@@ -7,12 +9,18 @@ public partial class MessageBoxView : ReactiveUserControl<MessageBoxViewModel>
 	{
 		InitializeComponent();
 
+#if DEBUG
+		if (Design.IsDesignMode)
+		{
+			Background = Brushes.Black;
+		}
+#endif
+
 		//Something is setting the DataContext to MainWindowViewModel briefly, which throws an exception if x:CompileBindings is enabled
 
 		this.WhenActivated(d =>
 		{
-			if (!Design.IsDesignMode) ViewModel ??= ViewModelLocator.MessageBox;
-
+			ViewModel ??= ViewModelLocator.MessageBox;
 			if (ViewModel != null)
 			{
 				this.GetObservable(IsVisibleProperty).BindTo(ViewModel, x => x.IsVisible);
