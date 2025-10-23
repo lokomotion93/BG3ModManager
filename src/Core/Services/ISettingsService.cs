@@ -20,6 +20,7 @@ public interface ISettingsService
 	bool TryLoadAppSettings(out Exception? error);
 	void UpdateLastUpdated(IList<string> updatedModIds);
 	void UpdateLastUpdated(IList<ModData> updatedMods);
+	void QueueSave(ISerializableSettings settings, TimeSpan delay);
 
 	string? GetGameExecutableDirectory();
 }

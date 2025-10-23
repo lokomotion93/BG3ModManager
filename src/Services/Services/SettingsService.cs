@@ -1,6 +1,5 @@
 ﻿using DynamicData;
 
-using ModManager.Enums.Extender;
 using ModManager.Models;
 using ModManager.Models.App;
 using ModManager.Models.Mod;
@@ -8,13 +7,11 @@ using ModManager.Models.Settings;
 using ModManager.Util;
 
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 using System.Globalization;
 using System.IO;
-using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reflection;
 
 namespace ModManager.Services;
 
@@ -32,6 +29,28 @@ public class SettingsService : ReactiveObject, ISettingsService
 
 	private readonly List<ISerializableSettings> _loadSettings;
 	private readonly List<ISerializableSettings> _saveSettings;
+
+	private readonly Dictionary<string, IDisposable?> _saveTasks = [];
+
+	private void CancelSaveTask(ISerializableSettings? settings = null)
+	{
+		if(settings != null)
+		{
+			if (_saveTasks.TryGetValue(settings.FileName, out var disp))
+			{
+				disp?.Dispose();
+				_saveTasks.Remove(settings.FileName);
+			}
+		}
+		else
+		{
+			foreach(var disp in _saveTasks.Values)
+			{
+				disp?.Dispose();
+			}
+			_saveTasks.Clear();
+		}
+	}
 
 	public bool TryLoadAppSettings(out Exception? error)
 	{
@@ -135,6 +154,7 @@ public class SettingsService : ReactiveObject, ISettingsService
 
 	public bool TrySaveAll(out List<Exception> errors)
 	{
+		CancelSaveTask();
 		var capturedErrors = new List<Exception>();
 		_saveSettings.ForEach(entry =>
 		{
@@ -214,6 +234,18 @@ public class SettingsService : ReactiveObject, ISettingsService
 			return defaultDirectory;
 		}
 		return logDirectory;
+	}
+
+	public void QueueSave(ISerializableSettings settings, TimeSpan delay)
+	{
+		var key = settings.FileName;
+		CancelSaveTask(settings);
+		void saveAction() {
+			TrySave(settings, out _);
+			_saveTasks.Remove(key);
+		};
+		var newDisp = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), saveAction);
+		_saveTasks.Add(key, newDisp);
 	}
 
 	public SettingsService(IFileSystemService fs)
