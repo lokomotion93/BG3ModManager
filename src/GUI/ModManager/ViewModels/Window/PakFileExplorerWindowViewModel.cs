@@ -278,10 +278,10 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 
 			foreach (var modFile in files)
 			{
-				total++;
 				if (modFile.SourcePakFilePath == modFile.FilePath)
 				{
 					extractPackages[modFile.SourcePakFilePath] = true;
+					total++;
 				}
 				else if(!extractPackages.ContainsKey(modFile.SourcePakFilePath))
 				{
@@ -292,16 +292,19 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 							foreach(var subfile in modFile.GetAllFiles())
 							{
 								AddExtractFileTask(subfile.FilePath, subfile.SourcePakFilePath, packageExtractors);
+								total++;
 							}
 						}
 						else
 						{
 							AddExtractFileTask(modFile.FilePath, modFile.SourcePakFilePath, packageExtractors);
+							total++;
 						}
 					}
 					else
 					{
 						looseFiles.Add((modFile.FilePath, _fs.Path.GetRelativePath(modFile.SourcePakFilePath, modFile.FilePath)));
+						total++;
 					}
 				}
 			}
@@ -328,7 +331,7 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 				await Task.WhenAll(tasks).WaitAsync(token);
 
 				var msg = Loca.Alert_Success_PakFileExplorer_ExtractedFiles.SafeFormat($"Extracted {total} files to {extractToDirectory}", total, extractToDirectory);
-				ShowAlertCommand?.Execute(new ShowAlertRequest(msg, AlertType.Success)).Subscribe();
+				ShowAlertCommand?.Execute(new ShowAlertRequest(msg, AlertType.Success, 4)).Subscribe();
 			}
 			finally
 			{
