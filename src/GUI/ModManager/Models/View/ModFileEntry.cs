@@ -25,6 +25,22 @@ public class ModFileEntry : ReactiveObject, IFileModel
 	private readonly ReadOnlyObservableCollection<ModFileEntry> _uiSubfiles;
 	public ReadOnlyObservableCollection<ModFileEntry> Subfiles => _uiSubfiles;
 
+	[Reactive] public bool IsExpanded { get; set; }
+	[Reactive] public bool IsSelected { get; set; }
+	[Reactive] public double SizeOnDisk { get; set; }
+	[Reactive] public MaterialIconKind Icon { get; set; }
+	[Reactive] public IBrush IconColor { get; set; }
+
+	[ObservableAsProperty] public string? Size { get; }
+	[ObservableAsProperty] public string? ExtensionDisplayName { get; }
+
+	public string SourcePakFilePath { get; }
+	public string FilePath { get; }
+	public string FileName { get; }
+	public string FileExtension { get; }
+	public bool IsDirectory { get; }
+	public bool IsFromPak { get; }
+
 	public void AddChild(ModFileEntry child) => _children.AddOrUpdate(child);
 	public void AddChild(IEnumerable<ModFileEntry> children) => _children.AddOrUpdate(children);
 
@@ -48,21 +64,23 @@ public class ModFileEntry : ReactiveObject, IFileModel
 		});
 	}
 
-	[Reactive] public bool IsExpanded { get; set; }
-	[Reactive] public bool IsSelected { get; set; }
-	[Reactive] public double SizeOnDisk { get; set; }
-	[Reactive] public MaterialIconKind Icon { get; set; }
-	[Reactive] public IBrush IconColor { get; set; }
-
-	[ObservableAsProperty] public string? Size { get; }
-	[ObservableAsProperty] public string? ExtensionDisplayName { get; }
-
-	public string SourcePakFilePath { get; }
-	public string FilePath { get; }
-	public string FileName { get; }
-	public string FileExtension { get; }
-	public bool IsDirectory { get; }
-	public bool IsFromPak { get; }
+	public IEnumerable<ModFileEntry> GetAllFiles()
+	{
+		var results = new List<ModFileEntry>();
+		foreach(var entry in _children.Items)
+		{
+			if (entry.IsDirectory)
+			{
+				var subFiles = entry.GetAllFiles();
+				results.AddRange(subFiles);
+			}
+			else
+			{
+				results.Add(entry);
+			}
+		}
+		return results;
+	}
 
 	public void PrintStructure(int indent = 0)
 	{

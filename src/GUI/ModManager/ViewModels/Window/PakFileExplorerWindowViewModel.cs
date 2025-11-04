@@ -231,6 +231,20 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 		await inStream.CopyToAsync(outStream, 32000, token);
 	}
 
+	private void AddExtractFileTask(string modFilePath, string sourcePakPath, Dictionary<string, PackageExtractionTask> packageExtractors)
+	{
+		if (packageExtractors.TryGetValue(sourcePakPath, out var pakExtractor))
+		{
+			pakExtractor.Files.Add(modFilePath);
+		}
+		else
+		{
+			pakExtractor = new PackageExtractionTask(sourcePakPath);
+			pakExtractor.Files.Add(modFilePath);
+			packageExtractors[sourcePakPath] = pakExtractor;
+		}
+	}
+
 	private async Task ExtractFilesAsync(IEnumerable<ModFileEntry> files, CancellationToken token)
 	{
 		var settings = AppServices.Settings;
@@ -273,15 +287,16 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 				{
 					if(modFile.IsFromPak)
 					{
-						if(packageExtractors.TryGetValue(modFile.SourcePakFilePath, out var pakExtractor))
+						if (modFile.IsDirectory)
 						{
-							pakExtractor.Files.Add(modFile.FilePath);
+							foreach(var subfile in modFile.GetAllFiles())
+							{
+								AddExtractFileTask(subfile.FilePath, subfile.SourcePakFilePath, packageExtractors);
+							}
 						}
 						else
 						{
-							pakExtractor = new PackageExtractionTask(modFile.SourcePakFilePath);
-							pakExtractor.Files.Add(modFile.FilePath);
-							packageExtractors[modFile.SourcePakFilePath] = pakExtractor;
+							AddExtractFileTask(modFile.FilePath, modFile.SourcePakFilePath, packageExtractors);
 						}
 					}
 					else
