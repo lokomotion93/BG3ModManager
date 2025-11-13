@@ -85,7 +85,10 @@ public class ModManagerService : ReactiveObject, IModManagerService
 
 	public void Refresh()
 	{
-		mods.Clear();
+		if(mods.Count > 0)
+		{
+			mods.Clear();
+		}
 	}
 
 	public void ApplyUserModConfig()

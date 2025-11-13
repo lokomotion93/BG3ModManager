@@ -394,7 +394,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		var canRefreshModUpdates = canExecuteCommands.CombineLatest(main.WhenAnyValue(x => x.IsRefreshingModUpdates, x => x.AppSettingsLoaded))
 			.Select(x => x.First && !x.Second.Item1 && x.Second.Item2);
 
-		RefreshCommand = ReactiveCommand.Create(main.RefreshStart, canExecuteCommands);
+		RefreshCommand = ReactiveCommand.Create(() => { RxApp.MainThreadScheduler.Schedule(() => main.RefreshStart()); }, canExecuteCommands);
 		RefreshModUpdatesCommand = ReactiveCommand.Create(main.RefreshModUpdates, canRefreshModUpdates);
 
 		RenameSaveCommand = ReactiveCommand.CreateFromTask(main.RenameSaveAsync, canExecuteCommands);
