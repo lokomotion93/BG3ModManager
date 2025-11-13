@@ -23,7 +23,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	private bool _isSingleSelect = false;
 	private bool _isDragging = false;
 
-	private static IList<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
+	private static List<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
 	{
 		IEnumerable<IModEntry>? children;
 
@@ -37,8 +37,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		if (children is null)
 			throw new InvalidOperationException("The requested drop target has no children.");
 
-		return children as IList<IModEntry> ??
-			throw new InvalidOperationException("Items does not implement IList<T>.");
+		return [.. children];
 	}
 
 	public static void DragDropRows(
@@ -55,22 +54,28 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		if (target.IsSorted)
 			throw new NotSupportedException("Drag/drop is not supported on sorted data.");
 
-		IList<IModEntry> targetItems;
-		int ti;
+		List<IModEntry> targetItems;
+		int ti = 0;
 
-		if (position == TreeDataGridRowDropPosition.Inside)
+		if (target.Rows.Count == 0)
 		{
-			targetItems = GetItems(target, targetIndex);
-			ti = targetItems.Count;
+			targetItems = [.. target.Items];
 		}
 		else
 		{
-			targetItems = GetItems(target, targetIndex[..^1]);
-			ti = targetIndex[^1];
+			if (position == TreeDataGridRowDropPosition.Inside)
+			{
+				targetItems = GetItems(target, targetIndex);
+				ti = targetItems.Count;
+			}
+			else
+			{
+				targetItems = GetItems(target, targetIndex[..^1]);
+				ti = targetIndex[^1];
+			}
 		}
 
-		if (position == TreeDataGridRowDropPosition.After)
-			++ti;
+		if (position == TreeDataGridRowDropPosition.After) ++ti;
 
 		var sourceItems = new List<IModEntry>();
 
@@ -89,9 +94,19 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			}
 		}
 
-		for (var si = sourceItems.Count - 1; si >= 0; --si)
+		if (targetItems.Count == 0)
 		{
-			targetItems.Insert(ti++, sourceItems[si]);
+			foreach (var entry in sourceItems)
+			{
+				targetItems.Add(entry);
+			}
+		}
+		else
+		{
+			for (var si = sourceItems.Count - 1; si >= 0; --si)
+			{
+				targetItems.Insert(ti++, sourceItems[si]);
+			}
 		}
 	}
 
@@ -131,22 +146,65 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
+	private static bool CanDropEntry(IModEntry entry, ModListType listType)
+	{
+		if(entry.EntryType == ModEntryType.Mod && entry is ModEntry modEntry && modEntry.Data != null)
+		{
+			if(!modEntry.Data.IsForceLoaded)
+			{
+				if (listType == ModListType.Override)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if(listType == ModListType.Active)
+				{
+					return modEntry.Data.CanAddToLoadOrder;
+				}
+			}
+		}
+		else if(entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer)
+		{
+			foreach(var child in modContainer.Children)
+			{
+				if(!CanDropEntry(child, listType))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	private void OnTreeDataGridDrag(TreeDataGridRowDragEventArgs e)
 	{
-		if (ViewModel?.IsLocked == true)
+		if (ViewModel == null) return;
+
+		if (ViewModel.IsLocked == true)
 		{
 			e.Inner.DragEffects = DragDropEffects.None;
 			return;
 		}
 
 		MaybeRedirectDrop(e);
+
 		if (e.Inner.Data.Get(DragInfo.DataFormat) is DragInfo di && di.Source.Selection is ITreeDataGridRowSelectionModel<IModEntry> selection)
 		{
+			e.Inner.DragEffects = DragDropEffects.Move;
+			foreach (var entry in selection.SelectedItems)
+			{
+				if (entry != null && !CanDropEntry(entry, ViewModel.ListType))
+				{
+					e.Inner.DragEffects = DragDropEffects.None;
+				}
+			}
+
 			//List to List
-			if (e.Position == TreeDataGridRowDropPosition.None && di.Source != ModsTreeDataGrid.Source)
+			if (di.Source != ModsTreeDataGrid.Source && e.Position == TreeDataGridRowDropPosition.None)
 			{
 				e.Position = GetDropPosition(e.TargetRow.Model is ModContainer, e.Inner, e.TargetRow);
-				e.Inner.DragEffects = DragDropEffects.Move;
 			}
 		}
 	}
@@ -196,10 +254,17 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				{
 					e.Position = GetDropPosition(allowInside, e.Inner, e.TargetRow);
 				}
-				//Clear the previous selection, so only the dropped items are selected
-				target.RowSelection!.Clear();
-				var targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
-				DragDropRows(listSource, target, listSource.RowSelection!.SelectedIndexes, targetIndex, e.Position, e.Inner.DragEffects);
+				if(ViewModel?.Mods.Rows.Count > 0)
+				{
+					//Clear the previous selection, so only the dropped items are selected
+					target.RowSelection!.Clear();
+					var targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
+					DragDropRows(listSource, target, listSource.RowSelection!.SelectedIndexes, targetIndex, e.Position, e.Inner.DragEffects);
+				}
+				else
+				{
+					DragDropRows(listSource, target, listSource.RowSelection!.SelectedIndexes, 0, e.Position, e.Inner.DragEffects);
+				}
 			}
 		}
 	}
@@ -318,7 +383,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 						files.Add(file.Path.LocalPath);
 					}
 				}
-				AppServices.ModImporter.ImportMods(files, files.Count, ViewModel?.IsActiveList == true);
+				AppServices.ModImporter.ImportMods(files, files.Count, ViewModel?.ListType == ModListType.Active);
 			}
 		}
 	}
@@ -492,7 +557,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					{
 						//var index = ModsTreeDataGrid.Rows!.RowIndexToModelIndex(e.Index);
 						mod.Index = e.Index;
-						mod.IsActive = ViewModel.IsActiveList;
+						mod.IsActive = ViewModel.ListType == ModListType.Active;
 					}
 				}));
 

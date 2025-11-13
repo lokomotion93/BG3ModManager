@@ -31,7 +31,7 @@ public class ModListViewModel : ReactiveObject
 	[Reactive] public bool IsLocked { get; set; }
 	[Reactive] public bool IsFocused { get; set; }
 	[Reactive] public bool IsKeyboardFocusWithin { get; set; }
-	[Reactive] public bool IsActiveList { get; set; }
+	[Reactive] public ModListType ListType { get; set; }
 
 	[Reactive] public IModEntry? SelectedItem { get; set; }
 
@@ -178,7 +178,7 @@ public class ModListViewModel : ReactiveObject
 			{
 				var container = new ModContainer(Guid.NewGuid().ToString())
 				{
-					IsActive = IsActiveList,
+					IsActive = ListType == ModListType.Active,
 					EnableAutosaving = true
 				};
 				container.Settings.DisplayName = result.Input ?? string.Empty;

@@ -1653,7 +1653,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			},
 		}, ActiveMods, readonlyActiveMods, activeModsConnection, "Active")
 		{
-			IsActiveList = true
+			ListType = ModListType.Active
 		};
 
 		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyOverrideMods)
@@ -1667,7 +1667,10 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
 			}
-		}, OverrideMods, readonlyOverrideMods, overrideModsConnection, "Overrides");
+		}, OverrideMods, readonlyOverrideMods, overrideModsConnection, "Overrides")
+		{
+			ListType = ModListType.Override
+		};
 
 		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyInactiveMods)
 		{
@@ -1680,7 +1683,10 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
 			}
-		}, InactiveMods, readonlyInactiveMods, inactiveModsConnection, "Inactive");
+		}, InactiveMods, readonlyInactiveMods, inactiveModsConnection, "Inactive")
+		{
+			ListType = ModListType.Inactive
+		};
 
 		CanSaveOrder = true;
 
