@@ -23,7 +23,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	private bool _isSingleSelect = false;
 	private bool _isDragging = false;
 
-	private static List<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
+	private static IList<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
 	{
 		IEnumerable<IModEntry>? children;
 
@@ -37,7 +37,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		if (children is null)
 			throw new InvalidOperationException("The requested drop target has no children.");
 
-		return [.. children];
+		return children as IList<IModEntry> ??
+			throw new InvalidOperationException("Items does not implement IList<T>.");
 	}
 
 	public static void DragDropRows(
@@ -54,12 +55,12 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		if (target.IsSorted)
 			throw new NotSupportedException("Drag/drop is not supported on sorted data.");
 
-		List<IModEntry> targetItems;
+		IList<IModEntry> targetItems;
 		int ti = 0;
 
 		if (target.Rows.Count == 0)
 		{
-			targetItems = [.. target.Items];
+			targetItems = target.Items as IList<IModEntry> ?? throw new InvalidOperationException("Items does not implement IList<T>.");
 		}
 		else
 		{
@@ -254,17 +255,17 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				{
 					e.Position = GetDropPosition(allowInside, e.Inner, e.TargetRow);
 				}
-				if(ViewModel?.Mods.Rows.Count > 0)
+
+				IndexPath targetIndex = 0;
+
+				//Clear the previous selection, so only the dropped items are selected
+				target.RowSelection!.Clear();
+
+				if (ViewModel?.Mods.Rows.Count > 0)
 				{
-					//Clear the previous selection, so only the dropped items are selected
-					target.RowSelection!.Clear();
-					var targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
-					DragDropRows(listSource, target, listSource.RowSelection!.SelectedIndexes, targetIndex, e.Position, e.Inner.DragEffects);
+					targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
 				}
-				else
-				{
-					DragDropRows(listSource, target, listSource.RowSelection!.SelectedIndexes, 0, e.Position, e.Inner.DragEffects);
-				}
+				DragDropRows(listSource, target, listSource.RowSelection!.SelectedIndexes, targetIndex, e.Position, e.Inner.DragEffects);
 			}
 		}
 	}
