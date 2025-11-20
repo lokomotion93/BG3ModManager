@@ -33,6 +33,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	protected readonly IDialogService _dialogs;
 	protected readonly ISettingsService _settings;
 	protected readonly IFileSystemService _fs;
+	protected readonly IInteractionsService _interactions;
 
 	protected readonly IFileWatcherWrapper _modSettingsWatcher;
 
@@ -57,9 +58,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	public ObservableCollectionExtended<IModEntry> ActiveMods { get; }
 	public ObservableCollectionExtended<IModEntry> InactiveMods { get; }
-
-	private readonly ReadOnlyObservableCollection<IModEntry> _overrideMods;
-	public ReadOnlyObservableCollection<IModEntry> OverrideMods => _overrideMods;
+	public ObservableCollectionExtended<IModEntry> OverrideMods { get; }
 
 	private readonly ReadOnlyObservableCollection<ModData> _adventureMods;
 	public ReadOnlyObservableCollection<ModData> AdventureMods => _adventureMods;
@@ -995,6 +994,17 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		}
 	}
 
+	public bool TryFindEntry(string uuid, [NotNullWhen(true)] out IModEntry? entry)
+	{
+		entry = ActiveMods.FirstOrDefault(x => x.UUID == uuid);
+		if (entry != null) return true;
+		entry = InactiveMods.FirstOrDefault(x => x.UUID == uuid);
+		if (entry != null) return true;
+		entry = OverrideMods.FirstOrDefault(x => x.UUID == uuid);
+		if (entry != null) return true;
+		return false;
+	}
+
 	public void AddActiveMod(IModEntry mod)
 	{
 		if (!ActiveMods.Any(x => x.UUID == mod.UUID))
@@ -1327,6 +1337,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}
 		}
 
+		OverrideMods.Clear();
+		OverrideMods.AddRange(modManager.ForceLoadedMods.Where(x => !x.ForceAllowInLoadOrder && !x.IsActive).Select(x => x.ToModInterface()));
+
 		var remainingInactiveMods = modManager.AddonMods.Where(x => x.CanAddToLoadOrder && !x.IsActive && !addedInactiveMods.Contains(x.UUID)).ToList();
 		if (remainingInactiveMods.Count > 0)
 		{
@@ -1574,6 +1587,52 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		OverrideModsView.IsLocked = locked;
 	}
 
+	private IDisposable? _removeTask;
+	private Dictionary<ModListType, HashSet<string>> _removals = [];
+
+	private void ProcessRemovalQueue()
+	{
+		foreach(var queue in _removals)
+		{
+			ObservableCollectionExtended<IModEntry>? target = null;
+			switch(queue.Key)
+			{
+				case ModListType.Active:
+					target = ActiveMods;
+					break;
+				case ModListType.Inactive:
+					target = InactiveMods;
+					break;
+				case ModListType.Override:
+					target = OverrideMods;
+					break;
+			}
+			if(target != null)
+			{
+				var susp = target.SuspendNotifications();
+				var entriesToRemove = target.Where(x => queue.Value.Contains(x.UUID));
+				target.RemoveMany(entriesToRemove);
+				susp.Dispose();
+			}
+		}
+		_removals.Clear();
+	}
+
+	public void QueueRemoval(HashSet<string> uuids, ModListType modListType, TimeSpan? delay = null)
+	{
+		if(!_removals.TryGetValue(modListType, out var existing))
+		{
+			existing = [];
+			_removals[modListType] = existing;
+		}
+		foreach(var uuid in uuids)
+		{
+			existing.Add(uuid);
+		}
+		_removeTask?.Dispose();
+		_removeTask = RxApp.MainThreadScheduler.Schedule(delay ?? TimeSpan.FromTicks(1), ProcessRemovalQueue);
+	}
+
 	private static readonly HashSet<string> _migrateCampaigns = new HashSet<string>()
 	{
 		"991c9c7a-fb80-40cb-8f0d-b92d4e80e9b1",
@@ -1587,19 +1646,22 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		IDialogService dialogService,
 		IModUpdaterService updateService,
 		ISettingsService settings,
-		IFileSystemService fs
+		IFileSystemService fs,
+		IInteractionsService interactions
 		)
 	{
 		_manager = modManagerService;
 		_dialogs = dialogService;
 		_settings = settings;
 		_fs = fs;
+		_interactions = interactions;
 
 		HostScreen = host;
 		SelectedAdventureModIndex = 0;
 
 		ActiveMods = [];
 		InactiveMods = [];
+		OverrideMods = [];
 		ModOrderList = [];
 		ExternalModOrders = [];
 
@@ -1612,32 +1674,12 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		modManagerService.AdventureMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler).Bind(out _adventureMods).Subscribe();
 
-		modManagerService.ForceLoadedMods.ToObservableChangeSet().Transform(x => x.ToModInterface()).Bind(out _overrideMods).Subscribe();
-
-		ObservableCollectionExtended<IModEntry> readonlyActiveMods = [];
-		ActiveMods.ToObservableChangeSet()
-			.AutoRefresh(x => x.IsHidden)
-			.Filter(x => !x.IsHidden)
-			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyActiveMods).Subscribe();
-
-		ObservableCollectionExtended<IModEntry> readonlyOverrideMods = [];
-		OverrideMods.ToObservableChangeSet()
-			.AutoRefresh(x => x.IsHidden)
-			.Filter(x => !x.IsHidden)
-			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyOverrideMods).Subscribe();
-
-		ObservableCollectionExtended<IModEntry> readonlyInactiveMods = [];
-		InactiveMods.ToObservableChangeSet()
-			.AutoRefresh(x => x.IsHidden)
-			.Filter(x => !x.IsHidden)
-			.ObserveOn(RxApp.MainThreadScheduler).Bind(readonlyInactiveMods).Subscribe();
-
 		//Pass the connection to the original collections, so the view can observe the total count
 		var activeModsConnection = ActiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var overrideModsConnection = OverrideMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var inactiveModsConnection = InactiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
-		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyActiveMods)
+		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
 		{
 			Columns =
 			{
@@ -1650,13 +1692,13 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
-			},
-		}, ActiveMods, readonlyActiveMods, activeModsConnection, "Active")
+			}
+		}, ActiveMods, activeModsConnection, "Active")
 		{
 			ListType = ModListType.Active
 		};
 
-		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyOverrideMods)
+		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(OverrideMods)
 		{
 			Columns =
 			{
@@ -1667,12 +1709,12 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
 			}
-		}, OverrideMods, readonlyOverrideMods, overrideModsConnection, "Overrides")
+		}, OverrideMods, overrideModsConnection, "Overrides")
 		{
 			ListType = ModListType.Override
 		};
 
-		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(readonlyInactiveMods)
+		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(InactiveMods)
 		{
 			Columns =
 			{
@@ -1683,7 +1725,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
 			}
-		}, InactiveMods, readonlyInactiveMods, inactiveModsConnection, "Inactive")
+		}, InactiveMods, inactiveModsConnection, "Inactive")
 		{
 			ListType = ModListType.Inactive
 		};
@@ -1954,7 +1996,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 public class DesignModOrderViewModel : ModOrderViewModel
 {
-	public DesignModOrderViewModel() : base(ViewModelLocator.Main, AppServices.Mods, AppServices.FileWatcher, AppServices.Dialog, AppServices.Updater, AppServices.Settings, AppServices.FS)
+	public DesignModOrderViewModel() : base(ViewModelLocator.Main, AppServices.Mods, AppServices.FileWatcher, AppServices.Dialog, AppServices.Updater, AppServices.Settings, AppServices.FS, AppServices.Interactions)
 	{
 		var testProfile = new ProfileData()
 		{
