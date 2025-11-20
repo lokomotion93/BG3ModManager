@@ -68,9 +68,6 @@
 				<Setter Property="Background" Value="{Binding PointerOverColor, Converter={StaticResource ModBackgroundColorConverter}, ConverterParameter='ModListHoveredCellBackground'}" />
 			</Style>
 
-			<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWayToSource}" />
-			<!--<Setter Property="IsVisible" Value="{Binding IsVisible}" />-->
-
 			<Setter Property="ContextFlyout" Value="{Binding ContextMenu}" />
 			<!--<Setter Property="BorderThickness" Value="0 0 0 1" />-->
 			<Setter Property="BorderBrush" Value="{DynamicResource SukiMediumBorderBrush}" />

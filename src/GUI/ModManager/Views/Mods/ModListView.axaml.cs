@@ -490,6 +490,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				void PrepareRow(TreeDataGridRow row, IModEntry entry)
 				{
 					row[!IsVisibleProperty] = entry.WhenAnyValue(x => x.IsVisible).ToBinding();
+					row.GetObservable(TreeDataGridRow.IsSelectedProperty).BindTo(entry, x => x.IsSelected);
 
 					if (entry.EntryType == ModEntryType.Mod)
 					{
