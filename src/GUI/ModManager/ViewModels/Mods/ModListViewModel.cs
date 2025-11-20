@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 namespace ModManager.ViewModels.Mods;
 public class ModListViewModel : ReactiveObject
 {
-	private readonly ICollection<IModEntry> _mods;
+	private readonly ObservableCollectionExtended<IModEntry> _mods;
 	private readonly ModEntryTreeDataGridRowSelectionModel _rowSelection;
 
 	public HierarchicalTreeDataGridSource<IModEntry> Mods { get; }
@@ -45,8 +45,6 @@ public class ModListViewModel : ReactiveObject
 	public ReactiveCommand<ModContainer, Unit> DeleteContainerModsCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> RenameContainerCommand { get; }
 
-	public bool IsDirty { get; set; }
-
 	private static string ToFilterResultText(ValueTuple<int, int, int, string?, bool> x)
 	{
 		var (total, totalHidden, totalSelected, filterText, isEnabled) = x;
@@ -64,7 +62,7 @@ public class ModListViewModel : ReactiveObject
 		return string.Join(", ", texts);
 	}
 
-	private void CountMods(NotifyCollectionChangedEventArgs e)
+	private void CountMods(Unit _)
 	{
 		var total = 0;
 		var totalHidden = 0;
@@ -78,18 +76,6 @@ public class ModListViewModel : ReactiveObject
 		TotalMods = total;
 		TotalModsHidden = totalHidden;
 		TotalModsSelected = totalSelected;
-
-		if (e.Action == NotifyCollectionChangedAction.Remove && IsDirty && e.OldItems != null)
-		{
-			foreach(var entry in e.OldItems.Cast<IModEntry>())
-			{
-				if(entry != null)
-				{
-					_mods.Remove(entry);
-				}
-			}
-			IsDirty = false;
-		}
 	}
 
 	public void UpdateIndexes()
@@ -125,8 +111,7 @@ public class ModListViewModel : ReactiveObject
 	}
 
 	public ModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
-		ICollection<IModEntry> backingCollection,
-		INotifyCollectionChanged observedCollection,
+		ObservableCollectionExtended<IModEntry> backingCollection,
 		IObservable<IChangeSet<IModEntry>> connection,
 		string title = "")
 	{
@@ -144,13 +129,19 @@ public class ModListViewModel : ReactiveObject
 		).ObserveOn(RxApp.MainThreadScheduler)
 		.Subscribe(UpdateSelection);
 
+		var recountMods = connection.WhenAnyPropertyChanged(nameof(IModEntry.IsVisible));
 		Observable.FromEvent<NotifyCollectionChangedEventHandler?, NotifyCollectionChangedEventArgs>(
 			h => (sender, e) => h(e),
-			h => observedCollection.CollectionChanged += h,
-			h => observedCollection.CollectionChanged -= h
-		).Throttle(TimeSpan.FromMilliseconds(50))
+			h => backingCollection.CollectionChanged += h,
+			h => backingCollection.CollectionChanged -= h
+		)
+		.CombineLatest(recountMods)
+		.Throttle(TimeSpan.FromMilliseconds(50))
 		.ObserveOn(RxApp.MainThreadScheduler)
+		.Select(_ => Unit.Default)
 		.Subscribe(CountMods);
+
+		backingCollection.WhenAnyPropertyChanged(nameof(IModEntry.IsVisible));
 
 		this.WhenAnyValue(x => x.TotalMods, x => x.TotalModsHidden, x => x.TotalModsSelected,
 			x => x.FilterInputText, x => x.IsFilterEnabled)
@@ -211,8 +202,6 @@ public class DesignModListViewModel : ModListViewModel
 {
 	private static class DesignModListViewModelDataSource
 	{
-		public static readonly ObservableCollectionExtended<IModEntry> ReadonlyMods = [];
-
 		public static ObservableCollectionExtended<IModEntry> Mods { get; }
 		public static HierarchicalTreeDataGridSource<IModEntry> DataSource { get; }
 		public static IObservable<IChangeSet<IModEntry>> ModsConnection { get; }
@@ -222,14 +211,9 @@ public class DesignModListViewModel : ModListViewModel
 			Mods = [];
 			Mods.AddRange(ModelGlobals.TestMods);
 
-			Mods.ToObservableChangeSet()
-				.AutoRefresh(x => x.IsHidden)
-				.Filter(x => !x.IsHidden)
-				.ObserveOn(RxApp.MainThreadScheduler).Bind(ReadonlyMods).Subscribe();
-
 			ModsConnection = Mods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
-			DataSource = new HierarchicalTreeDataGridSource<IModEntry>(ReadonlyMods)
+			DataSource = new HierarchicalTreeDataGridSource<IModEntry>(Mods)
 			{
 				Columns =
 				{
@@ -248,17 +232,15 @@ public class DesignModListViewModel : ModListViewModel
 
 	public DesignModListViewModel() : base(DesignModListViewModelDataSource.DataSource,
 		DesignModListViewModelDataSource.Mods,
-		DesignModListViewModelDataSource.ReadonlyMods,
 		DesignModListViewModelDataSource.ModsConnection, "Active")
 	{
 
 	}
 
 	public DesignModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
-		ICollection<IModEntry> collection,
-		INotifyCollectionChanged observedCollection,
+		ObservableCollectionExtended<IModEntry> collection,
 		IObservable<IChangeSet<IModEntry>> connection,
-		string title = "") : base(treeGridSource, collection, observedCollection, connection, title)
+		string title = "") : base(treeGridSource, collection, connection, title)
 	{
 
 	}

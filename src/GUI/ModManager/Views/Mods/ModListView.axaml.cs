@@ -15,6 +15,7 @@ using ModManager.Services;
 using ModManager.Styling;
 using ModManager.ViewModels.Mods;
 
+using System.ComponentModel;
 using System.Reflection;
 
 namespace ModManager.Views.Mods;
@@ -222,7 +223,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 		if (e.TargetRow.Model is ModContainer modContainer)
 		{
-			ViewModel.IsDirty = true;
 			if(!modContainer.IsExpanded)
 			{
 				//Need to delay by a few frames since the expander cell may not be rendered yet
@@ -245,7 +245,10 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		{
 			foreach (var mod in listSource.RowSelection!.SelectedItems)
 			{
-				if (mod != null) mod.PreserveSelection = true;
+				if (mod != null)
+				{
+					mod.PreserveSelection = true;
+				}
 			}
 
 			//From one list to another
@@ -486,6 +489,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 				void PrepareRow(TreeDataGridRow row, IModEntry entry)
 				{
+					row[!IsVisibleProperty] = entry.WhenAnyValue(x => x.IsVisible).ToBinding();
+
 					if (entry.EntryType == ModEntryType.Mod)
 					{
 						entry.ContextMenu = modContext;
@@ -557,8 +562,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					if (e.Index > -1 && e.Child is TreeDataGridRow row && row.Model is IModEntry mod)
 					{
 						//var index = ModsTreeDataGrid.Rows!.RowIndexToModelIndex(e.Index);
-						mod.Index = e.Index;
 						mod.IsActive = ViewModel.ListType == ModListType.Active;
+						mod.Index = e.Index;
 					}
 				}));
 
