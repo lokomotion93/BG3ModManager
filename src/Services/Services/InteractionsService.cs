@@ -20,6 +20,8 @@ public class InteractionsService : IInteractionsService
 	/// <inheritdoc/>
 	public Interaction<Unit, bool> DeleteSelectedMods { get; }
 	/// <inheritdoc/>
+	public Interaction<ForceAllowInLoadOrderRequest, bool> ForceAllowInLoadOrder { get; }
+	/// <inheritdoc/>
 	public Interaction<ModData, bool> OpenModProperties { get; }
 	/// <inheritdoc/>
 	public Interaction<bool, bool> OpenUpdatesWindow { get; }
@@ -47,6 +49,7 @@ public class InteractionsService : IInteractionsService
 		ConfirmModDeletion = new();
 		DeleteMods = new();
 		DeleteSelectedMods = new();
+		ForceAllowInLoadOrder = new();
 		OpenDownloadCollectionView = new();
 		OpenFileBrowserDialog = new();
 		OpenFolderBrowserDialog = new();

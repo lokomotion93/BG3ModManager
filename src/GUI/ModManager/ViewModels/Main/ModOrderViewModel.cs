@@ -1991,6 +1991,36 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			_settings.InactiveMods.Order.AddRange(InactiveMods, true);
 			_settings.TrySave(_settings.InactiveMods, out _);
 		});
+
+		_interactions.ForceAllowInLoadOrder.RegisterHandler(async req =>
+		{
+			var mod = req.Input.mod;
+			var forceAllow = req.Input.AddToOrder;
+
+			await Observable.Start(() =>
+			{
+				mod.ForceAllowInLoadOrder = forceAllow;
+
+				if (forceAllow)
+				{
+					QueueRemoval([mod.UUID], ModListType.Override);
+					AddActiveMod(mod.ToModInterface());
+				}
+				else
+				{
+					mod.IsActive = false;
+					SelectedModOrder?.Remove(mod.UUID);
+					QueueRemoval([mod.UUID], ModListType.Active);
+					QueueRemoval([mod.UUID], ModListType.Inactive);
+					if (!OverrideMods.Any(x => x.UUID == mod.UUID))
+					{
+						OverrideMods.Add(mod.ToModInterface());
+					}
+				}
+			}, RxApp.MainThreadScheduler);
+
+			req.SetOutput(true);
+		});
 	}
 }
 

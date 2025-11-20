@@ -27,6 +27,11 @@ public interface IInteractionsService
 	Interaction<Unit, bool> DeleteSelectedMods { get; }
 
 	/// <summary>
+	/// Add or remove an override mod to the load order.
+	/// </summary>
+	Interaction<ForceAllowInLoadOrderRequest, bool> ForceAllowInLoadOrder { get; }
+
+	/// <summary>
 	/// Open the mod properties view.
 	/// </summary>
 	Interaction<ModData, bool> OpenModProperties { get; }

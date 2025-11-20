@@ -149,10 +149,11 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 		OpenURL(url);
 	}
 
-	private static void ToggleForceAllowInLoadOrder(ModData? mod)
+	private async Task ToggleForceAllowInLoadOrderAsync(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
-		mod.ForceAllowInLoadOrder = !mod.ForceAllowInLoadOrder;
+		var b = !mod.ForceAllowInLoadOrder;
+		await _interactions.ForceAllowInLoadOrder.Handle(new(mod, b));
 	}
 
 	private void OpenModProperties(ModData? mod)
@@ -255,7 +256,7 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 		OpenGitHubPageCommand = ReactiveCommand.Create<ModData?>(OpenGitHubPage, canExecuteCommands);
 		OpenNexusModsPageCommand = ReactiveCommand.Create<ModData?>(OpenNexusModsPage, canExecuteCommands);
 		OpenModioPageCommand = ReactiveCommand.Create<ModData?>(OpenModioPage, canExecuteCommands);
-		ToggleForceAllowInLoadOrderCommand = ReactiveCommand.Create<ModData?>(ToggleForceAllowInLoadOrder, canExecuteCommands);
+		ToggleForceAllowInLoadOrderCommand = ReactiveCommand.CreateFromTask<ModData?>(ToggleForceAllowInLoadOrderAsync, canExecuteCommands);
 		CopyModAsDependencyCommand = ReactiveCommand.Create<ModData?>(CopyModAsDependency, canExecuteCommands);
 		OpenModPropertiesCommand = ReactiveCommand.Create<ModData?>(OpenModProperties, canExecuteCommands);
 		ValidateStatsCommand = ReactiveCommand.Create<ModData?>(StartValidateModStats, canExecuteCommands);
