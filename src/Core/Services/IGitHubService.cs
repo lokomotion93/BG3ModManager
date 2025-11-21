@@ -7,8 +7,10 @@ namespace ModManager;
 
 public interface IGitHubService
 {
-	Task<GitHubLatestReleaseData> GetLatestReleaseAsync(string owner, string repo);
+	Task<GitHubLatestReleaseData?> GetLatestReleaseAsync(string owner, string repo);
 	Task<Release?> GetLatestReleaseRawAsync(string owner, string repo);
 
 	Task<Dictionary<string, GitHubLatestReleaseData>> GetLatestDownloadsForModsAsync(IEnumerable<ModData> mods, CancellationToken token);
+
+	Task<MiscellaneousRateLimit> GetRateLimitsAsync();
 }

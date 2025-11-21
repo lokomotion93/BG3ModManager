@@ -29,7 +29,7 @@ public class GitHubService : IGitHubService
 		return assets.FirstOrDefault()?.BrowserDownloadUrl;
 	}
 
-	public async Task<GitHubLatestReleaseData> GetLatestReleaseAsync(string owner, string repo)
+	public async Task<GitHubLatestReleaseData?> GetLatestReleaseAsync(string owner, string repo)
 	{
 		var result = await _client.Repository.Release.GetLatest(owner, repo);
 		if (result != null)
@@ -99,6 +99,8 @@ public class GitHubService : IGitHubService
 
 		return results;
 	}
+
+	public Task<MiscellaneousRateLimit> GetRateLimitsAsync() => _client.RateLimit.GetRateLimits();
 
 	public GitHubService(IEnvironmentService environmentService)
 	{

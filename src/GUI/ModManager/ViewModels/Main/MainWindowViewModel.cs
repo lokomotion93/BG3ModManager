@@ -449,7 +449,15 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			var latestReleaseZipUrl = "";
 			DivinityApp.Log($"Checking for latest {DivinityApp.EXTENDER_UPDATER_FILE} release at 'https://github.com/{DivinityApp.EXTENDER_GITHUB_USER}/{DivinityApp.EXTENDER_GITHUB_REPO}'");
 
-			var latestRelease = await AppServices.Get<IGitHubService>().GetLatestReleaseRawAsync(DivinityApp.EXTENDER_GITHUB_USER, DivinityApp.EXTENDER_GITHUB_REPO);
+			var github = AppServices.Get<IGitHubService>();
+			var limits = await github.GetRateLimitsAsync();
+			if(limits.Resources.Core.Remaining <= 0)
+			{
+				DivinityApp.Log($"GitHub rate limit exceeded ({limits.Resources.Core.Remaining}/{limits.Resources.Core.Limit}). Skipping.");
+				OpenRepoLinkToDownload = true;
+				return false;
+			}
+			var latestRelease = await github.GetLatestReleaseRawAsync(DivinityApp.EXTENDER_GITHUB_USER, DivinityApp.EXTENDER_GITHUB_REPO);
 
 			if (latestRelease != null)
 			{
