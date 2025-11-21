@@ -1,6 +1,4 @@
-﻿using Avalonia.Threading;
-
-using DynamicData;
+﻿using DynamicData;
 using DynamicData.Binding;
 
 using ModManager.Locale;
@@ -295,8 +293,9 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 	private bool OpenRepoLinkToDownload { get; set; }
 
-	public void AskToDownloadScriptExtender()
+	public async Task AskToDownloadScriptExtender(CancellationToken token)
 	{
+		await CheckForLatestExtenderUpdaterRelease(token);
 		if (!OpenRepoLinkToDownload)
 		{
 			if (Settings.GameExecutablePath.IsExistingFile())
@@ -304,14 +303,12 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 				var exeDir = _fs.Path.GetDirectoryName(Settings.GameExecutablePath);
 				var messageText = Loca.MessageBox_ScriptExtenderDownloadConfirmation_Message.SafeFormat(@"Download and install the Script Extender?", PathwayData.ScriptExtenderLatestReleaseUrl, exeDir);
 
-				_interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ScriptExtenderDownloadConfirmation_Title, messageText,
-					InteractionMessageBoxType.YesNo)).Subscribe(result =>
+				var result = await _interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ScriptExtenderDownloadConfirmation_Title, messageText,
+					InteractionMessageBoxType.YesNo));
+				if (result)
 				{
-					if (result)
-					{
-						DownloadScriptExtender();
-					}
-				});
+					DownloadScriptExtender();
+				}
 			}
 			else
 			{
@@ -321,7 +318,10 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		else
 		{
 			DivinityApp.Log($"Getting a release download link failed for some reason. Opening repo url: {DivinityApp.EXTENDER_LATEST_URL}");
-			ProcessHelper.TryOpenUrl(DivinityApp.EXTENDER_LATEST_URL);
+			RxApp.MainThreadScheduler.Schedule(() =>
+			{
+				ProcessHelper.TryOpenUrl(DivinityApp.EXTENDER_LATEST_URL);
+			});
 		}
 	}
 
@@ -510,7 +510,6 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		DivinityApp.Log($"Loading extender settings.");
 		RxApp.TaskpoolScheduler.ScheduleAsync(async (c, t) =>
 		{
-			await CheckForLatestExtenderUpdaterRelease(t);
 			await LoadExtenderSettingsAsync(t);
 			UpdateExtender(true, t);
 			return Disposable.Empty;
