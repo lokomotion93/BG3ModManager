@@ -167,7 +167,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 			{
 				TotalFiles = 1
 			};
-			ViewModel.Progress.Start(async token =>
+			await ViewModel.Progress.Start(async token =>
 			{
 				var builtinMods = DivinityApp.IgnoredMods.Items.ToSafeDictionary(x => x.Folder);
 
@@ -262,7 +262,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		{
 			using var fileStream = _fs.FileStream.New(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
 			var buffer = new byte[fileStream.Length];
-			await fileStream.ReadAsync(buffer.AsMemory(0, buffer.Length), token);
+			await fileStream.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), token);
 			fileStream.Position = 0;
 
 			var modManager = AppServices.Mods;
@@ -311,7 +311,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		using (var fileStream = _fs.FileStream.New(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
 		{
 			var buffer = new byte[fileStream.Length];
-			await fileStream.ReadAsync(buffer.AsMemory(0, buffer.Length), token);
+			await fileStream.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), token);
 			fileStream.Position = 0;
 
 			Stream? decompressionStream = null;

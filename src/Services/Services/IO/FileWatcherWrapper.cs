@@ -1,7 +1,4 @@
-﻿using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
-using System.IO;
+﻿using System.IO;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 

@@ -192,7 +192,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		MaybeRedirectDrop(e);
 
-		if (e.Inner.Data.Get(DragInfo.DataFormat) is DragInfo di && di.Source.Selection is ITreeDataGridRowSelectionModel<IModEntry> selection)
+		if (e.Info is DragInfo di && di.Source.Selection is ITreeDataGridRowSelectionModel<IModEntry> selection)
 		{
 			e.Inner.DragEffects = DragDropEffects.Move;
 			foreach (var entry in selection.SelectedItems)
@@ -236,10 +236,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		MaybeRedirectDrop(e);
 
-		var dragData = e.Inner.Data.Get(DragInfo.DataFormat);
-
 		//List to List
-		if (dragData is DragInfo di
+		if (e.Info is DragInfo di
 			&& di.Source is HierarchicalTreeDataGridSource<IModEntry> listSource
 			&& ModsTreeDataGrid.Source is HierarchicalTreeDataGridSource<IModEntry> target)
 		{
@@ -276,6 +274,36 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	private void OnTreeDataGridDragStarted(TreeDataGridRowDragStartedEventArgs e)
 	{
 		_isDragging = true;
+	}
+
+	private void OnTreeDataGridSelectionChanged(TreeSelectionModelSelectionChangedEventArgs e)
+	{
+		foreach(var item in e.DeselectedItems)
+		{
+			if(item is IModEntry entry)
+			{
+				entry.IsSelected = false;
+			}
+		}
+
+		foreach(var item in e.SelectedItems)
+		{
+			if (item is IModEntry entry)
+			{
+				entry.IsSelected = true;
+			}
+		}
+	}
+
+	private void OnTreeDataGridSourceReset(TreeSelectionModelSourceResetEventArgs e)
+	{
+		if(ViewModel != null)
+		{
+			foreach (var entry in ViewModel.Mods.Items)
+			{
+				entry.IsSelected = false;
+			}
+		}
 	}
 
 	private static void OnError(Exception ex)
@@ -375,7 +403,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 		if (e.DragEffects.HasFlag(DragDropEffects.Copy))
 		{
-			var droppedFiles = e.Data.GetFiles();
+			var droppedFiles = e.DataTransfer.TryGetFiles();
 			if (droppedFiles != null)
 			{
 				List<string> files = [];
@@ -400,7 +428,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			return;
 		}
 		var canImport = false;
-		var files = e.Data.GetFiles();
+		var files = e.DataTransfer.TryGetFiles();
 		if (files != null)
 		{
 			foreach (var file in files)
@@ -486,6 +514,18 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				var modContainerContext = this.FindResource("ModContainerMenuFlyout");
 				var modThickness = new Thickness(0);
 				var modContainerThickness = new Thickness(0, 0, 0, 1);
+
+				d(Observable.FromEvent<EventHandler<TreeSelectionModelSelectionChangedEventArgs>, TreeSelectionModelSelectionChangedEventArgs>(
+					h => (sender, e) => h(e),
+					h => ModsTreeDataGrid.RowSelection!.SelectionChanged += h,
+					h => ModsTreeDataGrid.RowSelection!.SelectionChanged -= h
+				).Subscribe(OnTreeDataGridSelectionChanged));
+
+				d(Observable.FromEvent<EventHandler<TreeSelectionModelSourceResetEventArgs>, TreeSelectionModelSourceResetEventArgs>(
+					h => (sender, e) => h(e),
+					h => ModsTreeDataGrid.RowSelection!.SourceReset += h,
+					h => ModsTreeDataGrid.RowSelection!.SourceReset -= h
+				).Subscribe(OnTreeDataGridSourceReset));
 
 				void PrepareRow(TreeDataGridRow row, IModEntry entry)
 				{

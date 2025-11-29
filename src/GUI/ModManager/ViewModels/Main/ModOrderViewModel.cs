@@ -2053,6 +2053,16 @@ public class DesignModOrderViewModel : ModOrderViewModel
 		};
 		_manager.Add(campaignMod);
 
+		var count = ModelGlobals.TestMods.Count / 2;
+		for(var i = 0; i < count; i++)
+		{
+			ActiveMods.Add(ModelGlobals.TestMods[i]);
+		}
+		for(var i = count; i < ModelGlobals.TestMods.Count; i++)
+		{
+			InactiveMods.Add(ModelGlobals.TestMods[i]);
+		}
+
 		SelectedProfile = testProfile;
 		SelectedModOrder = ModOrderList[0];
 		SelectedAdventureMod = campaignMod;

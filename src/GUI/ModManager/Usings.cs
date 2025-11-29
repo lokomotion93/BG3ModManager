@@ -1,10 +1,11 @@
 ﻿global using Avalonia;
 global using Avalonia.Controls;
-global using Avalonia.ReactiveUI;
+global using ReactiveUI.Avalonia;
 global using Avalonia.Input;
 
 global using ReactiveUI;
 global using ReactiveUI.Fody.Helpers;
+//global using ReactiveUI.SourceGenerators;
 
 global using Splat;
 
@@ -27,6 +28,7 @@ global using System.Linq;
 global using System.Reactive;
 global using System.Reactive.Concurrency;
 global using System.Reactive.Disposables;
+global using System.Reactive.Disposables.Fluent;
 global using System.Reactive.Linq;
 global using System.Threading;
 global using System.Threading.Tasks;

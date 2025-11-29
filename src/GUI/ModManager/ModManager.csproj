@@ -29,18 +29,19 @@
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Avalonia.Desktop" />
 		<PackageReference Include="Avalonia.Fonts.Inter" />
-		<PackageReference Include="Avalonia.ReactiveUI" />
+		<PackageReference Include="ReactiveUI.Avalonia" />
 		<PackageReference Include="Svg.Controls.Skia.Avalonia" />
 		<PackageReference Include="Avalonia.Themes.Fluent" />
 		<PackageReference Include="Xaml.Behaviors.Avalonia" />
 		<PackageReference Include="Xaml.Behaviors.Interactions" />
 		<PackageReference Include="Avalonia.Labs.Controls" />
 		<PackageReference Include="Material.Icons.Avalonia" />
-		<PackageReference Include="ConfigureAwait.Fody" PrivateAssets="all" />
 		<PackageReference Include="DynamicData" />
 		<PackageReference Include="Humanizer.Core" />
 		<PackageReference Include="ReactiveUI" />
 		<PackageReference Include="ReactiveUI.Fody" />
+		<PackageReference Include="ConfigureAwait.Fody" PrivateAssets="all" />
+		<!--<PackageReference Include="ReactiveUI.SourceGenerators" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />-->
 		<PackageReference Include="ReactiveUI.Validation" />
 		<PackageReference Include="SharpCompress" />
 		<PackageReference Include="Splat" />

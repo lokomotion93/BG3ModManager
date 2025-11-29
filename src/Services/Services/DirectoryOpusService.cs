@@ -1,11 +1,7 @@
 ﻿using ModManager.Services.Dopus;
 
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 using System.Diagnostics;
 using System.IO;
-using System.Reactive.Linq;
 
 namespace ModManager.Services;
 

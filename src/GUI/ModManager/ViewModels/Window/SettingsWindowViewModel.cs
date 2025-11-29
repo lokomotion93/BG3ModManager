@@ -355,7 +355,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 
 		this.WhenAnyValue(x => x.SelectedTabIndex).Select(SelectedTabToResetTooltip).ToUIProperty(this, x => x.ResetSettingsCommandToolTip);
 
-		ExtenderSettings.WhenAnyValue(x => x.DeveloperMode).Select(PropertyConverters.BoolToVisibility).ToUIProperty(this, x => x.DeveloperModeVisibility);
+		ExtenderSettings.WhenAnyValue(x => x.DeveloperMode).ToUIProperty(this, x => x.DeveloperModeVisibility);
 
 		this.WhenAnyValue(x => x.ExtenderUpdaterSettings.UpdaterIsAvailable)
 			.ToUIProperty(this, x => x.ExtenderTabVisibility);

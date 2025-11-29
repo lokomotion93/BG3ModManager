@@ -882,7 +882,7 @@ public static partial class ModDataLoader
 		{
 			await using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.Asynchronous);
 			var buffer = new byte[fs.Length];
-			await fs.ReadAsync(buffer.AsMemory(0, buffer.Length), token);
+			await fs.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), token);
 			fs.Position = 0;
 			var resource = ResourceUtils.LoadResource(fs, resourceFormat, resourceParams ?? _loadParams);
 			return resource;

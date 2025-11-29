@@ -13,9 +13,6 @@ using NexusModsNET;
 using NexusModsNET.DataModels;
 using NexusModsNET.DataModels.GraphQL.Query;
 
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 using System.IO;
 using System.Net;
 using System.Net.Http;

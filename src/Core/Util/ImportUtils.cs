@@ -75,7 +75,7 @@ public static class ImportUtils
 				var info = NexusModFileVersionData.FromFilePath(options.FilePath);
 
 				var buffer = new byte[fileStream.Length];
-				await fileStream.ReadAsync(buffer.AsMemory(0, buffer.Length), options.Token);
+				await fileStream.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), options.Token);
 				fileStream.Position = 0;
 				options.ReportProgress?.Invoke(taskStepAmount);
 				using var archive = ArchiveFactory.Open(fileStream, _importReaderOptions);

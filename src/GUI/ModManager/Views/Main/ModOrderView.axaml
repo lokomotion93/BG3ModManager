@@ -15,6 +15,9 @@
     Background="Transparent"
     Focusable="True"
     mc:Ignorable="d">
+	<Design.DataContext>
+		<vm:DesignModOrderViewModel />
+	</Design.DataContext>
 	<UserControl.Styles>
 		<Style Selector="mv|ModListView">
 			<Setter Property="Margin" Value="8,0,8,0" />

@@ -1,12 +1,8 @@
 ﻿using DynamicData;
-using DynamicData.Binding;
 
 using ModManager.Models;
 using ModManager.Models.Mod;
 using ModManager.Util;
-
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 using System.Diagnostics.CodeAnalysis;
 using System.IO;

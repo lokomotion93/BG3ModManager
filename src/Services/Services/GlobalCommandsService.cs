@@ -1,13 +1,9 @@
 ﻿using ModManager.Models.Mod;
 using ModManager.Util;
 
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Runtime.InteropServices;
 
 using TextCopy;
 

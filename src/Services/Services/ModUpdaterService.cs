@@ -6,13 +6,9 @@ using ModManager.ModUpdater;
 using ModManager.ModUpdater.Cache;
 using ModManager.Util;
 
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ModManager.Services;
 public class ModUpdaterService : ReactiveObject, IModUpdaterService

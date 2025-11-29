@@ -1,4 +1,5 @@
 ﻿global using ReactiveUI;
+//global using ReactiveUI.SourceGenerators;
 global using ReactiveUI.Fody.Helpers;
 
 global using System;
@@ -11,6 +12,7 @@ global using System.Net.Http;
 global using System.Reactive;
 global using System.Reactive.Concurrency;
 global using System.Reactive.Disposables;
+global using System.Reactive.Disposables.Fluent;
 global using System.Reactive.Linq;
 global using System.Threading;
 global using System.Threading.Tasks;

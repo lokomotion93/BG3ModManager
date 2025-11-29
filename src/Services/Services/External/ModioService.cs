@@ -1,14 +1,9 @@
-﻿using DynamicData.Binding;
-
-using Modio;
+﻿using Modio;
 using Modio.Filters;
 using Modio.Models;
 
 using ModManager.Models.Mod;
 using ModManager.Models.Updates;
-
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 using System.Diagnostics.CodeAnalysis;
 using System.IO;

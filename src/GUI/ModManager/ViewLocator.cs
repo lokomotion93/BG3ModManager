@@ -72,6 +72,8 @@ public class ViewLocator : IViewLocator, IDataTemplate
 
 		//Register<DownloadActivityBarViewModel, DownloadActivityBar>(resolver);
 
+		resolver.Register(() => new ModContainerEntryView(), typeof(IViewFor<ModContainer>));
+		resolver.Register(() => new ModEntryView(), typeof(IViewFor<ModEntry>));
 		resolver.Register(() => new StatsValidatorFileEntryView(), typeof(IViewFor<StatsValidatorFileResults>));
 		resolver.Register(() => new StatsValidatorEntryView(), typeof(IViewFor<StatsValidatorErrorEntry>));
 		resolver.Register(() => new StatsValidatorLineText(), typeof(IViewFor<StatsValidatorLineView>));

@@ -1,20 +1,9 @@
-﻿using DynamicData;
+﻿using ModManager.Locale;
 
-using ModManager.Locale;
-
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModManager.Services;
 

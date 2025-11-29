@@ -8,14 +8,14 @@ namespace ModManager.Windows
 {
     partial class MainWindow
     {
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         internal global::Avalonia.Controls.Primitives.VisualLayerManager PART_VisualLayerManager;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         internal global::SukiUI.Controls.SukiToastHost ToastHost;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         internal global::SukiUI.Controls.SukiDialogHost DialogHost;
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
-        internal global::Avalonia.ReactiveUI.RoutedViewHost ViewHost;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::ReactiveUI.Avalonia.RoutedViewHost ViewHost;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -23,7 +23,7 @@ namespace ModManager.Windows
         /// <param name="loadXaml">Should the XAML be loaded into the component.</param>
         /// <param name="attachDevTools">Should the dev tools be attached.</param>
 
-        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.6.0")]
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public void InitializeComponent(bool loadXaml = true, bool attachDevTools = true)
         {
@@ -43,7 +43,7 @@ namespace ModManager.Windows
             PART_VisualLayerManager = __thisNameScope__?.Find<global::Avalonia.Controls.Primitives.VisualLayerManager>("PART_VisualLayerManager");
             ToastHost = __thisNameScope__?.Find<global::SukiUI.Controls.SukiToastHost>("ToastHost");
             DialogHost = __thisNameScope__?.Find<global::SukiUI.Controls.SukiDialogHost>("DialogHost");
-            ViewHost = __thisNameScope__?.Find<global::Avalonia.ReactiveUI.RoutedViewHost>("ViewHost");
+            ViewHost = __thisNameScope__?.Find<global::ReactiveUI.Avalonia.RoutedViewHost>("ViewHost");
         }
     }
 }

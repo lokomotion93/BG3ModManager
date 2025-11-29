@@ -1,4 +1,6 @@
-﻿using ModManager.Services;
+﻿using ZiggyCreatures.Caching.Fusion;
+
+using ModManager.Services;
 
 using System.IO.Abstractions;
 using System.Net.Http;
@@ -16,6 +18,7 @@ public static class SplatContainerExtensions
 		var env = new EnvironmentService();
 		var fileSystem = new FileSystem();
 		var fileSystemService = new FileSystemService(fileSystem);
+		services.RegisterLazySingleton<IFusionCache>(() => new FusionCache(new FusionCacheOptions()));
 
 		SplatRegistrations.RegisterConstant<IEnvironmentService>(env);
 
