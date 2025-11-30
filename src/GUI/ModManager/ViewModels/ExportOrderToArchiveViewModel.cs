@@ -17,11 +17,11 @@ public enum ExportOrderFileType
 	TSV
 }
 
-public class ExportOrderFileEntry : ReactiveObject
+public partial class ExportOrderFileEntry : ReactiveObject
 {
-	[Reactive] public bool IsSelected { get; set; }
-	[Reactive] public bool IsVisible { get; set; }
-	[Reactive] public ModData? Mod { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
+	[Reactive] public partial ModData? Mod { get; set; }
 
 	public ExportOrderFileEntry()
 	{
@@ -30,11 +30,11 @@ public class ExportOrderFileEntry : ReactiveObject
 	}
 }
 
-public class ExportOrderToArchiveViewModel : BaseProgressViewModel
+public partial class ExportOrderToArchiveViewModel : BaseProgressViewModel
 {
-	[Reactive] public string? OutputPath { get; set; }
-	[Reactive] public bool IncludeOverrides { get; set; }
-	[Reactive] public ExportOrderFileType SelectedOrderType { get; set; }
+	[Reactive] public partial string? OutputPath { get; set; }
+	[Reactive] public partial bool IncludeOverrides { get; set; }
+	[Reactive] public partial ExportOrderFileType SelectedOrderType { get; set; }
 
 	private readonly ObservableCollectionExtended<ExportOrderFileType> _orderTypes;
 
@@ -45,9 +45,9 @@ public class ExportOrderToArchiveViewModel : BaseProgressViewModel
 	protected ReadOnlyObservableCollection<ExportOrderFileEntry> _visibleEntries;
 	public ReadOnlyObservableCollection<ExportOrderFileEntry> Entries => _visibleEntries;
 
-	[ObservableAsProperty] public bool AnySelected { get; }
-	[ObservableAsProperty] public bool AllSelected { get; }
-	[ObservableAsProperty] public string? SelectAllTooltip { get; }
+	[ObservableAsProperty] public partial bool AnySelected { get; }
+	[ObservableAsProperty] public partial bool AllSelected { get; }
+	[ObservableAsProperty] public partial string? SelectAllToolTip { get; }
 
 	public RxCommandUnit SelectAllCommand { get; private set; }
 
@@ -87,9 +87,9 @@ public class ExportOrderToArchiveViewModel : BaseProgressViewModel
 		changeSet.Filter(x => x.IsVisible).ObserveOn(RxApp.MainThreadScheduler).Bind(out _visibleEntries).Subscribe();
 
 		var filesChanged = changeSet.AutoRefresh(x => x.IsSelected).ToCollection().Throttle(TimeSpan.FromMilliseconds(50)).ObserveOn(RxApp.MainThreadScheduler);
-		filesChanged.Select(x => x.Any(y => y.IsSelected)).ToUIProperty(this, x => x.AnySelected);
-		filesChanged.Select(x => x.All(y => y.IsSelected)).ToUIProperty(this, x => x.AllSelected);
-		this.WhenAnyValue(x => x.AllSelected).Select(b => $"{(b ? "Deselect" : "Select")} All").ToUIProperty(this, x => x.SelectAllTooltip);
+		_anySelectedHelper = filesChanged.Select(x => x.Any(y => y.IsSelected)).ToUIProperty(this, x => x.AnySelected);
+		_allSelectedHelper = filesChanged.Select(x => x.All(y => y.IsSelected)).ToUIProperty(this, x => x.AllSelected);
+		_selectAllToolTipHelper = this.WhenAnyValue(x => x.AllSelected).Select(b => $"{(b ? "Deselect" : "Select")} All").ToUIProperty(this, x => x.SelectAllToolTip);
 
 		SelectAllCommand = ReactiveCommand.Create(ToggleSelectAll, RunCommand.IsExecuting.Select(b => !b), RxApp.MainThreadScheduler);
 

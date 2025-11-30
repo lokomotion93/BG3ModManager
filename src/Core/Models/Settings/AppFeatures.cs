@@ -2,12 +2,12 @@
 
 namespace ModManager.Models.Settings;
 
-public class AppFeatures : ReactiveObject
+public partial class AppFeatures : ReactiveObject
 {
-	[Reactive] public bool ScriptExtender { get; set; }
-	[Reactive] public bool GitHub { get; set; }
-	[Reactive] public bool NexusMods { get; set; }
-	[Reactive] public bool Modio { get; set; }
+	[Reactive] public partial bool ScriptExtender { get; set; }
+	[Reactive] public partial bool GitHub { get; set; }
+	[Reactive] public partial bool NexusMods { get; set; }
+	[Reactive] public partial bool Modio { get; set; }
 
 	private static readonly List<PropertyInfo> _props = typeof(AppFeatures)
 		.GetRuntimeProperties()

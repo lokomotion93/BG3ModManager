@@ -1,6 +1,5 @@
 ﻿global using ReactiveUI;
-//global using ReactiveUI.SourceGenerators;
-global using ReactiveUI.Fody.Helpers;
+global using ReactiveUI.SourceGenerators;
 
 global using System;
 global using System.Collections;

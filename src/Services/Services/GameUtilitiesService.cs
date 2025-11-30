@@ -4,11 +4,11 @@ using System.Reactive.Linq;
 
 namespace ModManager.Services;
 
-public class GameUtilitiesService : ReactiveObject, IGameUtilitiesService
+public partial class GameUtilitiesService : ReactiveObject, IGameUtilitiesService
 {
-	[Reactive] public bool GameIsRunning { get; private set; }
-	[Reactive] public TimeSpan ProcessCheckInterval { get; set; }
-	[ObservableAsProperty] public bool IsActive { get; }
+	[Reactive] public partial bool GameIsRunning { get; private set; }
+	[Reactive] public partial TimeSpan ProcessCheckInterval { get; set; }
+	[ObservableAsProperty] public partial bool IsActive { get; }
 
 	private IDisposable? _backgroundCheckTask;
 
@@ -48,7 +48,7 @@ public class GameUtilitiesService : ReactiveObject, IGameUtilitiesService
 	public GameUtilitiesService()
 	{
 		var whenInterval = this.WhenAnyValue(x => x.ProcessCheckInterval);
-		whenInterval.Select(x => x.Ticks > 0).ToPropertyEx(this, x => x.IsActive);
+		_isActiveHelper = whenInterval.Select(x => x.Ticks > 0).ToProperty(this, x => x.IsActive);
 		whenInterval.Subscribe(interval =>
 		{
 			_backgroundCheckTask?.Dispose();

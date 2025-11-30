@@ -12,26 +12,26 @@ using System.ComponentModel;
 
 namespace ModManager.ViewModels;
 
-public class ModPropertiesWindowViewModel : ReactiveObject
+public partial class ModPropertiesWindowViewModel : ReactiveObject
 {
-	[Reactive] public string? Title { get; set; }
-	[Reactive] public bool IsVisible { get; set; }
-	[Reactive] public bool Locked { get; set; }
-	[Reactive] public bool HasChanges { get; private set; }
-	[Reactive] public ModData? Mod { get; set; }
-	[Reactive] public string? Notes { get; set; }
-	[Reactive] public string? Repository { get; set; }
-	[Reactive] public long NexusModsId { get; set; }
-	[Reactive] public string? ModioId { get; set; }
+	[Reactive] public partial string? Title { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
+	[Reactive] public partial bool Locked { get; set; }
+	[Reactive] public partial bool HasChanges { get; private set; }
+	[Reactive] public partial ModData? Mod { get; set; }
+	[Reactive] public partial string? Notes { get; set; }
+	[Reactive] public partial string? Repository { get; set; }
+	[Reactive] public partial long NexusModsId { get; set; }
+	[Reactive] public partial string? ModioId { get; set; }
 
-	[ObservableAsProperty] public string? ModFileName { get; }
-	[ObservableAsProperty] public string? ModName { get; }
-	[ObservableAsProperty] public string? ModDescription { get; }
-	[ObservableAsProperty] public string? ModType { get; }
-	[ObservableAsProperty] public string? ModSizeText { get; }
-	[ObservableAsProperty] public string? ModFilePath { get; }
-	[ObservableAsProperty] public bool IsEditorMod { get; }
-	[ObservableAsProperty] public bool GitHubPlaceholderLabelVisibility { get; }
+	[ObservableAsProperty] public partial string? ModFileName { get; }
+	[ObservableAsProperty] public partial string? ModName { get; }
+	[ObservableAsProperty] public partial string? ModDescription { get; }
+	[ObservableAsProperty] public partial string? ModType { get; }
+	[ObservableAsProperty] public partial string? ModSizeText { get; }
+	[ObservableAsProperty] public partial string? ModFilePath { get; }
+	[ObservableAsProperty] public partial bool IsEditorMod { get; }
+	[ObservableAsProperty] public partial bool GitHubPlaceholderLabelVisibility { get; }
 
 	public RxCommandUnit OKCommand { get; }
 	public RxCommandUnit CancelCommand { get; }
@@ -150,13 +150,13 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 
 		whenModSet.Subscribe(LoadConfigProperties);
 
-		whenModSet.Select(GetModType).ToUIProperty(this, x => x.ModType);
-		whenModSet.Select(GetModSize).ToUIProperty(this, x => x.ModSizeText);
-		whenModSet.Select(GetModFilePath).ToUIProperty(this, x => x.ModFilePath);
-		whenModSet.Select(x => x.IsLooseMod).ToUIProperty(this, x => x.IsEditorMod);
-		whenModSet.Select(x => x.FileName).ToUIProperty(this, x => x.ModFileName);
-		whenModSet.Select(x => x.Name).ToUIProperty(this, x => x.ModName);
-		whenModSet.Select(x => x.Description).ToUIProperty(this, x => x.ModDescription);
+		_modTypeHelper = whenModSet.Select(GetModType).ToUIProperty(this, x => x.ModType);
+		_modSizeTextHelper = whenModSet.Select(GetModSize).ToUIProperty(this, x => x.ModSizeText);
+		_modFilePathHelper = whenModSet.Select(GetModFilePath).ToUIProperty(this, x => x.ModFilePath);
+		_isEditorModHelper = whenModSet.Select(x => x.IsLooseMod).ToUIProperty(this, x => x.IsEditorMod);
+		_modFileNameHelper = whenModSet.Select(x => x.FileName).ToUIProperty(this, x => x.ModFileName);
+		_modNameHelper = whenModSet.Select(x => x.Name).ToUIProperty(this, x => x.ModName);
+		_modDescriptionHelper = whenModSet.Select(x => x.Description).ToUIProperty(this, x => x.ModDescription);
 
 		var autoSaveProperties = new HashSet<string>()
 		{
@@ -182,7 +182,7 @@ public class ModPropertiesWindowViewModel : ReactiveObject
 			HasChanges = true;
 		});
 
-		this.WhenAnyValue(x => x.Repository).Select(x => !x.IsValid())
+		_gitHubPlaceholderLabelVisibilityHelper = this.WhenAnyValue(x => x.Repository).Select(x => !x.IsValid())
 			.ToUIProperty(this, x => x.GitHubPlaceholderLabelVisibility);
 
 		var whenHasChanges = this.WhenAnyValue(x => x.HasChanges);

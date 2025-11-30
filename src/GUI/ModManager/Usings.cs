@@ -4,8 +4,7 @@ global using ReactiveUI.Avalonia;
 global using Avalonia.Input;
 
 global using ReactiveUI;
-global using ReactiveUI.Fody.Helpers;
-//global using ReactiveUI.SourceGenerators;
+global using ReactiveUI.SourceGenerators;
 
 global using Splat;
 

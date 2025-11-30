@@ -18,22 +18,22 @@ public class FileDeletionCompleteEventArgs : EventArgs
 	}
 }
 
-public class DeleteFilesViewModel : BaseProgressViewModel, IRoutableViewModel
+public partial class DeleteFilesViewModel : BaseProgressViewModel, IRoutableViewModel
 {
 	public string UrlPathSegment => "deletefiles";
 	public IScreen HostScreen { get; }
 
-	[Reactive] public bool PermanentlyDelete { get; set; }
-	[Reactive] public bool RemoveFromLoadOrder { get; set; }
-	[Reactive] public bool IsDeletingDuplicates { get; set; }
+	[Reactive] public partial bool PermanentlyDelete { get; set; }
+	[Reactive] public partial bool RemoveFromLoadOrder { get; set; }
+	[Reactive] public partial bool IsDeletingDuplicates { get; set; }
 
 	public ObservableCollectionExtended<ModFileDeletionData> Files { get; set; } = [];
 
-	[ObservableAsProperty] public bool AnySelected { get; }
-	[ObservableAsProperty] public bool AllSelected { get; }
-	[ObservableAsProperty] public string? SelectAllTooltip { get; }
-	[ObservableAsProperty] public string? Title { get; }
-	[ObservableAsProperty] public bool RemoveFromLoadOrderVisibility { get; }
+	[ObservableAsProperty] public partial bool AnySelected { get; }
+	[ObservableAsProperty] public partial bool AllSelected { get; }
+	[ObservableAsProperty] public partial string? SelectAllToolTip { get; }
+	[ObservableAsProperty] public partial string? Title { get; }
+	[ObservableAsProperty] public partial bool RemoveFromLoadOrderVisibility { get; }
 
 	public RxCommandUnit SelectAllCommand { get; private set; }
 
@@ -124,13 +124,13 @@ public class DeleteFilesViewModel : BaseProgressViewModel, IRoutableViewModel
 		RemoveFromLoadOrder = true;
 		PermanentlyDelete = false;
 
-		this.WhenAnyValue(x => x.IsDeletingDuplicates).ToUIProperty(this, x => x.RemoveFromLoadOrderVisibility);
-		this.WhenAnyValue(x => x.IsDeletingDuplicates).Select(b => !b ? "Files to Delete" : "Duplicate Mods to Delete").ToUIProperty(this, x => x.Title);
+		_removeFromLoadOrderVisibilityHelper = this.WhenAnyValue(x => x.IsDeletingDuplicates).ToUIProperty(this, x => x.RemoveFromLoadOrderVisibility);
+		_titleHelper = this.WhenAnyValue(x => x.IsDeletingDuplicates).Select(b => !b ? "Files to Delete" : "Duplicate Mods to Delete").ToUIProperty(this, x => x.Title);
 
 		var filesChanged = Files.ToObservableChangeSet().AutoRefresh(x => x.IsSelected).ToCollection().Throttle(TimeSpan.FromMilliseconds(50)).ObserveOn(RxApp.MainThreadScheduler);
-		filesChanged.Select(x => x.Any(y => y.IsSelected)).ToUIProperty(this, x => x.AnySelected);
-		filesChanged.Select(x => x.All(y => y.IsSelected)).ToUIProperty(this, x => x.AllSelected);
-		this.WhenAnyValue(x => x.AllSelected).Select(b => $"{(b ? "Deselect" : "Select")} All").ToUIProperty(this, x => x.SelectAllTooltip);
+		_anySelectedHelper = filesChanged.Select(x => x.Any(y => y.IsSelected)).ToUIProperty(this, x => x.AnySelected);
+		_allSelectedHelper = filesChanged.Select(x => x.All(y => y.IsSelected)).ToUIProperty(this, x => x.AllSelected);
+		_selectAllToolTipHelper = this.WhenAnyValue(x => x.AllSelected).Select(b => $"{(b ? "Deselect" : "Select")} All").ToUIProperty(this, x => x.SelectAllToolTip);
 
 		SelectAllCommand = ReactiveCommand.Create(ToggleSelectAll, RunCommand.IsExecuting.Select(b => !b), RxApp.MainThreadScheduler);
 

@@ -6,12 +6,12 @@ using System.IO;
 namespace ModManager.Services;
 
 /// <inheritdoc />
-public class DirectoryOpusService : ReactiveObject, IDirectoryOpusService
+public partial class DirectoryOpusService : ReactiveObject, IDirectoryOpusService
 {
 	private readonly IRegistryService _reg;
 	private readonly IFileSystemService _fs;
 
-	[Reactive] public bool IsEnabled { get; private set; }
+	[Reactive] public partial bool IsEnabled { get; private set; }
 
 	public DirectoryOpusService(IRegistryService registryService, IFileSystemService fs)
 	{

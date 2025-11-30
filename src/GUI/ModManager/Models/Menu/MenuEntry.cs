@@ -5,14 +5,14 @@ using Material.Icons;
 using System.Windows.Input;
 
 namespace ModManager.Models.Menu;
-public class MenuEntry : ReactiveObject, IMenuEntry
+public partial class MenuEntry : ReactiveObject, IMenuEntry
 {
-	[Reactive] public string? DisplayName { get; set; }
-	[Reactive] public string? ToolTip { get; set; }
-	[Reactive] public ICommand? Command { get; set; }
-	[Reactive] public bool UseAccessShortcut { get; set; }
-	[Reactive] public MaterialIconKind? MaterialIcon { get; set; }
-	[Reactive] public string? IconForeground { get; set; }
+	[Reactive] public partial string? DisplayName { get; set; }
+	[Reactive] public partial string? ToolTip { get; set; }
+	[Reactive] public partial ICommand? Command { get; set; }
+	[Reactive] public partial bool UseAccessShortcut { get; set; }
+	[Reactive] public partial MaterialIconKind? MaterialIcon { get; set; }
+	[Reactive] public partial string? IconForeground { get; set; }
 
 	public ObservableCollectionExtended<IMenuEntry>? Children { get; set; }
 

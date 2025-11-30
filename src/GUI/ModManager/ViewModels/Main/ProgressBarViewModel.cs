@@ -27,21 +27,21 @@ public interface IProgressBarViewModel : IRoutableViewModel
 	void IncreaseValue(double amount, string? workText = null);
 }
 
-public class ProgressBarViewModel : ReactiveObject, IProgressBarViewModel
+public partial class ProgressBarViewModel : ReactiveObject, IProgressBarViewModel
 {
 	public string UrlPathSegment => "mainprogress";
 	public IScreen HostScreen { get; }
 
 	[Reactive] private CancellationTokenSource? TokenSource { get; set; }
 
-	[Reactive] public bool IsVisible { get; set; }
-	[Reactive] public string? Title { get; set; }
-	[Reactive] public string? WorkText { get; set; }
-	[Reactive] public double Value { get; set; }
-	[Reactive] public bool CanCancel { get; private set; }
+	[Reactive] public partial bool IsVisible { get; set; }
+	[Reactive] public partial string? Title { get; set; }
+	[Reactive] public partial string? WorkText { get; set; }
+	[Reactive] public partial double Value { get; set; }
+	[Reactive] public partial bool CanCancel { get; private set; }
 
-	[Reactive] public CancellationToken Token { get; private set; }
-	[Reactive] public IRoutableViewModel? NextView { get; set; }
+	[Reactive] public partial CancellationToken Token { get; private set; }
+	[Reactive] public partial IRoutableViewModel? NextView { get; set; }
 
 	private ReactiveCommand<Func<CancellationToken, Task>, Unit> RunCommand { get; }
 	public RxCommandUnit CancelCommand { get; }

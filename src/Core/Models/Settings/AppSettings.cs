@@ -2,10 +2,10 @@
 
 namespace ModManager.Models.Settings;
 
-public class AppSettings : ReactiveObject
+public partial class AppSettings : ReactiveObject
 {
-	[Reactive] public DefaultPathwayData DefaultPathways { get; set; }
-	[Reactive] public AppFeatures Features { get; set; }
+	[Reactive] public partial DefaultPathwayData DefaultPathways { get; set; }
+	[Reactive] public partial AppFeatures Features { get; set; }
 
 	public static string GetDirectory() => DivinityApp.GetAppDirectory("Resources");
 

@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 namespace ModManager.Models.Settings;
 
 [DataContract]
-public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializableSettings, IJsonOnDeserialized
+public partial class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializableSettings, IJsonOnDeserialized
 {
 	[SettingsEntry(nameof(Resources.Settings_GameDataPath), nameof(Resources.Settings_GameDataPath_ToolTip))]
 	[DataMember, Reactive] public string? GameDataPath { get; set; }
@@ -94,10 +94,10 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[DataMember, Reactive] public bool DisableMissingModWarnings { get; set; }
 
 	[DefaultValue(false)]
-	[Reactive] public bool DisplayFileNames { get; set; }
+	[Reactive] public partial bool DisplayFileNames { get; set; }
 
 	[DefaultValue(false)]
-	[Reactive, DataMember] public bool DebugModeEnabled { get; set; }
+	[Reactive, DataMember] public partial bool DebugModeEnabled { get; set; }
 
 	[DefaultValue("")]
 	[DataMember, Reactive] public string? GameLaunchParams { get; set; }
@@ -119,23 +119,23 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 	[DefaultValue("en")]
 	[DataMember, Reactive] public string? Language { get; set; }
 	public ObservableCollectionExtended<CultureInfo> Languages { get; }
-	[Reactive] public CultureInfo? SelectedLanguage { get; set; }
+	[Reactive] public partial CultureInfo? SelectedLanguage { get; set; }
 
 	[DataMember, Reactive] public ModManagerUpdateSettings UpdateSettings { get; set; }
 	[DataMember, Reactive] public WindowSettings Window { get; set; }
 	[DataMember, Reactive] public ConfirmationSettings Confirmations { get; set; }
 
-	[Reactive] public bool Loaded { get; set; }
-	[Reactive] public bool SettingsWindowIsOpen { get; set; }
+	[Reactive] public partial bool Loaded { get; set; }
+	[Reactive] public partial bool SettingsWindowIsOpen { get; set; }
 
-	[Reactive] public string? DefaultExtenderLogDirectory { get; set; }
-	[Reactive] public string? ExtenderLogDirectory { get; set; }
+	[Reactive] public partial string? DefaultExtenderLogDirectory { get; set; }
+	[Reactive] public partial string? ExtenderLogDirectory { get; set; }
 
-	[Reactive] public int LaunchTypeIndex { get; set; }
-	[Reactive] public int ActionOnGameLaunchIndex { get; set; }
-	[Reactive] public int ThemeIndex { get; set; }
+	[Reactive] public partial int LaunchTypeIndex { get; set; }
+	[Reactive] public partial int ActionOnGameLaunchIndex { get; set; }
+	[Reactive] public partial int ThemeIndex { get; set; }
 
-	[ObservableAsProperty] public bool IsCustomLaunchEnabled { get; }
+	[ObservableAsProperty] public partial bool IsCustomLaunchEnabled { get; }
 
 	[JsonExtensionData]
 	private IDictionary<string, object>? Extras { get; set; }
@@ -176,6 +176,8 @@ public class ModManagerSettings : BaseSettings<ModManagerSettings>, ISerializabl
 			CultureInfo.GetCultureInfo("ru"),
 			CultureInfo.GetCultureInfo("zh-Hans"),
 		];
+
+		_isCustomLaunchEnabledHelper = this.WhenAnyValue(x => x.LaunchType, x => x == LaunchGameType.Custom).ToUIPropertyImmediate(this, x => x.IsCustomLaunchEnabled);
 		//var langs = CultureInfo.GetCultures(CultureTypes.NeutralCultures).Where(x => x != CultureInfo.InvariantCulture).DistinctBy(x => x.LCID).OrderByDescending(x => x.EnglishName.IndexOf("English") > -1);
 		//Languages.AddRange(langs);
 	}

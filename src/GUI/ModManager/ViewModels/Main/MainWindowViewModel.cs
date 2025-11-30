@@ -20,7 +20,7 @@ using System.IO.Compression;
 
 namespace ModManager.ViewModels.Main;
 
-public class MainWindowViewModel : ReactiveObject, IScreen
+public partial class MainWindowViewModel : ReactiveObject, IScreen
 {
 	private const int ARCHIVE_BUFFER = 128000;
 
@@ -40,18 +40,18 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 	private readonly IFileSystemService _fs;
 	private readonly IGlobalCommandsService _globalCommands;
 
-	[Reactive] public MainWindow Window { get; private set; }
+	public MainWindow? Window { get; private set; }
 	public DownloadActivityBarViewModel DownloadBar { get; private set; }
 
 	public IProgressBarViewModel Progress => ViewModelLocator.Progress;
 
-	[Reactive] public string Title { get; set; }
-	[Reactive] public string Version { get; set; }
+	[Reactive] public partial string Title { get; set; }
+	[Reactive] public partial string Version { get; set; }
 
 	//private readonly AppKeys _keys;
 	//public AppKeys Keys => _keys;
 
-	[Reactive] public bool IsInitialized { get; private set; }
+	[Reactive] public partial bool IsInitialized { get; private set; }
 
 	public AppSettings AppSettings => _settings.AppSettings;
 	public ModManagerSettings Settings => _settings.ManagerSettings;
@@ -59,35 +59,32 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 	public ScriptExtenderSettings ExtenderSettings => _settings.ExtenderSettings;
 	public ScriptExtenderUpdateConfig ExtenderUpdaterSettings => _settings.ExtenderUpdaterSettings;
 
-	[Reactive] public bool AppSettingsLoaded { get; set; }
-	[Reactive] public bool GameIsRunning { get; private set; }
-	[Reactive] public bool CanForceLaunchGame { get; set; }
-	[Reactive] public bool IsRefreshing { get; private set; }
-	[Reactive] public bool IsRefreshingModUpdates { get; private set; }
+	[Reactive] public partial bool AppSettingsLoaded { get; set; }
+	[Reactive] public partial bool GameIsRunning { get; private set; }
+	[Reactive] public partial bool CanForceLaunchGame { get; set; }
+	[Reactive] public partial bool IsRefreshing { get; private set; }
+	[Reactive] public partial bool IsRefreshingModUpdates { get; private set; }
 
 	/// <summary>Used to locked certain functionality when data is loading or the user is dragging an item.</summary>
-	[Reactive] public bool IsLocked { get; private set; }
-	[Reactive] public bool IsDragging { get; set; }
-	[Reactive] public bool AllowDrop { get; private set; }
+	[Reactive] public partial bool IsLocked { get; private set; }
+	[Reactive] public partial bool IsDragging { get; set; }
+	[Reactive] public partial bool AllowDrop { get; private set; }
 
-	[Reactive] public string StatusText { get; set; }
-	[Reactive] public string StatusBarRightText { get; set; }
+	[Reactive] public partial string? StatusText { get; set; }
+	[Reactive] public partial string? StatusBarRightText { get; set; }
 
-	[Reactive] public bool ModUpdatesAvailable { get; set; }
-	[Reactive] public bool GameDirectoryFound { get; set; }
+	[Reactive] public partial bool ModUpdatesAvailable { get; set; }
+	[Reactive] public partial bool GameDirectoryFound { get; set; }
 
-	[ObservableAsProperty] public bool CanLaunchGame { get; }
-	[ObservableAsProperty] public bool IsDeletingFiles { get; }
+	[ObservableAsProperty] public partial bool CanLaunchGame { get; }
+	[ObservableAsProperty(ReadOnly = false)] public partial bool IsDeletingFiles { get; }
 
-	[ObservableAsProperty] public bool UpdatesViewIsVisible { get; }
+	[ObservableAsProperty] public partial bool UpdatesViewIsVisible { get; }
 
-	[Reactive] public bool StatusBarBusyIndicatorVisibility { get; set; }
-	[ObservableAsProperty] public bool UpdatingBusyIndicatorVisibility { get; }
-	[ObservableAsProperty] public bool UpdateCountVisibility { get; }
-	[ObservableAsProperty] public bool DeveloperModeVisibility { get; }
-
-	public RxCommandUnit CancelMainProgressCommand { get; }
-	public EventHandler OnRefreshed { get; set; }
+	[Reactive] public partial bool StatusBarBusyIndicatorVisibility { get; set; }
+	[ObservableAsProperty] public partial bool UpdatingBusyIndicatorVisibility { get; }
+	[ObservableAsProperty] public partial bool UpdateCountVisibility { get; }
+	[ObservableAsProperty] public partial bool DeveloperModeVisibility { get; }
 
 	public bool DebugMode { get; set; }
 
@@ -679,9 +676,6 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			}
 		});
 
-		this.WhenAnyValue(x => x.Settings.GameExecutablePath, x => x.Settings.LimitToSingleInstance, x => x.GameIsRunning, x => x.CanForceLaunchGame, CanLaunchGameCheck)
-			.ToUIProperty(this, x => x.CanLaunchGame);
-
 		/*Keys.LaunchGame.AddAction(LaunchGame, canOpenGameExe);
 
 		var canOpenLogDirectory = Settings.WhenAnyValue(x => x.ExtenderLogDirectory, (f) => Directory.Exists(f));
@@ -899,7 +893,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		}
 	}
 
-	private IDisposable _deferSave;
+	private IDisposable? _deferSave;
 
 	public void QueueSave()
 	{
@@ -973,7 +967,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		return [];
 	}
 
-	private IDisposable _refreshGitHubModsUpdatesBackgroundTask;
+	private IDisposable? _refreshGitHubModsUpdatesBackgroundTask;
 
 	private async Task<Unit> RefreshGitHubModsUpdatesBackgroundAsync(IScheduler sch, CancellationToken token)
 	{
@@ -1009,7 +1003,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		_refreshGitHubModsUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshGitHubModsUpdatesBackgroundAsync);
 	}
 
-	private IDisposable _refreshNexusModsUpdatesBackgroundTask;
+	private IDisposable? _refreshNexusModsUpdatesBackgroundTask;
 
 	private async Task<Unit> RefreshNexusModsUpdatesBackgroundAsync(IScheduler sch, CancellationToken token)
 	{
@@ -1061,7 +1055,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		_refreshNexusModsUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshNexusModsUpdatesBackgroundAsync);
 	}
 
-	private IDisposable _refreshModioUpdatesBackgroundTask;
+	private IDisposable? _refreshModioUpdatesBackgroundTask;
 
 	private async Task<Unit> RefreshModioUpdatesBackgroundAsync(IScheduler sch, CancellationToken token)
 	{
@@ -1099,7 +1093,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		_refreshModioUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshModioUpdatesBackgroundAsync);
 	}
 
-	private IDisposable _refreshAllModUpdatesBackgroundTask;
+	private IDisposable? _refreshAllModUpdatesBackgroundTask;
 
 	private async Task UpdateRefreshingStateAsync(bool b)
 	{
@@ -1300,7 +1294,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		var canExtractAdventure = ViewModelLocator.ModOrder.WhenAnyValue(x => x.SelectedAdventureMod).Select(x => x != null && !x.IsLooseMod && !x.IsLarianMod);
 		//Keys.ExtractSelectedAdventure.AddAsyncAction(ExtractSelectedAdventure, canExtractAdventure);
 
-		ViewModelLocator.DeleteFiles.WhenAnyValue(x => x.IsVisible).ToUIProperty(this, x => x.IsDeletingFiles);
+		_isDeletingFilesHelper = ViewModelLocator.DeleteFiles.WhenAnyValue(x => x.IsVisible).ToUIProperty(this, x => x.IsDeletingFiles);
 		ViewModelLocator.ModUpdates.WhenAnyValue(x => x.TotalUpdates, total => total > 0).BindTo(this, x => x.ModUpdatesAvailable);
 
 		//ViewModelLocator.ModUpdates.CloseView = new Action<bool>((bool refresh) =>
@@ -1676,8 +1670,9 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 		exceptionHandler = new MainWindowExceptionHandler(this);
 		RxApp.DefaultExceptionHandler = exceptionHandler;
 
-		Version = environmentService.AppVersion.ToString();
-		AppServices.Locale.EntryToObservable(nameof(Resources.Window_Main_Title)).Select(x => x.SafeFormat($"{environmentService.AppProductName} {Version}", Version)).BindTo(this, x => x.Title);
+		_version = _environment.AppVersion.ToString();
+		_title = $"{_environment.AppProductName} {_version}";
+		AppServices.Locale.EntryToObservable(nameof(Resources.Window_Main_Title)).Select(x => x.SafeFormat($"{_environment.AppProductName} {Version}", Version)).BindTo(this, x => x.Title);
 		DivinityApp.Log($"{Title} initializing...");
 
 		AppServices.AppUpdater.Configure(DivinityApp.GITHUB_USER, DivinityApp.GITHUB_REPO, DivinityApp.GITHUB_RELEASE_ASSET);
@@ -1771,11 +1766,16 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 			.BindTo(_updater.Modio, x => x.IsEnabled);
 
 		var whenRefreshing = _updater.WhenAnyValue(x => x.IsRefreshing);
-		whenRefreshing.ToUIProperty(this, x => x.UpdatingBusyIndicatorVisibility);
-		whenRefreshing.Select(b => !b).ToUIProperty(this, x => x.UpdateCountVisibility);
+		_updatingBusyIndicatorVisibilityHelper = whenRefreshing.ToUIProperty(this, x => x.UpdatingBusyIndicatorVisibility);
+		_updateCountVisibilityHelper = whenRefreshing.Select(b => !b).ToUIProperty(this, x => x.UpdateCountVisibility);
 
-		this.WhenAnyValue(x => x.Settings.DebugModeEnabled, x => x._settings.ExtenderSettings.DeveloperMode)
+		_developerModeVisibilityHelper = this.WhenAnyValue(x => x.Settings.DebugModeEnabled, x => x._settings.ExtenderSettings.DeveloperMode)
 		.Select(x => x.Item1 || x.Item2).ToUIProperty(this, x => x.DeveloperModeVisibility);
+
+		var settingsChanged = this.WhenAnyValue(x => x.Settings, x => x.Settings.GameExecutablePath, x => x.Settings.LimitToSingleInstance);
+		_canLaunchGameHelper = this.WhenAnyValue(x => x.GameIsRunning, x => x.CanForceLaunchGame).CombineLatest(settingsChanged)
+			.Select(x => CanLaunchGameCheck(x.Second.Item2, x.Second.Item3, x.First.Item1, x.First.Item2))
+			.ToUIProperty(this, x => x.CanLaunchGame);
 
 		#region Keys Setup
 
@@ -1820,7 +1820,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
 		#endregion
 
-		Router.CurrentViewModel.Select(x => x == ViewModelLocator.ModUpdates).ToUIProperty(this, x => x.UpdatesViewIsVisible, false);
+		_updatesViewIsVisibleHelper = Router.CurrentViewModel.Select(x => x == ViewModelLocator.ModUpdates).ToUIProperty(this, x => x.UpdatesViewIsVisible, false);
 
 		var anyPakModSelectedObservable = _manager.SelectedPakMods.ToObservableChangeSet().CountChanged().Select(x => _manager.SelectedPakMods.Count > 0);
 		//Keys.ExtractSelectedMods.AddAsyncAction(ExtractSelectedMods_Start, anyPakModSelectedObservable);

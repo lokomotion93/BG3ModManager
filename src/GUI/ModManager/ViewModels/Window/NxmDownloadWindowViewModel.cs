@@ -1,15 +1,15 @@
 ﻿namespace ModManager.ViewModels;
 
-public class NxmDownloadWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
+public partial class NxmDownloadWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
 {
 	#region IClosableViewModel/IRoutableViewModel
 	public string UrlPathSegment => "nxmdownload";
 	public IScreen HostScreen { get; }
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
-	[Reactive] public string? Url { get; set; }
+	[Reactive] public partial string? Url { get; set; }
 
 	public RxCommandUnit DownloadCommand { get; }
 

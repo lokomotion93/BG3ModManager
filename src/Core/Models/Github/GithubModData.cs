@@ -3,18 +3,18 @@
 namespace ModManager.Models.GitHub;
 
 [DataContract]
-public class GitHubModData : ReactiveObject
+public partial class GitHubModData : ReactiveObject
 {
-	[Reactive, DataMember] public string? Url { get; set; }
-	[Reactive, DataMember] public GitHubLatestReleaseData LatestRelease { get; set; }
+	[Reactive, DataMember] public partial string? Url { get; set; }
+	[Reactive, DataMember] public partial GitHubLatestReleaseData LatestRelease { get; set; }
 
 	/// <summary>
 	/// True if Url is set.
 	/// </summary>
-	[Reactive] public bool IsEnabled { get; private set; }
+	[Reactive] public partial bool IsEnabled { get; private set; }
 
-	[ObservableAsProperty] public string? Author { get; }
-	[ObservableAsProperty] public string? Repository { get; }
+	[ObservableAsProperty] public partial string? Author { get; }
+	[ObservableAsProperty] public partial string? Repository { get; }
 
 	public void Update(GitHubModData data)
 	{
@@ -33,8 +33,8 @@ public class GitHubModData : ReactiveObject
 		LatestRelease = new GitHubLatestReleaseData();
 
 		var parseGitHubUrl = this.WhenAnyValue(x => x.Url).Select(ModConfig.GitHubUrlToParts);
-		parseGitHubUrl.Select(x => x.Item1).ToUIPropertyImmediate(this, x => x.Author);
-		parseGitHubUrl.Select(x => x.Item2).ToUIPropertyImmediate(this, x => x.Repository);
+		_authorHelper = parseGitHubUrl.Select(x => x.Item1).ToUIPropertyImmediate(this, x => x.Author);
+		_repositoryHelper = parseGitHubUrl.Select(x => x.Item2).ToUIPropertyImmediate(this, x => x.Repository);
 
 		this.WhenAnyValue(x => x.Url, url => url.IsValid()).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.IsEnabled);
 	}

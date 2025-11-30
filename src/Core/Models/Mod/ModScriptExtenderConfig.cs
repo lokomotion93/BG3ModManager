@@ -5,7 +5,7 @@ using ModManager.Json;
 namespace ModManager.Models.Mod;
 
 [DataContract]
-public class ModScriptExtenderConfig : ReactiveObject
+public partial class ModScriptExtenderConfig : ReactiveObject
 {
 	[DataMember, Reactive] public int RequiredVersion { get; set; }
 	[DataMember, Reactive] public string? ModTable { get; set; }
@@ -13,8 +13,8 @@ public class ModScriptExtenderConfig : ReactiveObject
 	[JsonConverter(typeof(JsonArrayToSourceListConverter<string>))]
 	[DataMember] public SourceList<string> FeatureFlags { get; set; }
 
-	[ObservableAsProperty] public int TotalFeatureFlags { get; }
-	[ObservableAsProperty] public bool HasAnySettings { get; }
+	[ObservableAsProperty] public partial int TotalFeatureFlags { get; }
+	[ObservableAsProperty] public partial bool HasAnySettings { get; }
 
 	public bool Lua => FeatureFlags.Items.Contains("Lua");
 
@@ -22,10 +22,10 @@ public class ModScriptExtenderConfig : ReactiveObject
 	{
 		RequiredVersion = -1;
 		FeatureFlags = new();
-		FeatureFlags.CountChanged.ToPropertyEx(this, x => x.TotalFeatureFlags);
+		_totalFeatureFlagsHelper = FeatureFlags.CountChanged.ToProperty(this, x => x.TotalFeatureFlags);
 
-		this.WhenAnyValue(x => x.RequiredVersion, x => x.TotalFeatureFlags, x => x.ModTable)
+		_hasAnySettingsHelper = this.WhenAnyValue(x => x.RequiredVersion, x => x.TotalFeatureFlags, x => x.ModTable)
 		.Select(x => x.Item1 > -1 || x.Item2 > 0 || x.Item3.IsValid())
-		.ToPropertyEx(this, x => x.HasAnySettings);
+		.ToProperty(this, x => x.HasAnySettings);
 	}
 }

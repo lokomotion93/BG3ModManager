@@ -1,14 +1,14 @@
 ﻿namespace ModManager.Models.View;
-public class StatsValidatorLineText : TreeViewEntry
+public partial class StatsValidatorLineText : TreeViewEntry
 {
 	public override object ViewModel => this;
 
-	[Reactive] public string? Text { get; set; }
-	[Reactive] public int Start { get; set; }
-	[Reactive] public int End { get; set; }
-	[Reactive] public bool IsError { get; set; }
+	[Reactive] public partial string? Text { get; set; }
+	[Reactive] public partial int Start { get; set; }
+	[Reactive] public partial int End { get; set; }
+	[Reactive] public partial bool IsError { get; set; }
 
-	[ObservableAsProperty] public string? HighlightedText { get; }
+	[ObservableAsProperty] public partial string? HighlightedText { get; }
 
 	private static string GetHighlightedText(string? text, int start, int end)
 	{
@@ -36,6 +36,6 @@ public class StatsValidatorLineText : TreeViewEntry
 	{
 		IsExpanded = true;
 
-		this.WhenAnyValue(x => x.Text, x => x.Start, x => x.End, GetHighlightedText).ToUIProperty(this, x => x.HighlightedText);
+		_highlightedTextHelper = this.WhenAnyValue(x => x.Text, x => x.Start, x => x.End, GetHighlightedText).ToUIProperty(this, x => x.HighlightedText);
 	}
 }

@@ -8,25 +8,25 @@ using ModManager.Models.Mod.Order;
 using ModManager.Models.Interfaces;
 
 namespace ModManager.Models.Mod;
-public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollection<IModEntry>, IModEntry>
+public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollection<IModEntry>, IModEntry>
 {
 	public ModEntryType EntryType => ModEntryType.Container;
 
-	[Reactive] public string UUID { get; set; }
-	[Reactive] public int Index { get; set; }
-	[Reactive] public bool IsActive { get; set; }
-	[Reactive] public bool IsHidden { get; set; }
-	[Reactive] public bool IsSelected { get; set; }
-	[Reactive] public bool IsExpanded { get; set; }
-	[Reactive] public bool IsDraggable { get; set; }
-	[Reactive] public bool PreserveSelection { get; set; }
-	[Reactive] public string? SelectedColor { get; set; }
-	[Reactive] public string? ListColor { get; set; }
-	[Reactive] public string? PointerOverColor { get; set; }
-	[Reactive] public bool IsDirty { get; set; }
-	[Reactive] public object? ContextMenu { get; set; }
-	[Reactive] public ModContainerSettings Settings { get; set; }
-	[Reactive] public bool EnableAutosaving { get; set; }
+	[Reactive] public partial string UUID { get; set; }
+	[Reactive] public partial int Index { get; set; }
+	[Reactive] public partial bool IsActive { get; set; }
+	[Reactive] public partial bool IsHidden { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
+	[Reactive] public partial bool IsExpanded { get; set; }
+	[Reactive] public partial bool IsDraggable { get; set; }
+	[Reactive] public partial bool PreserveSelection { get; set; }
+	[Reactive] public partial string? SelectedColor { get; set; }
+	[Reactive] public partial string? ListColor { get; set; }
+	[Reactive] public partial string? PointerOverColor { get; set; }
+	[Reactive] public partial bool IsDirty { get; set; }
+	[Reactive] public partial object? ContextMenu { get; set; }
+	[Reactive] public partial ModContainerSettings Settings { get; set; }
+	[Reactive] public partial bool EnableAutosaving { get; set; }
 
 	public string? Version => string.Empty;
 	public string? Author => string.Empty;
@@ -39,16 +39,16 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 	public RxCommandUnit ToggleForceAllowInLoadOrderCommand { get; }
 	public RxCommandUnit ToggleNameDisplayCommand { get; }
 
-	[ObservableAsProperty] public string? DisplayName { get; }
-	[ObservableAsProperty] public string? Description { get; }
-	[ObservableAsProperty] public string? ContainerToolTipTitleText { get; }
-	[ObservableAsProperty] public bool CanForceAllowInLoadOrder { get; }
-	[ObservableAsProperty] public bool ForceAllowInLoadOrder { get; }
-	[ObservableAsProperty] public bool DisplayFileForName { get; }
-	[ObservableAsProperty] public bool IsVisible { get; }
-	[ObservableAsProperty] public bool HasDescription { get; }
-	[ObservableAsProperty] public string? ForceAllowInLoadOrderLabel { get; }
-	[ObservableAsProperty] public string? ToggleModNameLabel { get; }
+	[ObservableAsProperty] public partial string? DisplayName { get; }
+	[ObservableAsProperty] public partial string? Description { get; }
+	[ObservableAsProperty] public partial string? ContainerToolTipTitleText { get; }
+	[ObservableAsProperty] public partial bool CanForceAllowInLoadOrder { get; }
+	[ObservableAsProperty] public partial bool ForceAllowInLoadOrder { get; }
+	[ObservableAsProperty] public partial bool DisplayFileForName { get; }
+	[ObservableAsProperty] public partial bool IsVisible { get; }
+	[ObservableAsProperty] public partial bool HasDescription { get; }
+	[ObservableAsProperty] public partial string? ForceAllowInLoadOrderLabel { get; }
+	[ObservableAsProperty] public partial string? ToggleModNameLabel { get; }
 
 	public string? Export(ModExportType exportType) => string.Empty;
 
@@ -164,29 +164,33 @@ public class ModContainer : ReactiveObject, IModEntry, INested<IObservableCollec
 			if (!b) IsSelected = false;
 		});
 
-		this.WhenAnyValue(x => x.IsHidden, b => !b).ToUIProperty(this, x => x.IsVisible, true);
+		_isVisibleHelper = this.WhenAnyValue(x => x.IsHidden, b => !b).ToUIProperty(this, x => x.IsVisible, true);
 
 		Settings = new(uuid);
-		Settings.WhenAnyValue(x => x.DisplayName).ToUIProperty(this, x => x.DisplayName);
-		Settings.WhenAnyValue(x => x.Description).ToUIProperty(this, x => x.Description);
-		this.WhenAnyValue(x => x.Description, x => x.IsValid()).ToUIProperty(this, x => x.HasDescription, false);
+		_displayNameHelper = Settings.WhenAnyValue(x => x.DisplayName).ToUIProperty(this, x => x.DisplayName);
+		_descriptionHelper = Settings.WhenAnyValue(x => x.Description).ToUIProperty(this, x => x.Description);
+		_hasDescriptionHelper = this.WhenAnyValue(x => x.Description, x => x.IsValid()).ToUIProperty(this, x => x.HasDescription, false);
 
 		Settings.WhenAnyValue(x => x.IsExpanded).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.IsExpanded);
 		this.WhenAnyValue(x => x.IsExpanded).BindTo(Settings, x => x.IsExpanded);
 
-		_children.ToObservableChangeSet().CountChanged().Select(_ => GetContainerToolTipTitleText()).ToUIProperty(this, x => x.ContainerToolTipTitleText);
+		_containerToolTipTitleTextHelper = _children.ToObservableChangeSet().CountChanged()
+			.Select(_ => GetContainerToolTipTitleText())
+			.ToUIProperty(this, x => x.ContainerToolTipTitleText);
 
 		var modsConn = _children.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
 
 		var hasChildren = modsConn.CountChanged().Select(_ => _children.Count > 0);
 
-		modsConn.Select(_ => _children.All(AllCanForceAllowInLoadOrder)).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
-		modsConn.Select(_ => _children.All(AllForceLoadedInLoadOrder)).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
-		modsConn.Select(_ => _children.All(AllDisplayFileForName)).ToUIProperty(this, x => x.DisplayFileForName);
+		_canForceAllowInLoadOrderHelper = modsConn.Select(_ => _children.All(AllCanForceAllowInLoadOrder)).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
+		_forceAllowInLoadOrderHelper = modsConn.Select(_ => _children.All(AllForceLoadedInLoadOrder)).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
+		_displayFileForNameHelper = modsConn.Select(_ => _children.All(AllDisplayFileForName)).ToUIProperty(this, x => x.DisplayFileForName);
 
-		this.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
+		_toggleModNameLabelHelper = this.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
 
-		this.WhenAnyValue(x => x.ForceAllowInLoadOrder).Select(b => b ? Loca.Mod_Command_ForceAllowInLoadOrder_Disable : Loca.Mod_Command_ForceAllowInLoadOrder_Enable).ToUIProperty(this, x => x.ForceAllowInLoadOrderLabel);
+		_forceAllowInLoadOrderLabelHelper = this.WhenAnyValue(x => x.ForceAllowInLoadOrder)
+			.Select(b => b ? Loca.Mod_Command_ForceAllowInLoadOrder_Disable : Loca.Mod_Command_ForceAllowInLoadOrder_Enable)
+			.ToUIProperty(this, x => x.ForceAllowInLoadOrderLabel);
 
 		var canForceAllowInLoadOrder = this.WhenAnyValue(x => x.CanForceAllowInLoadOrder);
 		ToggleForceAllowInLoadOrderCommand = ReactiveCommand.Create(() =>

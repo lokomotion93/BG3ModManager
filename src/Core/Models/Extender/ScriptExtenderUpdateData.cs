@@ -22,7 +22,7 @@ public class ScriptExtenderUpdateResource
 }
 
 [DataContract]
-public class ScriptExtenderUpdateVersion : ReactiveObject
+public partial class ScriptExtenderUpdateVersion : ReactiveObject
 {
 	[DataMember, Reactive] public long BuildDate { get; set; }
 	[DataMember, Reactive] public string? Digest { get; set; }
@@ -32,9 +32,9 @@ public class ScriptExtenderUpdateVersion : ReactiveObject
 	[DataMember, Reactive] public string? Version { get; set; }
 	[DataMember, Reactive] public string? Signature { get; set; }
 
-	[ObservableAsProperty] public string? DisplayName { get; }
-	[ObservableAsProperty] public string? BuildDateDisplayString { get; }
-	[ObservableAsProperty] public bool IsEmpty { get; }
+	[ObservableAsProperty] public partial string? DisplayName { get; }
+	[ObservableAsProperty] public partial string? BuildDateDisplayString { get; }
+	[ObservableAsProperty] public partial bool IsEmpty { get; }
 
 	private static string TimestampToReadableString(long timestamp)
 	{
@@ -59,13 +59,13 @@ public class ScriptExtenderUpdateVersion : ReactiveObject
 
 	public ScriptExtenderUpdateVersion()
 	{
-		this.WhenAnyValue(x => x.Version).Select(x => !x.IsValid())
+		_isEmptyHelper = this.WhenAnyValue(x => x.Version).Select(x => !x.IsValid())
 			.ToUIProperty(this, x => x.IsEmpty);
 
-		this.WhenAnyValue(x => x.BuildDate).Select(TimestampToReadableString)
+		_buildDateDisplayStringHelper = this.WhenAnyValue(x => x.BuildDate).Select(TimestampToReadableString)
 			.ToUIProperty(this, x => x.BuildDateDisplayString);
 
-		this.WhenAnyValue(x => x.Version, x => x.MinGameVersion, x => x.BuildDateDisplayString).Select(ToDisplayName)
+		_displayNameHelper = this.WhenAnyValue(x => x.Version, x => x.MinGameVersion, x => x.BuildDateDisplayString).Select(ToDisplayName)
 			.ToUIProperty(this, x => x.DisplayName);
 	}
 }

@@ -1,10 +1,10 @@
 ﻿namespace ModManager.ViewModels.Main;
 
-public class ViewManager : ReactiveObject
+public partial class ViewManager : ReactiveObject
 {
 	private readonly RoutingState Router;
 
-	[ObservableAsProperty] public IRoutableViewModel? CurrentView { get; }
+	[ObservableAsProperty] public partial IRoutableViewModel? CurrentView { get; }
 
 	public void SwitchToModOrderView() => Router.Navigate.Execute(ViewModelLocator.ModOrder).Subscribe();
 	public void SwitchToDeleteView() => Router.Navigate.Execute(ViewModelLocator.DeleteFiles).Subscribe();
@@ -14,6 +14,6 @@ public class ViewManager : ReactiveObject
 	public ViewManager(RoutingState router)
 	{
 		Router = router;
-		Router.CurrentViewModel.ToPropertyEx(this, x => x.CurrentView, false, RxApp.MainThreadScheduler);
+		_currentViewHelper = Router.CurrentViewModel.ToProperty(this, x => x.CurrentView, false, RxApp.MainThreadScheduler);
 	}
 }

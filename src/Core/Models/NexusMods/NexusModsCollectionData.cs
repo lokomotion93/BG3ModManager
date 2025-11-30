@@ -6,17 +6,17 @@ using NexusModsNET.DataModels.GraphQL.Types;
 
 namespace ModManager.Models.NexusMods;
 
-public class NexusModsCollectionData : ReactiveObject
+public partial class NexusModsCollectionData : ReactiveObject
 {
-	[Reactive] public bool HasAdultContent { get; set; }
-	[Reactive] public string? Name { get; set; }
-	[Reactive] public string? Author { get; set; }
-	[Reactive] public string? Description { get; set; }
-	[Reactive] public Uri? AuthorAvatarUrl { get; set; }
-	[Reactive] public Uri? TileImageUrl { get; set; }
-	[Reactive] public Uri? TileImageThumbnailUrl { get; set; }
-	[Reactive] public DateTimeOffset CreatedAt { get; set; }
-	[Reactive] public DateTimeOffset UpdatedAt { get; set; }
+	[Reactive] public partial bool HasAdultContent { get; set; }
+	[Reactive] public partial string? Name { get; set; }
+	[Reactive] public partial string? Author { get; set; }
+	[Reactive] public partial string? Description { get; set; }
+	[Reactive] public partial Uri? AuthorAvatarUrl { get; set; }
+	[Reactive] public partial Uri? TileImageUrl { get; set; }
+	[Reactive] public partial Uri? TileImageThumbnailUrl { get; set; }
+	[Reactive] public partial DateTimeOffset CreatedAt { get; set; }
+	[Reactive] public partial DateTimeOffset UpdatedAt { get; set; }
 
 	public SourceList<NexusModsCollectionModData> Mods { get; }
 

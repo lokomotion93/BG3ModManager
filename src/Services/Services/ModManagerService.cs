@@ -11,7 +11,7 @@ using System.Reactive.Linq;
 
 namespace ModManager.Services;
 
-public class ModManagerService : ReactiveObject, IModManagerService
+public partial class ModManagerService : ReactiveObject, IModManagerService
 {
 	private readonly SourceCache<ModData, string> mods = new(mod => mod.UUID);
 
@@ -30,11 +30,11 @@ public class ModManagerService : ReactiveObject, IModManagerService
 	public ReadOnlyObservableCollection<ModData> SelectedPakMods => _selectedPakMods;
 
 	//GustavX, as of patch 8
-	[Reactive] public string MainCampaignGuid { get; set; } = "cb555efe-2d9e-131f-8195-a89329d218ea";
+	[Reactive] private string _mainCampaignGuid = "cb555efe-2d9e-131f-8195-a89329d218ea";
 
-	[Reactive] public int ActiveSelected { get; private set; }
-	[Reactive] public int InactiveSelected { get; private set; }
-	[Reactive] public int OverrideModsSelected { get; private set; }
+	[Reactive] public partial int ActiveSelected { get; private set; }
+	[Reactive] public partial int InactiveSelected { get; private set; }
+	[Reactive] public partial int OverrideModsSelected { get; private set; }
 
 	private readonly IObservable<IChangeSet<ModData, string>> _modsConnection;
 	public IObservable<IChangeSet<ModData, string>> ModsConnection => _modsConnection;

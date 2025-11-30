@@ -86,7 +86,7 @@
 					    VerticalAlignment="Center"
 					    Command="{Binding SelectAllCommand}"
 					    IsChecked="{Binding AllSelected, Mode=OneWay}"
-					    ToolTip.Tip="{Binding SelectAllTooltip}" />
+					    ToolTip.Tip="{Binding SelectAllToolTip}" />
 					<TextBlock Grid.Column="1"
 					    Margin="6,0"
 					    HorizontalAlignment="Stretch"
@@ -146,7 +146,7 @@
 								    MaxWidth="500"
 								    Margin="6,0"
 								    VerticalAlignment="Center"
-								    IsVisible="{Binding $parent[local:DeleteFilesView].DataContext.IsDeletingDuplicates}}"
+								    IsVisible="{Binding $parent[local:DeleteFilesView].DataContext.IsDeletingDuplicates}"
 								    Text="{Binding Duplicates}"
 								    TextAlignment="Left"
 								    TextWrapping="Wrap" />

@@ -11,17 +11,17 @@ using System.Reactive.Linq;
 using System.Text.Json;
 
 namespace ModManager.Services;
-public class ModioService : ReactiveObject, IModioService
+public partial class ModioService : ReactiveObject, IModioService
 {
 	private readonly IFileSystemService _fs;
 
 	private static readonly uint GAME_ID = 6715;
 	private Client? _client;
 
-	[Reactive] public string? ApiKey { get; set; }
-	[Reactive] public bool LimitExceeded { get; set; }
-	[Reactive] public bool IsInitialized { get; private set; }
-	[Reactive] public bool CanFetchData { get; private set; }
+	[Reactive] public partial string? ApiKey { get; set; }
+	[Reactive] public partial bool LimitExceeded { get; set; }
+	[Reactive] public partial bool IsInitialized { get; private set; }
+	[Reactive] public partial bool CanFetchData { get; private set; }
 
 	[MemberNotNullWhen(true, nameof(_client))]
 	private bool TryInitClient()

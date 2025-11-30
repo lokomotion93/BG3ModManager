@@ -5,19 +5,19 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace ModManager.ViewModels;
 
-public class VersionGeneratorViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
+public partial class VersionGeneratorViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
 {
 	#region IClosableViewModel/IRoutableViewModel
 	public string UrlPathSegment => "versiongenerator";
 	public IScreen HostScreen { get; }
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
-	[Reactive] public LarianVersion Version { get; set; }
+	[Reactive] public partial LarianVersion Version { get; set; }
 
 	[Range(long.MinValue, long.MaxValue, ErrorMessage = "Numbers only")]
-	[Reactive] public string? Text { get; set; }
+	[Reactive] public partial string? Text { get; set; }
 
 	public RxCommandUnit CopyCommand { get; }
 	public RxCommandUnit ResetCommand { get; }

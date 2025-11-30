@@ -1,21 +1,21 @@
 ﻿namespace ModManager.ViewModels;
 
-public class AboutWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
+public partial class AboutWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
 {
 	#region IClosableViewModel/IRoutableViewModel
 	public string UrlPathSegment => "about";
 	public IScreen HostScreen { get; }
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
-	[Reactive] public string Title { get; set; }
-	[Reactive] public Uri RepoUrl { get; set; }
-	[Reactive] public Uri AuthorUrl { get; set; }
-	[Reactive] public Uri LicenseUrl { get; set; }
-	[Reactive] public Uri DonationUrl { get; set; }
-	[Reactive] public Uri IssuesUrl { get; set; }
-	[Reactive] public Uri ChangelogUrl { get; set; }
+	[Reactive] public partial string Title { get; set; }
+	[Reactive] public partial Uri RepoUrl { get; set; }
+	[Reactive] public partial Uri AuthorUrl { get; set; }
+	[Reactive] public partial Uri LicenseUrl { get; set; }
+	[Reactive] public partial Uri DonationUrl { get; set; }
+	[Reactive] public partial Uri IssuesUrl { get; set; }
+	[Reactive] public partial Uri ChangelogUrl { get; set; }
 
 	public AboutWindowViewModel(IScreen? host = null)
 	{

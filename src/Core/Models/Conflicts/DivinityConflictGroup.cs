@@ -1,14 +1,14 @@
 ﻿namespace ModManager.Models.Conflicts;
 
-public class DivinityConflictGroup : ReactiveObject
+public partial class DivinityConflictGroup : ReactiveObject
 {
-	[Reactive] public string? Header { get; set; }
+	[Reactive] public partial string? Header { get; set; }
 
-	[Reactive] public int TotalConflicts { get; set; }
+	[Reactive] public partial int TotalConflicts { get; set; }
 
 	public List<DivinityConflictEntryData> Conflicts { get; set; } = [];
 
-	[Reactive] public int SelectedConflictIndex { get; set; }
+	[Reactive] public partial int SelectedConflictIndex { get; set; }
 
 	public void OnActivated(CompositeDisposable disposables)
 	{

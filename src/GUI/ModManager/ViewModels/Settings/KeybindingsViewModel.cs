@@ -5,14 +5,14 @@ using ModManager.Models;
 using System.Collections.ObjectModel;
 
 namespace ModManager.ViewModels.Settings;
-public class KeybindingsViewModel : ReactiveObject
+public partial class KeybindingsViewModel : ReactiveObject
 {
 	private readonly ReadOnlyObservableCollection<Hotkey> _hotkeys;
 	public ReadOnlyObservableCollection<Hotkey> Hotkeys => _hotkeys;
 
-	[Reactive] public Hotkey? TargetHotkey { get; private set; }
+	[Reactive] public partial Hotkey? TargetHotkey { get; private set; }
 
-	[ObservableAsProperty] public bool IsBindingKey { get; }
+	[ObservableAsProperty] public partial bool IsBindingKey { get; }
 
 	public ReactiveCommand<Hotkey, Unit> ClearKeyCommand { get; }
 	public ReactiveCommand<Hotkey, Unit> ResetKeyCommand { get; }
@@ -41,7 +41,7 @@ public class KeybindingsViewModel : ReactiveObject
 
 	public KeybindingsViewModel()
 	{
-		this.WhenAnyValue(x => x.TargetHotkey).Select(x => x != null).ToUIPropertyImmediate(this, x => x.IsBindingKey);
+		_isBindingKeyHelper = this.WhenAnyValue(x => x.TargetHotkey).Select(x => x != null).ToUIPropertyImmediate(this, x => x.IsBindingKey);
 
 		ClearKeyCommand = ReactiveCommand.Create<Hotkey>(hotkey => hotkey.Clear());
 		ResetKeyCommand = ReactiveCommand.Create<Hotkey>(hotkey => hotkey.ResetToDefault());

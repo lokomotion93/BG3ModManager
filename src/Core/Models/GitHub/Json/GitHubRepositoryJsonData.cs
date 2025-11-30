@@ -13,7 +13,7 @@ namespace ModManager.Models.GitHub.Json;
 [DataContract]
 public class GitHubRepositoryJsonData : ReactiveObject
 {
-	[Reactive, DataMember] public ObservableCollectionExtended<GitHubReleaseJsonEntry> Releases { get; set; }
+	[DataMember] public ObservableCollectionExtended<GitHubReleaseJsonEntry> Releases { get; set; }
 
 	public GitHubReleaseJsonEntry? GetLatest(string? uuid = "")
 	{

@@ -4,21 +4,21 @@ using ModManager.Util;
 namespace ModManager.Models.Mod.Order;
 
 [DataContract]
-public class ModOrder : ReactiveObject, IJsonOnDeserialized
+public partial class ModOrder : ReactiveObject, IJsonOnDeserialized
 {
-	[Reactive] public string? Name { get; set; }
-	[Reactive] public string? FilePath { get; set; }
-	[Reactive] public DateTimeOffset LastModifiedDate { get; set; }
-	[Reactive] public bool IsLoaded { get; set; }
+	[Reactive] public partial string? Name { get; set; }
+	[Reactive] public partial string? FilePath { get; set; }
+	[Reactive] public partial DateTimeOffset LastModifiedDate { get; set; }
+	[Reactive] public partial bool IsLoaded { get; set; }
 
-	[Reactive] public bool IsModSettings { get; set; }
+	[Reactive] public partial bool IsModSettings { get; set; }
 
 	/// <summary>
 	/// This is an order from a non-standard order file (info .json, .txt, .tsv).
 	/// </summary>
-	[Reactive] public bool IsDecipheredOrder { get; set; }
+	[Reactive] public partial bool IsDecipheredOrder { get; set; }
 
-	[ObservableAsProperty] public string? LastModified { get; }
+	[ObservableAsProperty] public partial string? LastModified { get; }
 
 	[DataMember] public List<IModOrderEntry> Entries { get; set; } = [];
 	[DataMember] public Version? ModManagerVersion { get; set; }
@@ -336,6 +336,6 @@ public class ModOrder : ReactiveObject, IJsonOnDeserialized
 
 	public ModOrder()
 	{
-		this.WhenAnyValue(x => x.LastModifiedDate).Select(x => x.ToString("g")).ToUIProperty(this, x => x.LastModified, "");
+		_lastModifiedHelper = this.WhenAnyValue(x => x.LastModifiedDate).Select(x => x.ToString("g")).ToUIProperty(this, x => x.LastModified, "");
 	}
 }

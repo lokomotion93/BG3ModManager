@@ -11,26 +11,26 @@ using System.Reactive.Subjects;
 
 namespace ModManager.ViewModels.Mods;
 
-public class ModPickerViewModel : ReactiveObject, IDialogViewModel
+public partial class ModPickerViewModel : ReactiveObject, IDialogViewModel
 {
 	private readonly SourceCache<ModPickerEntry, string> _source = new(x => x.UUID);
 
 	private readonly ReadOnlyObservableCollection<ModPickerEntry> _mods;
 	public ReadOnlyObservableCollection<ModPickerEntry> Mods => _mods;
 
-	[Reactive] public string? Title { get; set; }
-	[Reactive] public bool IsVisible { get; set; }
-	[Reactive] public ISukiDialog? Dialog { get; set; }
-	[Reactive] public string? FilterInputText { get; set; }
-	[Reactive] public int TotalMods { get; private set; }
-	[Reactive] public int TotalModsHidden { get; private set; }
-	[Reactive] public int TotalModsSelected { get; private set; }
+	[Reactive] public partial string? Title { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
+	[Reactive] public partial ISukiDialog? Dialog { get; set; }
+	[Reactive] public partial string? FilterInputText { get; set; }
+	[Reactive] public partial int TotalMods { get; private set; }
+	[Reactive] public partial int TotalModsHidden { get; private set; }
+	[Reactive] public partial int TotalModsSelected { get; private set; }
 
 
 	private readonly Subject<ModPickerResult> Result = new();
 	public IObservable<ModPickerResult> WaitForResult() => Result.Take(1);
 
-	[ObservableAsProperty] public string? FilterResultText { get; }
+	[ObservableAsProperty] public partial string? FilterResultText { get; }
 
 	public RxCommandUnit ConfirmCommand { get; }
 	public RxCommandUnit CancelCommand { get; }
@@ -128,7 +128,7 @@ public class ModPickerViewModel : ReactiveObject, IDialogViewModel
 			}
 		});
 
-		this.WhenAnyValue(x => x.TotalMods, x => x.TotalModsHidden, x => x.TotalModsSelected,
+		_filterResultTextHelper = this.WhenAnyValue(x => x.TotalMods, x => x.TotalModsHidden, x => x.TotalModsSelected,
 			x => x.FilterInputText, ToFilterResultText)
 			.ToUIProperty(this, x => x.FilterResultText);
 

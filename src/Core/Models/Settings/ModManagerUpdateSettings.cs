@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace ModManager.Models.Settings;
 
 [DataContract]
-public class ModManagerUpdateSettings : ReactiveObject
+public partial class ModManagerUpdateSettings : ReactiveObject
 {
 	[DefaultValue(true)]
 	[SettingsEntry(nameof(Resources.Settings_UpdateScriptExtender), nameof(Resources.Settings_UpdateScriptExtender_ToolTip))]
@@ -41,7 +41,7 @@ public class ModManagerUpdateSettings : ReactiveObject
 	[SettingsEntry(nameof(Resources.Settings_AllowAdultContent), nameof(Resources.Settings_AllowAdultContent_ToolTip))]
 	[DataMember, Reactive] public bool AllowAdultContent { get; set; }
 
-	[Reactive] public bool IsAssociatedWithNXM { get; set; }
+	[Reactive] public partial bool IsAssociatedWithNXM { get; set; }
 
 	public ModManagerUpdateSettings()
 	{

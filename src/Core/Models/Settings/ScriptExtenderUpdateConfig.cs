@@ -8,15 +8,15 @@ using System.Runtime.Serialization;
 namespace ModManager.Models.Settings;
 
 [DataContract]
-public class ScriptExtenderUpdateConfig : ReactiveObject, ISerializableSettings
+public partial class ScriptExtenderUpdateConfig : ReactiveObject, ISerializableSettings
 {
 	public string FileName => "ScriptExtenderUpdaterConfig.json";
 	public string? GetDirectory() => Locator.Current.GetService<ISettingsService>()?.GetGameExecutableDirectory();
 	public bool SkipEmpty => true;
 
-	[Reactive] public bool DevOptionsEnabled { get; set; }
-	[Reactive] public bool UpdaterIsAvailable { get; set; }
-	[Reactive] public int UpdaterVersion { get; set; }
+	[Reactive] public partial bool DevOptionsEnabled { get; set; }
+	[Reactive] public partial bool UpdaterIsAvailable { get; set; }
+	[Reactive] public partial int UpdaterVersion { get; set; }
 	public Version? ModManagerVersion { get; set; }
 
 
@@ -70,7 +70,7 @@ public class ScriptExtenderUpdateConfig : ReactiveObject, ISerializableSettings
 	[DefaultValue(false)]
 	public bool ValidateSignature { get; set; }
 
-	[Reactive] public int UpdateChannelIndex { get; set; }
+	[Reactive] public partial int UpdateChannelIndex { get; set; }
 
 	public ScriptExtenderUpdateConfig()
 	{

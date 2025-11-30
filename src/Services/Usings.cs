@@ -8,7 +8,6 @@ global using System.Threading;
 global using System.Threading.Tasks;
 
 global using ReactiveUI;
-global using ReactiveUI.Fody.Helpers;
-//global using ReactiveUI.SourceGenerators;
+global using ReactiveUI.SourceGenerators;
 
 global using RxCommandUnit = ReactiveUI.ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit>;

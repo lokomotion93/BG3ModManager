@@ -75,7 +75,7 @@ static class VersionHelpers
 
 [JsonConverter(typeof(LarianVersionToStringConverter))]
 [DataContract]
-public class LarianVersion : ReactiveObject
+public partial class LarianVersion : ReactiveObject
 {
 	// 1.0.0.0 in the int version
 	public static readonly ulong IntVersion1 = 268435456;
@@ -86,10 +86,10 @@ public class LarianVersion : ReactiveObject
 #else
 #endif
 #if !DOS2
-	[Reactive] public ulong Major { get; set; }
-	[Reactive] public ulong Minor { get; set; }
-	[Reactive] public ulong Revision { get; set; }
-	[Reactive] public ulong Build { get; set; }
+	[Reactive] public partial ulong Major { get; set; }
+	[Reactive] public partial ulong Minor { get; set; }
+	[Reactive] public partial ulong Revision { get; set; }
+	[Reactive] public partial ulong Build { get; set; }
 
 	private ulong versionInt = 0;
 
@@ -100,10 +100,10 @@ public class LarianVersion : ReactiveObject
 		set => ParseInt(value);
 	}
 #else
-	[Reactive] public int Major { get; set; }
-	[Reactive] public int Minor { get; set; }
-	[Reactive] public int Revision { get; set; }
-	[Reactive] public int Build { get; set; }
+	[Reactive] public partial int Major { get; set; }
+	[Reactive] public partial int Minor { get; set; }
+	[Reactive] public partial int Revision { get; set; }
+	[Reactive] public partial int Build { get; set; }
 
 	private int versionInt = 0;
 
@@ -115,7 +115,7 @@ public class LarianVersion : ReactiveObject
 	}
 #endif
 
-	[DataMember, Reactive] public string? Version { get; set; }
+	[DataMember, Reactive] public partial string? Version { get; set; }
 
 	private void UpdateVersion() => Version = $"{Major}.{Minor}.{Revision}.{Build}";
 

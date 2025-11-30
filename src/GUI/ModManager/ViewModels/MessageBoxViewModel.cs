@@ -4,23 +4,23 @@ using SukiUI.Dialogs;
 using System.Reactive.Subjects;
 
 namespace ModManager.ViewModels;
-public class MessageBoxViewModel : ReactiveObject, IDialogViewModel
+public partial class MessageBoxViewModel : ReactiveObject, IDialogViewModel
 {
-	[Reactive] public string? Title { get; set; }
-	[Reactive] public string? Message { get; set; }
-	[Reactive] public bool IsVisible { get; set; }
-	[Reactive] public bool ShowRememberChoice { get; set; }
-	[Reactive] public ISukiDialog? Dialog { get; set; }
-	[Reactive] public bool IsInput { get; set; }
-	[Reactive] public string? InputText { get; set; }
+	[Reactive] public partial string? Title { get; set; }
+	[Reactive] public partial string? Message { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
+	[Reactive] public partial bool ShowRememberChoice { get; set; }
+	[Reactive] public partial ISukiDialog? Dialog { get; set; }
+	[Reactive] public partial bool IsInput { get; set; }
+	[Reactive] public partial string? InputText { get; set; }
 
 	private readonly Subject<MessageBoxResult> Result = new();
 
-	[Reactive] public InteractionMessageBoxType MessageBoxType { get; set; }
+	[Reactive] public partial InteractionMessageBoxType MessageBoxType { get; set; }
 
-	[Reactive] public string? ConfirmButtonText { get; private set; }
-	[Reactive] public string? CancelButtonText { get; private set; }
-	[ObservableAsProperty] public bool CancelVisibility { get; }
+	[Reactive] public partial string? ConfirmButtonText { get; private set; }
+	[Reactive] public partial string? CancelButtonText { get; private set; }
+	[ObservableAsProperty] public partial bool CancelVisibility { get; }
 
 	public RxCommandUnit ConfirmCommand { get; }
 	public RxCommandUnit CancelCommand { get; }
@@ -105,7 +105,7 @@ public class MessageBoxViewModel : ReactiveObject, IDialogViewModel
 
 		var whenTypeChanges = this.WhenAnyValue(x => x.MessageBoxType).ObserveOn(RxApp.MainThreadScheduler);
 		whenTypeChanges.Subscribe(UpdateTextBindings);
-		whenTypeChanges.Select(x => x.IsConfirmation()).ToUIProperty(this, x => x.CancelVisibility);
+		_cancelVisibilityHelper = whenTypeChanges.Select(x => x.IsConfirmation()).ToUIProperty(this, x => x.CancelVisibility);
 	}
 }
 

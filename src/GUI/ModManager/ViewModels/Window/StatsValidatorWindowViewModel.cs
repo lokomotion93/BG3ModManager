@@ -12,28 +12,28 @@ using System.Globalization;
 using LSLib.Parser;
 
 namespace ModManager.ViewModels;
-public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
+public partial class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
 {
 	#region IClosableViewModel/IRoutableViewModel
 	public string UrlPathSegment => "statsvalidator";
 	public IScreen HostScreen { get; }
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
 	private readonly IInteractionsService _interactions;
 	private readonly IStatsValidatorService _validator;
 
-	[Reactive] public ModData? Mod { get; set; }
-	[Reactive] public string? OutputText { get; internal set; }
-	[Reactive] public TimeSpan TimeTaken { get; internal set; }
+	[Reactive] public partial ModData? Mod { get; set; }
+	[Reactive] public partial string? OutputText { get; internal set; }
+	[Reactive] public partial TimeSpan TimeTaken { get; internal set; }
 
 	public ObservableCollectionExtended<StatsValidatorFileResults> Entries { get; }
 
-	[ObservableAsProperty] public string? ModName { get; }
-	[ObservableAsProperty] public string? TimeTakenText { get; }
-	[ObservableAsProperty] public bool HasTimeTakenText { get; }
-	[ObservableAsProperty] public bool LockScreenVisibility { get; }
+	[ObservableAsProperty] public partial string? ModName { get; }
+	[ObservableAsProperty] public partial string? TimeTakenText { get; }
+	[ObservableAsProperty] public partial bool HasTimeTakenText { get; }
+	[ObservableAsProperty] public partial bool LockScreenVisibility { get; }
 
 	public ReactiveCommand<ModData, Unit> ValidateCommand { get; }
 	public RxCommandUnit CancelValidateCommand { get; }
@@ -185,16 +185,16 @@ public class StatsValidatorWindowViewModel : ReactiveObject, IClosableViewModel,
 
 		Entries = [];
 
-		this.WhenAnyValue(x => x.Mod).WhereNotNull().Select(x => x.DisplayName).ToUIProperty(this, x => x.ModName, "");
-		this.WhenAnyValue(x => x.TimeTaken).Select(TimeTakenToText).ToUIProperty(this, x => x.TimeTakenText, "");
-		this.WhenAnyValue(x => x.TimeTakenText).Select(Validators.IsValid).ToUIProperty(this, x => x.HasTimeTakenText);
+		_modNameHelper = this.WhenAnyValue(x => x.Mod).WhereNotNull().Select(x => x.DisplayName).ToUIProperty(this, x => x.ModName, "");
+		_timeTakenTextHelper = this.WhenAnyValue(x => x.TimeTaken).Select(TimeTakenToText).ToUIProperty(this, x => x.TimeTakenText, "");
+		_hasTimeTakenTextHelper = this.WhenAnyValue(x => x.TimeTakenText).Select(Validators.IsValid).ToUIProperty(this, x => x.HasTimeTakenText);
 
 		var canValidate = this.WhenAnyValue(x => x.Mod).Select(x => x != null);
 
 		ValidateCommand = ReactiveCommand.CreateFromObservable<ModData, Unit>(StartValidationAsync, canValidate);
 		CancelValidateCommand = ReactiveCommand.Create(() => { }, ValidateCommand.IsExecuting);
 
-		ValidateCommand.IsExecuting.ToUIProperty(this, x => x.LockScreenVisibility);
+		_lockScreenVisibilityHelper = ValidateCommand.IsExecuting.ToUIProperty(this, x => x.LockScreenVisibility);
 	}
 
 	[DependencyInjectionConstructor]

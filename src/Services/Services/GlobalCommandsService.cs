@@ -9,14 +9,14 @@ using TextCopy;
 
 namespace ModManager.Services;
 
-public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
+public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 {
 	private readonly IInteractionsService _interactions;
 	private readonly IFileSystemService _fs;
 
-	[Reactive] public bool CanExecuteCommands { get; set; }
-	[Reactive] public bool HasAnySelectedMods { get; set; }
-	[Reactive] public bool HasMultipleSelectedMods { get; set; }
+	[Reactive] public partial bool CanExecuteCommands { get; set; }
+	[Reactive] public partial bool HasAnySelectedMods { get; set; }
+	[Reactive] public partial bool HasMultipleSelectedMods { get; set; }
 
 	public ReactiveCommand<string?, Unit> OpenFileCommand { get; }
 	public ReactiveCommand<string?, bool> OpenInFileExplorerCommand { get; }
@@ -24,7 +24,6 @@ public class GlobalCommandsService : ReactiveObject, IGlobalCommandsService
 	public ReactiveCommand<object?, Unit> CopyToClipboardCommand { get; }
 	public ReactiveCommand<object?, Unit> DeleteModCommand { get; }
 	public RxCommandUnit DeleteSelectedModsCommand { get; }
-	public ReactiveCommand<object?, Unit> RenameContainerCommand { get; }
 	public ReactiveCommand<ModData?, Unit> OpenGitHubPageCommand { get; }
 	public ReactiveCommand<ModData?, Unit> OpenNexusModsPageCommand { get; }
 	public ReactiveCommand<ModData?, Unit> OpenModioPageCommand { get; }

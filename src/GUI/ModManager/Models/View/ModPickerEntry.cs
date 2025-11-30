@@ -12,22 +12,22 @@ using System.IO.Abstractions;
 using System.Text;
 
 namespace ModManager.Models.View;
-public class ModPickerEntry : ReactiveObject, INamedEntry
+public partial class ModPickerEntry : ReactiveObject, INamedEntry
 {
 	public ModData Mod { get; }
 	public string UUID { get; }
-	[Reactive] public bool IsSelected { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
 
-	[ObservableAsProperty] public string? Name { get; }
-	[ObservableAsProperty] public string? FilePath { get; }
-	[ObservableAsProperty] public string? DisplayFilePath { get; }
-	[ObservableAsProperty] public string? FileExtension { get; }
-	[ObservableAsProperty] public string? ShortDescription { get; }
-	[ObservableAsProperty] public MaterialIconKind Icon { get; }
-	[ObservableAsProperty] public IBrush? IconColor { get; }
-	[ObservableAsProperty] public bool IsLooseMod { get; }
-	[ObservableAsProperty] public bool IsInDataFolder { get; }
-	[ObservableAsProperty] public bool IsHidden { get; }
+	[ObservableAsProperty] public partial string? Name { get; }
+	[ObservableAsProperty] public partial string? FilePath { get; }
+	[ObservableAsProperty] public partial string? DisplayFilePath { get; }
+	[ObservableAsProperty] public partial string? FileExtension { get; }
+	[ObservableAsProperty] public partial string? ShortDescription { get; }
+	[ObservableAsProperty] public partial MaterialIconKind Icon { get; }
+	[ObservableAsProperty] public partial IBrush? IconColor { get; }
+	[ObservableAsProperty] public partial bool IsLooseMod { get; }
+	[ObservableAsProperty] public partial bool IsInDataFolder { get; }
+	[ObservableAsProperty] public partial bool IsHidden { get; }
 
 	private static readonly IFileSystemService _fs;
 	static ModPickerEntry()
@@ -131,17 +131,17 @@ public class ModPickerEntry : ReactiveObject, INamedEntry
 		Mod = mod;
 		UUID = mod.UUID;
 
-		mod.WhenAnyValue(x => x.Name).ToUIProperty(this, x => x.Name);
-		mod.WhenAnyValue(x => x.IsLooseMod).ToUIProperty(this, x => x.IsLooseMod);
-		mod.WhenAnyValue(x => x.IsHidden).ToUIProperty(this, x => x.IsHidden);
+		_nameHelper = mod.WhenAnyValue(x => x.Name).ToUIProperty(this, x => x.Name);
+		_isLooseModHelper = mod.WhenAnyValue(x => x.IsLooseMod).ToUIProperty(this, x => x.IsLooseMod);
+		_isHiddenHelper = mod.WhenAnyValue(x => x.IsHidden).ToUIProperty(this, x => x.IsHidden);
 		var whenFilePath = mod.WhenAnyValue(x => x.FilePath);
-		whenFilePath.ToUIProperty(this, x => x.FilePath);
-		whenFilePath.Select(CheckForDataFolder).ToUIProperty(this, x => x.IsInDataFolder);
-		whenFilePath.Select(path => _fs.Path.GetExtension(path)?.ToLower()).ToUIProperty(this, x => x.FileExtension);
-		this.WhenAnyValue(x => x.FileExtension, MaterialIconUtils.ExtensionToModIconKind).StartWith(MaterialIconKind.File).ToUIProperty(this, x => x.Icon);
-		this.WhenAnyValue(x => x.FileExtension, x => x.IsLooseMod, x => x.IsInDataFolder, GetIconColor).StartWith(Brushes.White).ToUIProperty(this, x => x.IconColor);
-		this.WhenAnyValue(x => x.FilePath, x => x.IsLooseMod, x => x.IsInDataFolder, GetRelativePath).ToUIProperty(this, x => x.DisplayFilePath);
+		_filePathHelper = whenFilePath.ToUIProperty(this, x => x.FilePath);
+		_isInDataFolderHelper = whenFilePath.Select(CheckForDataFolder).ToUIProperty(this, x => x.IsInDataFolder);
+		_fileExtensionHelper = whenFilePath.Select(path => _fs.Path.GetExtension(path)?.ToLower()).ToUIProperty(this, x => x.FileExtension);
+		_iconHelper = this.WhenAnyValue(x => x.FileExtension, MaterialIconUtils.ExtensionToModIconKind).StartWith(MaterialIconKind.File).ToUIProperty(this, x => x.Icon);
+		_iconColorHelper = this.WhenAnyValue(x => x.FileExtension, x => x.IsLooseMod, x => x.IsInDataFolder, GetIconColor).StartWith(Brushes.White).ToUIProperty(this, x => x.IconColor);
+		_displayFilePathHelper = this.WhenAnyValue(x => x.FilePath, x => x.IsLooseMod, x => x.IsInDataFolder, GetRelativePath).ToUIProperty(this, x => x.DisplayFilePath);
 
-		mod.WhenAnyValue(x => x.DisplayName, x => x.Description, x => x.AuthorDisplayName, x => x.FilePath, x => x.IsToolkitProject, x => x.IsLooseMod, GetShortDescription).ToUIProperty(this, x => x.ShortDescription);
+		_shortDescriptionHelper = mod.WhenAnyValue(x => x.DisplayName, x => x.Description, x => x.AuthorDisplayName, x => x.FilePath, x => x.IsToolkitProject, x => x.IsLooseMod, GetShortDescription).ToUIProperty(this, x => x.ShortDescription);
 	}
 }

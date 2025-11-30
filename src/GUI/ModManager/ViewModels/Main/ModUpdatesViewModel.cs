@@ -26,26 +26,22 @@ public class CopyModUpdatesTask
 	public int TotalProcessed { get; set; }
 }
 
-public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
+public partial class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 {
 	public string UrlPathSegment => "modupdates";
 	public IScreen HostScreen { get; }
 
-	[Reactive] public bool Unlocked { get; set; }
-	[Reactive] public bool JustUpdated { get; set; }
+	[Reactive] public partial bool Unlocked { get; set; }
+	[Reactive] public partial bool JustUpdated { get; set; }
 
-	public class UpdateTaskResult
-	{
-		public string ModId { get; set; }
-		public bool Success { get; set; }
-	}
+	public record UpdateTaskResult(string ModId, bool Success);
 
 	private readonly SourceList<ModUpdateData> UpdatesSource = new();
 	public ITreeDataGridSource<ModUpdateData> Updates { get; }
 
-	[ObservableAsProperty] public bool AnySelected { get; }
-	[ObservableAsProperty] public bool AllSelected { get; }
-	[ObservableAsProperty] public int TotalUpdates { get; }
+	[ObservableAsProperty] public partial bool AnySelected { get; }
+	[ObservableAsProperty] public partial bool AllSelected { get; }
+	[ObservableAsProperty] public partial int TotalUpdates { get; }
 
 	public RxCommandUnit UpdateModsCommand { get; }
 	public ReactiveCommand<bool, Unit> ToggleSelectCommand { get; }
@@ -95,21 +91,19 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 
 	private async Task<UpdateTaskResult> AwaitDownloadPartition(IEnumerator<ModUpdateData> partition, double progressIncrement,
 		string outputFolder, CancellationToken token)
-	{
-		var result = new UpdateTaskResult();
+	{		
 		using (partition)
 		{
 			while (partition.MoveNext())
 			{
-				result.ModId = partition.Current.Mod.UUID;
-				if (token.IsCancellationRequested) return result;
+				if (token.IsCancellationRequested) return new(partition.Current.Mod.UUID, false);
 				await Task.Yield(); // prevents a sync/hot thread hangup
 				var downloadResult = await partition.Current.DownloadData.DownloadAsync(partition.Current.LocalFilePath, outputFolder, token);
-				result.Success = downloadResult.Success;
 				ViewModelLocator.Progress.IncreaseValue(progressIncrement);
+				return new(partition.Current.Mod.UUID, downloadResult.Success);
 			}
 		}
-		return result;
+		return new(string.Empty, false);
 	}
 
 	private void ProcessUpdates(CopyModUpdatesTask taskData)
@@ -156,11 +150,10 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
 
 		Unlocked = true;
-		AllSelected = true;
 
 		CloseCommand = ReactiveCommand.Create(OnClose);
 
-		UpdatesSource.CountChanged.ToUIProperty(this, x => x.TotalUpdates);
+		_totalUpdatesHelper = UpdatesSource.CountChanged.ToUIProperty(this, x => x.TotalUpdates);
 
 		var updatesConnection = UpdatesSource.Connect().ObserveOn(RxApp.MainThreadScheduler);
 
@@ -211,8 +204,8 @@ public class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 		};
 
 		var selectedConn = updatesConnection.AutoRefresh(x => x.IsSelected).ToCollection().Throttle(TimeSpan.FromMilliseconds(50)).ObserveOn(RxApp.MainThreadScheduler);
-		selectedConn.Select(x => x.Any(x => x.IsSelected)).ToUIProperty(this, x => x.AnySelected, initialValue: false);
-		selectedConn.Select(x => x.All(x => x.IsSelected)).ToUIProperty(this, x => x.AllSelected, initialValue: true);
+		_anySelectedHelper = selectedConn.Select(x => x.Any(x => x.IsSelected)).ToUIProperty(this, x => x.AnySelected, initialValue: false);
+		_allSelectedHelper = selectedConn.Select(x => x.All(x => x.IsSelected)).ToUIProperty(this, x => x.AllSelected, initialValue: true);
 		this.WhenAnyValue(x => x.AllSelected).Subscribe(b => checkboxHeader.IsChecked = b);
 
 		var anySelectedObservable = this.WhenAnyValue(x => x.AnySelected);

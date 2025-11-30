@@ -16,15 +16,15 @@ public struct ModDownloadResult
 	public string? OutputFilePath;
 }
 
-public class ModDownloadData : ReactiveObject
+public partial class ModDownloadData : ReactiveObject
 {
-	[Reactive] public string? DownloadPath { get; set; }
-	[Reactive] public ModDownloadPathType DownloadPathType { get; set; }
-	[Reactive] public ModSourceType DownloadSourceType { get; set; }
-	[Reactive] public DateTimeOffset? Date { get; set; }
-	[Reactive] public string? Version { get; set; }
-	[Reactive] public string? Description { get; set; }
-	[Reactive] public bool IsIndirectDownload { get; set; }
+	[Reactive] public partial string? DownloadPath { get; set; }
+	[Reactive] public partial ModDownloadPathType DownloadPathType { get; set; }
+	[Reactive] public partial ModSourceType DownloadSourceType { get; set; }
+	[Reactive] public partial DateTimeOffset? Date { get; set; }
+	[Reactive] public partial string? Version { get; set; }
+	[Reactive] public partial string? Description { get; set; }
+	[Reactive] public partial bool IsIndirectDownload { get; set; }
 
 	private static bool FileNamesMatch(string localFilePath, string newFilePath) => Path.GetFileName(localFilePath).Equals(Path.GetFileName(newFilePath), StringComparison.OrdinalIgnoreCase);
 
@@ -36,7 +36,7 @@ public class ModDownloadData : ReactiveObject
 		}
 	}
 
-	public async Task<ModDownloadResult> DownloadAsync(string previousFilePath, string outputDirectory, CancellationToken token)
+	public async Task<ModDownloadResult> DownloadAsync(string? currentFilePath, string outputDirectory, CancellationToken token)
 	{
 		var result = new ModDownloadResult();
 		try
@@ -45,13 +45,17 @@ public class ModDownloadData : ReactiveObject
 			{
 				throw new InvalidOperationException($"DownloadPath({DownloadPath}) is not valid.");
 			}
+			if(!currentFilePath.IsValid())
+			{
+				throw new InvalidOperationException($"currentFilePath({currentFilePath}) is not valid.");
+			}
 			Directory.CreateDirectory(outputDirectory);
 			DivinityApp.Log($"Downloading {DownloadPath} - DownloadPathType({DownloadPathType}) DownloadSourceType({DownloadSourceType})");
 			if (DownloadPathType == ModDownloadPathType.FILE)
 			{
 				var outputFilePath = Path.Join(outputDirectory, DownloadPath);
 				//This covers when an update changes the pak name
-				MoveOldPakToRecycleBin(previousFilePath, outputFilePath);
+				MoveOldPakToRecycleBin(currentFilePath, outputFilePath);
 				await FileUtils.CopyFileAsync(DownloadPath, outputFilePath, token);
 				result.Success = true;
 				result.OutputFilePath = outputFilePath;
@@ -75,7 +79,7 @@ public class ModDownloadData : ReactiveObject
 					if (DownloadPath.EndsWith(".pak", StringComparison.OrdinalIgnoreCase))
 					{
 						var outputFilePath = Path.Join(outputDirectory, Path.GetFileName(DownloadPath));
-						MoveOldPakToRecycleBin(previousFilePath, outputFilePath);
+						MoveOldPakToRecycleBin(currentFilePath, outputFilePath);
 						await using var outputFile = new FileStream(outputFilePath, FileMode.CreateNew, FileAccess.Write, FileShare.Read, 4096, FileOptions.Asynchronous);
 						await webStream.CopyToAsync(outputFile, 128000, token);
 						result.Success = true;
@@ -90,7 +94,7 @@ public class ModDownloadData : ReactiveObject
 							{
 								using var entryStream = entry.Open();
 								var outputFilePath = Path.Join(outputDirectory, Path.GetFileName(entry.Name));
-								MoveOldPakToRecycleBin(previousFilePath, outputFilePath);
+								MoveOldPakToRecycleBin(currentFilePath, outputFilePath);
 								await using var outputFile = new FileStream(outputFilePath, FileMode.CreateNew, FileAccess.Write, FileShare.Read, 4096, FileOptions.Asynchronous);
 								await entryStream.CopyToAsync(outputFile, 128000, token);
 								result.Success = true;

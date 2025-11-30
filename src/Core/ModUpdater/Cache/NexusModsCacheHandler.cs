@@ -3,12 +3,12 @@ using ModManager.Models.Mod;
 
 namespace ModManager.ModUpdater.Cache;
 
-public class NexusModsCacheHandler : ReactiveObject, IExternalModCacheHandler<NexusModsCachedData>
+public partial class NexusModsCacheHandler : ReactiveObject, IExternalModCacheHandler<NexusModsCachedData>
 {
 	public ModSourceType SourceType => ModSourceType.NEXUSMODS;
 	public string FileName => "nexusmodsdata.json";
 	public JsonSerializerOptions SerializerSettings { get; }
-	[Reactive] public bool IsEnabled { get; set; }
+	[Reactive] public partial bool IsEnabled { get; set; }
 	public NexusModsCachedData CacheData { get; set; }
 
 	public NexusModsCacheHandler(JsonSerializerOptions serializerSettings)

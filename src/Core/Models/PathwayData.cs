@@ -4,45 +4,45 @@ using ModManager.Services;
 
 namespace ModManager.Models;
 
-public class PathwayData : ReactiveObject
+public partial class PathwayData : ReactiveObject
 {
 	/// <summary>
 	/// The path to the root game folder, i.e. SteamLibrary\steamapps\common\Baldur's Gate 3
 	/// </summary>
-	[Reactive] public string? InstallPath { get; set; }
+	[Reactive] public partial string? InstallPath { get; set; }
 
 	/// <summary>
 	/// The path to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3
 	/// </summary>
-	[Reactive] public string? AppDataGameFolder { get; set; }
+	[Reactive] public partial string? AppDataGameFolder { get; set; }
 
 	/// <summary>
 	/// The path to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3\Mods
 	/// </summary>
-	[Reactive] public string? AppDataModsPath { get; set; }
+	[Reactive] public partial string? AppDataModsPath { get; set; }
 
 	/// <summary>
 	/// The path to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3\Mods_Disabled
 	/// </summary>
-	[Reactive] public string? AppDataInactiveModsPath { get; set; }
+	[Reactive] public partial string? AppDataInactiveModsPath { get; set; }
 
 	/// <summary>
 	/// The path to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3\PlayerProfiles
 	/// </summary>
-	[Reactive] public string? AppDataProfilesPath { get; set; }
+	[Reactive] public partial string? AppDataProfilesPath { get; set; }
 
 	/// <summary>
 	/// The path to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3\ModCrashSanityCheck
 	/// </summary>
-	[Reactive] public string? AppDataModCrashSanityCheck { get; set; }
+	[Reactive] public partial string? AppDataModCrashSanityCheck { get; set; }
 
 	/// <summary>
 	/// The path to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3\Script Extender
 	/// </summary>
-	[Reactive] public string? AppDataScriptExtenderPath { get; set; }
-	[Reactive] public string? LastSaveFilePath { get; set; }
-	[Reactive] public string? ScriptExtenderLatestReleaseUrl { get; set; }
-	[Reactive] public string? ScriptExtenderLatestReleaseVersion { get; set; }
+	[Reactive] public partial string? AppDataScriptExtenderPath { get; set; }
+	[Reactive] public partial string? LastSaveFilePath { get; set; }
+	[Reactive] public partial string? ScriptExtenderLatestReleaseUrl { get; set; }
+	[Reactive] public partial string? ScriptExtenderLatestReleaseVersion { get; set; }
 
 	public void UpdateAppDataPathways(string? appDataGame = null)
 	{

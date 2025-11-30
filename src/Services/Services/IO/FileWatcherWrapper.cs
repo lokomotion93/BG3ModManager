@@ -5,12 +5,12 @@ using System.Reactive.Linq;
 
 namespace ModManager.Services.IO;
 
-internal class FileWatcherWrapper : ReactiveObject, IFileWatcherWrapper
+internal partial class FileWatcherWrapper : ReactiveObject, IFileWatcherWrapper
 {
 	public string DefaultDirectory => GetDefaultDirectory();
 
-	[Reactive] public string DirectoryPath { get; private set; }
-	[ObservableAsProperty] public bool IsEnabled { get; }
+	[Reactive] public partial string DirectoryPath { get; private set; }
+	[ObservableAsProperty] public partial bool IsEnabled { get; }
 
 	public IObservable<FileSystemEventArgs> FileChanged { get; }
 	public IObservable<FileSystemEventArgs> FileCreated { get; }
@@ -69,7 +69,7 @@ internal class FileWatcherWrapper : ReactiveObject, IFileWatcherWrapper
 		FileCreated = Observable.FromEventPattern<FileSystemEventArgs>(_watcher, nameof(FileSystemWatcher.Created)).Select(x => x.EventArgs);
 		FileDeleted = Observable.FromEventPattern<FileSystemEventArgs>(_watcher, nameof(FileSystemWatcher.Deleted)).Select(x => x.EventArgs);
 
-		this.WhenAnyValue(x => x.DirectoryPath).Select(IsDirectoryPath).ToPropertyEx(this, x => x.IsEnabled);
+		_isEnabledHelper = this.WhenAnyValue(x => x.DirectoryPath).Select(IsDirectoryPath).ToProperty(this, x => x.IsEnabled);
 		this.WhenAnyValue(x => x.DirectoryPath).Select(PathOrEmpty).BindTo(this, x => x._watcher.Path);
 
 		this.WhenAnyValue(x => x.IsEnabled).Throttle(TimeSpan.FromMilliseconds(250)).BindTo(_watcher, x => x.EnableRaisingEvents);

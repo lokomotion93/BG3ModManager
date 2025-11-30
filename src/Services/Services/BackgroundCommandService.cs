@@ -1,6 +1,4 @@
-﻿using ReactiveUI;
-
-using System.IO;
+﻿using System.IO;
 using System.IO.Pipes;
 using System.Reactive.Concurrency;
 using System.Text;
@@ -12,8 +10,8 @@ public class BackgroundCommandService : IBackgroundCommandService
 {
 	private readonly string _id;
 
-	private NamedPipeServerStream _pipe;
-	private IDisposable _backgroundTask;
+	private NamedPipeServerStream? _pipe;
+	private IDisposable? _backgroundTask;
 
 	private async Task WaitForCommandAsync(IScheduler sch, CancellationToken token)
 	{

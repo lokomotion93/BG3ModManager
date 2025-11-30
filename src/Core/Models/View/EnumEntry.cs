@@ -1,9 +1,9 @@
 ﻿namespace ModManager.Models.View;
 
-public class EnumEntry : ReactiveObject
+public partial class EnumEntry : ReactiveObject
 {
-	[Reactive] public string? Description { get; set; }
-	[Reactive] public object Value { get; set; }
+	[Reactive] public partial string? Description { get; set; }
+	[Reactive] public partial object Value { get; set; }
 
 	public EnumEntry(string description, object value)
 	{

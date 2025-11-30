@@ -6,17 +6,17 @@ using ModManager.Models.Extender;
 namespace ModManager.Models.Settings;
 
 [DataContract]
-public class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
+public partial class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
 {
 	public string FileName => "ScriptExtenderSettings.json";
 	public string? GetDirectory() => Locator.Current.GetService<ISettingsService>()?.GetGameExecutableDirectory();
 	public bool SkipEmpty => true;
 
-	[Reactive] public bool DevOptionsEnabled { get; set; }
-	[Reactive] public bool ExtenderIsAvailable { get; set; }
-	[Reactive] public bool ExtenderUpdaterIsAvailable { get; set; }
-	[Reactive] public string? ExtenderVersion { get; set; }
-	[Reactive] public int ExtenderMajorVersion { get; set; }
+	[Reactive] public partial bool DevOptionsEnabled { get; set; }
+	[Reactive] public partial bool ExtenderIsAvailable { get; set; }
+	[Reactive] public partial bool ExtenderUpdaterIsAvailable { get; set; }
+	[Reactive] public partial string? ExtenderVersion { get; set; }
+	[Reactive] public partial int ExtenderMajorVersion { get; set; }
 	public Version? ModManagerVersion { get; set; }
 
 

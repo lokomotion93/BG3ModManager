@@ -15,14 +15,14 @@ public partial class ModConfig : ReactiveObject, IObjectWithId
 	public bool IsLoaded { get; set; }
 	public string Id { get; set; }
 
-	[Reactive, DataMember] public string? Notes { get; set; }
+	[Reactive, DataMember] public partial string? Notes { get; set; }
 
-	[Reactive, DataMember] public string? GitHub { get; set; }
-	[Reactive, DataMember] public long NexusModsId { get; set; }
-	[Reactive, DataMember] public string? ModioId { get; set; }
+	[Reactive, DataMember] public partial string? GitHub { get; set; }
+	[Reactive, DataMember] public partial long NexusModsId { get; set; }
+	[Reactive, DataMember] public partial string? ModioId { get; set; }
 
-	[ObservableAsProperty] public string? GitHubAuthor { get; }
-	[ObservableAsProperty] public string? GitHubRepository { get; }
+	[ObservableAsProperty] public partial string? GitHubAuthor { get; }
+	[ObservableAsProperty] public partial string? GitHubRepository { get; }
 
 
 	[GeneratedRegex("^.*/([^/]+)/([^/]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant)]
@@ -55,7 +55,7 @@ public partial class ModConfig : ReactiveObject, IObjectWithId
 	{
 		Id = id;
 		var parseGitHubUrl = this.WhenAnyValue(x => x.GitHub).Select(GitHubUrlToParts);
-		parseGitHubUrl.Select(x => x.Item1).ToPropertyEx(this, x => x.GitHubAuthor, string.Empty, false, RxApp.MainThreadScheduler);
-		parseGitHubUrl.Select(x => x.Item2).ToPropertyEx(this, x => x.GitHubRepository, string.Empty, false, RxApp.MainThreadScheduler);
+		_gitHubAuthorHelper = parseGitHubUrl.Select(x => x.Item1).ToProperty(this, x => x.GitHubAuthor, string.Empty, false, RxApp.MainThreadScheduler);
+		_gitHubRepositoryHelper = parseGitHubUrl.Select(x => x.Item2).ToProperty(this, x => x.GitHubRepository, string.Empty, false, RxApp.MainThreadScheduler);
 	}
 }

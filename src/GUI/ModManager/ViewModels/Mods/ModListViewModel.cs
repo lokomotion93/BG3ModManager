@@ -14,30 +14,30 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace ModManager.ViewModels.Mods;
-public class ModListViewModel : ReactiveObject
+public partial class ModListViewModel : ReactiveObject
 {
 	private readonly ObservableCollectionExtended<IModEntry> _mods;
 	private readonly ModEntryTreeDataGridRowSelectionModel _rowSelection;
 
 	public HierarchicalTreeDataGridSource<IModEntry> Mods { get; }
 
-	[Reactive] public string Title { get; set; }
-	[Reactive] public string? FilterInputText { get; set; }
-	[Reactive] public bool IsFilterEnabled { get; set; }
-	[Reactive] public int TotalMods { get; private set; }
-	[Reactive] public int TotalModsHidden { get; private set; }
-	[Reactive] public int TotalModsSelected { get; private set; }
+	[Reactive] public partial string Title { get; set; }
+	[Reactive] public partial string? FilterInputText { get; set; }
+	[Reactive] public partial bool IsFilterEnabled { get; set; }
+	[Reactive] public partial int TotalMods { get; private set; }
+	[Reactive] public partial int TotalModsHidden { get; private set; }
+	[Reactive] public partial int TotalModsSelected { get; private set; }
 
-	[Reactive] public bool IsLocked { get; set; }
-	[Reactive] public bool IsFocused { get; set; }
-	[Reactive] public bool IsKeyboardFocusWithin { get; set; }
-	[Reactive] public ModListType ListType { get; set; }
+	[Reactive] public partial bool IsLocked { get; set; }
+	[Reactive] public partial bool IsFocused { get; set; }
+	[Reactive] public partial bool IsKeyboardFocusWithin { get; set; }
+	[Reactive] public partial ModListType ListType { get; set; }
 
-	[Reactive] public IModEntry? SelectedItem { get; set; }
+	[Reactive] public partial IModEntry? SelectedItem { get; set; }
 
-	[ObservableAsProperty] public string? FilterPlaceholderText { get; }
-	[ObservableAsProperty] public string? FilterResultText { get; }
-	[ObservableAsProperty] public bool HasAnyFocus { get; }
+	[ObservableAsProperty] public partial string? FilterPlaceholderText { get; }
+	[ObservableAsProperty] public partial string? FilterResultText { get; }
+	[ObservableAsProperty] public partial bool HasAnyFocus { get; }
 
 	public RxCommandUnit FocusCommand { get; }
 	public RxCommandUnit AddContainerCommand { get; }
@@ -143,7 +143,7 @@ public class ModListViewModel : ReactiveObject
 
 		backingCollection.WhenAnyPropertyChanged(nameof(IModEntry.IsVisible));
 
-		this.WhenAnyValue(x => x.TotalMods, x => x.TotalModsHidden, x => x.TotalModsSelected,
+		_filterResultTextHelper = this.WhenAnyValue(x => x.TotalMods, x => x.TotalModsHidden, x => x.TotalModsSelected,
 			x => x.FilterInputText, x => x.IsFilterEnabled)
 			.Select(ToFilterResultText)
 			.ToUIProperty(this, x => x.FilterResultText);
@@ -157,9 +157,9 @@ public class ModListViewModel : ReactiveObject
 				ModUtils.FilterMods(searchText, _mods);
 			});
 
-		this.WhenAnyValue(x => x.Title).Select(x => $"Filter {x}").ToUIProperty(this, x => x.FilterPlaceholderText);
+		_filterPlaceholderTextHelper = this.WhenAnyValue(x => x.Title).Select(x => $"Filter {x}").ToUIProperty(this, x => x.FilterPlaceholderText);
 
-		this.WhenAnyValue(x => x.IsFocused, x => x.IsKeyboardFocusWithin).Select(x => x.Item1 || x.Item2).ToUIPropertyImmediate(this, x => x.HasAnyFocus);
+		_hasAnyFocusHelper = this.WhenAnyValue(x => x.IsFocused, x => x.IsKeyboardFocusWithin).Select(x => x.Item1 || x.Item2).ToUIPropertyImmediate(this, x => x.HasAnyFocus);
 
 		FocusCommand = ReactiveCommand.Create(() => { });
 

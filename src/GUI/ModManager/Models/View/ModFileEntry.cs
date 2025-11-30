@@ -16,7 +16,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ModManager.Models.View;
-public class ModFileEntry : ReactiveObject, IFileModel
+public partial class ModFileEntry : ReactiveObject, IFileModel
 {
 	private readonly IFileSystemService _fs;
 
@@ -25,14 +25,14 @@ public class ModFileEntry : ReactiveObject, IFileModel
 	private readonly ReadOnlyObservableCollection<ModFileEntry> _uiSubfiles;
 	public ReadOnlyObservableCollection<ModFileEntry> Subfiles => _uiSubfiles;
 
-	[Reactive] public bool IsExpanded { get; set; }
-	[Reactive] public bool IsSelected { get; set; }
-	[Reactive] public double SizeOnDisk { get; set; }
-	[Reactive] public MaterialIconKind Icon { get; set; }
-	[Reactive] public IBrush IconColor { get; set; }
+	[Reactive] public partial bool IsExpanded { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
+	[Reactive] public partial double SizeOnDisk { get; set; }
+	[Reactive] public partial MaterialIconKind Icon { get; set; }
+	[Reactive] public partial IBrush IconColor { get; set; }
 
-	[ObservableAsProperty] public string? Size { get; }
-	[ObservableAsProperty] public string? ExtensionDisplayName { get; }
+	[ObservableAsProperty] public partial string? Size { get; }
+	[ObservableAsProperty] public partial string? ExtensionDisplayName { get; }
 
 	public string SourcePakFilePath { get; }
 	public string FilePath { get; }
@@ -125,11 +125,11 @@ public class ModFileEntry : ReactiveObject, IFileModel
 			FileExtension = string.Empty;
 		}
 
-		this.WhenAnyValue(x => x.SizeOnDisk)
+		_sizeHelper = this.WhenAnyValue(x => x.SizeOnDisk)
 			.Select(x => x > 0 ? x.Bytes().Humanize() : string.Empty)
 			.ToUIProperty(this, x => x.Size);
 
-		this.WhenAnyValue(x => x.IsDirectory, x => x.FileExtension, GetExtensionDisplayName)
+		_extensionDisplayNameHelper = this.WhenAnyValue(x => x.IsDirectory, x => x.FileExtension, GetExtensionDisplayName)
 			.ToUIProperty(this, x => x.ExtensionDisplayName);
 
 		if (isDirectory)

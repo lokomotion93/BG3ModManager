@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace ModManager.Models.Settings;
 
 [DataContract]
-public class ConfirmationSettings : ReactiveObject
+public partial class ConfirmationSettings : ReactiveObject
 {
-	[Reactive, DataMember] public bool DisableAdminModeWarning { get; set; }
-	[Reactive, DataMember] public bool? OpenExtractedModFolder { get; set; }
+	[Reactive, DataMember] public partial bool DisableAdminModeWarning { get; set; }
+	[Reactive, DataMember] public partial bool? OpenExtractedModFolder { get; set; }
 }

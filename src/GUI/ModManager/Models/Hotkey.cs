@@ -18,7 +18,7 @@ public interface IHotkey
 }
 
 [DataContract]
-public class Hotkey : ReactiveObject, IHotkey
+public partial class Hotkey : ReactiveObject, IHotkey
 {
 	private readonly Key _defaultKey = Key.None;
 	private readonly ModifierKeys _defaultModifiers = ModifierKeys.None;
@@ -30,23 +30,23 @@ public class Hotkey : ReactiveObject, IHotkey
 
 
 	[DataMember, JsonConverter(typeof(StringEnumConverter))]
-	[Reactive] public Key Key { get; set; }
+	[Reactive] public partial Key Key { get; set; }
 
 	[DataMember, JsonConverter(typeof(StringEnumConverter))]
-	[Reactive] public ModifierKeys Modifiers { get; set; }
+	[Reactive] public partial ModifierKeys Modifiers { get; set; }
 
 	public IReactiveCommand Command { get; }
 
-	[Reactive] public string? DisplayName { get; set; }
+	[Reactive] public partial string? DisplayName { get; set; }
 
-	[Reactive] public bool Enabled { get; set; }
-	[Reactive] public bool CanEdit { get; set; }
-	[Reactive] public bool IsSelected { get; set; }
+	[Reactive] public partial bool Enabled { get; set; }
+	[Reactive] public partial bool CanEdit { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
 
-	[ObservableAsProperty] public string? KeyBindingText { get; }
-	[ObservableAsProperty] public string? ModifiedText { get; }
-	[ObservableAsProperty] public string? ToolTip { get; }
-	[ObservableAsProperty] public bool IsDefault { get; }
+	[ObservableAsProperty] public partial string? KeyBindingText { get; }
+	[ObservableAsProperty] public partial string? ModifiedText { get; }
+	[ObservableAsProperty] public partial string? ToolTip { get; }
+	[ObservableAsProperty] public partial bool IsDefault { get; }
 
 	public void ResetToDefault()
 	{
@@ -93,14 +93,14 @@ public class Hotkey : ReactiveObject, IHotkey
 
 		var keysChanged = this.WhenAnyValue(x => x.Key, x => x.Modifiers);
 
-		keysChanged.Select(x => x.Item1 == _defaultKey && x.Item2 == _defaultModifiers).ToUIProperty(this, x => x.IsDefault, true);
-		keysChanged.Select(x => KeyToDisplayString(x.Item1, x.Item2)).ToUIProperty(this, x => x.KeyBindingText);
+		_isDefaultHelper = keysChanged.Select(x => x.Item1 == _defaultKey && x.Item2 == _defaultModifiers).ToUIProperty(this, x => x.IsDefault, true);
+		_keyBindingTextHelper = keysChanged.Select(x => KeyToDisplayString(x.Item1, x.Item2)).ToUIProperty(this, x => x.KeyBindingText);
 
 		var isDefaultObservable = this.WhenAnyValue(x => x.IsDefault);
 
-		isDefaultObservable.Select(b => !b ? "*" : "").ToUIProperty(this, x => x.ModifiedText, "");
+		_modifiedTextHelper = isDefaultObservable.Select(b => !b ? "*" : "").ToUIProperty(this, x => x.ModifiedText, "");
 
-		this.WhenAnyValue(x => x.DisplayName, x => x.IsDefault)
+		_toolTipHelper = this.WhenAnyValue(x => x.DisplayName, x => x.IsDefault)
 			.Select(x => x.Item2 ? $"{x.Item1} (Modified)" : x.Item1)
 			.ToUIProperty(this, x => x.ToolTip);
 	}

@@ -246,11 +246,11 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	private readonly ReadOnlyObservableCollection<IMenuEntry> _uiMenuEntries;
 	public ReadOnlyObservableCollection<IMenuEntry> MenuEntries => _uiMenuEntries;
 
-	[Reactive] public ModOrderViewModel? ModOrder { get; protected set; }
-	[Reactive] public bool HighlightExtenderDownload { get; private set; }
-	[Reactive] public bool HasDopus { get; private set; }
-	[Reactive] public bool IsDeveloperMode { get; private set; }
-	[Reactive] public ModManagerSettings? Settings { get; private set; }
+	[Reactive] public partial ModOrderViewModel? ModOrder { get; protected set; }
+	[Reactive] public partial bool HighlightExtenderDownload { get; private set; }
+	[Reactive] public partial bool HasDopus { get; private set; }
+	[Reactive] public partial bool IsDeveloperMode { get; private set; }
+	[Reactive] public partial ModManagerSettings? Settings { get; private set; }
 
 	public MainCommandBarViewModel()
 	{

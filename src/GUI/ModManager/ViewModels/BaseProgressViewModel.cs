@@ -1,23 +1,23 @@
 ﻿namespace ModManager.ViewModels;
 
-public abstract class BaseProgressViewModel : ReactiveObject, IClosableViewModel
+public abstract partial class BaseProgressViewModel : ReactiveObject, IClosableViewModel
 {
 	#region IClosableViewModel
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
-	[Reactive] public bool CanRun { get; set; }
-	[Reactive] public bool CanClose { get; set; }
-	[Reactive] public bool IsProgressActive { get; set; }
-	[Reactive] public string? ProgressTitle { get; set; }
-	[Reactive] public string? ProgressWorkText { get; set; }
-	[Reactive] public double ProgressValue { get; set; }
+	[Reactive] public partial bool CanRun { get; set; }
+	[Reactive] public partial bool CanClose { get; set; }
+	[Reactive] public partial bool IsProgressActive { get; set; }
+	[Reactive] public partial string? ProgressTitle { get; set; }
+	[Reactive] public partial string? ProgressWorkText { get; set; }
+	[Reactive] public partial double ProgressValue { get; set; }
 
 	/// <summary>
 	/// True when the RunCommand is executing.
 	/// </summary>
-	[ObservableAsProperty] public bool IsRunning { get; }
+	[ObservableAsProperty] public partial bool IsRunning { get; }
 
 	public ReactiveCommand<Unit, bool> RunCommand { get; }
 	public RxCommandUnit CancelRunCommand { get; }
@@ -61,7 +61,7 @@ public abstract class BaseProgressViewModel : ReactiveObject, IClosableViewModel
 
 		var canRun = this.WhenAnyValue(x => x.CanRun);
 		RunCommand = ReactiveCommand.CreateFromObservable(() => Observable.StartAsync(cts => Run(cts)).TakeUntil(CancelRunCommand), canRun);
-		RunCommand.IsExecuting.ToUIProperty(this, x => x.IsRunning);
+		_isRunningHelper = RunCommand.IsExecuting.ToUIProperty(this, x => x.IsRunning);
 
 		var canClose = this.WhenAnyValue(x => x.CanClose, x => x.IsRunning, (b1, b2) => b1 && !b2);
 		CloseCommand = ReactiveCommand.Create(Close, canClose);

@@ -24,7 +24,7 @@ using TextCopy;
 
 namespace ModManager.ViewModels.Main;
 
-public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
+public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 {
 	public string UrlPathSegment => "modorder";
 	public IScreen HostScreen { get; }
@@ -70,49 +70,40 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	public ObservableCollectionExtended<ModOrder> ModOrderList { get; }
 	public List<ModOrder> ExternalModOrders { get; }
 
-	[ObservableAsProperty] public ObservableCollectionExtended<IModEntry>? FocusedList { get; }
+	[Reactive] public partial bool IsRefreshing { get; private set; }
+	[Reactive] public partial bool IsLoadingOrder { get; set; }
+	[Reactive] public partial bool IsLocked { get; private set; }
 
-	[Reactive] public bool IsRefreshing { get; private set; }
-	[Reactive] public bool IsLoadingOrder { get; set; }
-	[Reactive] public bool IsLocked { get; private set; }
+	[Reactive] public partial bool CanMoveSelectedMods { get; set; }
+	[Reactive] public partial bool CanSaveOrder { get; set; }
 
-	[Reactive] public bool CanMoveSelectedMods { get; set; }
-	[Reactive] public bool CanSaveOrder { get; set; }
+	[Reactive] public partial int SelectedProfileIndex { get; set; }
+	[Reactive] public partial int SelectedModOrderIndex { get; set; }
+	[Reactive] public partial int SelectedAdventureModIndex { get; set; }
 
-	[Reactive] public int SelectedProfileIndex { get; set; }
-	[Reactive] public int SelectedModOrderIndex { get; set; }
-	[Reactive] public int SelectedAdventureModIndex { get; set; }
+	[Reactive] public partial ProfileData? SelectedProfile { get; set; }
+	[Reactive] public partial ModOrder? SelectedModOrder { get; set; }
+	[Reactive] public partial ModData? SelectedAdventureMod { get; set; }
 
-	[Reactive] public ProfileData? SelectedProfile { get; set; }
-	[Reactive] public ModOrder? SelectedModOrder { get; set; }
-	[Reactive] public ModData? SelectedAdventureMod { get; set; }
+	[ObservableAsProperty] public partial string? SelectedModOrderName { get; }
+	[ObservableAsProperty] public partial string? SelectedModOrderFilePath { get; }
+	[ObservableAsProperty] public partial string? SelectedProfilePath { get; }
+	[ObservableAsProperty] public partial string? SelectedProfileSavesPath { get; }
 
-	[ObservableAsProperty] public string? SelectedModOrderName { get; }
-	[ObservableAsProperty] public string? SelectedModOrderFilePath { get; }
-	[ObservableAsProperty] public string? SelectedProfilePath { get; }
-	[ObservableAsProperty] public string? SelectedProfileSavesPath { get; }
+	[ObservableAsProperty] public partial bool AdventureModBoxVisibility { get; }
+	[ObservableAsProperty] public partial bool OverrideModsVisibility { get; }
 
-	[ObservableAsProperty] public bool AdventureModBoxVisibility { get; }
-	[ObservableAsProperty] public bool OverrideModsVisibility { get; }
+	[ObservableAsProperty] public partial bool GitHubModSupportEnabled { get; }
+	[ObservableAsProperty] public partial bool NexusModsSupportEnabled { get; }
+	[ObservableAsProperty] public partial bool ModioSupportEnabled { get; }
 
-	[ObservableAsProperty] public bool GitHubModSupportEnabled { get; }
-	[ObservableAsProperty] public bool NexusModsSupportEnabled { get; }
-	[ObservableAsProperty] public bool ModioSupportEnabled { get; }
+	[ObservableAsProperty] public partial bool HasProfile { get; }
+	[ObservableAsProperty] public partial bool IsModSettingsOrder { get; }
 
-	[ObservableAsProperty] public bool HasProfile { get; }
-	[ObservableAsProperty] public bool HasSelectedMods { get; }
-	[ObservableAsProperty] public bool IsModSettingsOrder { get; }
+	[ObservableAsProperty] public partial string? OpenGameButtonToolTip { get; }
 
-	[ObservableAsProperty] public string? ActiveSelectedText { get; }
-	[ObservableAsProperty] public string? InactiveSelectedText { get; }
-	[ObservableAsProperty] public string? OverrideModsSelectedText { get; }
-	[ObservableAsProperty] public string? ActiveModsFilterResultText { get; }
-	[ObservableAsProperty] public string? InactiveModsFilterResultText { get; }
-	[ObservableAsProperty] public string? OverrideModsFilterResultText { get; }
-	[ObservableAsProperty] public string? OpenGameButtonToolTip { get; }
-
-	[ObservableAsProperty] public int TotalActiveMods { get; }
-	[ObservableAsProperty] public int TotalInactiveMods { get; }
+	[ObservableAsProperty] public partial int TotalActiveMods { get; }
+	[ObservableAsProperty] public partial int TotalInactiveMods { get; }
 
 	public ReactiveCommand<ModOrder, Unit> DeleteOrderCommand { get; }
 	public RxCommandUnit CopyOrderToClipboardCommand { get; }
@@ -1744,22 +1735,25 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		var whenProfile = this.WhenAnyValue(x => x.SelectedProfile);
 		var hasNonNullProfile = whenProfile.Select(x => x != null);
-		hasNonNullProfile.ToUIProperty(this, x => x.HasProfile);
+		_hasProfileHelper = hasNonNullProfile.ToUIProperty(this, x => x.HasProfile);
 
 		var whenProfileNotNull = whenProfile.WhereNotNull();
-		whenProfileNotNull
+		_selectedProfilePathHelper = whenProfileNotNull
 			.Select(x => x.FilePath)
 			.ToUIProperty(this, x => x.SelectedProfilePath);
 
-		whenProfileNotNull
+		_selectedProfileSavesPathHelper = whenProfileNotNull
 			.Select(x => _fs.Path.Join(x.FilePath, "Savegames", "Story"))
 			.ToUIProperty(this, x => x.SelectedProfileSavesPath);
 
-		ActiveMods.ToObservableChangeSet().CountChanged().Select(_ => ActiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalActiveMods);
-		InactiveMods.ToObservableChangeSet().CountChanged().Select(_ => InactiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalInactiveMods);
-		OverrideMods.ToObservableChangeSet().CountChanged().Select(_ => OverrideMods.Count > 0).ToUIPropertyImmediate(this, x => x.OverrideModsVisibility);
+		_totalActiveModsHelper = ActiveMods.ToObservableChangeSet().CountChanged().Select(_ => ActiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalActiveMods);
+		_totalInactiveModsHelper = InactiveMods.ToObservableChangeSet().CountChanged().Select(_ => InactiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalInactiveMods);
+		_overrideModsVisibilityHelper = OverrideMods.ToObservableChangeSet().CountChanged().Select(_ => OverrideMods.Count > 0).ToUIPropertyImmediate(this, x => x.OverrideModsVisibility);
 
-		host.Settings.WhenAnyValue(x => x.DebugModeEnabled).Select(b => !b ? "Main" : null).Subscribe(nameOverride =>
+		var whenDebugMode = host.WhenAnyValue(x => x.DebugMode);
+		_adventureModBoxVisibilityHelper = whenDebugMode.ToUIProperty(this, x => x.AdventureModBoxVisibility);
+
+		whenDebugMode.Select(b => !b ? "Main" : null).Subscribe(nameOverride =>
 		{
 			var mainCampaign = AdventureMods.FirstOrDefault(x => x.UUID == _manager.MainCampaignGuid);
 			if (mainCampaign != null)
@@ -1780,7 +1774,7 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		});
 
 		var whenGameExeProperties = host.WhenAnyValue(x => x.Settings.GameExecutablePath, x => x.Settings.LimitToSingleInstance, x => x.GameIsRunning, x => x.CanForceLaunchGame);
-		whenGameExeProperties.Select(GetLaunchGameTooltip).ToUIProperty(this, x => x.OpenGameButtonToolTip, "Launch Game");
+		_openGameButtonToolTipHelper = whenGameExeProperties.Select(GetLaunchGameTooltip).ToUIProperty(this, x => x.OpenGameButtonToolTip, "Launch Game");
 
 		this.WhenAnyValue(x => x.SelectedModOrder, x => x.SelectedModOrder.Name, (order, name) => order?.Name).Subscribe(name =>
 		{
@@ -1875,9 +1869,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		var whenModOrder = this.WhenAnyValue(x => x.SelectedModOrder);
 
-		whenModOrder.ValueOrFallback(x => x.Name, "None").ToUIProperty(this, x => x.SelectedModOrderName, "None");
-		whenModOrder.ValueOrFallback(x => x.FilePath, string.Empty).ToUIProperty(this, x => x.SelectedModOrderFilePath, string.Empty);
-		whenModOrder.Select(x => x != null && x.IsModSettings).ToUIProperty(this, x => x.IsModSettingsOrder);
+		_selectedModOrderNameHelper = whenModOrder.ValueOrFallback(x => x.Name, "None").ToUIProperty(this, x => x.SelectedModOrderName, "None");
+		_selectedModOrderFilePathHelper = whenModOrder.ValueOrFallback(x => x.FilePath, string.Empty).ToUIProperty(this, x => x.SelectedModOrderFilePath, string.Empty);
+		_isModSettingsOrderHelper = whenModOrder.Select(x => x != null && x.IsModSettings).ToUIProperty(this, x => x.IsModSettingsOrder);
 
 		whenModOrder.Buffer(2, 1).Subscribe(changes =>
 		{
@@ -1959,9 +1953,9 @@ public class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		//SetupKeys(host.Keys, host, canExecuteCommands);
 
-		updateService.Modio.WhenAnyValue(x => x.IsEnabled).ToUIPropertyImmediate(this, x => x.ModioSupportEnabled);
-		updateService.NexusMods.WhenAnyValue(x => x.IsEnabled).ToUIPropertyImmediate(this, x => x.NexusModsSupportEnabled);
-		updateService.GitHub.WhenAnyValue(x => x.IsEnabled).ToUIPropertyImmediate(this, x => x.GitHubModSupportEnabled);
+		_modioSupportEnabledHelper = updateService.Modio.WhenAnyValue(x => x.IsEnabled).ToUIPropertyImmediate(this, x => x.ModioSupportEnabled);
+		_nexusModsSupportEnabledHelper = updateService.NexusMods.WhenAnyValue(x => x.IsEnabled).ToUIPropertyImmediate(this, x => x.NexusModsSupportEnabled);
+		_gitHubModSupportEnabledHelper = updateService.GitHub.WhenAnyValue(x => x.IsEnabled).ToUIPropertyImmediate(this, x => x.GitHubModSupportEnabled);
 
 		this.WhenAnyValue(x => x.GitHubModSupportEnabled, x => x.NexusModsSupportEnabled, x => x.ModioSupportEnabled)
 		.SkipUntil(this.WhenAnyValue(x => x.IsRefreshing, b => !b))

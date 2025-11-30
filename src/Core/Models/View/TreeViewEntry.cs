@@ -4,10 +4,10 @@ using DynamicData.Binding;
 using System.Windows.Input;
 
 namespace ModManager.Models.View;
-public abstract class TreeViewEntry : ReactiveObject
+public abstract partial class TreeViewEntry : ReactiveObject
 {
-	[Reactive] public bool IsExpanded { get; set; }
-	[Reactive] public bool IsSelected { get; set; }
+	[Reactive] public partial bool IsExpanded { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
 
 	private readonly SourceList<TreeViewEntry> _children;
 

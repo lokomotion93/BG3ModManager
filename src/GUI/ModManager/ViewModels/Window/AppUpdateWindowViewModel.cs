@@ -14,17 +14,17 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 	#region IClosableViewModel/IRoutableViewModel
 	public string UrlPathSegment => "appupdate";
 	public IScreen HostScreen { get; }
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
-	[Reactive] public string Title { get; set; }
-	[Reactive] public bool CanConfirm { get; set; }
-	[Reactive] public bool CanSkip { get; set; }
-	[Reactive] public string? SkipButtonText { get; set; }
-	[Reactive] public string? UpdateDescription { get; set; }
-	[Reactive] public string? ChangelogMarkdownText { get; set; }
-	[Reactive] public double ScrollViewerWidth { get; set; }
+	[Reactive] public partial string Title { get; set; }
+	[Reactive] public partial bool CanConfirm { get; set; }
+	[Reactive] public partial bool CanSkip { get; set; }
+	[Reactive] public partial string? SkipButtonText { get; set; }
+	[Reactive] public partial string? UpdateDescription { get; set; }
+	[Reactive] public partial string? ChangelogMarkdownText { get; set; }
+	[Reactive] public partial double ScrollViewerWidth { get; set; }
 
 	public RxCommandUnit ConfirmCommand { get; private set; }
 	public RxCommandUnit SkipCommand { get; private set; }

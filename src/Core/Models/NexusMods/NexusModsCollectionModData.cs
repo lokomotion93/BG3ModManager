@@ -4,36 +4,36 @@ using NexusModsNET.DataModels.GraphQL.Types;
 
 namespace ModManager.Models.NexusMods;
 
-public class NexusModsCollectionModData : ReactiveObject
+public partial class NexusModsCollectionModData : ReactiveObject
 {
 	public NexusGraphModFile? ModFileData { get; }
 
-	[Reactive] public int Index { get; set; }
-	[Reactive] public string? Name { get; set; }
-	[Reactive] public string? Author { get; set; }
-	[Reactive] public string? Summary { get; set; }
-	[Reactive] public string? Description { get; set; }
-	[Reactive] public string? Version { get; set; }
-	[Reactive] public string? Category { get; set; }
-	[Reactive] public long SizeInBytes { get; set; }
-	[Reactive] public Uri? AuthorAvatarUrl { get; set; }
-	[Reactive] public Uri? ImageUrl { get; set; }
-	[Reactive] public DateTimeOffset CreatedAt { get; set; }
-	[Reactive] public DateTimeOffset UpdatedAt { get; set; }
-	[Reactive] public bool IsOptional { get; set; }
+	[Reactive] public partial int Index { get; set; }
+	[Reactive] public partial string? Name { get; set; }
+	[Reactive] public partial string? Author { get; set; }
+	[Reactive] public partial string? Summary { get; set; }
+	[Reactive] public partial string? Description { get; set; }
+	[Reactive] public partial string? Version { get; set; }
+	[Reactive] public partial string? Category { get; set; }
+	[Reactive] public partial long SizeInBytes { get; set; }
+	[Reactive] public partial Uri? AuthorAvatarUrl { get; set; }
+	[Reactive] public partial Uri? ImageUrl { get; set; }
+	[Reactive] public partial DateTimeOffset CreatedAt { get; set; }
+	[Reactive] public partial DateTimeOffset UpdatedAt { get; set; }
+	[Reactive] public partial bool IsOptional { get; set; }
 
 	//UI-related properties
-	[Reactive] public bool IsSelected { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
 
-	[ObservableAsProperty] public string? SizeText { get; }
-	[ObservableAsProperty] public string? AuthorDisplayText { get; }
-	[ObservableAsProperty] public string? CreatedDateText { get; }
-	[ObservableAsProperty] public string? UpdatedDateText { get; }
+	[ObservableAsProperty] public partial string? SizeText { get; }
+	[ObservableAsProperty] public partial string? AuthorDisplayText { get; }
+	[ObservableAsProperty] public partial string? CreatedDateText { get; }
+	[ObservableAsProperty] public partial string? UpdatedDateText { get; }
 	public string? NexusModsURL { get; }
 	public string? NexusModsURLDisplayText { get; }
-	[ObservableAsProperty] public bool DescriptionVisibility { get; }
-	[ObservableAsProperty] public bool AuthorAvatarVisibility { get; }
-	[ObservableAsProperty] public bool ImageVisibility { get; }
+	[ObservableAsProperty] public partial bool DescriptionVisibility { get; }
+	[ObservableAsProperty] public partial bool AuthorAvatarVisibility { get; }
+	[ObservableAsProperty] public partial bool ImageVisibility { get; }
 
 
 	public NexusModsCollectionModData(NexusGraphCollectionRevisionMod mod)
@@ -62,14 +62,14 @@ public class NexusModsCollectionModData : ReactiveObject
 		NexusModsURL = $"https://www.nexusmods.com/{DivinityApp.NEXUSMODS_GAME_DOMAIN}/mods/{modFile?.ModId}";
 		NexusModsURLDisplayText = $"/{DivinityApp.NEXUSMODS_GAME_DOMAIN}/mods/{modFile?.ModId}";
 
-		this.WhenAnyValue(x => x.SizeInBytes).Select(StringUtils.BytesToString).ToUIProperty(this, x => x.SizeText);
-		this.WhenAnyValue(x => x.Author).Select(x => $"Created by {x}").ToUIProperty(this, x => x.AuthorDisplayText);
+		_sizeTextHelper = this.WhenAnyValue(x => x.SizeInBytes).Select(StringUtils.BytesToString).ToUIProperty(this, x => x.SizeText);
+		_authorDisplayTextHelper = this.WhenAnyValue(x => x.Author).Select(x => $"Created by {x}").ToUIProperty(this, x => x.AuthorDisplayText);
 
-		this.WhenAnyValue(x => x.Description).Select(Validators.IsValid).ToUIProperty(this, x => x.DescriptionVisibility);
-		this.WhenAnyValue(x => x.ImageUrl).Select(Validators.IsValid).ToUIProperty(this, x => x.ImageVisibility);
-		this.WhenAnyValue(x => x.AuthorAvatarUrl).Select(Validators.IsValid).ToUIProperty(this, x => x.AuthorAvatarVisibility);
+		_descriptionVisibilityHelper = this.WhenAnyValue(x => x.Description).Select(Validators.IsValid).ToUIProperty(this, x => x.DescriptionVisibility);
+		_imageVisibilityHelper = this.WhenAnyValue(x => x.ImageUrl).Select(Validators.IsValid).ToUIProperty(this, x => x.ImageVisibility);
+		_authorAvatarVisibilityHelper = this.WhenAnyValue(x => x.AuthorAvatarUrl).Select(Validators.IsValid).ToUIProperty(this, x => x.AuthorAvatarVisibility);
 
-		this.WhenAnyValue(x => x.CreatedAt).Select(PropertyConverters.DateToString).ToUIProperty(this, x => x.CreatedDateText);
-		this.WhenAnyValue(x => x.UpdatedAt).Select(PropertyConverters.DateToString).ToUIProperty(this, x => x.UpdatedDateText);
+		_createdDateTextHelper = this.WhenAnyValue(x => x.CreatedAt).Select(PropertyConverters.DateToString).ToUIProperty(this, x => x.CreatedDateText);
+		_updatedDateTextHelper = this.WhenAnyValue(x => x.UpdatedAt).Select(PropertyConverters.DateToString).ToUIProperty(this, x => x.UpdatedDateText);
 	}
 }

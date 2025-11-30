@@ -11,7 +11,7 @@ using System.Reactive.Linq;
 using System.Text.Json;
 
 namespace ModManager.Services;
-public class ModUpdaterService : ReactiveObject, IModUpdaterService
+public partial class ModUpdaterService : ReactiveObject, IModUpdaterService
 {
 	private readonly NexusModsCacheHandler _nexus;
 	public NexusModsCacheHandler NexusMods => _nexus;
@@ -22,7 +22,7 @@ public class ModUpdaterService : ReactiveObject, IModUpdaterService
 	private readonly GitHubModsCacheHandler _github;
 	public GitHubModsCacheHandler GitHub => _github;
 
-	[Reactive] public bool IsRefreshing { get; set; }
+	[Reactive] public partial bool IsRefreshing { get; set; }
 
 	private static readonly JsonSerializerOptions DefaultSerializerSettings = new(JsonUtils.DefaultSerializerSettings)
 	{

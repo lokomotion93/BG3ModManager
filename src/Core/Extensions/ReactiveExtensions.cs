@@ -17,7 +17,7 @@ public static class ReactiveExtensions
 	/// <returns></returns>
 	public static ObservableAsPropertyHelper<TRet?> ToUIProperty<TObj, TRet>(this IObservable<TRet> obs, TObj source, Expression<Func<TObj, TRet?>> property, TRet? initialValue = default) where TObj : ReactiveObject
 	{
-		return obs.ToPropertyEx(source, property, initialValue, true, RxApp.MainThreadScheduler);
+		return obs.ToProperty(source, property, initialValue, true, RxApp.MainThreadScheduler);
 	}
 
 	/// <summary>
@@ -33,7 +33,7 @@ public static class ReactiveExtensions
 	/// <returns></returns>
 	public static ObservableAsPropertyHelper<TRet?> ToUIPropertyImmediate<TObj, TRet>(this IObservable<TRet> obs, TObj source, Expression<Func<TObj, TRet?>> property, TRet? initialValue = default) where TObj : ReactiveObject
 	{
-		return obs.ToPropertyEx(source, property, initialValue, false, RxApp.MainThreadScheduler);
+		return obs.ToProperty(source, property, initialValue, false, RxApp.MainThreadScheduler);
 	}
 
 	#region Debounce

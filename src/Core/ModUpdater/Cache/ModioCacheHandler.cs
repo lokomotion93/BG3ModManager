@@ -6,13 +6,13 @@ using Modio.Filters;
 
 namespace ModManager.ModUpdater.Cache;
 
-public class ModioCacheHandler : ReactiveObject, IExternalModCacheHandler<ModioCachedData>
+public partial class ModioCacheHandler : ReactiveObject, IExternalModCacheHandler<ModioCachedData>
 {
 	public ModSourceType SourceType => ModSourceType.MODIO;
 	public string FileName => "modiodata.json";
 	public JsonSerializerOptions SerializerSettings { get; }
 	public ModioCachedData CacheData { get; set; }
-	[Reactive] public bool IsEnabled { get; set; }
+	[Reactive] public partial bool IsEnabled { get; set; }
 
 	public ModioCacheHandler(JsonSerializerOptions serializerSettings)
 	{

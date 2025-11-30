@@ -6,7 +6,7 @@ using ModManager.Models.Updates;
 namespace ModManager;
 public interface IModioService
 {
-	string ApiKey { get; set; }
+	string? ApiKey { get; set; }
 	bool IsInitialized { get; }
 	bool LimitExceeded { get; }
 	bool CanFetchData { get; }

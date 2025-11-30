@@ -7,11 +7,11 @@ using System.Reactive.Subjects;
 
 namespace ModManager.Services;
 
-public class LocaleService : ReactiveObject, ILocaleService
+public partial class LocaleService : ReactiveObject, ILocaleService
 {
 	record struct KeyEntry(string Key, string? Fallback, Subject<string?> Subject);
 
-	[Reactive] public CultureInfo Culture { get; set; }
+	[Reactive] public partial CultureInfo Culture { get; set; }
 
 	private readonly Dictionary<string, KeyEntry> _subjects = [];
 

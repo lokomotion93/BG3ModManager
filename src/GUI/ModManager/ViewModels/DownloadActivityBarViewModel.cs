@@ -1,20 +1,20 @@
 ﻿namespace ModManager.ViewModels;
 
-public class DownloadActivityBarViewModel : ReactiveObject, IClosableViewModel
+public partial class DownloadActivityBarViewModel : ReactiveObject, IClosableViewModel
 {
 	#region IClosableViewModel
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
 	[Reactive] private double ProgressValue { get; set; }
 	[Reactive] private string? ProgressText { get; set; }
-	[Reactive] public bool IsActive { get; private set; }
-	[Reactive] public Action? CancelAction { get; set; }
+	[Reactive] public partial bool IsActive { get; private set; }
+	[Reactive] public partial Action? CancelAction { get; set; }
 
-	[ObservableAsProperty] public double CurrentValue { get; }
-	[ObservableAsProperty] public string? CurrentText { get; }
-	[ObservableAsProperty] public bool IsAnimating { get; }
+	[ObservableAsProperty] public partial double CurrentValue { get; }
+	[ObservableAsProperty] public partial string? CurrentText { get; }
+	[ObservableAsProperty] public partial bool IsAnimating { get; }
 
 	public void UpdateProgress(double value, string? text = null)
 	{
@@ -54,9 +54,9 @@ public class DownloadActivityBarViewModel : ReactiveObject, IClosableViewModel
 	{
 		CloseCommand = this.CreateCloseCommand(invokeAction: Cancel);
 
-		this.WhenAnyValue(x => x.ProgressValue).Select(Clamp).ToUIProperty(this, x => x.CurrentValue, 0d);
-		this.WhenAnyValue(x => x.ProgressText).ToUIProperty(this, x => x.CurrentText, "");
-		this.WhenAnyValue(x => x.CurrentValue, x => x < 100).ToUIProperty(this, x => x.IsAnimating, true);
+		_currentValueHelper = this.WhenAnyValue(x => x.ProgressValue).Select(Clamp).ToUIProperty(this, x => x.CurrentValue, 0d);
+		_currentTextHelper = this.WhenAnyValue(x => x.ProgressText).ToUIProperty(this, x => x.CurrentText, "");
+		_isAnimatingHelper = this.WhenAnyValue(x => x.CurrentValue, x => x < 100).ToUIProperty(this, x => x.IsAnimating, true);
 
 		this.WhenAnyValue(x => x.CurrentText, x => x.CurrentValue).Select(x => x.Item1.IsValid() || x.Item2 > 0).BindTo(this, x => x.IsActive);
 	}

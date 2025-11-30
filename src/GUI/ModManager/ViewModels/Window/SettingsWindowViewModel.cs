@@ -30,13 +30,13 @@ public enum SettingsWindowTab
 	Advanced = 5
 }
 
-public class GameLaunchParamEntry : ReactiveObject
+public partial class GameLaunchParamEntry : ReactiveObject
 {
-	[Reactive] public string Name { get; set; }
-	[Reactive] public string Description { get; set; }
-	[Reactive] public bool DebugModeOnly { get; set; }
+	[Reactive] public partial string Name { get; set; }
+	[Reactive] public partial string Description { get; set; }
+	[Reactive] public partial bool DebugModeOnly { get; set; }
 
-	[ObservableAsProperty] public bool HasToolTip { get; }
+	[ObservableAsProperty] public partial bool HasToolTip { get; }
 
 	public GameLaunchParamEntry(string name, string description, bool debug = false)
 	{
@@ -44,17 +44,17 @@ public class GameLaunchParamEntry : ReactiveObject
 		Description = description;
 		DebugModeOnly = debug;
 
-		this.WhenAnyValue(x => x.Description).Select(Validators.IsValid).ToUIProperty(this, x => x.HasToolTip);
+		_hasToolTipHelper = this.WhenAnyValue(x => x.Description).Select(Validators.IsValid).ToUIProperty(this, x => x.HasToolTip);
 	}
 }
 
 [ViewGenerator]
-public class SettingsWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
+public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewModel, IRoutableViewModel
 {
 	#region IClosableViewModel/IRoutableViewModel
 	public string UrlPathSegment => "settings";
 	public IScreen HostScreen { get; }
-	[Reactive] public bool IsVisible { get; set; }
+	[Reactive] public partial bool IsVisible { get; set; }
 	public RxCommandUnit CloseCommand { get; }
 	#endregion
 
@@ -63,27 +63,25 @@ public class SettingsWindowViewModel : ReactiveObject, IClosableViewModel, IRout
 	private readonly IFileSystemService _fs;
 
 	public ObservableCollectionExtended<ScriptExtenderUpdateVersion> ScriptExtenderUpdates { get; private set; }
-	[Reactive] public ScriptExtenderUpdateVersion TargetVersion { get; set; }
+	[Reactive] public partial ScriptExtenderUpdateVersion TargetVersion { get; set; }
 	public ObservableCollectionExtended<GameLaunchParamEntry> LaunchParams { get; private set; }
 
-	[Reactive] public SettingsWindowTab SelectedTabIndex { get; set; }
-	[Reactive] public Hotkey SelectedHotkey { get; set; }
-	[Reactive] public bool HasFetchedManifest { get; set; }
-	[Reactive] public bool CanSaveSettings { get; set; }
+	[Reactive] public partial SettingsWindowTab SelectedTabIndex { get; set; }
+	[Reactive] public partial Hotkey? SelectedHotkey { get; set; }
+	[Reactive] public partial bool HasFetchedManifest { get; set; }
+	[Reactive] public partial bool CanSaveSettings { get; set; }
 
-	[ObservableAsProperty] public bool ExtenderTabIsVisible { get; }
-	[ObservableAsProperty] public bool KeybindingsTabIsVisible { get; }
-	[ObservableAsProperty] public bool DeveloperModeVisibility { get; }
-	[ObservableAsProperty] public bool ExtenderTabVisibility { get; }
-	[ObservableAsProperty] public bool ExtenderUpdaterVisibility { get; }
-	[ObservableAsProperty] public string ResetSettingsCommandToolTip { get; }
-	[ObservableAsProperty] public string ExtenderSettingsFilePath { get; }
-	[ObservableAsProperty] public string ExtenderUpdaterSettingsFilePath { get; }
+	[ObservableAsProperty] public partial bool ExtenderTabIsVisible { get; }
+	[ObservableAsProperty] public partial bool KeybindingsTabIsVisible { get; }
+	[ObservableAsProperty] public partial bool DeveloperModeVisibility { get; }
+	[ObservableAsProperty] public partial bool ExtenderTabVisibility { get; }
+	[ObservableAsProperty] public partial bool ExtenderUpdaterVisibility { get; }
+	[ObservableAsProperty] public partial string? ResetSettingsCommandToolTip { get; }
+	[ObservableAsProperty] public partial string? ExtenderSettingsFilePath { get; }
+	[ObservableAsProperty] public partial string? ExtenderUpdaterSettingsFilePath { get; }
 
 	public RxCommandUnit SaveSettingsCommand { get; }
 	public RxCommandUnit OpenSettingsFolderCommand { get; }
-	public RxCommandUnit ExportExtenderSettingsCommand { get; }
-	public RxCommandUnit ExportExtenderUpdaterSettingsCommand { get; }
 	public RxCommandUnit ResetSettingsCommand { get; }
 	public RxCommandUnit ClearCacheCommand { get; }
 	public ReactiveCommand<string, Unit> AddLaunchParamCommand { get; }
@@ -142,7 +140,7 @@ public class SettingsWindowViewModel : ReactiveObject, IClosableViewModel, IRout
 		return Unit.Default;
 	}
 
-	private IDisposable _manifestFetchingTask;
+	private IDisposable? _manifestFetchingTask;
 	private long _lastManifestCheck = -1;
 
 	private bool CanCheckManifest => _lastManifestCheck == -1 || DateTimeOffset.Now.ToUnixTimeSeconds() - _lastManifestCheck >= 3000;
@@ -348,19 +346,19 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		];
 
 		var whenTab = this.WhenAnyValue(x => x.SelectedTabIndex);
-		whenTab.Select(x => x == SettingsWindowTab.Extender).ToUIProperty(this, x => x.ExtenderTabIsVisible);
-		whenTab.Select(x => x == SettingsWindowTab.Keybindings).ToUIProperty(this, x => x.KeybindingsTabIsVisible);
+		_extenderTabIsVisibleHelper = whenTab.Select(x => x == SettingsWindowTab.Extender).ToUIProperty(this, x => x.ExtenderTabIsVisible);
+		_keybindingsTabIsVisibleHelper = whenTab.Select(x => x == SettingsWindowTab.Keybindings).ToUIProperty(this, x => x.KeybindingsTabIsVisible);
 
 		this.WhenAnyValue(x => x.TargetVersion).WhereNotNull().ObserveOn(RxApp.MainThreadScheduler).Subscribe(OnTargetVersionSelected);
 
-		this.WhenAnyValue(x => x.SelectedTabIndex).Select(SelectedTabToResetTooltip).ToUIProperty(this, x => x.ResetSettingsCommandToolTip);
+		_resetSettingsCommandToolTipHelper = this.WhenAnyValue(x => x.SelectedTabIndex).Select(SelectedTabToResetTooltip).ToUIProperty(this, x => x.ResetSettingsCommandToolTip);
 
-		ExtenderSettings.WhenAnyValue(x => x.DeveloperMode).ToUIProperty(this, x => x.DeveloperModeVisibility);
+		_developerModeVisibilityHelper = ExtenderSettings.WhenAnyValue(x => x.DeveloperMode).ToUIProperty(this, x => x.DeveloperModeVisibility);
 
-		this.WhenAnyValue(x => x.ExtenderUpdaterSettings.UpdaterIsAvailable)
+		_extenderTabVisibilityHelper = this.WhenAnyValue(x => x.ExtenderUpdaterSettings.UpdaterIsAvailable)
 			.ToUIProperty(this, x => x.ExtenderTabVisibility);
 
-		this.WhenAnyValue(x => x.ExtenderUpdaterSettings.UpdaterIsAvailable,
+		_extenderUpdaterVisibilityHelper = this.WhenAnyValue(x => x.ExtenderUpdaterSettings.UpdaterIsAvailable,
 			x => x.Settings.DebugModeEnabled,
 			x => x.ExtenderSettings.DeveloperMode)
 			.Select(x => x.Item1 && (x.Item2 || x.Item3)).ToUIProperty(this, x => x.ExtenderUpdaterVisibility);
@@ -375,8 +373,8 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 
 		var whenExePath = Settings.WhenAnyValue(x => x.GameExecutablePath);
 
-		whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderSettingsFilePath);
-		whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_UPDATER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderUpdaterSettingsFilePath);
+		_extenderSettingsFilePathHelper = whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderSettingsFilePath);
+		_extenderUpdaterSettingsFilePathHelper = whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_UPDATER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderUpdaterSettingsFilePath);
 
 		var settingsProperties = new HashSet<string>();
 		settingsProperties.UnionWith(Settings.GetSettingsAttributes().Select(x => x.Property.Name));

@@ -10,19 +10,19 @@ using Modio.Models;
 namespace ModManager.Models.Modio;
 
 [DataContract]
-public class ModioModData : ReactiveObject
+public partial class ModioModData : ReactiveObject
 {
 	[MemberNotNullWhen(true, nameof(IsEnabled))]
-	[Reactive, DataMember] public ModioMod? Data { get; set; }
+	[Reactive, DataMember] public partial ModioMod? Data { get; set; }
 
-	[Reactive, DataMember] public uint Id { get; set; }
-	[Reactive, DataMember] public string? NameId { get; set; }
-	[Reactive] public bool IsEnabled { get; private set; }
+	[Reactive, DataMember] public partial uint Id { get; set; }
+	[Reactive, DataMember] public partial string? NameId { get; set; }
+	[Reactive] public partial bool IsEnabled { get; private set; }
 
-	[ObservableAsProperty] public string? Description { get; }
-	[ObservableAsProperty] public DateTimeOffset LastUpdated { get; }
-	[ObservableAsProperty] public string? ExternalLink { get; }
-	[ObservableAsProperty] public string? Author { get; }
+	[ObservableAsProperty] public partial string? Description { get; }
+	[ObservableAsProperty] public partial DateTimeOffset LastUpdated { get; }
+	[ObservableAsProperty] public partial string? ExternalLink { get; }
+	[ObservableAsProperty] public partial string? Author { get; }
 
 	private static readonly string _modPageUrlPattern = "https://mod.io/g/baldursgate3/m/{0}";
 
@@ -37,10 +37,10 @@ public class ModioModData : ReactiveObject
 		whenData.Select(x => x.Id).BindTo(this, x => x.Id);
 		whenData.Where(x => x.NameId.IsValid()).Select(x => x.NameId).BindTo(this, x => x.NameId);
 
-		whenData.Select(x => x.DescriptionPlaintext).ToUIProperty(this, x => x.Description);
-		whenData.Select(x => x.DateUpdated).Select(DateTimeOffset.FromUnixTimeSeconds).ToUIProperty(this, x => x.LastUpdated);
-		whenData.Select(x => x.NameId).Select(x => string.Format(_modPageUrlPattern, x)).ToUIProperty(this, x => x.ExternalLink);
-		whenData.Select(x => x.SubmittedBy?.Username).ToUIProperty(this, x => x.Author);
+		_descriptionHelper = whenData.Select(x => x.DescriptionPlaintext).ToUIProperty(this, x => x.Description);
+		_lastUpdatedHelper = whenData.Select(x => x.DateUpdated).Select(DateTimeOffset.FromUnixTimeSeconds).ToUIProperty(this, x => x.LastUpdated);
+		_externalLinkHelper = whenData.Select(x => x.NameId).Select(x => string.Format(_modPageUrlPattern, x)).ToUIProperty(this, x => x.ExternalLink);
+		_authorHelper = whenData.Select(x => x.SubmittedBy?.Username).ToUIProperty(this, x => x.Author);
 
 		this.WhenAnyValue(x => x.Id).Select(x => x != 0).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.IsEnabled);
 	}

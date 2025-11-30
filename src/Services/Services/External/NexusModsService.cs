@@ -23,17 +23,17 @@ using System.Text;
 
 namespace ModManager.Services;
 
-public class NexusModsService : ReactiveObject, INexusModsService
+public partial class NexusModsService : ReactiveObject, INexusModsService
 {
 	private INexusModsClient? _client;
 	private InfosInquirer? _dataLoader;
 
-	[Reactive] public string? ApiKey { get; set; }
-	[Reactive] public bool IsPremium { get; private set; }
-	[Reactive] public Uri? ProfileAvatarUrl { get; private set; }
-	[Reactive] public double DownloadProgressValue { get; private set; }
-	[Reactive] public string? DownloadProgressText { get; private set; }
-	[Reactive] public bool CanCancel { get; private set; }
+	[Reactive] public partial string? ApiKey { get; set; }
+	[Reactive] public partial bool IsPremium { get; private set; }
+	[Reactive] public partial Uri? ProfileAvatarUrl { get; private set; }
+	[Reactive] public partial double DownloadProgressValue { get; private set; }
+	[Reactive] public partial string? DownloadProgressText { get; private set; }
+	[Reactive] public partial bool CanCancel { get; private set; }
 
 	private readonly CompositeDisposable _downloadTasksCompositeDisposable = [];
 

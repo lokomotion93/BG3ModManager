@@ -2,10 +2,10 @@
 
 namespace ModManager.Models.Conflicts;
 
-public class DivinityConflictEntryData : ReactiveObject
+public partial class DivinityConflictEntryData : ReactiveObject
 {
-	[Reactive] public string? Target { get; set; }
-	[Reactive] public string? Name { get; set; }
+	[Reactive] public partial string? Target { get; set; }
+	[Reactive] public partial string? Name { get; set; }
 
 	public List<DivinityConflictModData> ConflictModDataList { get; set; } = [];
 }

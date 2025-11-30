@@ -2,10 +2,10 @@
 
 namespace ModManager.Models.Extender;
 
-public class ScriptExtenderProfilerThreshold : ReactiveObject
+public partial class ScriptExtenderProfilerThreshold : ReactiveObject
 {
-	[Reactive] public uint Warn { get; set; }
-	[Reactive] public uint Error { get; set; }
+	[Reactive] public partial uint Warn { get; set; }
+	[Reactive] public partial uint Error { get; set; }
 
 	public void Update(uint warn, uint error)
 	{

@@ -7,14 +7,14 @@ using ModManager.Extensions;
 using System.Reflection;
 
 namespace ModManager.Models.Mod.Game;
-public class ToolkitProjectMetaData : ReactiveObject
+public partial class ToolkitProjectMetaData : ReactiveObject
 {
-	[Reactive] public string? GameProject { get; set; }
-	[Reactive] public string? Module { get; set; }
-	[Reactive] public string? Name { get; set; }
-	[Reactive] public string? UUID { get; set; }
-	[Reactive] public bool UpdatedDependencies { get; set; }
-	//[Reactive] public SourceList<string> Categories { get; set; }
+	[Reactive] public partial string? GameProject { get; set; }
+	[Reactive] public partial string? Module { get; set; }
+	[Reactive] public partial string? Name { get; set; }
+	[Reactive] public partial string? UUID { get; set; }
+	[Reactive] public partial bool UpdatedDependencies { get; set; }
+	//[Reactive] public partial SourceList<string> Categories { get; set; }
 
 	public string? FilePath;
 

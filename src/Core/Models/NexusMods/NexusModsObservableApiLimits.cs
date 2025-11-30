@@ -2,14 +2,14 @@
 
 namespace ModManager.Models.NexusMods;
 
-public class NexusModsObservableApiLimits : ReactiveObject, INexusApiLimits
+public partial class NexusModsObservableApiLimits : ReactiveObject, INexusApiLimits
 {
-	[Reactive] public int HourlyLimit { get; set; }
-	[Reactive] public int HourlyRemaining { get; set; }
-	[Reactive] public DateTime HourlyReset { get; set; }
-	[Reactive] public int DailyLimit { get; set; }
-	[Reactive] public int DailyRemaining { get; set; }
-	[Reactive] public DateTime DailyReset { get; set; }
+	[Reactive] public partial int HourlyLimit { get; set; }
+	[Reactive] public partial int HourlyRemaining { get; set; }
+	[Reactive] public partial DateTime HourlyReset { get; set; }
+	[Reactive] public partial int DailyLimit { get; set; }
+	[Reactive] public partial int DailyRemaining { get; set; }
+	[Reactive] public partial DateTime DailyReset { get; set; }
 
 	public void Reset()
 	{

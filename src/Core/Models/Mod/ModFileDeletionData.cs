@@ -2,15 +2,15 @@
 
 namespace ModManager.Models.Mod;
 
-public class ModFileDeletionData : ReactiveObject
+public partial class ModFileDeletionData : ReactiveObject
 {
-	[Reactive] public bool IsSelected { get; set; }
-	[Reactive] public string? FilePath { get; set; }
-	[Reactive] public string? DisplayName { get; set; }
-	[Reactive] public string? UUID { get; set; }
-	[Reactive] public string? Duplicates { get; set; }
+	[Reactive] public partial bool IsSelected { get; set; }
+	[Reactive] public partial string? FilePath { get; set; }
+	[Reactive] public partial string? DisplayName { get; set; }
+	[Reactive] public partial string? UUID { get; set; }
+	[Reactive] public partial string? Duplicates { get; set; }
 
-	[ObservableAsProperty] public string? DisplayFilePath { get; }
+	[ObservableAsProperty] public partial string? DisplayFilePath { get; }
 
 	public static ModFileDeletionData? FromModEntry(IModEntry entry, bool isDeletingDuplicates = false, IEnumerable<ModData>? loadedMods = null)
 	{
@@ -33,6 +33,6 @@ public class ModFileDeletionData : ReactiveObject
 
 	public ModFileDeletionData()
 	{
-		this.WhenAnyValue(x => x.FilePath).Select(StringUtils.ReplaceSpecialPathways).ToUIProperty(this, x => x.DisplayFilePath);
+		_displayFilePathHelper = this.WhenAnyValue(x => x.FilePath).Select(StringUtils.ReplaceSpecialPathways).ToUIProperty(this, x => x.DisplayFilePath);
 	}
 }

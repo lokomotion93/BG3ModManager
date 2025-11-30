@@ -5,7 +5,7 @@ using System.Reflection;
 namespace ModManager.Models.NexusMods;
 
 [DataContract]
-public class NexusModsModData : ReactiveObject
+public partial class NexusModsModData : ReactiveObject
 {
 	[JsonPropertyName("uuid"), DataMember]
 	public string? UUID { get; set; }
