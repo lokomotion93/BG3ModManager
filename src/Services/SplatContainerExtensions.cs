@@ -42,6 +42,8 @@ public static class SplatContainerExtensions
 		SplatRegistrations.RegisterConstant<IGitHubService>(new GitHubService(env));
 		SplatRegistrations.RegisterConstant<IModioService>(new ModioService(fileSystemService));
 
+		SplatRegistrations.RegisterConstant(new LogWriterService(fileSystemService));
+
 		SplatRegistrations.SetupIOC();
 
 		return services;
