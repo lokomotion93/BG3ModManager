@@ -339,27 +339,32 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 	private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
 	{
-		if (sender is Control source && !e.GetCurrentPoint(source).Properties.IsLeftButtonPressed)
-		{
-			return;
-		}
+		var row = sender as TreeDataGridRow;
 
-		//Allow deselecting with just left click, if no modifiers are pressed and a single item is selected
-		if (_isSingleSelect && !_isDragging && e.KeyModifiers == KeyModifiers.None)
+		if(row != null)
 		{
-			if (sender is TreeDataGridRow row && row.IsSelected && ModsTreeDataGrid.RowSelection?.Count == 1)
+			if (row.Model is IModEntry entry && entry.EntryType == ModEntryType.Container)
 			{
-				ModsTreeDataGrid.RowSelection?.Deselect(row.RowIndex);
-				e.Handled = true;
+				entry.IsExpanded = !entry.IsExpanded;
+			}
+
+			if (!e.GetCurrentPoint(row).Properties.IsLeftButtonPressed)
+			{
+				return;
+			}
+
+			//Allow deselecting with just left click, if no modifiers are pressed and a single item is selected
+			if (_isSingleSelect && !_isDragging && e.KeyModifiers == KeyModifiers.None)
+			{
+				if (row.IsSelected && ModsTreeDataGrid.RowSelection?.Count == 1)
+				{
+					ModsTreeDataGrid.RowSelection?.Deselect(row.RowIndex);
+					e.Handled = true;
+				}
 			}
 		}
+		
 		_isSingleSelect = false;
-	}
-
-	private void OnRowPrepared(object? sender, TreeDataGridRowEventArgs e)
-	{
-		e.Row.PointerPressed += OnPointerDown;
-		e.Row.PointerReleased += OnPointerReleased;
 	}
 
 	private Control? _openedToolTip = null;
@@ -457,6 +462,18 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
+	private void OnRowPrepared(object? sender, TreeDataGridRowEventArgs e)
+	{
+		e.Row.PointerPressed += OnPointerDown;
+		e.Row.PointerReleased += OnPointerReleased;
+	}
+
+	private void OnRowClearing(object? sender, TreeDataGridRowEventArgs e)
+	{
+		e.Row.PointerPressed -= OnPointerDown;
+		e.Row.PointerReleased -= OnPointerReleased;
+	}
+
 	public ModListView()
 	{
 		InitializeComponent();
@@ -468,6 +485,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 
 		ModsTreeDataGrid.RowPrepared += OnRowPrepared;
+		ModsTreeDataGrid.RowClearing += OnRowClearing;
 
 		AddHandler(InputElement.PointerWheelChangedEvent, OnPointerWheelChanged, RoutingStrategies.Tunnel);
 		ToolTip.IsOpenProperty.Changed.Subscribe(OnToolTipOpenedChanged);
