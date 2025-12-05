@@ -1695,7 +1695,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			{
 				new HierarchicalExpanderColumn<IModEntry>(
 					new ModEntryColumn("Name", GridLength.Star),
-					x => x.Children),
+					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
 				new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
@@ -1711,7 +1711,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			{
 				new HierarchicalExpanderColumn<IModEntry>(
 					new ModEntryColumn("Name", GridLength.Star),
-					x => x.Children),
+					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
 				new TextColumn<IModEntry, string>("Version", x => x.Version, new GridLength(80d)),
 				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
 				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
