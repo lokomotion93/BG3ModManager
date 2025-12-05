@@ -226,7 +226,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 	private void DownloadScriptExtender()
 	{
 		ViewModelLocator.Progress.Title = Loca.Progress_DownloadExtender_Title;
-		ViewModelLocator.Progress.Start(DownloadScriptExtenderAsync, true);
+		ViewModelLocator.Progress.StartAsync(DownloadScriptExtenderAsync, true);
 	}
 
 	private void OnToolboxOutput(object sender, DataReceivedEventArgs e)
@@ -789,6 +789,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		});
 	}
 
+
 	private async Task<bool> LoadSettings()
 	{
 		var success = true;
@@ -798,7 +799,9 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			_globalCommands.ShowAlert($"Error loading settings: {errorMessage}", AlertType.Danger);
 			success = false;
 		}
-
+#if !DEBUG
+		AppServices.Get<LogWriterService>()?.ToggleLogging(_settings.ManagerSettings.DebugModeEnabled);
+#endif
 		LoadAppConfig();
 
 #if DOS2
@@ -1127,7 +1130,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		if (result)
 		{
 			Progress.Title = Loca.Progress_ExportLoadOrderToArchiveAsync_Title;
-			await Progress.Start(async token =>
+			await Progress.StartAsync(async token =>
 			{
 				ViewModelLocator.ModOrder.UpdateOrderFromActiveMods();
 				await _importer.ExportLoadOrderToArchiveAsync(ViewModelLocator.ModOrder.SelectedProfile, ViewModelLocator.ModOrder.SelectedModOrder, "", token);
@@ -1163,7 +1166,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			if (result.Success)
 			{
 				Progress.Title = Loca.Progress_ExportLoadOrderToArchiveAsync_Title;
-				await Progress.Start(async token =>
+				await Progress.StartAsync(async token =>
 				{
 					await _importer.ExportLoadOrderToArchiveAsync(ViewModelLocator.ModOrder.SelectedProfile, ViewModelLocator.ModOrder.SelectedModOrder, result.File, token);
 				}, true);
@@ -1378,7 +1381,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			var successes = 0;
 
 			List<string> filesToProcess = [.. targetMods.Where(x => x.FilePath.IsValid()).Select(x => x.FilePath)];
-			await Progress.Start(async token =>
+			await Progress.StartAsync(async token =>
 			{
 				await Parallel.ForEachAsync(filesToProcess, token, async (path, t) =>
 				{
@@ -1495,7 +1498,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			var path = mod.FilePath;
 			var success = false;
 
-			await Progress.Start(async token =>
+			await Progress.StartAsync(async token =>
 			{
 				try
 				{

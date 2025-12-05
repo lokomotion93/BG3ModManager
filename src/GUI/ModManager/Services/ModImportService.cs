@@ -167,7 +167,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 			{
 				TotalFiles = 1
 			};
-			await ViewModel.Progress.Start(async token =>
+			await ViewModel.Progress.StartAsync(async token =>
 			{
 				var builtinMods = DivinityApp.IgnoredMods.Items.ToSafeDictionary(x => x.Folder);
 
@@ -417,7 +417,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 			TotalFiles = total
 		};
 
-		ViewModel.Progress.Start(async token =>
+		ViewModel.Progress.StartAsync(async token =>
 		{
 			var builtinMods = DivinityApp.IgnoredMods.Items.ToSafeDictionary(x => x.Folder);
 			foreach (var f in files)
@@ -524,7 +524,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				TotalFiles = dialogResult.Total
 			};
 
-			await ViewModel.Progress.Start(async token =>
+			await ViewModel.Progress.StartAsync(async token =>
 			{
 				await FetchNexusModsIdFromFilesAsync(dialogResult.Files, result, token);
 

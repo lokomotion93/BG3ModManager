@@ -21,7 +21,8 @@ public interface IProgressBarViewModel : IRoutableViewModel
 
 	RxCommandUnit CancelCommand { get; }
 
-	Task Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null);
+	Task StartAsync(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null);
+	void Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null);
 	Task CancelAsync();
 
 	void IncreaseValue(double amount, string? workText = null);
@@ -59,7 +60,7 @@ public partial class ProgressBarViewModel : ReactiveObject, IProgressBarViewMode
 		return Unit.Default;
 	}
 
-	public async Task Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null)
+	public async Task StartAsync(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null)
 	{
 		await Dispatcher.UIThread.InvokeAsync(async () =>
 		{
@@ -79,6 +80,14 @@ public partial class ProgressBarViewModel : ReactiveObject, IProgressBarViewMode
 			{
 				await FinishAsync(NextView);
 			});
+		});
+	}
+
+	public void Start(Func<CancellationToken, Task> asyncTask, bool canCancel = false, IRoutableViewModel? switchToViewOnFinish = null)
+	{
+		RxApp.MainThreadScheduler.ScheduleAsync(async (_, _) =>
+		{
+			await StartAsync(asyncTask, canCancel, switchToViewOnFinish);
 		});
 	}
 
