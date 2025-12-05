@@ -1332,6 +1332,29 @@ public static partial class ModDataLoader
 		return mods;
 	}
 
+	private static void AddEntryToOrder(IModOrderEntry entry, IEnumerable<ModData> allMods, bool addDependencies, List<ModData> orderList, HashSet<string> addedMods)
+	{
+		if (!entry.Id.IsValid()) return;
+		var mData = allMods.FirstOrDefault(x => x.UUID == entry.Id);
+		if (mData != null)
+		{
+			if (addDependencies && mData.HasDependencies)
+			{
+				orderList.AddRange(GetDependencyMods(mData, allMods, addedMods));
+			}
+
+			if (!addedMods.Contains(mData.UUID))
+			{
+				orderList.Add(mData);
+				addedMods.Add(mData.UUID);
+			}
+		}
+		else
+		{
+			DivinityApp.Log($"[*ERROR*] Missing mod for mod in order: '{entry.Name}'.");
+		}
+	}
+
 	public static List<ModData> BuildOutputList(IEnumerable<IModOrderEntry> order, IEnumerable<ModData> allMods, bool addDependencies = true, ModData? selectedAdventure = null)
 	{
 		List<ModData> orderList = [];
@@ -1347,25 +1370,18 @@ public static partial class ModDataLoader
 			addedMods.Add(selectedAdventure.UUID);
 		}
 		
-		foreach (var m in order.Where(x => x.Id.IsValid()))
+		foreach (var m in order)
 		{
-			var mData = allMods.FirstOrDefault(x => x.UUID == m.Id);
-			if (mData != null)
+			if (m.Type == ModEntryType.Container && m is ModOrderContainer container)
 			{
-				if (addDependencies && mData.HasDependencies)
+				foreach(var entry in container.ForEachNested())
 				{
-					orderList.AddRange(GetDependencyMods(mData, allMods, addedMods));
-				}
-
-				if (!addedMods.Contains(mData.UUID))
-				{
-					orderList.Add(mData);
-					addedMods.Add(mData.UUID);
+					AddEntryToOrder(entry, allMods, addDependencies, orderList, addedMods);
 				}
 			}
-			else
+			else if(m.Type == ModEntryType.Mod)
 			{
-				DivinityApp.Log($"[*ERROR*] Missing mod for mod in order: '{m.Name}'.");
+				AddEntryToOrder(m, allMods, addDependencies, orderList, addedMods);
 			}
 		}
 
@@ -1681,6 +1697,12 @@ public static partial class ModDataLoader
 		}
 
 		string?[] userModPaths = [pathways.AppDataModsPath, pathways.AppDataInactiveModsPath];
+
+		foreach(var path in userModPaths)
+		{
+			if(path.IsValid()) _fs.Directory.CreateDirectory(path);
+		}
+
 		using var userPakParser = new DirectoryPakParser(userModPaths, FileUtils.FlatSearchOptions, baseMods, []);
 		var userMods = await userPakParser.ProcessAsync(detectDuplicates: true, parseLooseMetaFiles: false, token);
 
