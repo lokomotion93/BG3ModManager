@@ -368,7 +368,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 	private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
 	{
-		if (_openedToolTip != null)
+		if (_openedToolTip != null && e.KeyModifiers.HasFlag(KeyModifiers.Alt))
 		{
 			var scrollViewer = _openedToolTip.FindDescendantOfType<ScrollViewer>();
 			if (scrollViewer != null)
