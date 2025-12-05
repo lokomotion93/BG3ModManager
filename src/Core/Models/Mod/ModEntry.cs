@@ -18,6 +18,7 @@ public partial class ModEntry : ReactiveObject, IModEntry
 	[Reactive] public partial bool IsExpanded { get; set; }
 	[Reactive] public partial bool IsDraggable { get; set; }
 	[Reactive] public partial bool PreserveSelection { get; set; }
+	public bool PreserveExpanded { get => false; set { } }
 	[Reactive] public partial bool IsDirty { get; set; }
 	[Reactive] public partial object? ContextMenu { get; set; }
 
@@ -41,6 +42,15 @@ public partial class ModEntry : ReactiveObject, IModEntry
 
 	public ModOrderMod ToSerialized() => new(UUID) { Name = Data?.Name ?? DisplayName };
 
+	private static string DateToString(DateTimeOffset? date)
+	{
+		if(date != null && date != DateTimeOffset.MinValue)
+		{
+			return date.Value.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture);
+		}
+		return string.Empty;
+	}
+
 	public ModEntry(string uuid)
 	{
 		UUID = uuid;
@@ -59,7 +69,7 @@ public partial class ModEntry : ReactiveObject, IModEntry
 		_listColorHelper = whenMod.Select(x => x.ListColor).ToUIProperty(this, x => x.ListColor);
 		_selectedColorHelper = whenMod.Select(x => x.SelectedColor).ToUIProperty(this, x => x.SelectedColor);
 		_pointerOverColorHelper = whenMod.Select(x => x.PointerOverColor).ToUIProperty(this, x => x.PointerOverColor);
-		_lastUpdatedHelper = whenMod.Select(x => x.LastModified?.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture)).ToUIProperty(this, x => x.LastUpdated);
+		_lastUpdatedHelper = whenMod.Select(x => DateToString(x.LastModified)).ToUIProperty(this, x => x.LastUpdated, string.Empty);
 
 		_canDeleteHelper = whenMod.Select(x => x.CanDelete).ToUIProperty(this, x => x.CanDelete);
 
