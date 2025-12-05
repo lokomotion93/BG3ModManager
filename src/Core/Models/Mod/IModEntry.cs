@@ -21,6 +21,7 @@ public interface IModEntry : ISelectable, IReactiveObject
 	bool IsExpanded { get; set; }
 	bool CanDelete { get; }
 	bool PreserveSelection { get; set; }
+	bool PreserveExpanded { get; set; }
 	bool IsDirty { get; set; }
 	bool IsVisible { get; }
 

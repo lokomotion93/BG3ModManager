@@ -20,6 +20,7 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 	[Reactive] public partial bool IsExpanded { get; set; }
 	[Reactive] public partial bool IsDraggable { get; set; }
 	[Reactive] public partial bool PreserveSelection { get; set; }
+	[Reactive] public partial bool PreserveExpanded { get; set; }
 	[Reactive] public partial string? SelectedColor { get; set; }
 	[Reactive] public partial string? ListColor { get; set; }
 	[Reactive] public partial string? PointerOverColor { get; set; }
