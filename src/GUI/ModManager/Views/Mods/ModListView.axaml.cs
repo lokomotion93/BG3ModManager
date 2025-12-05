@@ -180,6 +180,19 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		return true;
 	}
 
+	private void OnTreeDataGridDragStarted(TreeDataGridRowDragStartedEventArgs e)
+	{
+		_isDragging = true;
+
+		foreach(var obj in e.Models)
+		{
+			if(obj is IModEntry entry && entry.EntryType == ModEntryType.Container)
+			{
+				entry.PreserveExpanded = entry.IsExpanded;
+			}
+		}
+	}
+
 	private void OnTreeDataGridDrag(TreeDataGridRowDragEventArgs e)
 	{
 		if (ViewModel == null) return;
@@ -241,11 +254,13 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			&& di.Source is HierarchicalTreeDataGridSource<IModEntry> listSource
 			&& ModsTreeDataGrid.Source is HierarchicalTreeDataGridSource<IModEntry> target)
 		{
-			foreach (var mod in listSource.RowSelection!.SelectedItems)
+			foreach (var entry in listSource.RowSelection!.SelectedItems)
 			{
-				if (mod != null)
+				if (entry != null)
 				{
-					mod.PreserveSelection = true;
+					entry.PreserveSelection = true;
+					entry.IsExpanded = entry.PreserveExpanded;
+					entry.PreserveExpanded = false;
 				}
 			}
 
@@ -269,11 +284,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				DragDropRows(listSource, target, listSource.RowSelection!.SelectedIndexes, targetIndex, e.Position, e.Inner.DragEffects);
 			}
 		}
-	}
-
-	private void OnTreeDataGridDragStarted(TreeDataGridRowDragStartedEventArgs e)
-	{
-		_isDragging = true;
 	}
 
 	private void OnTreeDataGridSelectionChanged(TreeSelectionModelSelectionChangedEventArgs e)
@@ -547,9 +557,9 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 						row[!BackgroundProperty] = container.Settings.WhenAnyValue(x => x.BackgroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultBG).ToBinding();
 						row[!BorderThicknessProperty] = container.Settings.WhenAnyValue(x => x.BorderThickness).Select(x => x.IsValid() ? Thickness.Parse(x) : modContainerThickness).ToBinding();
 
-						if(container.IsExpanded && row.Rows != null && row.Rows[row.RowIndex] is HierarchicalRow<IModEntry> hierarchicalRow)
+						if(row.Rows != null && row.Rows[row.RowIndex] is HierarchicalRow<IModEntry> hierarchicalRow)
 						{
-							hierarchicalRow.IsExpanded = true;
+							if (container.IsExpanded) hierarchicalRow.IsExpanded = true;
 						}
 					}
 				}
@@ -590,6 +600,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 							ModsTreeDataGrid.RowSelection!.Select(e.RowIndex);
 							entry.PreserveSelection = false;
 						}
+						//entry.IsExpanded = false;
 						PrepareRow(e.Row, entry);
 					}
 				}));
