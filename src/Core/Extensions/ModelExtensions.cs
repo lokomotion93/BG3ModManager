@@ -159,6 +159,10 @@ public static class ModelExtensions
 		try
 		{
 			var directory = data.GetDirectory();
+			if(saveIfNotFound && !directory.IsExistingDirectory() && directory.IsValid())
+			{
+				Directory.CreateDirectory(directory);
+			}
 			if (directory.IsExistingDirectory())
 			{
 				var filePath = Path.Join(directory, data.FileName);
