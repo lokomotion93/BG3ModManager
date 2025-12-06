@@ -70,8 +70,6 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 
 	[Reactive] public partial string? HelpText { get; set; }
 
-	[Reactive] public partial bool IsVisible { get; set; }
-
 	[Reactive] public partial int Index { get; set; }
 
 	[Reactive] public partial ModExtenderStatus ExtenderModStatus { get; set; }
@@ -84,11 +82,8 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 	[Reactive] public partial bool HasScriptExtenderSettings { get; set; }
 	[Reactive] public partial bool IsActive { get; set; }
 	[Reactive] public partial bool IsSelected { get; set; }
-	[Reactive] public partial bool IsExpanded { get; set; }
-	[Reactive] public partial bool IsDraggable { get; set; }
 
 	[Reactive] public partial bool IsLooseMod { get; set; }
-
 	[Reactive] public partial bool IsToolkitProject { get; set; }
 	[Reactive] public partial ToolkitProjectMetaData? ToolkitProjectMeta { get; set; }
 
@@ -452,7 +447,6 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 
 		HelpText = "";
 		Index = -1;
-		IsVisible = true;
 
 		Dependencies = new SourceCache<ModuleShortDesc, string>(x => x.UUID);
 		MissingDependencies = new SourceCache<ModuleShortDesc, string>(x => x.UUID);
