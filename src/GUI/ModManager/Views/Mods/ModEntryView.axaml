@@ -24,9 +24,8 @@
         </Style>
     </UserControl.Styles>
     <Panel Name="MainPanel"
-        x:DataType="mod:ModData"
+        x:DataType="mod:ModEntry"
         Background="Transparent"
-        DataContext="{Binding Data}"
         ToolTip.ShowDelay="600">
         <Panel.Styles>
             <Style Selector="ToolTip">
@@ -79,7 +78,7 @@
                     IsVisible="{Binding HasDescription}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <TextBlock Padding="4" Text="{Binding Description}" TextWrapping="Wrap" />
+                    <TextBlock Padding="4" Text="{Binding Data.Description}" TextWrapping="Wrap" />
                 </ScrollViewer>
                 <StackPanel IsVisible="{Binding NexusModsInformationVisibility}" Orientation="Vertical">
                     <Separator />
@@ -122,16 +121,16 @@
                     <TextBlock Foreground="Goldenrod" IsVisible="{Binding HasExtenderStatus}" Text="{Binding ScriptExtenderSupportToolTipText}" />
                     <TextBlock Margin="2" Text="{Binding LastModifiedDateText}" />
                 </StackPanel>
-                <StackPanel Margin="2" IsVisible="{Binding IsForceLoaded}" Orientation="Vertical">
+                <StackPanel Margin="2" IsVisible="{Binding Data.IsForceLoaded}" Orientation="Vertical">
                     <Separator />
                     <TextBlock Foreground="OrangeRed">
                         This mod overrides base game files directly.<LineBreak />
                         As long as this mod exists in the Mods folder,<LineBreak />
                         these files will be overwritten, even if the mod is disabled.</TextBlock>
                     <TextBlock Text="If this is intended, you can ignore this warning." />
-                    <TextBlock Foreground="Lime" IsVisible="{Binding IsForceLoadedMergedMod}" Text="This mod can be rearranged in the load order, due to it also having files of its own. Note that disabling it will not disable the file overrides." />
+                    <TextBlock Foreground="Lime" IsVisible="{Binding Data.IsForceLoadedMergedMod}" Text="This mod can be rearranged in the load order, due to it also having files of its own. Note that disabling it will not disable the file overrides." />
                     <TextBlock Foreground="OrangeRed" Text="Overwritten builtin folders:" />
-                    <TextBlock Text="{Binding BuiltinOverrideModsText}" />
+                    <TextBlock Text="{Binding Data.BuiltinOverrideModsText}" />
                 </StackPanel>
                 <Grid Margin="2" IsVisible="{Binding HasInvalidUUID}">
                     <Grid.ColumnDefinitions>
@@ -170,7 +169,7 @@
                     MaxHeight="256"
                     IsVisible="{Binding NexusImageVisibility}"
                     RenderOptions.BitmapInterpolationMode="HighQuality"
-                    Source="{Binding NexusModsData.PictureUrl}"
+                    Source="{Binding NexusImageUrl}"
                     Stretch="UniformToFill" />
             </StackPanel>
         </ToolTip.Tip>
@@ -183,19 +182,7 @@
             <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Styles>
-                        <Style Selector="icons|MaterialIcon">
-                            <Setter Property="Margin" Value="0,0,4,0" />
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowDirectionEffect BlurRadius="4"
-                                        Direction="330"
-                                        Opacity="0.8"
-                                        ShadowDepth="2"
-                                        Color="Black" />
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style Selector="labs|AsyncImage">
+                        <Style Selector="Image, icons|MaterialIcon, labs|AsyncImage">
                             <Setter Property="Margin" Value="0,0,4,0" />
                             <Setter Property="Effect">
                                 <Setter.Value>
@@ -208,6 +195,11 @@
                             </Setter>
                         </Style>
                     </StackPanel.Styles>
+                    <Panel IsVisible="{Binding HasExtenderStatus}" ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}">
+                        <Rectangle Width="16" Height="16" Fill="Transparent" />
+                        <ContentControl x:Name="ExtenderStatusContentControl" MaxHeight="16" MaxWidth="16" />
+                        <!--<icons:MaterialIcon x:Name="ExtenderStatusImage" />-->
+                    </Panel>
                     <labs:AsyncImage Width="16"
                         Height="16"
                         IsVisible="{Binding HasOsirisStatus}"
@@ -215,10 +207,6 @@
                         Source="{Binding OsirisStatusIconPath}"
                         Stretch="UniformToFill"
                         ToolTip.Tip="{Binding OsirisStatusToolTipText}" />
-                    <Panel IsVisible="{Binding HasExtenderStatus}" ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}">
-                        <Rectangle Width="16" Height="16" Fill="Transparent" />
-                        <icons:MaterialIcon x:Name="ExtenderStatusImage" />
-                    </Panel>
                     <Panel IsVisible="{Binding HasToolkitIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_IsToolkitProject}">
                         <Rectangle Width="16" Height="16" Fill="Transparent" />
                         <icons:MaterialIcon Foreground="SpringGreen" Kind="Tools" />

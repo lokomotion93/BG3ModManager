@@ -114,6 +114,11 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 					}
 					catch(Exception) { }
 				}
+				else
+				{
+					result.Width = 16;
+					result.Height = 16;
+				}
 			}
 		}
 		IconPresenter.Content = result;

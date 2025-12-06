@@ -510,9 +510,10 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				for (int i = 0; i < orderedEntries.Count; i++)
 				{
 					var entry = orderedEntries[i];
-					if (entry.Type == ModEntryType.Mod && _manager.TryGetMod(entry.Id, out var mod))
+					if (entry.Type == ModEntryType.Mod && entry is ModEntry modEntry)
 					{
-						if (mod.ExtenderIcon == ScriptExtenderIconType.Missing)
+						var mod = modEntry.Data;
+						if (modEntry.ExtenderIcon == ScriptExtenderIconType.Missing)
 						{
 							DivinityApp.Log($"{mod.Name} | ExtenderModStatus: {mod.ExtenderModStatus}");
 							missingResults.AddExtenderRequirement(mod);
@@ -524,10 +525,10 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 									if (_manager.TryGetMod(dependency.UUID, out var dependencyMod))
 									{
 										// Dependencies not in the order that require the extender
-										if (mod.ExtenderIcon == ScriptExtenderIconType.Missing)
+										if (modEntry.ExtenderIcon == ScriptExtenderIconType.Missing)
 										{
 											DivinityApp.Log($"{mod.Name} | ExtenderModStatus: {mod.ExtenderModStatus}");
-											missingResults.AddExtenderRequirement(dependencyMod, [mod.Name]);
+											missingResults.AddExtenderRequirement(dependencyMod, [mod.Name ?? mod.UUID]);
 										}
 									}
 								}
@@ -967,60 +968,25 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	#endregion
 
-	private void UpdateModExtenderStatus(ModData mod)
-	{
-		mod.CurrentExtenderVersion = ExtenderSettings.ExtenderMajorVersion;
-		mod.ExtenderModStatus = ModExtenderStatus.None;
-
-		if (mod.ScriptExtenderData != null && mod.ScriptExtenderData.HasAnySettings)
-		{
-			if (mod.ScriptExtenderData.Lua)
-			{
-				if (ExtenderSettings.ExtenderMajorVersion > -1)
-				{
-					if (mod.ScriptExtenderData.RequiredVersion > -1 && ExtenderSettings.ExtenderMajorVersion < mod.ScriptExtenderData.RequiredVersion)
-					{
-						mod.ExtenderModStatus |= ModExtenderStatus.MissingRequiredVersion;
-					}
-					else
-					{
-						mod.ExtenderModStatus |= ModExtenderStatus.Fulfilled;
-					}
-				}
-				else
-				{
-					mod.ExtenderModStatus |= ModExtenderStatus.MissingRequiredVersion;
-				}
-			}
-			else
-			{
-				mod.ExtenderModStatus |= ModExtenderStatus.Supports;
-			}
-			if (!ExtenderUpdaterSettings.UpdaterIsAvailable)
-			{
-				mod.ExtenderModStatus |= ModExtenderStatus.MissingUpdater;
-			}
-		}
-
-		// Blinky animation on the tools/download buttons if the extender is required by mods and is missing
-		if (mod.ExtenderModStatus.HasFlag(ModExtenderStatus.MissingUpdater))
-		{
-			ViewModelLocator.CommandBar.SetExtenderHighlight(true);
-		}
-	}
-
 	public void UpdateModStatusForAllMods()
 	{
-		if (_manager.AddonMods.Count > 0)
-		{
-			ViewModelLocator.CommandBar.SetExtenderHighlight(false);
+		var shouldHighlight = false;
 
-			foreach (var mod in _manager.AllMods)
+		var extSettings = _settings.ExtenderSettings;
+		var updateSettings = _settings.ExtenderUpdaterSettings;
+
+		foreach (var mod in _manager.AllMods)
+		{
+			if(mod.IsUserMod || mod.IsToolkitProject)
 			{
 				mod.DisplayExtraIcons = Settings.EnableColorblindSupport;
-				UpdateModExtenderStatus(mod);
+				if (mod.UpdateModExtenderStatus(extSettings, updateSettings))
+				{
+					shouldHighlight = true;
+				}
 			}
 		}
+		ViewModelLocator.CommandBar.SetExtenderHighlight(shouldHighlight);
 	}
 
 	IDisposable? _updateOrderTask = null;
@@ -1088,13 +1054,16 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		mod.IsActive = toActiveList;
 
+		var extSettings = _settings.ExtenderSettings;
+		var updateSettings = _settings.ExtenderUpdaterSettings;
+
 		if (_manager.TryGetMod(mod.UUID, out var existingMod) && existingMod.IsActive)
 		{
 			mod.Index = existingMod.Index;
 		}
 
 		_manager.Add(mod);
-		UpdateModExtenderStatus(mod);
+		mod.UpdateModExtenderStatus(extSettings, updateSettings);
 
 		if (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod)
 		{

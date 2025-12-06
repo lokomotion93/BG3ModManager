@@ -68,19 +68,7 @@
             <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Styles>
-                        <Style Selector="icons|MaterialIcon">
-                            <Setter Property="Margin" Value="0,0,4,0" />
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowDirectionEffect BlurRadius="4"
-                                        Direction="330"
-                                        Opacity="0.8"
-                                        ShadowDepth="2"
-                                        Color="Black" />
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style Selector="labs|AsyncImage">
+                        <Style Selector="Image, icons|MaterialIcon, labs|AsyncImage">
                             <Setter Property="Margin" Value="0,0,4,0" />
                             <Setter Property="Effect">
                                 <Setter.Value>
@@ -94,7 +82,7 @@
                         </Style>
                     </StackPanel.Styles>
                     <Border x:Name="IconBorder" IsVisible="{Binding HasIcon}" >
-                        <ContentControl x:Name="IconPresenter" MaxHeight="16" MaxWidth="16" RenderOptions.BitmapInterpolationMode="HighQuality" />
+                        <ContentControl x:Name="IconPresenter" RenderOptions.BitmapInterpolationMode="HighQuality" />
                     </Border>
                 </StackPanel>
             </Border>

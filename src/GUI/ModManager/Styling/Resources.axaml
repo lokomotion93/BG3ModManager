@@ -97,27 +97,27 @@
 		    Header="Copy Path to Clipboard"
 		    Icon="{icons:MaterialIconExt Kind=Clipboard}" />
 
-		<Separator IsVisible="{Binding Data.HasAnyExternalLink}" />
+		<Separator IsVisible="{Binding HasAnyExternalLink}" />
 		<MenuItem Command="{Binding Path=OpenGitHubPageCommand, Source={x:Static manager:AppServices.Commands}}"
 		    CommandParameter="{Binding Data}"
 		    Header="Open GitHub Page (Browser)..."
 		    Icon="{icons:MaterialIconExt Kind=Github}"
-		    IsVisible="{Binding Data.HasGitHubLink}" />
+		    IsVisible="{Binding HasGitHubLink}" />
 		<MenuItem Command="{Binding Path=OpenNexusModsPageCommand, Source={x:Static manager:AppServices.Commands}}"
 		    CommandParameter="{Binding Data}"
 		    Header="Open NexusMods Page (Browser)..."
 		    Icon="{SvgImage /Assets/Icons/nexuslogo.svg}"
-		    IsVisible="{Binding Data.HasNexusModsLink}" />
+		    IsVisible="{Binding HasNexusModsLink}" />
 		<MenuItem Command="{Binding Path=OpenModioPageCommand, Source={x:Static manager:AppServices.Commands}}"
 		    CommandParameter="{Binding Data}"
 		    Header="Open mod.io Page (Browser)..."
 		    Icon="{SvgImage /Assets/Icons/modio_Blue.svg}"
-		    IsVisible="{Binding Data.HasModioLink}" />
+		    IsVisible="{Binding HasModioLink}" />
 
 		<Separator IsVisible="{Binding Data.CanForceAllowInLoadOrder}" />
 		<MenuItem Command="{Binding Path=ToggleForceAllowInLoadOrderCommand, Source={x:Static manager:AppServices.Commands}}" CommandParameter="{Binding Data}" IsVisible="{Binding Data.CanForceAllowInLoadOrder}">
 			<MenuItem.Header>
-				<TextBlock Text="{Binding Data.ForceAllowInLoadOrderLabel}" />
+				<TextBlock Text="{Binding ForceAllowInLoadOrderLabel}" />
 			</MenuItem.Header>
 			<MenuItem.Icon>
 				<icons:MaterialIcon Kind="{Binding Data.ForceAllowInLoadOrder, Converter={StaticResource ForceAllowInLoadOrderIconConverter}}" />
@@ -137,7 +137,7 @@
 		<Separator />
 		<MenuItem Command="{Binding Path=ToggleNameDisplayCommand, Source={x:Static manager:AppServices.Commands}}" CommandParameter="{Binding Data}" Icon="{icons:MaterialIconExt Kind=Rename}">
 			<MenuItem.Header>
-				<TextBlock Text="{Binding Data.ToggleModNameLabel}" />
+				<TextBlock Text="{Binding ToggleModNameLabel}" />
 			</MenuItem.Header>
 		</MenuItem>
 
@@ -193,4 +193,6 @@
 
 	<system:Double x:Key="ModEntryToolTipWidth">480</system:Double>
 	<Thickness x:Key="ModEntryToolTipBorderThickness">2</Thickness>
+
+	<Image x:Key="ExtenderIcon" Source="avares://Assets/Icons/DivinityEngine2_64x.png" RenderOptions.BitmapInterpolationMode="HighQuality" />
 </ResourceDictionary>
