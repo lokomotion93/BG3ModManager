@@ -1251,8 +1251,8 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		}
 	}
 
-	private static bool CanAddActiveMod(ModData mod) => mod.CanAddToLoadOrder;
-	private static bool CanAddInactiveMod(ModData mod) => mod.CanAddToLoadOrder && !mod.IsActive;
+	private static bool CanAddActiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && mod.IsActive;
+	private static bool CanAddInactiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && !mod.IsActive;
 
 	public bool LoadModOrder(ModOrder order, List<MissingModData>? missingModsFromProfileOrder = null)
 	{
@@ -1338,7 +1338,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}
 			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
 			{
-				AddNestedMods(ActiveMods, container, addedActiveMods, CanAddActiveMod);
+				AddNestedMods(ActiveMods, container, addedActiveMods, CanAddActiveModToOrder);
 			}
 		}
 
@@ -1348,7 +1348,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		{
 			if (entry.Type == ModEntryType.Mod)
 			{
-				if (modManager.TryGetMod(entry.Id, out var mod) && CanAddInactiveMod(mod))
+				if (modManager.TryGetMod(entry.Id, out var mod) && CanAddInactiveModToOrder(mod))
 				{
 					addedInactiveMods.Add(entry.Id);
 					InactiveMods.Add(mod.ToModInterface());
@@ -1356,7 +1356,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}
 			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
 			{
-				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveMod);
+				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveModToOrder);
 			}
 		}
 
