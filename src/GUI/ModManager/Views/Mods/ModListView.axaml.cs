@@ -98,10 +98,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		if (targetItems.Count == 0)
 		{
-			foreach (var entry in sourceItems)
-			{
-				targetItems.Add(entry);
-			}
+			targetItems.AddRange(sourceItems.Reverse<IModEntry>());
 		}
 		else
 		{
@@ -234,20 +231,21 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			e.Inner.DragEffects = DragDropEffects.None;
 			return;
 		}
+
+		MaybeRedirectDrop(e);
+
 		if (e.TargetRow.Model is ModContainer modContainer)
 		{
-			if(!modContainer.IsExpanded)
+			allowInside = true;
+			/*if (!modContainer.IsExpanded && e.Position == TreeDataGridRowDropPosition.Inside)
 			{
 				//Need to delay by a few frames since the expander cell may not be rendered yet
 				RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(10), () =>
 				{
 					modContainer.IsExpanded = true;
 				});
-			}
-			allowInside = true;
+			}*/
 		}
-
-		MaybeRedirectDrop(e);
 
 		//List to List
 		if (e.Info is DragInfo di
@@ -635,7 +633,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				{
 					if (e.Index > -1 && e.Child is TreeDataGridRow row && row.Model is IModEntry mod)
 					{
-						//var index = ModsTreeDataGrid.Rows!.RowIndexToModelIndex(e.Index);
 						mod.IsActive = ViewModel.ListType == ModListType.Active;
 						_reindexTask?.Dispose();
 						_reindexTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromTicks(2), ViewModel.UpdateIndexes);
