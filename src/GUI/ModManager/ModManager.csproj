@@ -51,9 +51,7 @@
 	</ItemGroup>-->
 
 	<ItemGroup>
-		<None Include="Resources\*.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		<None Include="Resources\*.json" CopyToOutputDirectory="Always" />
 		<AvaloniaResource Include="Assets\**" />
 	</ItemGroup>
 
@@ -65,6 +63,7 @@
 	<ItemGroup>
 		<!-- Exclude the output of source generators from the compilation -->
 		<Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+		<!-- Make these files visible in the solution explorer -->
 		<None Include="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
 	</ItemGroup>
 </Project>

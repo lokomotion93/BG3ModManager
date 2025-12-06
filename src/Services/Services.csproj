@@ -26,4 +26,18 @@
 		<ProjectReference Include="..\..\External\CrossSpeak\CrossSpeak\CrossSpeak.csproj" />
 		<ProjectReference Include="..\Core\Core.csproj" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Exclude the output of source generators from the compilation -->
+		<Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+		<!-- Make these files visible in the solution explorer -->
+		<None Include="$(CompilerGeneratedFilesOutputPath)/**/*.Reactive*/*.cs" />
+		<None Include="$(CompilerGeneratedFilesOutputPath)/**/*.Observable*/*.cs" />
+		<None Include="$(CompilerGeneratedFilesOutputPath)/**/Splat.DI.Reg.g.cs" />
+	</ItemGroup>
 </Project>
