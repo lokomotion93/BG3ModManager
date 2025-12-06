@@ -1206,6 +1206,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		{
 			uiContainer.Settings.SetFromDataMember(container.Settings);
 		}
+		uiContainer.Index = container.Index;
 		uiContainer.Settings.DisplayName = container.Name;
 		addedEntries.Add(container.Id);
 		targetList.Add(uiContainer);
@@ -1295,6 +1296,10 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				{
 					missingResults.AddMissing(new ModuleShortDesc(entry.Id) { Name = entry.Name }, loadOrderIndex);
 				}
+			}
+			else if(entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
+			{
+				container.Index = loadOrderIndex;
 			}
 			loadOrderIndex++;
 		}

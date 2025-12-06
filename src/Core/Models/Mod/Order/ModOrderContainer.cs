@@ -15,6 +15,9 @@ public class ModOrderContainer(string id) : IModOrderEntry, INested<List<IModOrd
 
 	public List<IModOrderEntry> Children { get; set; } = [];
 
+	[JsonIgnore]
+	public int Index { get; set; }
+
 	[JsonConstructor]
 	public ModOrderContainer() : this(string.Empty)
 	{
