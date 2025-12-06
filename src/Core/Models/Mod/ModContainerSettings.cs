@@ -8,15 +8,16 @@ public partial class ModContainerSettings(string id) : ReactiveObject, IObjectWi
 	public string Id { get; set; } = id;
 	[Reactive] public partial string? DisplayName { get; set; }
 	[Reactive, DataMember] public partial string? Description { get; set; }
-	[Reactive, DataMember] public partial string? BorderColor { get; set; }
 	[Reactive, DataMember] public partial string? ForegroundColor { get; set; }
 	[Reactive, DataMember] public partial string? BackgroundColor { get; set; }
+	[Reactive, DataMember] public partial string? BorderColor { get; set; }
 	[Reactive, DataMember] public partial string? BorderThickness { get; set; }
+	[Reactive, DataMember] public partial ModContainerIconSettings? Icon { get; set; }
 	[Reactive, DataMember] public partial bool IsExpanded { get; set; }
 
 	[JsonConstructor]
 	public ModContainerSettings() : this(string.Empty)
 	{
-
+		
 	}
 }

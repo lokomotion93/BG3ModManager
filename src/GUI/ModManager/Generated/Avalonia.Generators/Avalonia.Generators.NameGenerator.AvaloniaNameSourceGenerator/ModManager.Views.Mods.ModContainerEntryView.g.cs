@@ -10,6 +10,10 @@ namespace ModManager.Views.Mods
     {
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         internal global::Avalonia.Controls.TextBlock LabelTextBlock;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::Avalonia.Controls.Border IconBorder;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::Avalonia.Controls.ContentControl IconPresenter;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -27,6 +31,8 @@ namespace ModManager.Views.Mods
 
             var __thisNameScope__ = this.FindNameScope();
             LabelTextBlock = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabelTextBlock");
+            IconBorder = __thisNameScope__?.Find<global::Avalonia.Controls.Border>("IconBorder");
+            IconPresenter = __thisNameScope__?.Find<global::Avalonia.Controls.ContentControl>("IconPresenter");
         }
     }
 }

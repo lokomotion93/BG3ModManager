@@ -4,62 +4,100 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:ModManager.Models.Mod"
+    xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:labs="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="vm:ModContainer"
     mc:Ignorable="d">
-	<UserControl.Styles>
-		<Style Selector="TextBlock">
-			<Style Selector="^:pointerover">
-				<Setter Property="Foreground" Value="{DynamicResource ModListHoveredTextForeground}" />
-			</Style>
-		</Style>
-	</UserControl.Styles>
-	<Panel Background="Transparent">
-		<Panel.Styles>
-			<Style Selector="ToolTip">
-				<Setter Property="Width" Value="{StaticResource ModEntryToolTipWidth}" />
-				<Style Selector="^/template/ Border">
-					<Setter Property="BorderBrush" Value="{DynamicResource SukiBorderBrush}" />
-					<Setter Property="BorderThickness" Value="{StaticResource ModEntryToolTipBorderThickness}" />
-				</Style>
-			</Style>
-		</Panel.Styles>
-		<ToolTip.Tip>
-			<StackPanel Orientation="Vertical">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="4" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<TextBlock FontSize="16" FontWeight="Bold" Text="{Binding DisplayName}">
-						<TextBlock.Effect>
-							<DropShadowDirectionEffect BlurRadius="4"
-							    Direction="330"
-							    Opacity="0.25"
-							    ShadowDepth="2"
-							    Color="Black" />
-						</TextBlock.Effect>
-					</TextBlock>
-					<TextBlock Grid.Column="2"
-					    HorizontalAlignment="Right"
-					    Classes="Primary"
-					    Text="{Binding ContainerToolTipTitleText}" />
-				</Grid>
-				<Separator />
-				<ScrollViewer MinHeight="24"
-				    MaxHeight="300"
-				    IsVisible="{Binding HasDescription}"
-				    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				    ScrollViewer.VerticalScrollBarVisibility="Visible">
-					<TextBlock Padding="4" Text="{Binding Description}" TextWrapping="Wrap" />
-				</ScrollViewer>
-			</StackPanel>
-		</ToolTip.Tip>
-		<TextBlock x:Name="LabelTextBlock"
-		    VerticalAlignment="Center"
-		    Text="{Binding DisplayName}"
-		    TextAlignment="Left" />
-	</Panel>
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Style Selector="^:pointerover">
+                <Setter Property="Foreground" Value="{DynamicResource ModListHoveredTextForeground}" />
+            </Style>
+        </Style>
+    </UserControl.Styles>
+    <Panel Background="Transparent">
+        <Panel.Styles>
+            <Style Selector="ToolTip">
+                <Setter Property="Width" Value="{StaticResource ModEntryToolTipWidth}" />
+                <Style Selector="^/template/ Border">
+                    <Setter Property="BorderBrush" Value="{DynamicResource SukiBorderBrush}" />
+                    <Setter Property="BorderThickness" Value="{StaticResource ModEntryToolTipBorderThickness}" />
+                </Style>
+            </Style>
+        </Panel.Styles>
+        <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="4" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding DisplayName}">
+                        <TextBlock.Effect>
+                            <DropShadowDirectionEffect BlurRadius="4"
+                                Direction="330"
+                                Opacity="0.25"
+                                ShadowDepth="2"
+                                Color="Black" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Classes="Primary"
+                        Text="{Binding ContainerToolTipTitleText}" />
+                </Grid>
+                <Separator />
+                <ScrollViewer MinHeight="24"
+                    MaxHeight="300"
+                    IsVisible="{Binding HasDescription}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <TextBlock Padding="4" Text="{Binding Description}" TextWrapping="Wrap" />
+                </ScrollViewer>
+            </StackPanel>
+        </ToolTip.Tip>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" SharedSizeGroup="EntryIcons" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="LabelTextBlock" VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
+            <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Styles>
+                        <Style Selector="icons|MaterialIcon">
+                            <Setter Property="Margin" Value="0,0,4,0" />
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowDirectionEffect BlurRadius="4"
+                                        Direction="330"
+                                        Opacity="0.8"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style Selector="labs|AsyncImage">
+                            <Setter Property="Margin" Value="0,0,4,0" />
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowDirectionEffect BlurRadius="4"
+                                        Direction="330"
+                                        Opacity="0.8"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </StackPanel.Styles>
+                    <Border x:Name="IconBorder" IsVisible="{Binding HasIcon}" >
+                        <ContentControl x:Name="IconPresenter" MaxHeight="16" MaxWidth="16" RenderOptions.BitmapInterpolationMode="HighQuality" />
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Panel>
 </UserControl>

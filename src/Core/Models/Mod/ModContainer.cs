@@ -43,11 +43,13 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 	[ObservableAsProperty] public partial string? DisplayName { get; }
 	[ObservableAsProperty] public partial string? Description { get; }
 	[ObservableAsProperty] public partial string? ContainerToolTipTitleText { get; }
+	[ObservableAsProperty] public partial ModContainerIconSettings? Icon { get; }
 	[ObservableAsProperty] public partial bool CanForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public partial bool ForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public partial bool DisplayFileForName { get; }
 	[ObservableAsProperty] public partial bool IsVisible { get; }
 	[ObservableAsProperty] public partial bool HasDescription { get; }
+	[ObservableAsProperty] public partial bool HasIcon { get; }
 	[ObservableAsProperty] public partial string? ForceAllowInLoadOrderLabel { get; }
 	[ObservableAsProperty] public partial string? ToggleModNameLabel { get; }
 
@@ -187,7 +189,10 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 		Settings = new(uuid);
 		_displayNameHelper = Settings.WhenAnyValue(x => x.DisplayName).ToUIProperty(this, x => x.DisplayName);
 		_descriptionHelper = Settings.WhenAnyValue(x => x.Description).ToUIProperty(this, x => x.Description);
-		_hasDescriptionHelper = this.WhenAnyValue(x => x.Description, x => x.IsValid()).ToUIProperty(this, x => x.HasDescription, false);
+		_hasDescriptionHelper = this.WhenAnyValue(x => x.Description, Validators.IsValid).ToUIProperty(this, x => x.HasDescription, false);
+
+		_iconHelper = Settings.WhenAnyValue(x => x.Icon).ToUIProperty(this, x => x.Icon);
+		_hasIconHelper = this.WhenAnyValue(x => x.Icon).Select(x => x != null).ToUIProperty(this, x => x.HasIcon);
 
 		Settings.WhenAnyValue(x => x.IsExpanded).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.IsExpanded);
 		this.WhenAnyValue(x => x.IsExpanded).BindTo(Settings, x => x.IsExpanded);
