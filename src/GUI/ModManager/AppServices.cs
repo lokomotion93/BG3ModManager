@@ -35,6 +35,16 @@ public static class AppServices
 
 	public static ControlFactoryService ControlFactory => Get<ControlFactoryService>()!;
 
+	public static void Initialize()
+	{
+#if !DEBUG
+		if(DivinityApp.GetAppDirectory("debug").IsExistingFile())
+		{
+			Get<LogWriterService>().ToggleLogging(true);
+		}
+#endif
+	}
+
 	static AppServices()
 	{
 		var resolver = Locator.CurrentMutable;

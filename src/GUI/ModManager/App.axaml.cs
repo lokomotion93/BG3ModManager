@@ -36,9 +36,9 @@ public partial class App : Application
 		var desktop = DesktopLifetime;
 		if (desktop != null)
 		{
-			ToolTip.ShowDelayProperty.OverrideDefaultValue(typeof(Panel), 500);
-			ToolTip.BetweenShowDelayProperty.OverrideDefaultValue(typeof(Panel), 500);
-			ToolTip.PlacementProperty.OverrideDefaultValue(typeof(Panel), PlacementMode.RightEdgeAlignedTop);
+			ToolTip.ShowDelayProperty.OverrideDefaultValue<Panel>(500);
+			ToolTip.BetweenShowDelayProperty.OverrideDefaultValue<Panel>(500);
+			ToolTip.PlacementProperty.OverrideDefaultValue<Panel>(PlacementMode.RightEdgeAlignedTop);
 
 			var viewLocator = new ViewLocator();
 			Locator.CurrentMutable.RegisterConstant<IViewLocator>(viewLocator);
@@ -58,6 +58,8 @@ public partial class App : Application
 
 			SukiTheme.GetInstance().ChangeBaseTheme(ThemeVariant.Light);
 			SukiTheme.GetInstance().ChangeBaseTheme(ThemeVariant.Dark);
+
+			AppServices.Initialize();
 			SplatRegistrations.RegisterConstant(new ColorThemeService(AppServices.Settings, AppServices.Locale));
 		}
 
