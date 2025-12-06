@@ -824,9 +824,9 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 			}
 		});
 
-		this.WhenAnyValue(x => x.ModioData.LastUpdated).Subscribe(lastUpdated =>
+		this.WhenAnyValue(x => x.ModioData.LastUpdated).Where(x => x != DateTimeOffset.UnixEpoch).Subscribe(lastUpdated =>
 		{
-			if(lastUpdated != DateTimeOffset.MinValue)
+			if(lastUpdated > LastModified)
 			{
 				LastModified = lastUpdated;
 			}

@@ -44,7 +44,7 @@ public partial class ModEntry : ReactiveObject, IModEntry
 
 	private static string DateToString(DateTimeOffset? date)
 	{
-		if(date != null && date != DateTimeOffset.MinValue)
+		if(date != null && date != DateTimeOffset.MinValue && date != DateTimeOffset.UnixEpoch)
 		{
 			return date.Value.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture);
 		}
