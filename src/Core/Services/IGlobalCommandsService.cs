@@ -10,14 +10,14 @@ public interface IGlobalCommandsService
 
 	ReactiveCommand<string?, Unit> OpenFileCommand { get; }
 	ReactiveCommand<string?, bool> OpenInFileExplorerCommand { get; }
-	ReactiveCommand<ModData?, Unit> ToggleNameDisplayCommand { get; }
+	ReactiveCommand<object?, Unit> ToggleNameDisplayCommand { get; }
 	ReactiveCommand<object?, Unit> CopyToClipboardCommand { get; }
 	ReactiveCommand<object?, Unit> DeleteModCommand { get; }
 	RxCommandUnit DeleteSelectedModsCommand { get; }
 	ReactiveCommand<ModData?, Unit> OpenGitHubPageCommand { get; }
 	ReactiveCommand<ModData?, Unit> OpenNexusModsPageCommand { get; }
 	ReactiveCommand<ModData?, Unit> OpenModioPageCommand { get; }
-	ReactiveCommand<object?, Unit> OpenURLCommand { get; }
+	ReactiveCommand<string?, Unit> OpenURLCommand { get; }
 	ReactiveCommand<ModData?, Unit> ToggleForceAllowInLoadOrderCommand { get; }
 	ReactiveCommand<ModData?, Unit> CopyModAsDependencyCommand { get; }
 	ReactiveCommand<ModData?, Unit> OpenModPropertiesCommand { get; }

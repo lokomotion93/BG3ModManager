@@ -18,23 +18,10 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 	[Reactive] public partial bool HasAnySelectedMods { get; set; }
 	[Reactive] public partial bool HasMultipleSelectedMods { get; set; }
 
-	public ReactiveCommand<string?, Unit> OpenFileCommand { get; }
-	public ReactiveCommand<string?, bool> OpenInFileExplorerCommand { get; }
-	public ReactiveCommand<ModData?, Unit> ToggleNameDisplayCommand { get; }
-	public ReactiveCommand<object?, Unit> CopyToClipboardCommand { get; }
-	public ReactiveCommand<object?, Unit> DeleteModCommand { get; }
-	public RxCommandUnit DeleteSelectedModsCommand { get; }
-	public ReactiveCommand<ModData?, Unit> OpenGitHubPageCommand { get; }
-	public ReactiveCommand<ModData?, Unit> OpenNexusModsPageCommand { get; }
-	public ReactiveCommand<ModData?, Unit> OpenModioPageCommand { get; }
-	public ReactiveCommand<object?, Unit> OpenURLCommand { get; }
-	public ReactiveCommand<ModData?, Unit> ToggleForceAllowInLoadOrderCommand { get; }
-	public ReactiveCommand<ModData?, Unit> CopyModAsDependencyCommand { get; }
-	public ReactiveCommand<ModData?, Unit> OpenModPropertiesCommand { get; }
-	public ReactiveCommand<ModData?, Unit> ValidateStatsCommand { get; }
-	public ReactiveCommand<ModData?, Unit> ExploreModFilesCommand { get; }
-	public RxCommandUnit ExploreSelectedModFilesCommand { get; }
+	private readonly IObservable<bool> _canExecuteCommandsObs;
+	private readonly IObservable<bool> _canExecuteSelectedObs;
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	public void OpenFile(string? path)
 	{
 		if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path), "path is null or empty");
@@ -58,6 +45,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		}
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	public bool OpenInFileExplorer(string? path)
 	{
 		if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path), "path is null or empty");
@@ -77,6 +65,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		return false;
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	public void CopyToClipboard(object? obj)
 	{
 		if (obj == null) throw new ArgumentNullException(nameof(obj), "data to copy is null");
@@ -99,6 +88,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		}
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void CopyModAsDependency(ModData? mod)
 	{
 		if (mod == null) throw new ArgumentNullException(nameof(mod));
@@ -116,6 +106,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		}
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	public void OpenURL(string? url)
 	{
 		
@@ -123,6 +114,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		ProcessHelper.TryOpenUrl(url);
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void OpenGitHubPage(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
@@ -130,6 +122,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		OpenURL(url);
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void OpenNexusModsPage(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
@@ -137,6 +130,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		OpenURL(url);
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void OpenModioPage(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
@@ -144,25 +138,29 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		OpenURL(url);
 	}
 
-	private async Task ToggleForceAllowInLoadOrderAsync(ModData? mod)
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
+	private async Task ToggleForceAllowInLoadOrder(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
 		var b = !mod.ForceAllowInLoadOrder;
 		await _interactions.ForceAllowInLoadOrder.Handle(new(mod, b));
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void OpenModProperties(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
 		_interactions.OpenModProperties.Handle(mod).Subscribe();
 	}
 
-	private void StartValidateModStats(ModData? mod)
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
+	private void ValidateStats(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
 		_interactions.ValidateModStats.Handle(new([mod], CancellationToken.None)).Subscribe();
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void ToggleNameDisplay(object? obj)
 	{
 		ArgumentNullException.ThrowIfNull(obj);
@@ -176,6 +174,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		}
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void DeleteMod(object? obj)
 	{
 		ArgumentNullException.ThrowIfNull(obj);
@@ -189,16 +188,20 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		}
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteSelectedObs))]
 	private async Task DeleteSelectedMods()
 	{
 		await _interactions.DeleteSelectedMods.Handle(Unit.Default);
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private async Task ExploreModFiles(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);
 		await _interactions.ViewModFiles.Handle(new([mod]));
 	}
+
+	[ReactiveCommand(CanExecute = nameof(_canExecuteSelectedObs))]
 	private async Task ExploreSelectedModFiles()
 	{
 		List<ModData> selectedMods = [];
@@ -219,12 +222,12 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 
 	public void ShowAlert(string message, AlertType alertType = AlertType.Info, int timeout = 0, string? title = "")
 	{
-		_interactions.ShowAlert.Handle(new(StringUtils.ReplaceSpecialPathways(message), alertType, timeout, title)).Subscribe();
+		_interactions.ShowAlert.Handle(new(StringUtils.ReplaceSpecialPathways(message)!, alertType, timeout, title)).Subscribe();
 	}
 
 	public async Task ShowAlertAsync(string message, AlertType alertType = AlertType.Info, int timeout = 0, string? title = "")
 	{
-		await _interactions.ShowAlert.Handle(new(StringUtils.ReplaceSpecialPathways(message), alertType, timeout, title));
+		await _interactions.ShowAlert.Handle(new(StringUtils.ReplaceSpecialPathways(message)!, alertType, timeout, title));
 	}
 
 	public GlobalCommandsService(IInteractionsService interactionsService, IFileSystemService fileSystemService)
@@ -232,31 +235,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		_interactions = interactionsService;
 		_fs = fileSystemService;
 
-		var canExecuteCommands = this.WhenAnyValue(x => x.CanExecuteCommands).ObserveOn(RxApp.MainThreadScheduler);
-		var anySelected = this.WhenAnyValue(x => x.HasAnySelectedMods).ObserveOn(RxApp.MainThreadScheduler);
-
-		var canExecuteSelected = canExecuteCommands.CombineLatest(anySelected).AllTrue();
-
-		OpenFileCommand = ReactiveCommand.Create<string?>(OpenFile, canExecuteCommands);
-		OpenInFileExplorerCommand = ReactiveCommand.Create<string?, bool>(OpenInFileExplorer, canExecuteCommands);
-
-		ToggleNameDisplayCommand = ReactiveCommand.Create<ModData?>(ToggleNameDisplay, canExecuteCommands);
-
-		CopyToClipboardCommand = ReactiveCommand.Create<object?>(CopyToClipboard, canExecuteCommands);
-
-		DeleteModCommand = ReactiveCommand.Create<object?>(DeleteMod, canExecuteCommands);
-		DeleteSelectedModsCommand = ReactiveCommand.CreateFromTask(DeleteSelectedMods, canExecuteSelected);
-
-		OpenURLCommand = ReactiveCommand.Create<object?>(x => OpenURL(x?.ToString()), canExecuteCommands);
-		OpenGitHubPageCommand = ReactiveCommand.Create<ModData?>(OpenGitHubPage, canExecuteCommands);
-		OpenNexusModsPageCommand = ReactiveCommand.Create<ModData?>(OpenNexusModsPage, canExecuteCommands);
-		OpenModioPageCommand = ReactiveCommand.Create<ModData?>(OpenModioPage, canExecuteCommands);
-		ToggleForceAllowInLoadOrderCommand = ReactiveCommand.CreateFromTask<ModData?>(ToggleForceAllowInLoadOrderAsync, canExecuteCommands);
-		CopyModAsDependencyCommand = ReactiveCommand.Create<ModData?>(CopyModAsDependency, canExecuteCommands);
-		OpenModPropertiesCommand = ReactiveCommand.Create<ModData?>(OpenModProperties, canExecuteCommands);
-		ValidateStatsCommand = ReactiveCommand.Create<ModData?>(StartValidateModStats, canExecuteCommands);
-
-		ExploreModFilesCommand = ReactiveCommand.CreateFromTask<ModData?>(ExploreModFiles, canExecuteCommands, RxApp.MainThreadScheduler);
-		ExploreSelectedModFilesCommand = ReactiveCommand.CreateFromTask(ExploreSelectedModFiles, canExecuteSelected, RxApp.MainThreadScheduler);
+		_canExecuteCommandsObs = this.WhenAnyValue(x => x.CanExecuteCommands).ObserveOn(RxApp.MainThreadScheduler);
+		_canExecuteSelectedObs = this.WhenAnyValue(x => x.CanExecuteCommands, x => x.HasAnySelectedMods).AllTrue();
 	}
 }
