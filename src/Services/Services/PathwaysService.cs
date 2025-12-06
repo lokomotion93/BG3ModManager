@@ -44,7 +44,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 	}
 
 	//TODO Make this work for both DOS2 and BG3
-	public bool SetGamePathways(string currentGameDataPath, string gameDataFolderOverride = "")
+	public bool SetGamePathways(string? currentGameDataPath, string? gameDataFolderOverride = "")
 	{
 		try
 		{
