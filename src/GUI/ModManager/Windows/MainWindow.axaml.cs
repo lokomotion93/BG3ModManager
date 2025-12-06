@@ -67,6 +67,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 		}
 	}
 
+	public void BringToFront()
+	{
+		Dispatcher.UIThread.Post(Activate);
+	}
+
 	public MainWindow()
 	{
 		InitializeComponent();
@@ -139,9 +144,9 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 						_ => "Info",
 					};
 				}
-				if(ViewModel?.Settings.DebugModeEnabled == true) DivinityApp.Log(data.Message);
 				await Observable.Start(() =>
 				{
+					if (ViewModel?.Settings.DebugModeEnabled == true) DivinityApp.Log(data.Message);
 					var shortenedMessage = data.Message;
 					if(shortenedMessage.Length > 127)
 					{

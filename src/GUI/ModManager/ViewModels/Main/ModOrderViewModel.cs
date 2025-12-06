@@ -14,6 +14,7 @@ using ModManager.Models.Settings;
 using ModManager.Services;
 using ModManager.Util;
 using ModManager.ViewModels.Mods;
+using ModManager.Windows;
 
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -1996,6 +1997,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 							var title = "Mod Order Reset";
 							var message = "The active load order (modsettings.lsx) has been reset externally, which has deactivated your mods.\nOne or more mods may be invalid in your current load order.";
 							AppServices.Interactions.ShowMessageBox.Handle(new(title, message, InteractionMessageBoxType.Error)).Subscribe();
+							AppServices.Get<MainWindow>()!.BringToFront();
 						});
 					}
 				});
