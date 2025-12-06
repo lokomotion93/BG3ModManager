@@ -1,6 +1,9 @@
 using Avalonia.Controls.Templates;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+
+using Humanizer;
 
 using ModManager.ViewModels;
 using ModManager.ViewModels.Main;
@@ -139,7 +142,17 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 				if(ViewModel?.Settings.DebugModeEnabled == true) DivinityApp.Log(data.Message);
 				await Observable.Start(() =>
 				{
-					var toastBuilder = _toastManager.CreateToast().WithTitle(title).WithContent(data.Message);
+					var shortenedMessage = data.Message;
+					if(shortenedMessage.Length > 127)
+					{
+						shortenedMessage = string.Concat(shortenedMessage.AsSpan(0, 127), "...");
+					}
+					var content = new TextBlock() {
+						Text = shortenedMessage,
+						TextWrapping = TextWrapping.Wrap
+					};
+					ToolTip.SetTip(content, data.Message);
+					var toastBuilder = _toastManager.CreateToast().WithTitle(title).WithContent(content);
 					toastBuilder.SetCanDismissByClicking(true);
 					toastBuilder.SetDismissAfter(duration);
 					toastBuilder.SetType(data.AlertType.ToNotificationType());
