@@ -13,237 +13,241 @@
     x:DataType="mod:ModEntry"
     IsHitTestVisible="True"
     mc:Ignorable="d">
-	<Design.DataContext>
-		<local:DesignModEntry />
-	</Design.DataContext>
-	<UserControl.Styles>
-		<Style Selector="TextBlock">
-			<Style Selector="^:pointerover">
-				<Setter Property="Foreground" Value="{DynamicResource ModListHoveredTextForeground}" />
-			</Style>
-		</Style>
-	</UserControl.Styles>
-	<Panel Name="MainPanel"
-	    x:DataType="mod:ModData"
-	    Background="Transparent"
-	    DataContext="{Binding Data}"
-	    ToolTip.ShowDelay="600">
-		<Panel.Styles>
-			<Style Selector="ToolTip">
-				<Setter Property="Width" Value="{StaticResource ModEntryToolTipWidth}" />
-				<Style Selector="^/template/ Border">
-					<Setter Property="BorderBrush" Value="{DynamicResource SukiBorderBrush}" />
-					<Setter Property="BorderThickness" Value="{StaticResource ModEntryToolTipBorderThickness}" />
-				</Style>
-			</Style>
-		</Panel.Styles>
-		<ToolTip.Tip>
-			<StackPanel Orientation="Vertical">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<TextBlock FontSize="16" FontWeight="Bold" Text="{Binding DisplayName}">
-						<TextBlock.Effect>
-							<DropShadowDirectionEffect BlurRadius="4"
-							    Direction="330"
-							    Opacity="0.25"
-							    ShadowDepth="2"
-							    Color="Black" />
-						</TextBlock.Effect>
-					</TextBlock>
-					<TextBlock Grid.Column="1" Padding="4,0" Text="{Binding DisplayVersion}" />
-					<TextBlock Grid.Column="2"
-					    HorizontalAlignment="Right"
-					    Classes="Primary"
-					    Foreground="{Binding ModDisplayTypeForeground, Converter={StaticResource StringToBrushConverter}}"
-					    Text="{Binding ModDisplayTypeName}" />
-				</Grid>
+    <Design.DataContext>
+        <local:DesignModEntry />
+    </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Style Selector="^:pointerover">
+                <Setter Property="Foreground" Value="{DynamicResource ModListHoveredTextForeground}" />
+            </Style>
+        </Style>
+    </UserControl.Styles>
+    <Panel Name="MainPanel"
+        x:DataType="mod:ModData"
+        Background="Transparent"
+        DataContext="{Binding Data}"
+        ToolTip.ShowDelay="600">
+        <Panel.Styles>
+            <Style Selector="ToolTip">
+                <Setter Property="Width" Value="{StaticResource ModEntryToolTipWidth}" />
+                <Style Selector="^/template/ Border">
+                    <Setter Property="BorderBrush" Value="{DynamicResource SukiBorderBrush}" />
+                    <Setter Property="BorderThickness" Value="{StaticResource ModEntryToolTipBorderThickness}" />
+                </Style>
+            </Style>
+        </Panel.Styles>
+        <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding DisplayName}">
+                        <TextBlock.Effect>
+                            <DropShadowDirectionEffect BlurRadius="4"
+                                Direction="330"
+                                Opacity="0.25"
+                                ShadowDepth="2"
+                                Color="Black" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <TextBlock Grid.Column="1" Padding="4,0" Text="{Binding DisplayVersion}" />
+                    <TextBlock Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Classes="Primary"
+                        Foreground="{Binding ModDisplayTypeForeground, Converter={StaticResource StringToBrushConverter}}"
+                        Text="{Binding ModDisplayTypeName}" />
+                </Grid>
 
-				<Separator />
-				<TextBlock IsVisible="{Binding HasAuthor}" TextWrapping="Wrap">
-					<Run Text="Created by " />
-					<Run FontWeight="Bold" Foreground="#3da2fa" Text="{Binding Author}" />
-					<TextBlock.Effect>
-						<DropShadowDirectionEffect BlurRadius="4"
-						    Direction="330"
-						    Opacity="0.25"
-						    ShadowDepth="3"
-						    Color="Black" />
-					</TextBlock.Effect>
-				</TextBlock>
-				<ScrollViewer MinHeight="24"
-				    MaxHeight="300"
-				    IsVisible="{Binding HasDescription}"
-				    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				    ScrollViewer.VerticalScrollBarVisibility="Visible">
-					<TextBlock Padding="4" Text="{Binding Description}" TextWrapping="Wrap" />
-				</ScrollViewer>
-				<StackPanel IsVisible="{Binding NexusModsInformationVisibility}" Orientation="Vertical">
-					<Separator />
-					<TextBlock Text="{Binding NexusModsTooltipInfo}" />
-					<Separator />
-				</StackPanel>
-				<StackPanel Margin="2" IsVisible="{Binding HasDependencies}" Orientation="Vertical">
-					<TextBlock FontWeight="Bold" Text="Dependencies:" />
-					<!--<ListBox Grid.IsSharedSizeScope="True"
-				    ItemTemplate="{StaticResource DependencyModTemplate}"
-				    ItemsSource="{Binding DisplayedDependencies}"
-				    Style="{StaticResource ModuleShortDescListBox}" />-->
-				</StackPanel>
-				<StackPanel Margin="2" IsVisible="{Binding HasConflicts}" Orientation="Vertical">
-					<TextBlock FontWeight="Bold" Text="Conflicts:" />
-					<!--<ListBox Grid.IsSharedSizeScope="True"
-				    ItemTemplate="{StaticResource ConflictModTemplate}"
-				    ItemsSource="{Binding DisplayedConflicts}"
-				    Style="{StaticResource ModuleShortDescListBox}" />-->
-				</StackPanel>
-				<!--<StackPanel Margin="2" DataContext="{Binding}" Orientation="Vertical">
-					<ItemsControl ItemTemplateSelector="{StaticResource TagTemplateSelector}" ItemsSource="{Binding Tags}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel Orientation="Horizontal" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.Style>
-						<Style>
-							<Style.Triggers>
-								<DataTrigger Binding="{Binding}" />
-							</Style.Triggers>
-						</Style>
-					</ItemsControl.Style>
-				</ItemsControl>
-				</StackPanel>-->
-				<StackPanel Orientation="Vertical">
-					<Separator />
-					<TextBlock IsVisible="{Binding HasFilePath}" Text="{Binding FileName}" />
-					<TextBlock Foreground="Goldenrod" IsVisible="{Binding HasExtenderStatus}" Text="{Binding ScriptExtenderSupportToolTipText}" />
-					<TextBlock Margin="2" Text="{Binding LastModifiedDateText}" />
-				</StackPanel>
-				<StackPanel Margin="2" IsVisible="{Binding IsForceLoaded}" Orientation="Vertical">
-					<Separator />
-					<TextBlock Foreground="OrangeRed">
-						This mod overrides base game files directly.<LineBreak />
-						As long as this mod exists in the Mods folder,<LineBreak />
-						these files will be overwritten, even if the mod is disabled.</TextBlock>
-					<TextBlock Text="If this is intended, you can ignore this warning." />
-					<TextBlock Foreground="Lime" IsVisible="{Binding IsForceLoadedMergedMod}" Text="This mod can be rearranged in the load order, due to it also having files of its own. Note that disabling it will not disable the file overrides." />
-					<TextBlock Foreground="OrangeRed" Text="Overwritten builtin folders:" />
-					<TextBlock Text="{Binding BuiltinOverrideModsText}" />
-				</StackPanel>
-				<Grid Margin="2" IsVisible="{Binding HasInvalidUUID}">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="4*" />
-						<ColumnDefinition Width="1*" />
-					</Grid.ColumnDefinitions>
-					<!--<Image Width="16"
-				    Height="16"
-				    MaxWidth="16"
-				    MaxHeight="16"
-				    Margin="4"
-				    HorizontalAlignment="Center"
-				    VerticalAlignment="Center"
-				    RenderOptions.BitmapScalingMode="HighQuality"
-				    Source="{StaticResource StatusCriticalError}"
-				    Stretch="UniformToFill" />-->
-					<TextBlock Grid.Column="1"
-					    FontFamily="Arial"
-					    FontWeight="Bold"
-					    Foreground="Red"
-					    Text="This mod has an invalid UUID, and will likely fail to load, resetting your load order." />
-					<!--<Image Grid.Column="2"
-				    Width="16"
-				    Height="16"
-				    MaxWidth="16"
-				    MaxHeight="16"
-				    Margin="4"
-				    HorizontalAlignment="Center"
-				    VerticalAlignment="Center"
-				    RenderOptions.BitmapScalingMode="HighQuality"
-				    Source="{StaticResource StatusCriticalError}"
-				    Stretch="UniformToFill" />-->
-				</Grid>
-				<labs:AsyncImage MaxWidth="256"
-				    MaxHeight="256"
-				    IsVisible="{Binding NexusImageVisibility}"
-				    RenderOptions.BitmapInterpolationMode="HighQuality"
-				    Source="{Binding NexusModsData.PictureUrl}"
-				    Stretch="UniformToFill" />
-			</StackPanel>
-		</ToolTip.Tip>
-		<Grid ColumnDefinitions="*,auto">
-			<TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
-			<Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0">
-				<StackPanel Orientation="Horizontal">
-					<StackPanel.Styles>
-						<Style Selector="icons|MaterialIcon">
-							<Setter Property="Margin" Value="0,0,4,0" />
-							<Setter Property="Effect">
-								<Setter.Value>
-									<DropShadowDirectionEffect BlurRadius="4"
-									    Direction="330"
-									    Opacity="0.8"
-									    ShadowDepth="2"
-									    Color="Black" />
-								</Setter.Value>
-							</Setter>
-						</Style>
-						<Style Selector="labs|AsyncImage">
-							<Setter Property="Margin" Value="0,0,4,0" />
-							<Setter Property="Effect">
-								<Setter.Value>
-									<DropShadowDirectionEffect BlurRadius="4"
-									    Direction="330"
-									    Opacity="0.8"
-									    ShadowDepth="2"
-									    Color="Black" />
-								</Setter.Value>
-							</Setter>
-						</Style>
-					</StackPanel.Styles>
-					<labs:AsyncImage Width="16"
-					    Height="16"
-					    IsVisible="{Binding HasOsirisStatus}"
-					    RenderOptions.BitmapInterpolationMode="HighQuality"
-					    Source="{Binding OsirisStatusIconPath}"
-					    Stretch="UniformToFill"
-					    ToolTip.Tip="{Binding OsirisStatusToolTipText}" />
-					<Panel IsVisible="{Binding HasExtenderStatus}" ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}">
-						<Rectangle Width="16" Height="16" Fill="Transparent" />
-						<icons:MaterialIcon x:Name="ExtenderStatusImage" />
-					</Panel>
-					<Panel IsVisible="{Binding HasToolkitIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_IsToolkitProject}">
-						<Rectangle Width="16" Height="16" Fill="Transparent" />
-						<icons:MaterialIcon Foreground="SpringGreen" Kind="Tools" />
-					</Panel>
-					<Panel IsVisible="{Binding HasLooseModIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_IsLooseMod}">
-						<Rectangle Width="16" Height="16" Fill="Transparent" />
-						<icons:MaterialIcon Foreground="Moccasin" Kind="Folder" />
-					</Panel>
-					<Panel IsVisible="{Binding HasOverrideIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_HasOverride}">
-						<Rectangle Width="16" Height="16" Fill="Transparent" />
-						<icons:MaterialIcon Foreground="Gold" Kind="FlashAlert" />
-					</Panel>
-					<icons:MaterialIcon Foreground="Red"
-					    IsVisible="{Binding HasMissingDependency}"
-					    Kind="FileQuestion"
-					    ToolTip.Tip="{Binding MissingDependencyToolTip}" />
-					<icons:MaterialIcon Foreground="Red"
-					    IsVisible="{Binding HasInvalidUUID}"
-					    Kind="FileDocumentAlert"
-					    ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_HasInvalidUUID}" />
-					<!--<labs:AsyncImage x:Name="ExtenderStatusImage"
-					    Width="16"
-					    Height="16"
-					    IsVisible="{Binding HasExtenderStatus}"
-					    RenderOptions.BitmapInterpolationMode="HighQuality"
-					    Stretch="UniformToFill"
-					    ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}" />-->
-				</StackPanel>
-			</Border>
-		</Grid>
-	</Panel>
+                <Separator />
+                <TextBlock IsVisible="{Binding HasAuthor}" TextWrapping="Wrap">
+                    <Run Text="Created by " />
+                    <Run FontWeight="Bold" Foreground="#3da2fa" Text="{Binding Author}" />
+                    <TextBlock.Effect>
+                        <DropShadowDirectionEffect BlurRadius="4"
+                            Direction="330"
+                            Opacity="0.25"
+                            ShadowDepth="3"
+                            Color="Black" />
+                    </TextBlock.Effect>
+                </TextBlock>
+                <ScrollViewer MinHeight="24"
+                    MaxHeight="300"
+                    IsVisible="{Binding HasDescription}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <TextBlock Padding="4" Text="{Binding Description}" TextWrapping="Wrap" />
+                </ScrollViewer>
+                <StackPanel IsVisible="{Binding NexusModsInformationVisibility}" Orientation="Vertical">
+                    <Separator />
+                    <TextBlock Text="{Binding NexusModsTooltipInfo}" />
+                    <Separator />
+                </StackPanel>
+                <StackPanel Margin="2" IsVisible="{Binding HasDependencies}" Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Dependencies:" />
+                    <!--<ListBox Grid.IsSharedSizeScope="True"
+                    ItemTemplate="{StaticResource DependencyModTemplate}"
+                    ItemsSource="{Binding DisplayedDependencies}"
+                    Style="{StaticResource ModuleShortDescListBox}" />-->
+                </StackPanel>
+                <StackPanel Margin="2" IsVisible="{Binding HasConflicts}" Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Conflicts:" />
+                    <!--<ListBox Grid.IsSharedSizeScope="True"
+                    ItemTemplate="{StaticResource ConflictModTemplate}"
+                    ItemsSource="{Binding DisplayedConflicts}"
+                    Style="{StaticResource ModuleShortDescListBox}" />-->
+                </StackPanel>
+                <!--<StackPanel Margin="2" DataContext="{Binding}" Orientation="Vertical">
+                    <ItemsControl ItemTemplateSelector="{StaticResource TagTemplateSelector}" ItemsSource="{Binding Tags}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding}" />
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+                </ItemsControl>
+                </StackPanel>-->
+                <StackPanel Orientation="Vertical">
+                    <Separator />
+                    <TextBlock IsVisible="{Binding HasFilePath}" Text="{Binding FileName}" />
+                    <TextBlock Foreground="Goldenrod" IsVisible="{Binding HasExtenderStatus}" Text="{Binding ScriptExtenderSupportToolTipText}" />
+                    <TextBlock Margin="2" Text="{Binding LastModifiedDateText}" />
+                </StackPanel>
+                <StackPanel Margin="2" IsVisible="{Binding IsForceLoaded}" Orientation="Vertical">
+                    <Separator />
+                    <TextBlock Foreground="OrangeRed">
+                        This mod overrides base game files directly.<LineBreak />
+                        As long as this mod exists in the Mods folder,<LineBreak />
+                        these files will be overwritten, even if the mod is disabled.</TextBlock>
+                    <TextBlock Text="If this is intended, you can ignore this warning." />
+                    <TextBlock Foreground="Lime" IsVisible="{Binding IsForceLoadedMergedMod}" Text="This mod can be rearranged in the load order, due to it also having files of its own. Note that disabling it will not disable the file overrides." />
+                    <TextBlock Foreground="OrangeRed" Text="Overwritten builtin folders:" />
+                    <TextBlock Text="{Binding BuiltinOverrideModsText}" />
+                </StackPanel>
+                <Grid Margin="2" IsVisible="{Binding HasInvalidUUID}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <!--<Image Width="16"
+                    Height="16"
+                    MaxWidth="16"
+                    MaxHeight="16"
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    Source="{StaticResource StatusCriticalError}"
+                    Stretch="UniformToFill" />-->
+                    <TextBlock Grid.Column="1"
+                        FontFamily="Arial"
+                        FontWeight="Bold"
+                        Foreground="Red"
+                        Text="This mod has an invalid UUID, and will likely fail to load, resetting your load order." />
+                    <!--<Image Grid.Column="2"
+                    Width="16"
+                    Height="16"
+                    MaxWidth="16"
+                    MaxHeight="16"
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    Source="{StaticResource StatusCriticalError}"
+                    Stretch="UniformToFill" />-->
+                </Grid>
+                <labs:AsyncImage MaxWidth="256"
+                    MaxHeight="256"
+                    IsVisible="{Binding NexusImageVisibility}"
+                    RenderOptions.BitmapInterpolationMode="HighQuality"
+                    Source="{Binding NexusModsData.PictureUrl}"
+                    Stretch="UniformToFill" />
+            </StackPanel>
+        </ToolTip.Tip>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" SharedSizeGroup="EntryIcons" />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
+            <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Styles>
+                        <Style Selector="icons|MaterialIcon">
+                            <Setter Property="Margin" Value="0,0,4,0" />
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowDirectionEffect BlurRadius="4"
+                                        Direction="330"
+                                        Opacity="0.8"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style Selector="labs|AsyncImage">
+                            <Setter Property="Margin" Value="0,0,4,0" />
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowDirectionEffect BlurRadius="4"
+                                        Direction="330"
+                                        Opacity="0.8"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </StackPanel.Styles>
+                    <labs:AsyncImage Width="16"
+                        Height="16"
+                        IsVisible="{Binding HasOsirisStatus}"
+                        RenderOptions.BitmapInterpolationMode="HighQuality"
+                        Source="{Binding OsirisStatusIconPath}"
+                        Stretch="UniformToFill"
+                        ToolTip.Tip="{Binding OsirisStatusToolTipText}" />
+                    <Panel IsVisible="{Binding HasExtenderStatus}" ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}">
+                        <Rectangle Width="16" Height="16" Fill="Transparent" />
+                        <icons:MaterialIcon x:Name="ExtenderStatusImage" />
+                    </Panel>
+                    <Panel IsVisible="{Binding HasToolkitIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_IsToolkitProject}">
+                        <Rectangle Width="16" Height="16" Fill="Transparent" />
+                        <icons:MaterialIcon Foreground="SpringGreen" Kind="Tools" />
+                    </Panel>
+                    <Panel IsVisible="{Binding HasLooseModIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_IsLooseMod}">
+                        <Rectangle Width="16" Height="16" Fill="Transparent" />
+                        <icons:MaterialIcon Foreground="Moccasin" Kind="Folder" />
+                    </Panel>
+                    <Panel IsVisible="{Binding HasOverrideIcon}" ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_HasOverride}">
+                        <Rectangle Width="16" Height="16" Fill="Transparent" />
+                        <icons:MaterialIcon Foreground="Gold" Kind="FlashAlert" />
+                    </Panel>
+                    <icons:MaterialIcon Foreground="Red"
+                        IsVisible="{Binding HasMissingDependency}"
+                        Kind="FileQuestion"
+                        ToolTip.Tip="{Binding MissingDependencyToolTip}" />
+                    <icons:MaterialIcon Foreground="Red"
+                        IsVisible="{Binding HasInvalidUUID}"
+                        Kind="FileDocumentAlert"
+                        ToolTip.Tip="{manager:LocaleKey ModEntry_ToolTip_HasInvalidUUID}" />
+                    <!--<labs:AsyncImage x:Name="ExtenderStatusImage"
+                        Width="16"
+                        Height="16"
+                        IsVisible="{Binding HasExtenderStatus}"
+                        RenderOptions.BitmapInterpolationMode="HighQuality"
+                        Stretch="UniformToFill"
+                        ToolTip.Tip="{Binding ScriptExtenderSupportToolTipText}" />-->
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Panel>
 </UserControl>

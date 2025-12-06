@@ -56,9 +56,9 @@ public partial class ModEntryView : ReactiveUserControl<ModEntry>
 		{
 			if(ViewModel != null)
 			{
-				var whenExtenderIcon = ViewModel.WhenAnyValue(x => x.Data, x => x.Data.ExtenderIcon).Where(x => x.Item1 != null);
-				d(whenExtenderIcon.Select(x => ExtenderIconToKind(x.Item2)).BindTo(this, x => x.ExtenderStatusImage.Kind));
-				d(whenExtenderIcon.Select(x => ExtenderIconToForeground(x.Item2)).BindTo(this, x => x.ExtenderStatusImage.Foreground));
+				var whenExtenderIcon = ViewModel.WhenAnyValue(x => x.ExtenderIcon);
+				d(whenExtenderIcon.Select(ExtenderIconToKind).BindTo(this, x => x.ExtenderStatusImage.Kind));
+				d(whenExtenderIcon.Select(ExtenderIconToForeground).BindTo(this, x => x.ExtenderStatusImage.Foreground));
 			}
 		});
 	}
