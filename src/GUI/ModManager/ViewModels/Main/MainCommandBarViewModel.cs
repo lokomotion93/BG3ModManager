@@ -688,10 +688,12 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		var keybindings = this.GetType().GetProperties().ToDictionary(x => x.Name, x => x.GetCustomAttribute<KeybindingAttribute>());
 
 		DownloadScriptExtenderCommand = ReactiveCommand.CreateFromTask(main.AskToDownloadScriptExtender, canExecuteCommands);
+
 		ExtractAllSelectedModsCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
 		ExtractSelectedActiveModsCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
 		ExtractSelectedInactiveModsCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
 		ExtractSelectedAdventureCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
+
 		SpeakActiveModOrderCommand = ReactiveCommand.Create(() =>
 		{
 			var speaker = AppServices.Get<IScreenReaderService>();
@@ -733,45 +735,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		OpenSelectedModOrderFilePathCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedModOrderFilePath), whenModOrderPath);
 		CopySelectedModOrderFilePathToClipboardCommand = ReactiveCommand.Create(() => AppServices.Commands.CopyToClipboard(modOrder.SelectedModOrderFilePath), whenModOrderPath);
 
-		OrganizeModPaksCommand = ReactiveCommand.Create(() =>
-		{
-			var filesToMove = new List<ModFileMoveTask>();
-
-			var fs = AppServices.FS;
-			var pathways = AppServices.Pathways.Data;
-
-			var userModsFolder = fs.Path.GetFullPath(pathways.AppDataModsPath);
-			var userModsDisabledFolder = fs.Path.GetFullPath(pathways.AppDataInactiveModsPath);
-
-			foreach (var mod in AppServices.Mods.UserMods)
-			{
-				if (mod.FilePath.IsExistingFile())
-				{
-					var parentDir = fs.Path.GetFullPath(fs.Path.GetDirectoryName(mod.FilePath));
-					var isActive = mod.IsActive || (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod && !mod.ForceAllowInLoadOrder);
-					var targetDir = isActive ? userModsFolder : userModsDisabledFolder;
-
-					var newFilePath = fs.Path.Join(targetDir, fs.Path.GetFileName(mod.FilePath));
-					if (!parentDir.Equals(targetDir, StringComparison.OrdinalIgnoreCase) && !fs.File.Exists(newFilePath))
-					{
-						filesToMove.Add(new ModFileMoveTask(mod, mod.FilePath, newFilePath));
-					}
-				}
-			}
-
-			if (filesToMove.Count > 0)
-			{
-				modOrder.LockAll(true);
-				DivinityApp.Log($"Moving '{filesToMove.Count}' mods.");
-
-				foreach (var task in filesToMove)
-				{
-					task.Move(fs, false);
-				}
-
-				modOrder.LockAll(false);
-			}
-		}, canExecuteCommands);
+		OrganizeModPaksCommand = ReactiveCommand.Create(modOrder.OrganizeMods, canExecuteCommands);
 
 		SaveCacheCommand = ReactiveCommand.CreateFromTask(async () =>
 		{

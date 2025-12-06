@@ -6,6 +6,7 @@ using DynamicData.Binding;
 
 using ModManager.Controls.TreeDataGrid;
 using ModManager.Models;
+using ModManager.Models.App;
 using ModManager.Models.Mod;
 using ModManager.Models.Mod.Game;
 using ModManager.Models.Mod.Order;
@@ -729,13 +730,63 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		return false;
 	}
 
+	public void OrganizeMods()
+	{
+		var filesToMove = new List<ModFileMoveTask>();
+
+		var fs = AppServices.FS;
+		var pathways = AppServices.Pathways.Data;
+
+		if(pathways.AppDataModsPath.IsExistingDirectory() && pathways.AppDataInactiveModsPath.IsExistingDirectory())
+		{
+			var userModsFolder = fs.Path.GetFullPath(pathways.AppDataModsPath);
+			var userModsDisabledFolder = fs.Path.GetFullPath(pathways.AppDataInactiveModsPath);
+
+			foreach (var mod in AppServices.Mods.UserMods)
+			{
+				if (mod.FilePath.IsExistingFile())
+				{
+					var parentDir = fs.Path.GetDirectoryName(mod.FilePath);
+					if(parentDir.IsExistingDirectory())
+					{
+						var isActive = mod.IsActive || (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod && !mod.ForceAllowInLoadOrder);
+						var targetDir = isActive ? userModsFolder : userModsDisabledFolder;
+
+						var newFilePath = fs.Path.Join(targetDir, fs.Path.GetFileName(mod.FilePath));
+						if (!parentDir.Equals(targetDir, StringComparison.OrdinalIgnoreCase) && !fs.File.Exists(newFilePath))
+						{
+							filesToMove.Add(new ModFileMoveTask(mod, mod.FilePath, newFilePath));
+						}
+					}
+				}
+			}
+		}
+
+		if (filesToMove.Count > 0)
+		{
+			LockAll(true);
+			DivinityApp.Log($"Moving '{filesToMove.Count}' mods.");
+
+			foreach (var task in filesToMove)
+			{
+				task.Move(fs, false);
+			}
+
+			LockAll(false);
+		}
+	}
+
 	public async Task<bool> ExportLoadOrderAsync(CancellationToken token)
 	{
 		var settings = Settings;
-		if (SelectedProfile != null && SelectedModOrder != null)
+		if (SelectedProfile != null && SelectedModOrder != null && SelectedProfile.FilePath.IsValid())
 		{
-			UpdateOrderFromActiveMods();
-			DeleteModCrashSanityCheck();
+			await Observable.Start(() =>
+			{
+				UpdateOrderFromActiveMods();
+				DeleteModCrashSanityCheck();
+				OrganizeMods();
+			}, RxApp.MainThreadScheduler);
 
 			var outputPath = _fs.Path.Join(SelectedProfile.FilePath, "modsettings.lsx");
 			var finalOrder = ModDataLoader.BuildOutputList(SelectedModOrder.Entries, _manager.AllMods, Settings.AutoAddDependenciesWhenExporting, SelectedAdventureMod);
