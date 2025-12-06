@@ -580,6 +580,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 							if (container.IsExpanded) hierarchicalRow.IsExpanded = true;
 						}
 					}
+
+					entry.IsActive = ViewModel.ListType == ModListType.Active;
 				}
 
 				//Initialize context menus. RowPrepared apparently doesn't fire until a row is interacted with
