@@ -1,6 +1,8 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using Material.Icons;
+
 using ModManager.Locale;
 using ModManager.Models;
 using ModManager.Models.App;
@@ -718,12 +720,13 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			//Window.ToggleLogging(logEnabled);
 		});
 
-		var actionLaunchChanged = Settings.WhenAnyValue(x => x.ActionOnGameLaunch).Skip(1).ObserveOn(RxApp.MainThreadScheduler);
+		var isReady = this.WhenAnyValue(x => x.IsInitialized, x => x.IsRefreshing, (b1, b2) => b1 && !b2);
+		var actionLaunchChanged = Settings.WhenAnyValue(x => x.ActionOnGameLaunch).SkipUntil(isReady).ObserveOn(RxApp.MainThreadScheduler);
 		actionLaunchChanged.Subscribe((action) =>
 		{
 			if (!Settings.SettingsWindowIsOpen)
 			{
-				SaveSettings();
+				QueueSave();
 			}
 		});
 
@@ -779,9 +782,9 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			}
 		});
 
-		Settings.WhenAnyValue(x => x.DeleteModCrashSanityCheck, x => x.GameExecutablePath).ObserveOn(RxApp.MainThreadScheduler).Subscribe(x =>
+		Settings.WhenAnyValue(x => x.DeleteModCrashSanityCheck, x => x.GameExecutablePath).SkipUntil(isReady).ObserveOn(RxApp.MainThreadScheduler).Subscribe(x =>
 		{
-			if (x.Item1 && x.Item2.IsValid() && ExtenderSettings.InsanityCheck != true && !Settings.SettingsWindowIsOpen)
+			if (x.Item1 && x.Item2.IsValid() && ExtenderSettings.InsanityCheck != true && !Settings.SettingsWindowIsOpen && Settings.GameExecutablePath.IsExistingFile())
 			{
 				ExtenderSettings.InsanityCheck = true;
 				_settings.TrySave(ExtenderSettings, out _);
@@ -800,7 +803,10 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			success = false;
 		}
 #if !DEBUG
-		AppServices.Get<LogWriterService>()?.ToggleLogging(_settings.ManagerSettings.DebugModeEnabled);
+		if(_settings.ManagerSettings.DebugModeEnabled)
+		{
+			AppServices.Get<LogWriterService>()?.ToggleLogging(true);
+		}
 #endif
 		LoadAppConfig();
 
