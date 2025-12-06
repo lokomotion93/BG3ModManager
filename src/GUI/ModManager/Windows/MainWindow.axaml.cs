@@ -136,6 +136,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 						_ => "Info",
 					};
 				}
+				if(ViewModel?.Settings.DebugModeEnabled == true) DivinityApp.Log(data.Message);
 				await Observable.Start(() =>
 				{
 					var toastBuilder = _toastManager.CreateToast().WithTitle(title).WithContent(data.Message);
