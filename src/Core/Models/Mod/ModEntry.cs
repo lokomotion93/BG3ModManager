@@ -223,19 +223,19 @@ public partial class ModEntry : ReactiveObject, IModEntry
 
 		if (endorsements > 0)
 		{
-			lines.Append(Loca.Mod_NexusModsToolTip_Endorsements.SafeFormat($"Endorsements: {endorsements}", endorsements));
+			lines.AppendLine(Loca.Mod_NexusModsToolTip_Endorsements.SafeFormat($"Endorsements: {endorsements}", endorsements));
 		}
 
 		if (createdDate != DateTime.MinValue)
 		{
 			var createdDateStr = createdDate.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture);
-			lines.AppendLine(Loca.Mod_NexusModsToolTip_Endorsements.SafeFormat($"Created on {createdDateStr}", createdDateStr));
+			lines.AppendLine(Loca.Mod_NexusModsToolTip_CreatedOn.SafeFormat($"Created on {createdDateStr}", createdDateStr));
 		}
 
 		if (updatedDate != DateTime.MinValue)
 		{
 			var updatedDateStr = updatedDate.ToString(DivinityApp.DateTimeColumnFormat, CultureInfo.InstalledUICulture);
-			lines.AppendLine(Loca.Mod_NexusModsToolTip_Endorsements.SafeFormat($"Last updated on {updatedDateStr}", updatedDateStr));
+			lines.AppendLine(Loca.Mod_NexusModsToolTip_UpdatedOn.SafeFormat($"Last updated on {updatedDateStr}", updatedDateStr));
 		}
 
 		return lines.ToString();
