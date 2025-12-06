@@ -9,6 +9,7 @@ public partial class ModFileDeletionData : ReactiveObject
 	[Reactive] public partial string? DisplayName { get; set; }
 	[Reactive] public partial string? UUID { get; set; }
 	[Reactive] public partial string? Duplicates { get; set; }
+	[Reactive] public partial ModEntryType EntryType { get; set; }
 
 	[ObservableAsProperty] public partial string? DisplayFilePath { get; }
 
@@ -17,7 +18,7 @@ public partial class ModFileDeletionData : ReactiveObject
 		if (entry.EntryType is ModEntryType.Mod && entry is ModEntry modEntry && modEntry.Data != null)
 		{
 			var mod = modEntry.Data;
-			var data = new ModFileDeletionData { FilePath = mod.FilePath, DisplayName = mod.DisplayName, IsSelected = true, UUID = mod.UUID };
+			var data = new ModFileDeletionData { FilePath = mod.FilePath, DisplayName = mod.DisplayName, IsSelected = true, UUID = mod.UUID, EntryType = entry.EntryType };
 			if (isDeletingDuplicates && loadedMods != null)
 			{
 				var duplicatesStr = loadedMods.FirstOrDefault(x => x.UUID == entry.UUID)?.FilePath;
@@ -26,6 +27,11 @@ public partial class ModFileDeletionData : ReactiveObject
 					data.Duplicates = duplicatesStr;
 				}
 			}
+			return data;
+		}
+		else if (entry.EntryType is ModEntryType.Container)
+		{
+			var data = new ModFileDeletionData { FilePath = string.Empty, DisplayName = entry.DisplayName, IsSelected = true, UUID = entry.UUID, EntryType = entry.EntryType };
 			return data;
 		}
 		return null;

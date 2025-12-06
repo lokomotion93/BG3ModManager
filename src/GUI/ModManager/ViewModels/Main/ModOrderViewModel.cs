@@ -1104,12 +1104,19 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		if (removeFromLoadOrder)
 		{
-			SelectedModOrder.Entries.RemoveAll(x => deletedMods.Contains(x.Id));
-			SelectedProfile.ActiveMods.RemoveAll(x => deletedMods.Contains(x.UUID));
+			SelectedModOrder?.Entries.RemoveAll(x => deletedMods.Contains(x.Id));
+			SelectedProfile?.ActiveMods.RemoveAll(x => deletedMods.Contains(x.UUID));
+			//TODO Save Order?
 		}
 
-		InactiveMods.RemoveMany(InactiveMods.Where(x => deletedMods.Contains(x.UUID)));
-		ActiveMods.RemoveMany(ActiveMods.Where(x => deletedMods.Contains(x.UUID)));
+		//InactiveMods.RemoveMany(InactiveMods.Where(x => deletedMods.Contains(x.UUID)));
+		//ActiveMods.RemoveMany(ActiveMods.Where(x => deletedMods.Contains(x.UUID)));
+		//OverrideMods.RemoveMany(OverrideMods.Where(x => deletedMods.Contains(x.UUID)));
+
+		var instant = TimeSpan.FromTicks(0);
+		QueueRemoval(deletedMods, ModListType.Active, instant);
+		QueueRemoval(deletedMods, ModListType.Inactive, instant);
+		QueueRemoval(deletedMods, ModListType.Override, instant);
 	}
 
 	public void DeleteMod(IModEntry mod)
@@ -1601,7 +1608,19 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			if(target != null)
 			{
 				var susp = target.SuspendNotifications();
-				var entriesToRemove = target.Where(x => queue.Value.Contains(x.UUID));
+				List<IModEntry> entriesToRemove = [];
+				var uuids = queue.Value;
+				foreach (var entry in target)
+				{
+					if(uuids.Contains(entry.UUID))
+					{
+						entriesToRemove.Add(entry);
+					}
+					if(entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+					{
+						container.RemoveNested(uuids);
+					}
+				}
 				target.RemoveMany(entriesToRemove);
 				susp.Dispose();
 			}
@@ -1621,7 +1640,14 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			existing.Add(uuid);
 		}
 		_removeTask?.Dispose();
-		_removeTask = RxApp.MainThreadScheduler.Schedule(delay ?? TimeSpan.FromTicks(1), ProcessRemovalQueue);
+		if (delay == null || delay.Value.Ticks > 0)
+		{
+			_removeTask = RxApp.MainThreadScheduler.Schedule(delay ?? TimeSpan.FromTicks(1), ProcessRemovalQueue);
+		}
+		else
+		{
+			_removeTask = RxApp.MainThreadScheduler.Schedule(ProcessRemovalQueue);
+		}
 	}
 
 	private static readonly HashSet<string> _migrateCampaigns = new HashSet<string>()
@@ -2011,6 +2037,19 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 						OverrideMods.Add(mod.ToModInterface());
 					}
 				}
+			}, RxApp.MainThreadScheduler);
+
+			req.SetOutput(true);
+		});
+
+		_interactions.NotifyEntriesDeleted.RegisterHandler(async req =>
+		{
+			var entries = req.Input;
+
+			await Observable.Start(() =>
+			{
+				HashSet<string> deletedModIds = entries.Where(x => x.UUID.IsValid()).Select(x => x.UUID).ToHashSet()!;
+				RemoveDeletedMods(deletedModIds, true);
 			}, RxApp.MainThreadScheduler);
 
 			req.SetOutput(true);

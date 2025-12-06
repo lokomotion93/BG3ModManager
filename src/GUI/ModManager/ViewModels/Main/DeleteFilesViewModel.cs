@@ -2,6 +2,8 @@
 using DynamicData.Binding;
 
 using ModManager.Models.Mod;
+using ModManager.Util;
+using ModManager.Windows;
 
 namespace ModManager.ViewModels.Main;
 
@@ -66,18 +68,22 @@ public partial class DeleteFilesViewModel : BaseProgressViewModel, IRoutableView
 						DivinityApp.Log("Deletion stopped.");
 						break;
 					}
-					if (AppServices.FS.File.Exists(f.FilePath))
+					if(f.EntryType == ModEntryType.Mod)
 					{
-						await UpdateProgress("", $"Deleting {f.FilePath}...");
-#if DEBUG
-						eventArgs.DeletedFiles.Add(f);
-#else
-						if (RecycleBinHelper.DeleteFile(f.FilePath, false, PermanentlyDelete))
+						if (AppServices.FS.File.Exists(f.FilePath))
 						{
-							eventArgs.DeletedFiles.Add(f);
-							DivinityApp.Log($"Deleted mod file '{f.FilePath}'");
+							await UpdateProgress("", $"Deleting {f.FilePath}...");
+							if (RecycleBinHelper.DeleteFile(f.FilePath, false, PermanentlyDelete))
+							{
+								eventArgs.DeletedFiles.Add(f);
+								DivinityApp.Log($"Deleted mod file '{f.FilePath}'");
+							}
 						}
-#endif
+					}
+					else
+					{
+						//TODO Delete the container from orders?
+						eventArgs.DeletedFiles.Add(f);
 					}
 				}
 				catch (Exception ex)
@@ -91,6 +97,7 @@ public partial class DeleteFilesViewModel : BaseProgressViewModel, IRoutableView
 			RxApp.MainThreadScheduler.Schedule(() =>
 			{
 				FileDeletionComplete?.Invoke(this, eventArgs);
+				AppServices.Interactions.NotifyEntriesDeleted.Handle(eventArgs.DeletedFiles).Subscribe();
 				Close();
 			});
 		}

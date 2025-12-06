@@ -188,12 +188,23 @@ public partial class ModListViewModel : ReactiveObject
 
 		DeleteContainerCommand = ReactiveCommand.CreateFromTask<ModContainer>(async modContainer =>
 		{
-			//await AppServices.Interactions.DeleteMods.Handle(new(modContainer.Mods));
+			await AppServices.Interactions.DeleteMods.Handle(new([modContainer]));
 		});
 
 		DeleteContainerModsCommand = ReactiveCommand.CreateFromTask<ModContainer>(async modContainer =>
 		{
-			await AppServices.Interactions.DeleteMods.Handle(new(modContainer.Children!));
+			var nestedChildMods = new List<IModEntry>();
+			foreach (var entry in modContainer.ForEachNested())
+			{
+				if(entry.EntryType == ModEntryType.Mod)
+				{
+					nestedChildMods.Add(entry);
+				}
+			}
+			if(nestedChildMods.Count > 0)
+			{
+				await AppServices.Interactions.DeleteMods.Handle(new(nestedChildMods));
+			}
 		});
 	}
 }

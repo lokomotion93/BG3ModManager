@@ -157,6 +157,23 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 		}
 	}
 
+	public void RemoveNested(HashSet<string> uuids)
+	{
+		List<IModEntry> toRemove = [];
+		foreach(var child in Children)
+		{
+			if(uuids.Contains(child.UUID))
+			{
+				toRemove.Add(child);
+			}
+			if(child.EntryType == ModEntryType.Container && child is ModContainer container)
+			{
+				container.RemoveNested(uuids);
+			}
+		}
+		Children.Remove(toRemove);
+	}
+
 	public ModContainer(string uuid)
 	{
 		UUID = uuid;

@@ -27,6 +27,11 @@ public interface IInteractionsService
 	Interaction<Unit, bool> DeleteSelectedMods { get; }
 
 	/// <summary>
+	/// Notify listeners that mod entries have been deleted.
+	/// </summary>
+	Interaction<IEnumerable<ModFileDeletionData>, bool> NotifyEntriesDeleted { get; }
+
+	/// <summary>
 	/// Add or remove an override mod to the load order.
 	/// </summary>
 	Interaction<ForceAllowInLoadOrderRequest, bool> ForceAllowInLoadOrder { get; }
