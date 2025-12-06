@@ -316,6 +316,7 @@ public partial class ModEntry : ReactiveObject, IModEntry
 	{
 		UUID = mod.UUID;
 		Data = mod;
+		IsActive = Data.IsActive;
 
 		CanDrag = true;
 
