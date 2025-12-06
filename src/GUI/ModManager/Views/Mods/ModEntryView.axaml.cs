@@ -1,8 +1,8 @@
-using Avalonia.Controls.Primitives;
+using Avalonia.Labs.Controls;
 using Avalonia.Media;
-using Avalonia.VisualTree;
 
 using Material.Icons;
+using Material.Icons.Avalonia;
 
 using ModManager.Models.Mod;
 
@@ -48,6 +48,25 @@ public partial class ModEntryView : ReactiveUserControl<ModEntry>
 		_ => MaterialIconKind.BorderNone,
 	};
 
+	private static Control? GetExtenderStatusContent(ScriptExtenderIconType iconType)
+	{
+		if (iconType == ScriptExtenderIconType.FulfilledRequired || iconType == ScriptExtenderIconType.FulfilledSupports)
+		{
+			var icon = new AsyncImage() { Source = new Uri("avares://ModManager/Assets/Icons/DivinityEngine2_64x.png"), Width = 16, Height = 16 };
+			if (iconType == ScriptExtenderIconType.FulfilledSupports)
+			{
+				icon.Opacity = 0.5d;
+			}
+			return icon;
+		}
+		else if (iconType != ScriptExtenderIconType.None)
+		{
+			var icon = new MaterialIcon() { Kind = ExtenderIconToKind(iconType), Foreground = ExtenderIconToForeground(iconType) };
+			return icon;
+		}
+		return null;
+	}
+
 	public ModEntryView()
 	{
 		InitializeComponent();
@@ -56,9 +75,13 @@ public partial class ModEntryView : ReactiveUserControl<ModEntry>
 		{
 			if(ViewModel != null)
 			{
-				var whenExtenderIcon = ViewModel.WhenAnyValue(x => x.ExtenderIcon);
-				d(whenExtenderIcon.Select(ExtenderIconToKind).BindTo(this, x => x.ExtenderStatusImage.Kind));
-				d(whenExtenderIcon.Select(ExtenderIconToForeground).BindTo(this, x => x.ExtenderStatusImage.Foreground));
+				//ExtenderStatusContentControl[!ContentProperty] = ViewModel.WhenAnyValue(x => x.ExtenderIcon, GetExtenderStatusContent).ToBinding();
+				d(ViewModel.WhenAnyValue(x => x.ExtenderIcon).Subscribe(icon =>
+				{
+					ExtenderStatusContentControl.Content = GetExtenderStatusContent(icon);
+				}));
+				//d(whenExtenderIcon.Select(ExtenderIconToKind).BindTo(this, x => x.ExtenderStatusImage.Kind));
+				//d(whenExtenderIcon.Select(ExtenderIconToForeground).BindTo(this, x => x.ExtenderStatusImage.Foreground));
 			}
 		});
 	}
