@@ -66,4 +66,8 @@
 		</GetAssemblyIdentity>
 		<Exec Command="python &quot;BuildRelease.py&quot; &quot;%(AssemblyVersion.Version)&quot;" WorkingDirectory="$(SolutionDir)" />
 	</Target>
+
+	<Target Name="CleanRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+		<RemoveDir Directories="$(OutputPath)Data;$(OutputPath)_Logs" ContinueOnError="true" />
+	</Target>
 </Project>
