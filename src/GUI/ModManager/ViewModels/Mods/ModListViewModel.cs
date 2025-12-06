@@ -81,10 +81,20 @@ public partial class ModListViewModel : ReactiveObject
 	public void UpdateIndexes()
 	{
 		var index = 0;
-		foreach(var mod in Mods.Items)
+		foreach(var entry in Mods.Items)
 		{
-			mod.Index = index;
+			entry.Index = index;
+			entry.IsActive = ListType == ModListType.Active;
 			index++;
+			if(entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+			{
+				foreach(var child in container.ForEachNested())
+				{
+					child.Index = index;
+					child.IsActive = ListType == ModListType.Active;
+					index++;
+				}
+			}
 		}
 	}
 
