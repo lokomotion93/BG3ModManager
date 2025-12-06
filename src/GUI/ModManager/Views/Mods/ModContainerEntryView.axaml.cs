@@ -28,7 +28,7 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 		if(iconSettings != null)
 		{
 
-			if(iconSettings.Kind.IsValid())
+			if (iconSettings.Kind.IsValid())
 			{
 				var kind = iconSettings.Kind;
 				//Potential name taken from https://pictogrammers.com/library/mdi/
@@ -39,7 +39,7 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 					kind = kind.Replace("-", " ").Dehumanize();
 				}
 
-				if(Enum.TryParse<MaterialIconKind>(kind, out var materialIconKind))
+				if (Enum.TryParse<MaterialIconKind>(kind, out var materialIconKind))
 				{
 					result = await Observable.Start(() =>
 					{
@@ -65,147 +65,19 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 					DivinityApp.Log(kind);
 				}
 			}
-			else if(iconSettings.Path.IsValid())
+			else if (iconSettings.Path.IsValid())
 			{
-				var path = iconSettings.Path;
-				var fs = AppServices.FS;
+				result = await AppServices.ControlFactory.ImageFromPathAsync(iconSettings.Path, "Orders", token);
 
-				string? finalPath = null;
-
-				//Remote icons
-				if(Uri.IsWellFormedUriString(path, UriKind.Absolute))
+				if(result is TemplatedControl templatedControl)
 				{
-					finalPath = path;
-				}
-				else
-				{
-					if (!fs.Path.IsPathRooted(path))
+					if (iconSettings.ForegroundColor.IsValid())
 					{
-						var potentialPath = DivinityApp.GetAppDirectory("Orders", path);
-						if (fs.File.Exists(potentialPath))
+						var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
+						if (brush != null)
 						{
-							finalPath = potentialPath;
+							templatedControl.Foreground = brush;
 						}
-					}
-					else
-					{
-						finalPath = path;
-					}
-				}
-
-				if (finalPath != null)
-				{
-					if (finalPath.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
-					{
-						if(!finalPath.StartsWith("avares://", StringComparison.OrdinalIgnoreCase))
-						{
-							if(_gifStream != null)
-							{
-								await _gifStream.DisposeAsync();
-							}
-							
-							_gifStream = new MemoryStream();
-
-							var cache = AppServices.Get<IFusionCache>()!;
-							var data = await cache.TryGetAsync<byte[]?>(finalPath, token: token);
-							if (data.HasValue)
-							{
-								var imageData = data.Value!;
-								try
-								{
-									await _gifStream.WriteAsync(imageData, token);
-								}
-								catch (Exception)
-								{
-									//Handling exception
-								}
-							}
-							else
-							{
-								var isUrl = Uri.IsWellFormedUriString(finalPath, UriKind.Absolute);
-								if (isUrl)
-								{
-									var imageBytes = await WebHelper.DownloadUrlAsBytesAsync(finalPath, token);
-									if (imageBytes != null)
-									{
-										try
-										{
-											await cache.SetAsync(finalPath, imageBytes, token: token);
-											await _gifStream.WriteAsync(imageBytes, token);
-										}
-										catch (Exception)
-										{
-											//Handling exception
-										}
-									}
-								}
-								else if (AppServices.FS.File.Exists(finalPath))
-								{
-									try
-									{
-										var imageBytes = await AppServices.FS.File.ReadAllBytesAsync(finalPath, token);
-										await cache.SetAsync(finalPath, imageBytes, token: token);
-										await _gifStream.WriteAsync(imageBytes, token);
-									}
-									catch (Exception ex)
-									{
-										DivinityApp.Log($"Error reading gif file: {ex}");
-									}
-								}
-							}
-
-							if (token.IsCancellationRequested) return;
-
-							_gifStream.Position = 0;
-
-							result = await Observable.Start(() =>
-							{
-								var gifSource = GifStreamSource.FromStream(_gifStream);
-								var gif = new GifImage()
-								{
-									Source = gifSource,
-									Stretch = Avalonia.Media.Stretch.UniformToFill
-								};
-								return gif;
-							}, RxApp.MainThreadScheduler);
-
-							DivinityApp.Log(finalPath);
-						}
-						else
-						{
-							result = await Observable.Start(() =>
-							{
-								var gifSource = GifStreamSource.FromUriString(finalPath);
-								var gif = new GifImage()
-								{
-									Source = gifSource,
-									Stretch = Avalonia.Media.Stretch.UniformToFill
-								};
-								return gif;
-							}, RxApp.MainThreadScheduler);
-						}
-					}
-					else
-					{
-						result = await Observable.Start(() =>
-						{
-							var icon = new AsyncImage()
-							{
-								Source = new Uri(finalPath),
-								Stretch = Avalonia.Media.Stretch.UniformToFill,
-							};
-
-							if (iconSettings.ForegroundColor.IsValid())
-							{
-								var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
-								if (brush != null)
-								{
-									icon.Foreground = brush;
-								}
-							}
-
-							return icon;
-						}, RxApp.MainThreadScheduler);
 					}
 				}
 			}

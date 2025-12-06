@@ -22,7 +22,7 @@ namespace Splat
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.AppKeysService));
             }
             {
-                global::System.Lazy<ModManager.Services.ControlFactoryService> lazy = new global::System.Lazy<ModManager.Services.ControlFactoryService>(() => new global::ModManager.Services.ControlFactoryService((global::ModManager.Services.ILocaleService)resolver.GetService(typeof(global::ModManager.Services.ILocaleService))));
+                global::System.Lazy<ModManager.Services.ControlFactoryService> lazy = new global::System.Lazy<ModManager.Services.ControlFactoryService>(() => new global::ModManager.Services.ControlFactoryService((global::ModManager.Services.ILocaleService)resolver.GetService(typeof(global::ModManager.Services.ILocaleService)), (global::ZiggyCreatures.Caching.Fusion.IFusionCache)resolver.GetService(typeof(global::ZiggyCreatures.Caching.Fusion.IFusionCache))));
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.Services.ControlFactoryService>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Services.ControlFactoryService));
             }

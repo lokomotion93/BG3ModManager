@@ -75,12 +75,10 @@
 					    Text="{Binding Heading}"
 					    TextAlignment="Center"
 					    TextWrapping="Wrap" />
-					<labs:AsyncImage Width="16"
+					<controls:AsyncImageOrGif Width="16"
 					    Height="16"
 					    IsVisible="{Binding HasAuthorAvatar}"
-					    RenderOptions.BitmapInterpolationMode="HighQuality"
-					    Source="{Binding AuthorAvatarUri}"
-					    Stretch="UniformToFill" />
+					    Source="{Binding AuthorAvatarUri}" />
 					<Rectangle Height="2" Fill="LightGray" />
 				</StackPanel>
 				<Grid Grid.Row="1" RowDefinitions="Auto,*">

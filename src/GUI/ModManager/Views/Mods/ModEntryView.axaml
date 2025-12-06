@@ -5,6 +5,7 @@
     xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:labs="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
     xmlns:local="using:ModManager.Views.Mods"
+    xmlns:controls="using:ModManager.Controls"
     xmlns:manager="using:ModManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mod="using:ModManager.Models.Mod"
@@ -165,12 +166,10 @@
                     Source="{StaticResource StatusCriticalError}"
                     Stretch="UniformToFill" />-->
                 </Grid>
-                <labs:AsyncImage MaxWidth="256"
+                <controls:AsyncImageOrGif MaxWidth="256"
                     MaxHeight="256"
                     IsVisible="{Binding NexusImageVisibility}"
-                    RenderOptions.BitmapInterpolationMode="HighQuality"
-                    Source="{Binding NexusImageUrl}"
-                    Stretch="UniformToFill" />
+                    Source="{Binding NexusImageUrl}" />
             </StackPanel>
         </ToolTip.Tip>
         <Grid>
