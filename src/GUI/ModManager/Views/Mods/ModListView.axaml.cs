@@ -625,6 +625,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					}
 				}));
 
+				IDisposable? _reindexTask = null;
+
 				d(Observable.FromEvent<EventHandler<ChildIndexChangedEventArgs>, ChildIndexChangedEventArgs>(
 					h => (sender, e) => h(e),
 					h => ModsTreeDataGrid.RowsPresenter!.ChildIndexChanged += h,
@@ -635,7 +637,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					{
 						//var index = ModsTreeDataGrid.Rows!.RowIndexToModelIndex(e.Index);
 						mod.IsActive = ViewModel.ListType == ModListType.Active;
-						mod.Index = e.Index;
+						_reindexTask?.Dispose();
+						_reindexTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromTicks(2), ViewModel.UpdateIndexes);
 					}
 				}));
 

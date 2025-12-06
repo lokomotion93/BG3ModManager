@@ -44,4 +44,19 @@ public static class WebHelper
 		}
 		return string.Empty;
 	}
+
+	public static async Task<byte[]?> DownloadUrlAsBytesAsync(string downloadUrl, CancellationToken token)
+	{
+		try
+		{
+			using var resp = await GetAsync(downloadUrl, token);
+			byte[] imageBytes = await resp.Content.ReadAsByteArrayAsync(token).ConfigureAwait(false);
+			return imageBytes;
+		}
+		catch (Exception ex)
+		{
+			DivinityApp.Log($"Error downloading url ({downloadUrl}):\n{ex}");
+		}
+		return null;
+	}
 }

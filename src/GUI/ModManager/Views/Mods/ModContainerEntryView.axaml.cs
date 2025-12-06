@@ -1,4 +1,8 @@
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Labs.Controls;
+using Avalonia.Labs.Gif;
+using Avalonia.Media.Imaging;
 
 using Humanizer;
 
@@ -7,14 +11,18 @@ using Material.Icons.Avalonia;
 
 using ModManager.Models.Mod;
 using ModManager.Styling;
+using ModManager.Util;
+
+using ZiggyCreatures.Caching.Fusion;
 
 namespace ModManager.Views.Mods;
 
 public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 {
 	private static readonly Thickness _defaultThickness = new(0);
+	private MemoryStream? _gifStream = null;
 
-	private void RealizeIcon(ModContainerIconSettings? iconSettings)
+	private async Task RealizeIcon(ModContainerIconSettings? iconSettings, CancellationToken token)
 	{
 		Control? result = null;
 		if(iconSettings != null)
@@ -33,20 +41,22 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 
 				if(Enum.TryParse<MaterialIconKind>(kind, out var materialIconKind))
 				{
-					var icon = new MaterialIcon()
+					result = await Observable.Start(() =>
 					{
-						Kind = materialIconKind,
-					};
-					if (iconSettings.ForegroundColor.IsValid())
-					{
-						var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
-						if (brush != null)
+						var icon = new MaterialIcon()
 						{
-							icon.Foreground = brush;
+							Kind = materialIconKind,
+						};
+						if (iconSettings.ForegroundColor.IsValid())
+						{
+							var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
+							if (brush != null)
+							{
+								icon.Foreground = brush;
+							}
 						}
-					}
-
-					result = icon;
+						return icon;
+					}, RxApp.MainThreadScheduler);
 				}
 				else
 				{
@@ -85,26 +95,126 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 
 				if (finalPath != null)
 				{
-					var icon = new AsyncImage()
+					if (finalPath.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
 					{
-						Source = new Uri(finalPath),
-						Stretch = Avalonia.Media.Stretch.UniformToFill
-					};
-					if (iconSettings.ForegroundColor.IsValid())
-					{
-						var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
-						if(brush != null)
+						if(!finalPath.StartsWith("avares://", StringComparison.OrdinalIgnoreCase))
 						{
-							icon.Foreground = brush;
+							if(_gifStream != null)
+							{
+								await _gifStream.DisposeAsync();
+							}
+							
+							_gifStream = new MemoryStream();
+
+							var cache = AppServices.Get<IFusionCache>()!;
+							var data = await cache.TryGetAsync<byte[]?>(finalPath, token: token);
+							if (data.HasValue)
+							{
+								var imageData = data.Value!;
+								try
+								{
+									await _gifStream.WriteAsync(imageData, token);
+								}
+								catch (Exception)
+								{
+									//Handling exception
+								}
+							}
+							else
+							{
+								var isUrl = Uri.IsWellFormedUriString(finalPath, UriKind.Absolute);
+								if (isUrl)
+								{
+									var imageBytes = await WebHelper.DownloadUrlAsBytesAsync(finalPath, token);
+									if (imageBytes != null)
+									{
+										try
+										{
+											await cache.SetAsync(finalPath, imageBytes, token: token);
+											await _gifStream.WriteAsync(imageBytes, token);
+										}
+										catch (Exception)
+										{
+											//Handling exception
+										}
+									}
+								}
+								else if (AppServices.FS.File.Exists(finalPath))
+								{
+									try
+									{
+										var imageBytes = await AppServices.FS.File.ReadAllBytesAsync(finalPath, token);
+										await cache.SetAsync(finalPath, imageBytes, token: token);
+										await _gifStream.WriteAsync(imageBytes, token);
+									}
+									catch (Exception ex)
+									{
+										DivinityApp.Log($"Error reading gif file: {ex}");
+									}
+								}
+							}
+
+							if (token.IsCancellationRequested) return;
+
+							_gifStream.Position = 0;
+
+							result = await Observable.Start(() =>
+							{
+								var gifSource = GifStreamSource.FromStream(_gifStream);
+								var gif = new GifImage()
+								{
+									Source = gifSource,
+									Stretch = Avalonia.Media.Stretch.UniformToFill
+								};
+								return gif;
+							}, RxApp.MainThreadScheduler);
+
+							DivinityApp.Log(finalPath);
+						}
+						else
+						{
+							result = await Observable.Start(() =>
+							{
+								var gifSource = GifStreamSource.FromUriString(finalPath);
+								var gif = new GifImage()
+								{
+									Source = gifSource,
+									Stretch = Avalonia.Media.Stretch.UniformToFill
+								};
+								return gif;
+							}, RxApp.MainThreadScheduler);
 						}
 					}
-					result = icon;
+					else
+					{
+						result = await Observable.Start(() =>
+						{
+							var icon = new AsyncImage()
+							{
+								Source = new Uri(finalPath),
+								Stretch = Avalonia.Media.Stretch.UniformToFill,
+							};
+
+							if (iconSettings.ForegroundColor.IsValid())
+							{
+								var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
+								if (brush != null)
+								{
+									icon.Foreground = brush;
+								}
+							}
+
+							return icon;
+						}, RxApp.MainThreadScheduler);
+					}
 				}
 			}
-
-			if(result != null)
+		}
+		await Observable.Start(() =>
+		{
+			if (result != null)
 			{
-				if(iconSettings.Size.IsValid())
+				if (iconSettings?.Size.IsValid() == true)
 				{
 					try
 					{
@@ -112,7 +222,7 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 						result.Width = size.Width;
 						result.Height = size.Height;
 					}
-					catch(Exception) { }
+					catch (Exception) { }
 				}
 				else
 				{
@@ -120,8 +230,16 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 					result.Height = 16;
 				}
 			}
-		}
-		IconPresenter.Content = result;
+			IconPresenter.Content = result;
+		}, RxApp.MainThreadScheduler);
+	}
+
+	IDisposable? _realizeIconTask = null;
+
+	private void Cleanup()
+	{
+		_realizeIconTask?.Dispose();
+		_gifStream?.Dispose();
 	}
 
 	public ModContainerEntryView()
@@ -146,7 +264,26 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 
 				IconBorder[!BorderThicknessProperty] = hasIconSettings.CombineLatest(ViewModel.Settings.Icon.WhenAnyValue(x => x.BorderThickness)).Select(x => x.Second.IsValid() ? Thickness.Parse(x.Second) : _defaultThickness).ToBinding();
 
-				d(ViewModel.WhenAnyValue(x => x.Icon).Subscribe(RealizeIcon));
+				d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
+					h => (sender, e) => h(e),
+					h => Unloaded += h,
+					h => Unloaded -= h
+				).Subscribe(_ => Cleanup()));
+
+				d(Observable.FromEvent<EventHandler<VisualTreeAttachmentEventArgs>, VisualTreeAttachmentEventArgs>(
+					h => (sender, e) => h(e),
+					h => DetachedFromVisualTree += h,
+					h => DetachedFromVisualTree -= h
+				).Subscribe(_ => Cleanup()));
+
+				d(ViewModel.WhenAnyValue(x => x.Icon).Subscribe(icon =>
+				{
+					_realizeIconTask?.Dispose();
+					_realizeIconTask = RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, t) =>
+					{
+						await RealizeIcon(icon, t);
+					});
+				}));
 			}
 		});
 	}
