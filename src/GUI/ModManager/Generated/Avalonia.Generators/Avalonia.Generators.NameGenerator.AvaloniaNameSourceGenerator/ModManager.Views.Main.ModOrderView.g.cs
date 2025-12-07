@@ -18,6 +18,8 @@ namespace ModManager.Views.Main
         internal global::ModManager.Views.Mods.ModListView OverrideModsList;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         internal global::ModManager.Views.Mods.ModListView InactiveModsList;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::ModManager.Views.Settings.ModContainerSettingsView ModContainerSettingsControl;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -39,6 +41,7 @@ namespace ModManager.Views.Main
             ActiveModsList = __thisNameScope__?.Find<global::ModManager.Views.Mods.ModListView>("ActiveModsList");
             OverrideModsList = __thisNameScope__?.Find<global::ModManager.Views.Mods.ModListView>("OverrideModsList");
             InactiveModsList = __thisNameScope__?.Find<global::ModManager.Views.Mods.ModListView>("InactiveModsList");
+            ModContainerSettingsControl = __thisNameScope__?.Find<global::ModManager.Views.Settings.ModContainerSettingsView>("ModContainerSettingsControl");
         }
     }
 }

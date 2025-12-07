@@ -69,6 +69,16 @@ namespace ModManager.ViewModels
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ObservableAsPropertyGenerator", "2.5.0.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public partial bool AnyDisabled { get => _anyDisabled = (_anyDisabledHelper == null ? _anyDisabled : _anyDisabledHelper.Value); }
+/// <inheritdoc cref="HasMods"/>
+        private bool _hasMods;
+
+        /// <inheritdoc cref="_hasModsHelper"/>
+        private readonly ReactiveUI.ObservableAsPropertyHelper<bool> _hasModsHelper;
+
+        /// <inheritdoc cref="_hasMods"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ObservableAsPropertyGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial bool HasMods { get => _hasMods = (_hasModsHelper == null ? _hasMods : _hasModsHelper.Value); }
 
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ObservableAsPropertyGenerator", "2.5.0.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
