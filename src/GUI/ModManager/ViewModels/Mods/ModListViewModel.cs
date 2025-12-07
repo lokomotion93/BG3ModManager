@@ -35,6 +35,8 @@ public partial class ModListViewModel : ReactiveObject
 
 	[Reactive] public partial IModEntry? SelectedItem { get; set; }
 
+	public List<int> VisibleRows { get; } = [];
+
 	[ObservableAsProperty] public partial string? FilterPlaceholderText { get; }
 	[ObservableAsProperty] public partial string? FilterResultText { get; }
 	[ObservableAsProperty] public partial bool HasAnyFocus { get; }
@@ -117,12 +119,12 @@ public partial class ModListViewModel : ReactiveObject
 
 		foreach (var item in e.SelectedItems)
 		{
-			if (item != null) item.IsSelected = true;
+			item?.IsSelected = true;
 		}
 
 		foreach (var item in e.DeselectedItems)
 		{
-			if (item != null) item.IsSelected = false;
+			item?.IsSelected = false;
 		}
 	}
 
@@ -180,6 +182,7 @@ public partial class ModListViewModel : ReactiveObject
 		FocusCommand = ReactiveCommand.Create(() => { });
 
 		AddContainerCommand = ReactiveCommand.CreateFromTask(async () => {
+			var insertAt = treeGridSource.RowSelection?.AnchorIndex;
 			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Add Container", "Enter container name...", InteractionMessageBoxType.Input, "Container1"));
 			if(result.Result)
 			{
@@ -190,7 +193,31 @@ public partial class ModListViewModel : ReactiveObject
 				};
 				container.Settings.DisplayName = result.Input ?? string.Empty;
 				AppServices.Settings.ContainerSettings.Containers.AddOrUpdate(container.Settings);
-				_mods.Add(container);
+				if(insertAt != null)
+				{
+					var indexPath = insertAt.Value;
+					var index = indexPath[0];
+					_mods.Insert(index, container);
+				}
+				else
+				{
+					if(VisibleRows.Count > 0)
+					{
+						if(VisibleRows.Count > 2)
+						{
+							var middleRow = VisibleRows[VisibleRows.Count / 2];
+							_mods.Insert(middleRow, container);
+						}
+						else
+						{
+							_mods.Insert(VisibleRows[0], container);
+						}
+					}
+					else
+					{
+						_mods.Insert(0, container);
+					}
+				}
 			}
 		});
 

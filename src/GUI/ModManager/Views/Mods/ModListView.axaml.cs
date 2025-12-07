@@ -273,7 +273,14 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				IndexPath targetIndex = 0;
 
 				//Clear the previous selection, so only the dropped items are selected
-				target.RowSelection!.Clear();
+				if(target.RowSelection != null)
+				{
+					foreach(var entry in target.RowSelection.SelectedItems)
+					{
+						entry?.IsSelected = false;
+					}
+					target.RowSelection.Clear();
+				}
 
 				if (ViewModel?.Mods.Rows.Count > 0)
 				{
@@ -341,7 +348,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		if(row != null)
 		{
-			if (row.Model is IModEntry entry && entry.EntryType == ModEntryType.Container)
+			if (!e.KeyModifiers.HasFlag(KeyModifiers.Control) && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && row.Model is IModEntry entry && entry.EntryType == ModEntryType.Container)
 			{
 				entry.IsExpanded = !entry.IsExpanded;
 			}
@@ -470,6 +477,21 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	{
 		e.Row.PointerPressed -= OnPointerDown;
 		e.Row.PointerReleased -= OnPointerReleased;
+	}
+
+	private IDisposable? _trackVisibleTask;
+
+	private void TrackVisibleRows()
+	{
+		var rows = ModsTreeDataGrid.FindVisualDescendantsOfType<TreeDataGridRow>();
+		if(rows != null && ViewModel != null)
+		{
+			ViewModel.VisibleRows.Clear();
+			foreach (var row in rows.OrderBy(x => x.RowIndex))
+			{
+				ViewModel.VisibleRows.Add(row.RowIndex);
+			}
+		}
 	}
 
 	public ModListView()
@@ -607,6 +629,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					h => ModsTreeDataGrid.RowPrepared -= h
 				).Subscribe(e =>
 				{
+					_trackVisibleTask?.Dispose();
+					_trackVisibleTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromTicks(30), TrackVisibleRows);
 					if (e.Row.Model is IModEntry entry)
 					{
 						if (entry.PreserveSelection)
