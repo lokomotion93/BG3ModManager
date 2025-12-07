@@ -19,9 +19,12 @@ public class ControlFactoryService(ILocaleService localeService, IFusionCache ca
 		return tb;
 	}
 
-	public async Task<Control?> ImageFromPathAsync(string pathOrUrl, string? fromRelativePath, CancellationToken token)
+	public record struct ImageFromPathResult(Control? Result, MemoryStream? Stream);
+
+	public async Task<ImageFromPathResult> ImageFromPathAsync(string pathOrUrl, string? fromRelativePath, CancellationToken token)
 	{
 		Control? result = null;
+		MemoryStream? stream = null;
 
 		if (pathOrUrl.IsValid())
 		{
@@ -65,7 +68,7 @@ public class ControlFactoryService(ILocaleService localeService, IFusionCache ca
 				{
 					if (!finalPath.StartsWith("avares://", StringComparison.OrdinalIgnoreCase))
 					{
-						var stream = new MemoryStream();
+						stream = new MemoryStream();
 
 						var data = await _cache.TryGetAsync<byte[]?>(finalPath, token: token);
 						if (data.HasValue)
@@ -111,7 +114,7 @@ public class ControlFactoryService(ILocaleService localeService, IFusionCache ca
 						if (token.IsCancellationRequested)
 						{
 							stream?.Dispose();
-							return null;
+							return new ImageFromPathResult();
 						}
 
 						stream.Position = 0;
@@ -164,6 +167,6 @@ public class ControlFactoryService(ILocaleService localeService, IFusionCache ca
 			}
 		}
 
-		return result;
+		return new ImageFromPathResult(result, stream);
 	}
 }
