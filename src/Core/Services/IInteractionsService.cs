@@ -90,4 +90,9 @@ public interface IInteractionsService
 	/// Open the app updates window.
 	/// </summary>
 	Interaction<bool, bool> OpenUpdatesWindow { get; }
+
+	/// <summary>
+	/// Open the mod container settings view.
+	/// </summary>
+	Interaction<ModContainer, bool> OpenModContainerSettings { get; }
 }

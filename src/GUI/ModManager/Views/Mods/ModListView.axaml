@@ -75,6 +75,11 @@
     </UserControl.Styles>
     <UserControl.Resources>
         <MenuFlyout x:Key="ModContainerMenuFlyout" x:DataType="mod:ModContainer" Placement="Bottom">
+            <MenuItem Command="{Binding $parent[local:ModListView].ViewModel.EditContainerCommand}"
+                CommandParameter="{Binding}"
+                Header="{manager:LocaleKey ModListView_EditContainer}"
+                Icon="{materialIcons:MaterialIconExt Kind=Edit}" />
+
             <MenuItem Command="{Binding $parent[local:ModListView].ViewModel.RenameContainerCommand}"
                 CommandParameter="{Binding}"
                 Header="{manager:LocaleKey ModListView_RenameContainer}"

@@ -2188,6 +2188,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} Settings.
+        /// </summary>
+        public static string ModContainerSettingsView_Title {
+            get {
+                return ResourceManager.GetString("ModContainerSettingsView_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This mod has an invalid UUID, and will likely fail to load.
         /// </summary>
         public static string ModEntry_ToolTip_HasInvalidUUID {
@@ -2247,6 +2256,15 @@ namespace ModManager.Locale {
         public static string ModListView_DeleteContainerMods {
             get {
                 return ResourceManager.GetString("ModListView_DeleteContainerMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit....
+        /// </summary>
+        public static string ModListView_EditContainer {
+            get {
+                return ResourceManager.GetString("ModListView_EditContainer", resourceCulture);
             }
         }
         

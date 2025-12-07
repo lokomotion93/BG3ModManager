@@ -45,6 +45,12 @@ public partial class ModListViewModel : ReactiveObject
 	public ReactiveCommand<ModContainer, Unit> DeleteContainerModsCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> RenameContainerCommand { get; }
 
+	[ReactiveCommand]
+	public void EditContainer(ModContainer container)
+	{
+		AppServices.Interactions.OpenModContainerSettings.Handle(container).Subscribe();
+	}
+
 	private static string ToFilterResultText(ValueTuple<int, int, int, string?, bool> x)
 	{
 		var (total, totalHidden, totalSelected, filterText, isEnabled) = x;

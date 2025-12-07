@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:vm="using:ModManager.ViewModels.Settings"
+			 xmlns:local="using:ModManager.Views.Settings.ModContainerSettingsView"
+			 xmlns:manager="using:ModManager"
+			 xmlns:controls="using:ModManager.Controls"
+			 x:DataType="vm:ModContainerSettingsViewModel"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 x:Class="ModManager.Views.Settings.ModContainerSettingsView">
+	<Panel>
+		<suki:SukiBackground IsHitTestVisible="False" />
+		<suki:GlassCard CornerRadius="0" IsOpaque="True">
+			<Grid RowDefinitions="Auto,*,Auto">
+				<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+					<TextBlock FontSize="24"
+							   Text="{Binding Name}"
+							   TextAlignment="Center"
+							   TextWrapping="Wrap" />
+					<Rectangle Height="2" Fill="LightGray" />
+				</StackPanel>
+				<controls:AutoGrid Margin="10,0"
+						    ColumnDefinitions="auto,*"
+						    RowCount="7"
+							Grid.Row="1"
+						    RowHeight="auto">
+
+					<TextBlock Text="Name" Classes="left" />
+					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.DisplayName, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
+
+					<TextBlock Text="Description" Classes="left" />
+					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.Description, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
+
+					<Expander Header="Icon" Grid.ColumnSpan="2">
+						<controls:AutoGrid Margin="10,0"
+						    ColumnDefinitions="auto,*"
+						    RowCount="6"
+						    RowHeight="auto">
+								<TextBlock Text="Kind" Classes="left" />
+								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconKind, UpdateSourceTrigger=LostFocus}"/>
+
+								<TextBlock Text="Path" Classes="left" />
+								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconPath, UpdateSourceTrigger=LostFocus}"/>
+
+								<TextBlock Text="Foreground Color" Classes="left" />
+								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconForegroundColor, UpdateSourceTrigger=LostFocus}" />
+
+								<TextBlock Text="Background Color" Classes="left" />
+								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconBackgroundColor, UpdateSourceTrigger=LostFocus}" />
+
+								<TextBlock Text="Border Color" Classes="left" />
+								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconBorderColor, UpdateSourceTrigger=LostFocus}" />
+
+								<TextBlock Text="Border Thickness" Classes="left" />
+								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconBorderThickness, UpdateSourceTrigger=LostFocus}" />
+							</controls:AutoGrid>
+					</Expander>
+					
+
+					<TextBlock Text="Foreground Color" Classes="left" />
+					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.ForegroundColor, UpdateSourceTrigger=LostFocus}" />
+
+					<TextBlock Text="Background Color" Classes="left" />
+					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BackgroundColor, UpdateSourceTrigger=LostFocus}" />
+
+					<TextBlock Text="Border Color" Classes="left" />
+					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderColor, UpdateSourceTrigger=LostFocus}" />
+
+					<TextBlock Text="Border Thickness" Classes="left" />
+					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderThickness, UpdateSourceTrigger=LostFocus}" />
+				</controls:AutoGrid>
+				<UniformGrid Grid.Row="2"
+							 Margin="4"
+							 HorizontalAlignment="Center"
+							 VerticalAlignment="Center"
+							 Rows="1">
+					<Button Margin="4,0"
+							Padding="12,2"
+							Background="Lime"
+							Command="{Binding ApplyCommand}"
+							Content="{manager:LocaleKey Button_Apply}" />
+					<Button Margin="4,0"
+							Padding="12,2"
+							Background="Red"
+							Command="{Binding CloseCommand}"
+							Content="{manager:LocaleKey Button_Cancel}" />
+				</UniformGrid>
+			</Grid>
+		</suki:GlassCard>
+	</Panel>
+</UserControl>

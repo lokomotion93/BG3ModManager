@@ -1,20 +1,21 @@
 <UserControl x:Class="ModManager.Views.Main.ModOrderView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mm="using:ModManager"
-    xmlns:mv="using:ModManager.Views.Mods"
-    xmlns:rxui="http://reactiveui.net"
-    xmlns:sukiControls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-    xmlns:views="using:ModManager.Views.Main"
-    xmlns:vm="using:ModManager.ViewModels.Main"
-    d:DesignHeight="1080"
-    d:DesignWidth="1920"
-    x:DataType="vm:ModOrderViewModel"
-    Background="Transparent"
-    Focusable="True"
-    mc:Ignorable="d">
+			 xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:mm="using:ModManager"
+			 xmlns:mv="using:ModManager.Views.Mods"
+			 xmlns:rxui="http://reactiveui.net"
+			 xmlns:sukiControls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:views="using:ModManager.Views.Main"
+			 xmlns:settingsViews="using:ModManager.Views.Settings"
+			 xmlns:vm="using:ModManager.ViewModels.Main"
+			 d:DesignHeight="1080"
+			 d:DesignWidth="1920"
+			 x:DataType="vm:ModOrderViewModel"
+			 Background="Transparent"
+			 Focusable="True"
+			 mc:Ignorable="d">
 	<Design.DataContext>
 		<vm:DesignModOrderViewModel />
 	</Design.DataContext>
@@ -24,7 +25,7 @@
 		</Style>
 
 		<!--<Style Selector="GridSplitter:pointerover">
-			<Setter Property="Background" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+		<Setter Property="Background" Value="{DynamicResource TextControlSelectionHighlightColor}" />
 		</Style>-->
 
 		<Style Selector="GridSplitter.splitter1">
@@ -44,7 +45,7 @@
 			<Setter Property="Background" Value="Transparent" />
 			<Setter Property="Transitions">
 				<Transitions>
-					<BrushTransition Easing="QuadraticEaseInOut" Property="Background" Duration="0:0:0.25" />
+					<BrushTransition Easing="QuadraticEaseInOut" Property="Background" Duration="0:0:0.2" />
 				</Transitions>
 			</Setter>
 
@@ -61,35 +62,37 @@
 			<sukiControls:GlassCard IsOpaque="True">
 				<Grid Name="ActiveModsGrid" RowDefinitions="2*,auto,1*">
 					<mv:ModListView Name="ActiveModsList"
-					    Grid.Row="0"
-					    VerticalAlignment="Stretch"
-					    DataContext="{Binding ActiveModsView}" />
+									Grid.Row="0"
+									VerticalAlignment="Stretch"
+									DataContext="{Binding ActiveModsView}" />
 
 					<GridSplitter Grid.Row="1"
-					    MinHeight="4"
-					    Classes="splitter1"
-					    ResizeDirection="Rows" />
+								  MinHeight="4"
+								  Classes="splitter1"
+								  ResizeDirection="Rows" />
 
 					<mv:ModListView Name="OverrideModsList"
-					    Grid.Row="2"
-					    VerticalAlignment="Stretch"
-					    DataContext="{Binding OverrideModsView}" />
+									Grid.Row="2"
+									VerticalAlignment="Stretch"
+									DataContext="{Binding OverrideModsView}" />
 				</Grid>
 			</sukiControls:GlassCard>
 			<GridSplitter Grid.Column="1"
-			    MinWidth="4"
-			    Margin="0,20"
-			    Classes="splitter2"
-			    ResizeDirection="Columns" />
+						  MinWidth="4"
+						  Margin="0,20"
+						  Classes="splitter2"
+						  ResizeDirection="Columns" />
 			<sukiControls:GlassCard Grid.Column="2" IsOpaque="True">
 				<mv:ModListView Name="InactiveModsList" DataContext="{Binding InactiveModsView}" />
 			</sukiControls:GlassCard>
+
+			<settingsViews:ModContainerSettingsView x:Name="ModContainerSettingsControl" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" IsVisible="False" />
 		</Grid>
 
 		<views:FooterView Grid.Row="2"
-		    Height="24"
-		    HorizontalAlignment="Stretch"
-		    VerticalAlignment="Bottom"
-		    ViewModel="{x:Static mm:ViewModelLocator.Footer}" />
+						  Height="24"
+						  HorizontalAlignment="Stretch"
+						  VerticalAlignment="Bottom"
+						  ViewModel="{x:Static mm:ViewModelLocator.Footer}" />
 	</Grid>
 </UserControl>

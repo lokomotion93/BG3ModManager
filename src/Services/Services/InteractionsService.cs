@@ -45,6 +45,8 @@ public class InteractionsService : IInteractionsService
 	public Interaction<ValidateModStatsResults, bool> OpenValidateStatsResults { get; }
 	/// <inheritdoc/>
 	public Interaction<ViewModFilesRequest, bool> ViewModFiles { get; }
+	/// <inheritdoc/>
+	public Interaction<ModContainer, bool> OpenModContainerSettings { get; }
 
 	public InteractionsService()
 	{
@@ -65,5 +67,6 @@ public class InteractionsService : IInteractionsService
 		ToggleModFileNameDisplay = new();
 		ValidateModStats = new();
 		ViewModFiles = new();
+		OpenModContainerSettings = new();
 	}
 }
