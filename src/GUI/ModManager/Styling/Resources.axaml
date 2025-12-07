@@ -10,7 +10,7 @@
     xmlns:modView="using:ModManager.Views.Mods"
     xmlns:modconv="using:ModManager.Converters.Mod"
     xmlns:suki="using:SukiUI"
-    xmlns:system="clr-namespace:System;assembly=netstandard"
+    xmlns:sys="using:System"
     xmlns:theme="using:SukiUI.Theme">
 
 	<conv:ForceAllowInLoadOrderIconConverter x:Key="ForceAllowInLoadOrderIconConverter" />
@@ -191,7 +191,7 @@
 		<modView:ModEntryView />
 	</DataTemplate>
 
-	<system:Double x:Key="ModEntryToolTipWidth">480</system:Double>
+	<sys:Double x:Key="ModEntryToolTipWidth">480</sys:Double>
 	<Thickness x:Key="ModEntryToolTipBorderThickness">2</Thickness>
 
 	<Image x:Key="ExtenderIcon" Source="avares://Assets/Icons/DivinityEngine2_64x.png" RenderOptions.BitmapInterpolationMode="HighQuality" />
