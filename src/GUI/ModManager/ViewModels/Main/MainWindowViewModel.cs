@@ -796,18 +796,20 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 	private async Task<bool> LoadSettings()
 	{
 		var success = true;
-		if (!_settings.TryLoadAll(out var errors))
+		//Skip if settings haven't been initialized yet
+		if(_fs.Directory.Exists(DivinityApp.GetAppDirectory("Data")))
 		{
-			var errorMessage = string.Join("\n", errors.Select(x => x.ToString()));
-			_globalCommands.ShowAlert($"Error loading settings: {errorMessage}", AlertType.Danger);
-			success = false;
+			if (!_settings.TryLoadAll(out var errors))
+			{
+				var errorMessage = string.Join("\n", errors.Select(x => x.ToString()));
+				_globalCommands.ShowAlert($"Error loading settings: {errorMessage}", AlertType.Danger);
+				success = false;
+			}
+			else if (_settings.ManagerSettings.DebugModeEnabled)
+			{
+				AppServices.Get<LogWriterService>()?.ToggleLogging(true);
+			}
 		}
-#if !DEBUG
-		if(_settings.ManagerSettings.DebugModeEnabled)
-		{
-			AppServices.Get<LogWriterService>()?.ToggleLogging(true);
-		}
-#endif
 		LoadAppConfig();
 
 #if DOS2
