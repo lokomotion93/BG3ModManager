@@ -13,6 +13,8 @@ using ModManager.Models.Mod;
 using ModManager.Styling;
 using ModManager.Util;
 
+using System.Collections.Concurrent;
+
 using ZiggyCreatures.Caching.Fusion;
 
 namespace ModManager.Views.Mods;
@@ -20,108 +22,172 @@ namespace ModManager.Views.Mods;
 public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 {
 	private static readonly Thickness _defaultThickness = new(0);
-	private MemoryStream? _gifStream = null;
 
-	private async Task RealizeIcon(ModContainerIconSettings? iconSettings, CancellationToken token)
+	private class ContentControlIconManager(ContentControl targetControl, double multiplySize = 0d)
 	{
-		Control? result = null;
-		if(iconSettings != null)
+		private readonly ContentControl _target = targetControl;
+		private IDisposable? _realizeIconTask = null;
+		private MemoryStream? _iconStream = null;
+		public string Name { get; set; } = string.Empty;
+
+		private async Task RealizeIcon(ModContainerIconSettings? iconSettings, CancellationToken token)
 		{
-
-			if (iconSettings.Kind.IsValid())
+			Control? result = null;
+			if (iconSettings != null)
 			{
-				var kind = iconSettings.Kind;
-				//Potential name taken from https://pictogrammers.com/library/mdi/
-				if (kind.Contains('-'))
+				if (iconSettings.Kind.IsValid())
 				{
-					//Converter icon-name to IconName
-					//Dehumanize will pascal-case separated words, which is why we swap hyphens for a space
-					kind = kind.Replace("-", " ").Dehumanize();
-				}
-
-				if (Enum.TryParse<MaterialIconKind>(kind, out var materialIconKind))
-				{
-					result = await Observable.Start(() =>
+					var kind = iconSettings.Kind;
+					//Potential name taken from https://pictogrammers.com/library/mdi/
+					if (kind.Contains('-'))
 					{
-						var icon = new MaterialIcon()
+						//Converter icon-name to IconName
+						//Dehumanize will pascal-case separated words, which is why we swap hyphens for a space
+						kind = kind.Replace("-", " ").Dehumanize();
+					}
+
+					if (Enum.TryParse<MaterialIconKind>(kind, out var materialIconKind))
+					{
+						result = await Observable.Start(() =>
 						{
-							Kind = materialIconKind,
-						};
+							var icon = new MaterialIcon()
+							{
+								Kind = materialIconKind,
+							};
+							if (iconSettings.ForegroundColor.IsValid())
+							{
+								var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
+								if (brush != null)
+								{
+									icon.Foreground = brush;
+								}
+							}
+							return icon;
+						}, RxApp.MainThreadScheduler);
+					}
+					else
+					{
+						var msg = Loca.Alert_Error_ContainerIconMaterialKindParsing.SafeFormat("Container '{0}' has an invalid Icon.Kind value: \"{1}\"", Name, iconSettings.Kind);
+						AppServices.Commands.ShowAlert(msg, AlertType.Danger, 10);
+						DivinityApp.Log(kind);
+					}
+				}
+				else if (iconSettings.Path.IsValid())
+				{
+					var taskResult = await AppServices.ControlFactory.ImageFromPathAsync(iconSettings.Path, "Orders", token);
+					result = taskResult.Result;
+					if (taskResult.Stream != null)
+					{
+						_iconStream = taskResult.Stream;
+					}
+
+					if (result is TemplatedControl templatedControl)
+					{
 						if (iconSettings.ForegroundColor.IsValid())
 						{
 							var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
 							if (brush != null)
 							{
-								icon.Foreground = brush;
+								templatedControl.Foreground = brush;
 							}
 						}
-						return icon;
-					}, RxApp.MainThreadScheduler);
-				}
-				else
-				{
-					var msg = Loca.Alert_Error_ContainerIconMaterialKindParsing.SafeFormat("Container '{0}' has an invalid Icon.Kind value: \"{1}\"", ViewModel?.DisplayName ?? string.Empty, iconSettings.Kind);
-					AppServices.Commands.ShowAlert(msg, AlertType.Danger, 10);
-					DivinityApp.Log(kind);
-				}
-			}
-			else if (iconSettings.Path.IsValid())
-			{
-				result = await AppServices.ControlFactory.ImageFromPathAsync(iconSettings.Path, "Orders", token);
-
-				if(result is TemplatedControl templatedControl)
-				{
-					if (iconSettings.ForegroundColor.IsValid())
-					{
-						var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
-						if (brush != null)
-						{
-							templatedControl.Foreground = brush;
-						}
 					}
 				}
+			}
+			await Observable.Start(() =>
+			{
+				if (result != null)
+				{
+					if (iconSettings?.Size.IsValid() == true)
+					{
+						try
+						{
+							if (double.TryParse(iconSettings.Size, out var singleSize))
+							{
+								result.Width = result.Height = singleSize;
+							}
+							else
+							{
+								var size = Size.Parse(iconSettings.Size);
+								result.Width = size.Width;
+								result.Height = size.Height;
+							}
+						}
+						catch (Exception) { }
+					}
+					else
+					{
+						result.Width = 16;
+						result.Height = 16;
+					}
+				}
+				if(result != null && multiplySize != 0)
+				{
+					result.Width *= multiplySize;
+					result.Height *= multiplySize;
+				}
+				_target.Content = result;
+			}, RxApp.MainThreadScheduler);
+		}
+
+		public void Load(ModContainerIconSettings? icon)
+		{
+			_realizeIconTask?.Dispose();
+			if(icon != null)
+			{
+				_realizeIconTask = RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, t) =>
+				{
+					await RealizeIcon(icon, t);
+				});
+			}
+			else
+			{
+				Dispose();
 			}
 		}
-		await Observable.Start(() =>
+
+		public void Dispose()
 		{
-			if (result != null)
+			if(_target.Content is GifImage gif && gif.Source is GifStreamSource gifSource)
 			{
-				if (iconSettings?.Size.IsValid() == true)
-				{
-					try
-					{
-						var size = Size.Parse(iconSettings.Size);
-						result.Width = size.Width;
-						result.Height = size.Height;
-					}
-					catch (Exception) { }
-				}
-				else
-				{
-					result.Width = 16;
-					result.Height = 16;
-				}
+				gifSource.Dispose();
 			}
-			IconPresenter.Content = result;
-		}, RxApp.MainThreadScheduler);
+			_realizeIconTask?.Dispose();
+			_iconStream?.Dispose();
+			_target.Content = null;
+		}
 	}
 
-	IDisposable? _realizeIconTask = null;
+	private readonly ContentControlIconManager _iconManager;
+	private readonly ContentControlIconManager _toolTipIconManager;
 
-	private void Cleanup()
+	private void Cleanup(ContentControlIconManager? target = null)
 	{
-		_realizeIconTask?.Dispose();
-		_gifStream?.Dispose();
+		if(target == null)
+		{
+			_iconManager.Dispose();
+			_toolTipIconManager.Dispose();
+		}
+		else
+		{
+			target.Dispose();
+		}
 	}
 
 	public ModContainerEntryView()
 	{
 		InitializeComponent();
 
+		_iconManager = new(IconPresenter);
+		_toolTipIconManager = new(ToolTipIconPresenter, 3d);
+
 		this.WhenActivated(d =>
 		{
 			if(ViewModel != null)
 			{
+				_iconManager.Name = ViewModel.DisplayName ?? ViewModel.UUID;
+				_toolTipIconManager.Name = ViewModel.DisplayName ?? ViewModel.UUID;
+
 				var defaultForegroundColor = LabelTextBlock.Foreground;
 				var defaultBG = IconBorder.Background;
 
@@ -148,13 +214,25 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 					h => DetachedFromVisualTree -= h
 				).Subscribe(_ => Cleanup()));
 
+				d(Observable.FromEvent<EventHandler<VisualTreeAttachmentEventArgs>, VisualTreeAttachmentEventArgs>(
+					h => (sender, e) => h(e),
+					h => ToolTipIconPresenter.DetachedFromVisualTree += h,
+					h => ToolTipIconPresenter.DetachedFromVisualTree -= h
+				).Subscribe(_ => Cleanup(_toolTipIconManager)));
+
+				d(Observable.FromEvent<EventHandler<VisualTreeAttachmentEventArgs>, VisualTreeAttachmentEventArgs>(
+					h => (sender, e) => h(e),
+					h => ToolTipIconPresenter.AttachedToVisualTree += h,
+					h => ToolTipIconPresenter.AttachedToVisualTree -= h
+				).Subscribe(_ =>
+				{
+					_toolTipIconManager.Load(ViewModel.Icon);
+				}));
+
 				d(ViewModel.WhenAnyValue(x => x.Icon).Subscribe(icon =>
 				{
-					_realizeIconTask?.Dispose();
-					_realizeIconTask = RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, t) =>
-					{
-						await RealizeIcon(icon, t);
-					});
+					_iconManager.Load(icon);
+					_toolTipIconManager.Load(icon);
 				}));
 			}
 		});

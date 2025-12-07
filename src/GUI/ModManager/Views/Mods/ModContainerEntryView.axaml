@@ -16,6 +16,17 @@
                 <Setter Property="Foreground" Value="{DynamicResource ModListHoveredTextForeground}" />
             </Style>
         </Style>
+        <Style Selector="Image, icons|MaterialIcon, labs|AsyncImage">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowDirectionEffect BlurRadius="4"
+                        Direction="330"
+                        Opacity="0.8"
+                        ShadowDepth="2"
+                        Color="Black" />
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Styles>
     <Panel Background="Transparent">
         <Panel.Styles>
@@ -28,9 +39,11 @@
             </Style>
         </Panel.Styles>
         <ToolTip.Tip>
+            <!-- ModContainer ToolTip -->
             <StackPanel Orientation="Vertical">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="4" />
                         <ColumnDefinition Width="*" />
@@ -44,7 +57,8 @@
                                 Color="Black" />
                         </TextBlock.Effect>
                     </TextBlock>
-                    <TextBlock Grid.Column="2"
+                    <ContentControl x:Name="ToolTipIconPresenter" Grid.Column="1" Margin="4,0,0,0" />
+                    <TextBlock Grid.Column="3"
                         HorizontalAlignment="Right"
                         Classes="Primary"
                         Text="{Binding ContainerToolTipTitleText}" />
@@ -65,26 +79,8 @@
                 <ColumnDefinition Width="auto" SharedSizeGroup="EntryIcons" />
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="LabelTextBlock" VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
-            <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0">
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel.Styles>
-                        <Style Selector="Image, icons|MaterialIcon, labs|AsyncImage">
-                            <Setter Property="Margin" Value="0,0,4,0" />
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowDirectionEffect BlurRadius="4"
-                                        Direction="330"
-                                        Opacity="0.8"
-                                        ShadowDepth="2"
-                                        Color="Black" />
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </StackPanel.Styles>
-                    <Border x:Name="IconBorder" IsVisible="{Binding HasIcon}" >
-                        <ContentControl x:Name="IconPresenter" RenderOptions.BitmapInterpolationMode="HighQuality" />
-                    </Border>
-                </StackPanel>
+            <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0" x:Name="IconBorder" IsVisible="{Binding HasIcon}" Margin="0,0,4,0">
+                <ContentControl x:Name="IconPresenter" />
             </Border>
         </Grid>
     </Panel>
