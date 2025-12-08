@@ -128,6 +128,23 @@ public partial class ModListViewModel : ReactiveObject
 		}
 	}
 
+	[ReactiveCommand]
+	public void UpdateSelections(HashSet<int> selectedIndexes)
+	{
+		foreach(var entry in _mods)
+		{
+			entry.IsSelected = selectedIndexes.Contains(entry.Index);
+		}
+	}
+
+	private void OnSorted(TreeDataGridSortedEventArgs e)
+	{
+		if (e.Column.Header is string columnName && columnName == "Index" && e.Direction == System.ComponentModel.ListSortDirection.Ascending)
+		{
+			Mods.Sort(null);
+		}
+	}
+
 	public ModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
 		ObservableCollectionExtended<IModEntry> backingCollection,
 		IObservable<IChangeSet<IModEntry>> connection,
@@ -139,6 +156,13 @@ public partial class ModListViewModel : ReactiveObject
 
 		_rowSelection = new ModEntryTreeDataGridRowSelectionModel(treeGridSource) { SingleSelect = false };
 		treeGridSource.Selection = _rowSelection;
+
+		Observable.FromEvent<EventHandler<TreeDataGridSortedEventArgs>?, TreeDataGridSortedEventArgs>(
+			h => (sender, e) => h(e),
+			h => treeGridSource.Sorted += h,
+			h => treeGridSource.Sorted -= h
+		).ObserveOn(RxApp.MainThreadScheduler)
+		.Subscribe(OnSorted);
 
 		Observable.FromEvent<EventHandler<TreeSelectionModelSelectionChangedEventArgs<IModEntry>>?, TreeSelectionModelSelectionChangedEventArgs<IModEntry>>(
 			h => (sender, e) => h(e),

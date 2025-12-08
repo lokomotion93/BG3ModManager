@@ -50,61 +50,58 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			TreeDataGridRowDropPosition position,
 			DragDropEffects effects)
 	{
-		if (effects != DragDropEffects.Move)
-			throw new NotSupportedException("Only move is currently supported for drag/drop.");
-
-		if (target.IsSorted)
-			throw new NotSupportedException("Drag/drop is not supported on sorted data.");
-
-		IList<IModEntry> targetItems;
-		int ti = 0;
-
-		if (target.Rows.Count == 0)
+		if(effects == DragDropEffects.Move)
 		{
-			targetItems = target.Items as IList<IModEntry> ?? throw new InvalidOperationException("Items does not implement IList<T>.");
-		}
-		else
-		{
-			if (position == TreeDataGridRowDropPosition.Inside)
+			IList<IModEntry> targetItems;
+			int ti = 0;
+
+			if (target.Rows.Count == 0)
 			{
-				targetItems = GetItems(target, targetIndex);
-				ti = targetItems.Count;
+				targetItems = target.Items as IList<IModEntry> ?? throw new InvalidOperationException("Items does not implement IList<T>.");
 			}
 			else
 			{
-				targetItems = GetItems(target, targetIndex[..^1]);
-				ti = targetIndex[^1];
+				if (position == TreeDataGridRowDropPosition.Inside)
+				{
+					targetItems = GetItems(target, targetIndex);
+					ti = targetItems.Count;
+				}
+				else
+				{
+					targetItems = GetItems(target, targetIndex[..^1]);
+					ti = targetIndex[^1];
+				}
 			}
-		}
 
-		if (position == TreeDataGridRowDropPosition.After) ++ti;
+			if (position == TreeDataGridRowDropPosition.After) ++ti;
 
-		var sourceItems = new List<IModEntry>();
+			var sourceItems = new List<IModEntry>();
 
-		foreach (var g in indexes.GroupBy(x => x[..^1]))
-		{
-			var items = GetItems(source, g.Key);
-
-			foreach (var i in g.Select(x => x[^1]).OrderByDescending(x => x))
+			foreach (var g in indexes.GroupBy(x => x[..^1]))
 			{
-				sourceItems.Add(items[i]);
+				var items = GetItems(source, g.Key);
 
-				if (items == targetItems && i < ti)
-					--ti;
+				foreach (var i in g.Select(x => x[^1]).OrderByDescending(x => x))
+				{
+					sourceItems.Add(items[i]);
 
-				items.RemoveAt(i);
+					if (items == targetItems && i < ti)
+						--ti;
+
+					items.RemoveAt(i);
+				}
 			}
-		}
 
-		if (targetItems.Count == 0)
-		{
-			targetItems.AddRange(sourceItems.Reverse<IModEntry>());
-		}
-		else
-		{
-			for (var si = sourceItems.Count - 1; si >= 0; --si)
+			if (targetItems.Count == 0)
 			{
-				targetItems.Insert(ti++, sourceItems[si]);
+				targetItems.AddRange(sourceItems.Reverse<IModEntry>());
+			}
+			else
+			{
+				for (var si = sourceItems.Count - 1; si >= 0; --si)
+				{
+					targetItems.Insert(ti++, sourceItems[si]);
+				}
 			}
 		}
 	}
@@ -291,36 +288,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
-	private void OnTreeDataGridSelectionChanged(TreeSelectionModelSelectionChangedEventArgs e)
-	{
-		foreach(var item in e.DeselectedItems)
-		{
-			if(item is IModEntry entry)
-			{
-				entry.IsSelected = false;
-			}
-		}
-
-		foreach(var item in e.SelectedItems)
-		{
-			if (item is IModEntry entry)
-			{
-				entry.IsSelected = true;
-			}
-		}
-	}
-
-	private void OnTreeDataGridSourceReset(TreeSelectionModelSourceResetEventArgs e)
-	{
-		if(ViewModel != null)
-		{
-			foreach (var entry in ViewModel.Mods.Items)
-			{
-				entry.IsSelected = false;
-			}
-		}
-	}
-
 	private static void OnError(Exception ex)
 	{
 		DivinityApp.Log($"Error: {ex}");
@@ -467,18 +434,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
-	private void OnRowPrepared(object? sender, TreeDataGridRowEventArgs e)
-	{
-		e.Row.PointerPressed += OnPointerDown;
-		e.Row.PointerReleased += OnPointerReleased;
-	}
-
-	private void OnRowClearing(object? sender, TreeDataGridRowEventArgs e)
-	{
-		e.Row.PointerPressed -= OnPointerDown;
-		e.Row.PointerReleased -= OnPointerReleased;
-	}
-
 	private IDisposable? _trackVisibleTask;
 
 	private void TrackVisibleRows()
@@ -494,6 +449,13 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		}
 	}
 
+	private Dictionary<int, CompositeDisposable> _rowEventHandlers = [];
+
+	private static HashSet<int> FlattenIndexes(IReadOnlyList<IndexPath> indexes)
+	{
+		return [.. indexes.SelectMany(x => x)];
+	}
+
 	public ModListView()
 	{
 		InitializeComponent();
@@ -504,19 +466,59 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			return;
 		}
 
-		ModsTreeDataGrid.RowPrepared += OnRowPrepared;
-		ModsTreeDataGrid.RowClearing += OnRowClearing;
-
-		AddHandler(InputElement.PointerWheelChangedEvent, OnPointerWheelChanged, RoutingStrategies.Tunnel);
+		AddHandler(PointerWheelChangedEvent, OnPointerWheelChanged, RoutingStrategies.Tunnel);
 		ToolTip.IsOpenProperty.Changed.Subscribe(OnToolTipOpenedChanged);
 
 		AddHandler(DragDrop.DragOverEvent, OnDragOver);
 		AddHandler(DragDrop.DropEvent, OnDrop);
 
+		ModsTreeDataGrid.RowPrepared += (o,e) => { };
+
 		this.WhenActivated(d =>
 		{
 			if (ViewModel != null)
 			{
+				d(Observable.FromEvent<EventHandler<TreeDataGridRowEventArgs>, TreeDataGridRowEventArgs>(
+					h => (sender, e) => h(e),
+					h => ModsTreeDataGrid.RowPrepared += h,
+					h => ModsTreeDataGrid.RowPrepared -= h
+				).Subscribe(e =>
+				{
+					var row = e.Row;
+					var clickDownDisp = Observable.FromEventPattern<EventHandler<PointerPressedEventArgs>, PointerPressedEventArgs>(
+						h => row.PointerPressed += h,
+						h => row.PointerPressed -= h
+					).Subscribe(x => OnPointerDown(x.Sender, x.EventArgs));
+
+					var clickUpDisp = Observable.FromEventPattern<EventHandler<PointerReleasedEventArgs>, PointerReleasedEventArgs>(
+						h => row.PointerReleased += h,
+						h => row.PointerReleased -= h
+					).Subscribe(x => OnPointerReleased(x.Sender, x.EventArgs));
+
+					if (_rowEventHandlers.TryGetValue(row.RowIndex, out var disp))
+					{
+						disp?.Dispose();
+					}
+
+					var compDisp = new CompositeDisposable(clickDownDisp, clickUpDisp);
+					_rowEventHandlers[row.RowIndex] = compDisp;
+					d(compDisp);
+				}, OnError));
+
+				d(Observable.FromEvent<EventHandler<TreeDataGridRowEventArgs>, TreeDataGridRowEventArgs>(
+					h => (sender, e) => h(e),
+					h => ModsTreeDataGrid.RowClearing += h,
+					h => ModsTreeDataGrid.RowClearing -= h
+				).Subscribe(e =>
+				{
+					var row = e.Row;
+					if (_rowEventHandlers.TryGetValue(row.RowIndex, out var disp))
+					{
+						disp?.Dispose();
+						_rowEventHandlers.Remove(row.RowIndex);
+					}
+				}, OnError));
+
 				d(FilterExpander.GetObservable(Expander.IsExpandedProperty).Skip(1).BindTo(ViewModel, x => x.IsFilterEnabled));
 
 				//Throttle filtering here so we can be sure we're delaying when the user may be typing
@@ -563,17 +565,13 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				var modThickness = new Thickness(0);
 				var modContainerThickness = new Thickness(0, 0, 0, 1);
 
-				d(Observable.FromEvent<EventHandler<TreeSelectionModelSelectionChangedEventArgs>, TreeSelectionModelSelectionChangedEventArgs>(
-					h => (sender, e) => h(e),
-					h => ModsTreeDataGrid.RowSelection!.SelectionChanged += h,
-					h => ModsTreeDataGrid.RowSelection!.SelectionChanged -= h
-				).Subscribe(OnTreeDataGridSelectionChanged));
+				d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SelectionChanged))
+					.Throttle(TimeSpan.FromTicks(50))
+					.Select(_ => FlattenIndexes(ModsTreeDataGrid.RowSelection.SelectedIndexes)).InvokeCommand(ViewModel.UpdateSelectionsCommand));
 
-				d(Observable.FromEvent<EventHandler<TreeSelectionModelSourceResetEventArgs>, TreeSelectionModelSourceResetEventArgs>(
-					h => (sender, e) => h(e),
-					h => ModsTreeDataGrid.RowSelection!.SourceReset += h,
-					h => ModsTreeDataGrid.RowSelection!.SourceReset -= h
-				).Subscribe(OnTreeDataGridSourceReset));
+				d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SourceReset))
+					.Throttle(TimeSpan.FromTicks(50))
+					.Select(_ => FlattenIndexes(ModsTreeDataGrid.RowSelection.SelectedIndexes)).InvokeCommand(ViewModel.UpdateSelectionsCommand));
 
 				void PrepareRow(TreeDataGridRow row, IModEntry entry)
 				{
