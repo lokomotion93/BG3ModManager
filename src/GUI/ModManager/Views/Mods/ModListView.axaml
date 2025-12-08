@@ -172,6 +172,7 @@
             Grid.Row="1"
             Grid.IsSharedSizeScope="True"
             AutoDragDropRows="True"
+            LockDragDropWhenSorted="False"
             Background="Transparent"
             Focusable="True"
             Source="{Binding Mods}" />
