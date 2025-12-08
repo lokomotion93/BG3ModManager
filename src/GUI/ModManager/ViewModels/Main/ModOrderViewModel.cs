@@ -1722,6 +1722,8 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		var overrideModsConnection = OverrideMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var inactiveModsConnection = InactiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
+		ColumnOptions<IModEntry> columnOpts = new() { CanUserSortColumn = true, CanUserResizeColumn = true };
+
 		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
 		{
 			Columns =
@@ -1730,7 +1732,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, int>("Index", x => x.Index, GridLength.Auto),
 				new HierarchicalExpanderColumn<IModEntry>(
 					//new TextColumn<IModEntry, string>("Name", x => x.DisplayName, GridLength.Star),
-					new ModEntryColumn("Name", GridLength.Star),
+					new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts),
 					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
 				new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
@@ -1746,7 +1748,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			Columns =
 			{
 				new HierarchicalExpanderColumn<IModEntry>(
-					new ModEntryColumn("Name", GridLength.Star),
+					new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts),
 					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
 				new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto),
 				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
@@ -1762,7 +1764,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			Columns =
 			{
 				new HierarchicalExpanderColumn<IModEntry>(
-					new ModEntryColumn("Name", GridLength.Star),
+					new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts),
 					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
 				new TextColumn<IModEntry, string>("Version", x => x.Version, new GridLength(80d)),
 				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
