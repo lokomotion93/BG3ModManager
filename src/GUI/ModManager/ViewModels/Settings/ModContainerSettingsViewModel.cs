@@ -1,4 +1,6 @@
-﻿using Humanizer;
+﻿using Avalonia.Media;
+
+using Humanizer;
 
 using Material.Icons;
 
@@ -18,17 +20,16 @@ public partial class ModContainerSettingsViewModel : ReactiveObject, IClosableVi
 	[Reactive] public partial string Name { get; set; }
 	[Reactive] public partial bool IsVisible { get; set; }
 
-	[Reactive] public partial string? IconKind { get; set; }
-	[Reactive] public partial string? IconPath { get; set; }
-	[Reactive] public partial string? IconForegroundColor { get; set; }
-	[Reactive] public partial string? IconBackgroundColor { get; set; }
-	[Reactive] public partial string? IconBorderColor { get; set; }
-	[Reactive] public partial string? IconBorderThickness { get; set; }
+	[Reactive] public partial double BorderThicknessPicker { get; set; }
 
 
 	[ObservableAsProperty] private bool _hasTarget;
 
+	public IconSettingsViewModel Icon { get; }
+
 	public RxCommandUnit CloseCommand { get; }
+
+	private CompositeDisposable? _openDisp;
 
 	public void Open(ModContainer target)
 	{
@@ -37,15 +38,19 @@ public partial class ModContainerSettingsViewModel : ReactiveObject, IClosableVi
 
 		if(Target.Icon != null)
 		{
-			IconKind = target.Icon.Kind;
-			IconPath = target.Icon.Path;
-			IconForegroundColor = target.Icon.ForegroundColor;
-			IconBackgroundColor = target.Icon.BackgroundColor;
-			IconBorderColor = target.Icon.BorderColor;
-			IconBorderThickness = target.Icon.BorderThickness;
+			Icon.Open(Target.Icon);
+		}
+		else
+		{
+			Icon.Clear();
 		}
 
 		Settings.SetFrom(Target);
+
+		_openDisp = [];
+
+		this.WhenAnyValue(x => x.BorderThicknessPicker).BindTo(Settings, x => x.BorderThickness).DisposeWith(_openDisp);
+
 		IsVisible = true;
 	}
 
@@ -58,12 +63,21 @@ public partial class ModContainerSettingsViewModel : ReactiveObject, IClosableVi
 		CloseCommand.Execute().Subscribe();
 	}
 
+	private void OnClose()
+	{
+		Target = null;
+		_openDisp?.Dispose();
+	}
+
 	public ModContainerSettingsViewModel()
 	{
 		Name = "Container Settings";
-		CloseCommand = this.CreateCloseCommand(invokeAction: () => Target = null);
+		CloseCommand = this.CreateCloseCommand(invokeAction: OnClose);
 
 		Settings = new();
+		Icon = new();
+
+		Settings.WhenAnyValue(x => x.BorderThickness).BindTo(this, x => x.BorderThicknessPicker);
 
 		_hasTargetObs = this.WhenAnyValue(x => x.Target).Select(x => x != null);
 		_hasTargetHelper = _hasTargetObs.ToUIProperty(this, x => x.HasTarget);

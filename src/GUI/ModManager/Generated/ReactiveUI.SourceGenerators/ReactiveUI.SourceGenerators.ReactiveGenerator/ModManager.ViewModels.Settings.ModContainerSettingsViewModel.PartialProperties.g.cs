@@ -27,71 +27,11 @@ namespace ModManager.ViewModels.Settings
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public partial bool IsVisible { get => _isVisible; set => this.RaiseAndSetIfChanged(ref _isVisible, value); }
         
-        private string? _iconKind;
-        /// <inheritdoc cref="_iconKind"/>
+        private double _borderThicknessPicker;
+        /// <inheritdoc cref="_borderThicknessPicker"/>
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public partial string? IconKind
-        { 
-            get => _iconKind;
-            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_iconKind")]
-            set => this.RaiseAndSetIfChanged(ref _iconKind, value);
-        }
-        
-        private string? _iconPath;
-        /// <inheritdoc cref="_iconPath"/>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
-        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public partial string? IconPath
-        { 
-            get => _iconPath;
-            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_iconPath")]
-            set => this.RaiseAndSetIfChanged(ref _iconPath, value);
-        }
-        
-        private string? _iconForegroundColor;
-        /// <inheritdoc cref="_iconForegroundColor"/>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
-        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public partial string? IconForegroundColor
-        { 
-            get => _iconForegroundColor;
-            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_iconForegroundColor")]
-            set => this.RaiseAndSetIfChanged(ref _iconForegroundColor, value);
-        }
-        
-        private string? _iconBackgroundColor;
-        /// <inheritdoc cref="_iconBackgroundColor"/>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
-        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public partial string? IconBackgroundColor
-        { 
-            get => _iconBackgroundColor;
-            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_iconBackgroundColor")]
-            set => this.RaiseAndSetIfChanged(ref _iconBackgroundColor, value);
-        }
-        
-        private string? _iconBorderColor;
-        /// <inheritdoc cref="_iconBorderColor"/>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
-        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public partial string? IconBorderColor
-        { 
-            get => _iconBorderColor;
-            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_iconBorderColor")]
-            set => this.RaiseAndSetIfChanged(ref _iconBorderColor, value);
-        }
-        
-        private string? _iconBorderThickness;
-        /// <inheritdoc cref="_iconBorderThickness"/>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
-        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public partial string? IconBorderThickness
-        { 
-            get => _iconBorderThickness;
-            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_iconBorderThickness")]
-            set => this.RaiseAndSetIfChanged(ref _iconBorderThickness, value);
-        }
+        public partial double BorderThicknessPicker { get => _borderThicknessPicker; set => this.RaiseAndSetIfChanged(ref _borderThicknessPicker, value); }
     }
 }
 #nullable restore

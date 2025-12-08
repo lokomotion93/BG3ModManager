@@ -12,25 +12,28 @@ internal static class ColorBrushCache
 
 	//private var 
 
-	public static IBrush GetBrush(string value)
+	public static IBrush GetBrush(string? value, IBrush? fallbackBrush = null)
 	{
-		if (_colorBrushCache.TryGetValue(value, out var brush))
+		if(value != null)
 		{
-			return brush;
-		}
-		try
-		{
-			if (Brush.Parse(value) is IBrush newBrush)
+			if (_colorBrushCache.TryGetValue(value, out var brush))
 			{
-				_colorBrushCache.Add(value, newBrush);
-				return newBrush;
+				return brush;
+			}
+			try
+			{
+				if (Brush.Parse(value) is IBrush newBrush)
+				{
+					_colorBrushCache.Add(value, newBrush);
+					return newBrush;
+				}
+			}
+			catch (Exception ex)
+			{
+				DivinityApp.Log($"Error converting brush: {ex}");
 			}
 		}
-		catch (Exception ex)
-		{
-			DivinityApp.Log($"Error converting brush: {ex}");
-		}
-		return Brushes.Transparent;
+		return fallbackBrush ?? Brushes.Transparent;
 	}
 
 	public static IBrush GetResourceBrush(string value)

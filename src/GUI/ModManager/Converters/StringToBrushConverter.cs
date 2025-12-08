@@ -8,7 +8,7 @@ using System.Globalization;
 namespace ModManager.Converters;
 public class StringToBrushConverter : IValueConverter
 {
-	public IBrush Default => ColorBrushCache.GetResourceBrush("SukiPrimaryColor");
+	protected static IBrush Default => ColorBrushCache.GetResourceBrush("SukiPrimaryColor");
 
 	public virtual object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 	{

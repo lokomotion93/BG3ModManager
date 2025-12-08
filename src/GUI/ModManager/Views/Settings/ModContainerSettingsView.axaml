@@ -4,7 +4,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 xmlns:vm="using:ModManager.ViewModels.Settings"
-			 xmlns:local="using:ModManager.Views.Settings.ModContainerSettingsView"
+			 xmlns:local="using:ModManager.Views.Settings"
 			 xmlns:manager="using:ModManager"
 			 xmlns:controls="using:ModManager.Controls"
 			 x:DataType="vm:ModContainerSettingsViewModel"
@@ -35,39 +35,28 @@
 					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.Description, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
 
 					<Expander Header="Icon" Grid.ColumnSpan="2">
-						<controls:AutoGrid Margin="10,0"
-						    ColumnDefinitions="auto,*"
-						    RowCount="6"
-						    RowHeight="auto">
-								<TextBlock Text="Kind" Classes="left" />
-								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconKind, UpdateSourceTrigger=LostFocus}"/>
-
-								<TextBlock Text="Path" Classes="left" />
-								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconPath, UpdateSourceTrigger=LostFocus}"/>
-
-								<TextBlock Text="Foreground Color" Classes="left" />
-								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconForegroundColor, UpdateSourceTrigger=LostFocus}" />
-
-								<TextBlock Text="Background Color" Classes="left" />
-								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconBackgroundColor, UpdateSourceTrigger=LostFocus}" />
-
-								<TextBlock Text="Border Color" Classes="left" />
-								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconBorderColor, UpdateSourceTrigger=LostFocus}" />
-
-								<TextBlock Text="Border Thickness" Classes="left" />
-								<controls:EnhancedTextBox Classes="compact" Text="{Binding IconBorderThickness, UpdateSourceTrigger=LostFocus}" />
-							</controls:AutoGrid>
+						<local:IconSettingsView ViewModel="{Binding Icon}" />
 					</Expander>
 					
 
 					<TextBlock Text="Foreground Color" Classes="left" />
-					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.ForegroundColor, UpdateSourceTrigger=LostFocus}" />
+					<Grid ColumnDefinitions="*,auto" Classes="right">
+						<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.ForegroundColor, UpdateSourceTrigger=LostFocus}" />
+						<ColorPicker Grid.Column="1" Color="{Binding Settings.ForegroundColor, Converter={StaticResource StringToColorConverter}}" />
+					</Grid>
 
 					<TextBlock Text="Background Color" Classes="left" />
-					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BackgroundColor, UpdateSourceTrigger=LostFocus}" />
+					<Grid ColumnDefinitions="*,auto" Classes="right">
+						<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BackgroundColor, UpdateSourceTrigger=LostFocus}" />
+						<ColorPicker Grid.Column="1" Color="{Binding Settings.BackgroundColor, Converter={StaticResource StringToColorConverter}}" />
+					</Grid>
+					
 
 					<TextBlock Text="Border Color" Classes="left" />
-					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderColor, UpdateSourceTrigger=LostFocus}" />
+					<Grid ColumnDefinitions="*,auto" Classes="right">
+						<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderColor, UpdateSourceTrigger=LostFocus}" />
+						<ColorPicker Grid.Column="1" Color="{Binding Settings.BorderColor, Converter={StaticResource StringToColorConverter}}" />
+					</Grid>
 
 					<TextBlock Text="Border Thickness" Classes="left" />
 					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderThickness, UpdateSourceTrigger=LostFocus}" />

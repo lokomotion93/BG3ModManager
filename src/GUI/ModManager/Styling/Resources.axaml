@@ -15,6 +15,7 @@
 
 	<conv:ForceAllowInLoadOrderIconConverter x:Key="ForceAllowInLoadOrderIconConverter" />
 	<conv:StringToBrushConverter x:Key="StringToBrushConverter" />
+	<conv:StringToColorConverter x:Key="StringToColorConverter" />
 	<conv:ModBackgroundColorConverter x:Key="ModBackgroundColorConverter" />
 
 	<Color x:Key="HyperlinkForegroundColor">#0075C7</Color>
