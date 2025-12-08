@@ -1,5 +1,5 @@
 ﻿namespace ModManager;
-public record struct FileTypeFilter(string Name, string[] Extensions)
+public record struct FileTypeFilter(string Name, string[] Extensions, string[]? MimeTypes = null, string[]? AppleUniformTypeIdentifiers = null)
 {
 	/// <summary>
 	/// Combines <c>Name</c> with <c>Extensions</c>, joined together with semi-colons.

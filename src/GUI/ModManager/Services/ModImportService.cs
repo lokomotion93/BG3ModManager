@@ -36,23 +36,6 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 	private static PathwayData Pathways => AppServices.Pathways.Data;
 	private static MainWindowViewModel ViewModel => AppServices.Get<MainWindowViewModel>()!;
 
-	private static readonly string[] _archiveFormats = [".7z", ".7zip", ".gzip", ".rar", ".tar", ".tar.gz", ".zip"];
-	private static readonly string[] _compressedFormats = [".bz2", ".xz", ".zst"];
-	private static readonly string _archiveFormatsStr = string.Join(";", _archiveFormats.Select(x => "*" + x));
-	private static readonly string _compressedFormatsStr = string.Join(";", _compressedFormats.Select(x => "*" + x));
-
-	private static readonly FileTypeFilter _allType = new("All files (*.*)|*.*", ["*.*"]);
-	private static readonly FileTypeFilter _archiveFormatsType = new("Archive file (*.7z,*.rar;*.zip)", _archiveFormats);
-	private static readonly FileTypeFilter _compressedFormatsType = new("Compressed file (*.bz2,*.xz;*.zst)", _compressedFormats);
-	private static readonly FileTypeFilter _pakType = new("Mod package (*.pak)", ["*.pak"]);
-	private static readonly FileTypeFilter _allImportModType = new($"All formats (*.pak;{_archiveFormatsStr};{_compressedFormatsStr})", ["*.pak", .. _archiveFormats, .. _compressedFormats]);
-
-	private static readonly FileTypeFilter[] _archiveFileTypes = [new("Archive file (*.7z,*.rar;*.zip)", _archiveFormats), _allType];
-	private static readonly FileTypeFilter[] _compressedFileTypes = [new("Compressed file (*.bz2,*.xz;*.zst)", _compressedFormats), _allType];
-	private static readonly FileTypeFilter[] _importModFileTypes = [_allImportModType, _pakType, _archiveFormatsType, _compressedFormatsType, _allType];
-
-	//Filter = $"All formats (*.pak;{_archiveFormatsStr};{_compressedFormatsStr})|*.pak;{_archiveFormatsStr};{_compressedFormatsStr}|Mod package (*.pak)|*.pak|Archive file ({_archiveFormatsStr})|{_archiveFormatsStr}|Compressed file ({_compressedFormatsStr})|{_compressedFormatsStr}|All files (*.*)|*.*",
-
 	private static readonly ArchiveEncoding _archiveEncoding = new(Encoding.UTF8, Encoding.UTF8);
 	private static readonly ReaderOptions _importReaderOptions = new() { ArchiveEncoding = _archiveEncoding };
 	private static readonly WriterOptions _exportWriterOptions = new(CompressionType.Deflate) { ArchiveEncoding = _archiveEncoding };
@@ -64,7 +47,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 	public static bool IsImportableFile(string ext)
 	{
-		return ext == ".pak" || _archiveFormats.Contains(ext) || _compressedFormats.Contains(ext);
+		return ext == ".pak" || CommonFileTypes.ArchiveFormats.Extensions.Contains(ext) || CommonFileTypes.CompressedFormats.Extensions.Contains(ext);
 	}
 
 	public async Task<ImportOperationResults> ImportModFromFile(Dictionary<string, ModData> builtinMods, ImportOperationResults taskResult, string filePath, CancellationToken token, bool toActiveList = false)
@@ -116,11 +99,11 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				ShowAlert = AppServices.Commands.ShowAlert
 			};
 
-			if (_archiveFormats.Contains(ext, StringComparer.OrdinalIgnoreCase))
+			if (CommonFileTypes.ArchiveFormats.Extensions.Contains(ext, StringComparer.OrdinalIgnoreCase))
 			{
 				await ImportUtils.ImportArchiveAsync(importOptions);
 			}
-			else if (_compressedFormats.Contains(ext, StringComparer.OrdinalIgnoreCase))
+			else if (CommonFileTypes.CompressedFormats.Extensions.Contains(ext, StringComparer.OrdinalIgnoreCase))
 			{
 				await ImportUtils.ImportCompressedFileAsync(importOptions);
 			}
@@ -145,7 +128,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		var dialogResult = await _dialogService.OpenFileAsync(new OpenFileBrowserDialogRequest(
 			"Import Order & Mods from Archive...",
 			_dialogService.GetInitialStartingDirectory(Settings.LastImportDirectoryPath),
-			_archiveFileTypes
+			CommonFileTypes.ArchiveFileTypes
 		));
 		if (dialogResult.Success)
 		{
@@ -367,8 +350,8 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 				var ext = _fs.Path.GetExtension(filePath).ToLower();
 
-				var isArchive = _archiveFormats.Contains(ext, StringComparer.OrdinalIgnoreCase);
-				var isCompressedFile = !isArchive && _compressedFormats.Contains(ext, StringComparer.OrdinalIgnoreCase);
+				var isArchive = CommonFileTypes.ArchiveFormats.Extensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
+				var isCompressedFile = !isArchive && CommonFileTypes.CompressedFormats.Extensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
 
 				if (isArchive || isCompressedFile)
 				{
@@ -479,7 +462,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		var dialogResult = await _dialogService.OpenFileAsync(new OpenFileBrowserDialogRequest(
 			Loca.Picker_OpenModImportDialog_Title,
 			_dialogService.GetInitialStartingDirectory(Settings.LastImportDirectoryPath),
-			_importModFileTypes,
+			CommonFileTypes.ImportModFileTypes,
 			null,
 			true
 		));
@@ -503,7 +486,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		var dialogResult = await _dialogService.OpenFileAsync(new OpenFileBrowserDialogRequest(
 			Loca.Picker_OpenModIdsImportDialog_Title,
 			_dialogService.GetInitialStartingDirectory(Settings.LastImportDirectoryPath),
-			_importModFileTypes,
+			CommonFileTypes.ImportModFileTypes,
 			null,
 			true
 		));
