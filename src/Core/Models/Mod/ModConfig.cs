@@ -15,11 +15,21 @@ public partial class ModConfig : ReactiveObject, IObjectWithId
 	public bool IsLoaded { get; set; }
 	public string Id { get; set; }
 
-	[Reactive, DataMember] public partial string? Notes { get; set; }
+	[Reactive]
+	[property: DataMember]
+	public partial string? Notes { get; set; }
 
-	[Reactive, DataMember] public partial string? GitHub { get; set; }
-	[Reactive, DataMember] public partial long NexusModsId { get; set; }
-	[Reactive, DataMember] public partial string? ModioId { get; set; }
+	[Reactive]
+	[property: DataMember]
+	public partial string? GitHub { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public partial long NexusModsId { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public partial string? ModioId { get; set; }
 
 	[ObservableAsProperty] public partial string? GitHubAuthor { get; }
 	[ObservableAsProperty] public partial string? GitHubRepository { get; }

@@ -9,6 +9,12 @@ namespace ModManager.Models.Settings;
 [DataContract]
 public partial class ConfirmationSettings : ReactiveObject
 {
-	[Reactive, DataMember] public partial bool DisableAdminModeWarning { get; set; }
-	[Reactive, DataMember] public partial bool? OpenExtractedModFolder { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public partial bool DisableAdminModeWarning { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public partial bool? OpenExtractedModFolder { get; set; }
 }

@@ -115,7 +115,9 @@ public partial class LarianVersion : ReactiveObject
 	}
 #endif
 
-	[DataMember, Reactive] public partial string? Version { get; set; }
+	[Reactive]
+	[property: DataMember]
+	public partial string? Version { get; set; }
 
 	private void UpdateVersion() => Version = $"{Major}.{Minor}.{Revision}.{Build}";
 

@@ -5,8 +5,13 @@ namespace ModManager.Models.GitHub;
 [DataContract]
 public partial class GitHubModData : ReactiveObject
 {
-	[Reactive, DataMember] public partial string? Url { get; set; }
-	[Reactive, DataMember] public partial GitHubLatestReleaseData LatestRelease { get; set; }
+	[Reactive]
+	[property: DataMember]
+	public partial string? Url { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public partial GitHubLatestReleaseData LatestRelease { get; set; }
 
 	/// <summary>
 	/// True if Url is set.

@@ -13,10 +13,20 @@ namespace ModManager.Models.Modio;
 public partial class ModioModData : ReactiveObject
 {
 	[MemberNotNullWhen(true, nameof(IsEnabled))]
-	[Reactive, DataMember] public partial ModioMod? Data { get; set; }
 
-	[Reactive, DataMember] public partial uint Id { get; set; }
-	[Reactive, DataMember] public partial string? NameId { get; set; }
+	[Reactive]
+	[property: DataMember]
+	public partial ModioMod? Data { get; set; }
+
+
+	[Reactive]
+	[property: DataMember]
+	public partial uint Id { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public partial string? NameId { get; set; }
+
 	[Reactive] public partial bool IsEnabled { get; private set; }
 
 	[ObservableAsProperty] public partial string? Description { get; }

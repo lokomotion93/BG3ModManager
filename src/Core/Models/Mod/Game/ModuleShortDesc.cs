@@ -9,12 +9,29 @@ namespace ModManager.Models.Mod.Game;
 [DataContract]
 public class ModuleShortDesc : ReactiveObject, IModuleShortDesc
 {
-	[DataMember, Reactive] public string UUID { get; set; }
-	[DataMember, Reactive] public string? Name { get; set; }
-	[DataMember, Reactive] public string? Folder { get; set; }
-	[DataMember, Reactive] public string? MD5 { get; set; }
-	[DataMember, Reactive] public ulong PublishHandle { get; set; }
-	[DataMember, Reactive] public LarianVersion Version { get; set; }
+	[Reactive]
+	[property: DataMember]
+	public string UUID { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public string? Name { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public string? Folder { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public string? MD5 { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public ulong PublishHandle { get; set; }
+
+	[Reactive]
+	[property: DataMember]
+	public LarianVersion Version { get; set; }
 	public DateTimeOffset? LastModified { get; set; }
 
 	public override string ToString() => $"[ModuleShortDesc] Name({Name}) UUID({UUID}) Version({Version?.Version})";
