@@ -145,6 +145,11 @@ public partial class ModListViewModel : ReactiveObject
 		}
 	}
 
+	public void RemoveMods(IEnumerable<IModEntry> entries)
+	{
+		_mods.RemoveMany(entries);
+	}
+
 	public ModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
 		ObservableCollectionExtended<IModEntry> backingCollection,
 		IObservable<IChangeSet<IModEntry>> connection,
