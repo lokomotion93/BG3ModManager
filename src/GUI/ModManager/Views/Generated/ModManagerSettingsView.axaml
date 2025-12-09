@@ -14,16 +14,16 @@
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Grid.IsSharedSizeScope="True">
 		<TextBlock x:Name="DocumentsFolderPathOverrideTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DocumentsFolderPathOverride}" ToolTip.Tip="{manager:LocaleKey Settings_DocumentsFolderPathOverride_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="DocumentsFolderPathOverrideTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding DocumentsFolderPathOverride, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_DocumentsFolderPathOverride_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="DocumentsFolderPathOverrideTextBox" Grid.Row="0" Grid.Column="1" Classes="right" Text="{Binding DocumentsFolderPathOverride, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_DocumentsFolderPathOverride_ToolTip}"/>
 		
 		<TextBlock x:Name="GameDataPathTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_GameDataPath}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="GameDataPathTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding GameDataPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="GameDataPathTextBox" Grid.Row="1" Grid.Column="1" Classes="right" Text="{Binding GameDataPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
 		
 		<TextBlock x:Name="GameExecutablePathTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_GameExecutablePath}" ToolTip.Tip="{manager:LocaleKey Settings_GameExecutablePath_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="GameExecutablePathTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding GameExecutablePath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameExecutablePath_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="GameExecutablePathTextBox" Grid.Row="2" Grid.Column="1" Classes="right" Text="{Binding GameExecutablePath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameExecutablePath_ToolTip}"/>
 		
 		<TextBlock x:Name="LoadOrderPathTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_LoadOrderPath}" ToolTip.Tip="{manager:LocaleKey Settings_LoadOrderPath_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="LoadOrderPathTextBox" Grid.Row="3" Grid.Column="1" Classes="compact" Text="{Binding LoadOrderPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_LoadOrderPath_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="LoadOrderPathTextBox" Grid.Row="3" Grid.Column="1" Classes="right" Text="{Binding LoadOrderPath, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_LoadOrderPath_ToolTip}"/>
 		
 		<TextBlock x:Name="ActionOnGameLaunchTextBlock" Grid.Row="4" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ActionOnGameLaunch}" ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_ToolTip}" />
 		<ComboBox x:Name="ActionOnGameLaunchComboBox" Grid.Row="4" Grid.Column="1" Classes="right" SelectedIndex="{Binding ActionOnGameLaunchIndex, FallbackValue=0}" ToolTip.Tip="{manager:LocaleKey Settings_ActionOnGameLaunch_ToolTip}">
@@ -39,10 +39,10 @@
 		<CheckBox x:Name="CheckForUpdatesCheckBox" Grid.Row="6" Grid.Column="1" Classes="right" IsChecked ="{Binding CheckForUpdates}" ToolTip.Tip="{manager:LocaleKey Settings_CheckForUpdates_ToolTip}"/>
 		
 		<TextBlock x:Name="CustomLaunchActionTextBlock" Grid.Row="7" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_CustomLaunchAction}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchAction_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}" />
-		<controls:EnhancedTextBox x:Name="CustomLaunchActionTextBox" Grid.Row="7" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchAction, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchAction_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}"/>
+		<controls:EnhancedTextBox x:Name="CustomLaunchActionTextBox" Grid.Row="7" Grid.Column="1" Classes="right" Text="{Binding CustomLaunchAction, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchAction_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}"/>
 		
 		<TextBlock x:Name="CustomLaunchArgsTextBlock" Grid.Row="8" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_CustomLaunchArgs}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchArgs_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}" />
-		<controls:EnhancedTextBox x:Name="CustomLaunchArgsTextBox" Grid.Row="8" Grid.Column="1" Classes="compact" Text="{Binding CustomLaunchArgs, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchArgs_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}"/>
+		<controls:EnhancedTextBox x:Name="CustomLaunchArgsTextBox" Grid.Row="8" Grid.Column="1" Classes="right" Text="{Binding CustomLaunchArgs, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_CustomLaunchArgs_ToolTip}" IsVisible="{Binding IsCustomLaunchEnabled}"/>
 		
 		<TextBlock x:Name="DeleteModCrashSanityCheckTextBlock" Grid.Row="9" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_DeleteModCrashSanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_DeleteModCrashSanityCheck_ToolTip}" />
 		<CheckBox x:Name="DeleteModCrashSanityCheckCheckBox" Grid.Row="9" Grid.Column="1" Classes="right" IsChecked ="{Binding DeleteModCrashSanityCheck}" ToolTip.Tip="{manager:LocaleKey Settings_DeleteModCrashSanityCheck_ToolTip}"/>

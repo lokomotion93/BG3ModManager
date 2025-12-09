@@ -14,13 +14,13 @@
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Grid.IsSharedSizeScope="True">
 		<TextBlock x:Name="CustomProfileTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_CustomProfile}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_CustomProfile_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="CustomProfileTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding CustomProfile, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_CustomProfile_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="CustomProfileTextBox" Grid.Row="0" Grid.Column="1" Classes="right" Text="{Binding CustomProfile, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_CustomProfile_ToolTip}"/>
 		
 		<TextBlock x:Name="LogDirectoryTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LogDirectory}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogDirectory_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="LogDirectoryTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding LogDirectory, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogDirectory_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="LogDirectoryTextBox" Grid.Row="1" Grid.Column="1" Classes="right" Text="{Binding LogDirectory, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LogDirectory_ToolTip}"/>
 		
 		<TextBlock x:Name="LuaBuiltinResourceDirectoryTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_LuaBuiltinResourceDirectory}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LuaBuiltinResourceDirectory_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
-		<controls:EnhancedTextBox x:Name="LuaBuiltinResourceDirectoryTextBox" Grid.Row="2" Grid.Column="1" Classes="compact" Text="{Binding LuaBuiltinResourceDirectory, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LuaBuiltinResourceDirectory_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
+		<controls:EnhancedTextBox x:Name="LuaBuiltinResourceDirectoryTextBox" Grid.Row="2" Grid.Column="1" Classes="right" Text="{Binding LuaBuiltinResourceDirectory, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_LuaBuiltinResourceDirectory_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>
 		
 		<TextBlock x:Name="ClearOnResetTextBlock" Grid.Row="3" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_Extender_ClearOnReset}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ClearOnReset_ToolTip}" IsVisible="{Binding DevOptionsEnabled}" />
 		<CheckBox x:Name="ClearOnResetCheckBox" Grid.Row="3" Grid.Column="1" Classes="right" IsChecked ="{Binding ClearOnReset}" ToolTip.Tip="{manager:LocaleKey Settings_Extender_ClearOnReset_ToolTip}" IsVisible="{Binding DevOptionsEnabled}"/>

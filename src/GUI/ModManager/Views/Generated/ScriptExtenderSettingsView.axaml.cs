@@ -4,7 +4,7 @@ using ModManager.Models.Settings;
 
 namespace ModManager.Views.Generated;
 
-public partial class ScriptExtenderSettingsView : GeneratedUserControl<ScriptExtenderSettings>
+public partial class ScriptExtenderSettingsView : ProtectedUserControl<ScriptExtenderSettings>
 {
 	public ScriptExtenderSettingsView()
 	{

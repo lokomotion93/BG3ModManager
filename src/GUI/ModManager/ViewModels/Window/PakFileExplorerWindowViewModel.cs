@@ -444,15 +444,6 @@ public class PakFileExplorerWindowViewModel : BaseProgressViewModel, IClosableVi
 
 		CopyToClipboardCommand = _commands.CopyToClipboardCommand;
 
-		//AddModCommand = ReactiveCommand.CreateFromTask(async () =>
-		//{
-		//	var results = await AppServices.Interactions.PickMods.Handle(new(Loca.Window_PakFileExplorer_Picker_AddMod_Title));
-		//	if(results.Confirmed)
-		//	{
-		//		await LoadModsAsync(results.Mods, CancellationToken.None);
-		//	}
-		//});
-
 		OpenFileBrowserCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
 			if (_dialogService != null)

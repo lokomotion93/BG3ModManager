@@ -4,7 +4,7 @@ using ModManager.Models.Settings;
 
 namespace ModManager.Views.Generated;
 
-public partial class ModManagerSettingsView : GeneratedUserControl<ModManagerSettings>
+public partial class ModManagerSettingsView : ProtectedUserControl<ModManagerSettings>
 {
 	public ModManagerSettingsView()
 	{

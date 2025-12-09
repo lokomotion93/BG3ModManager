@@ -14,10 +14,10 @@
 	mc:Ignorable="d">
 	<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Grid.IsSharedSizeScope="True">
 		<TextBlock x:Name="ModioAPIKeyTextBlock" Grid.Row="0" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_ModioAPIKey}" ToolTip.Tip="{manager:LocaleKey Settings_ModioAPIKey_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="ModioAPIKeyTextBox" Grid.Row="0" Grid.Column="1" Classes="compact" Text="{Binding ModioAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_ModioAPIKey_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="ModioAPIKeyTextBox" Grid.Row="0" Grid.Column="1" Classes="right" Text="{Binding ModioAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_ModioAPIKey_ToolTip}"/>
 		
 		<TextBlock x:Name="NexusModsAPIKeyTextBlock" Grid.Row="1" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_NexusModsAPIKey}" ToolTip.Tip="{manager:LocaleKey Settings_NexusModsAPIKey_ToolTip}" />
-		<controls:EnhancedTextBox x:Name="NexusModsAPIKeyTextBox" Grid.Row="1" Grid.Column="1" Classes="compact" Text="{Binding NexusModsAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_NexusModsAPIKey_ToolTip}"/>
+		<controls:EnhancedTextBox x:Name="NexusModsAPIKeyTextBox" Grid.Row="1" Grid.Column="1" Classes="right" Text="{Binding NexusModsAPIKey, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_NexusModsAPIKey_ToolTip}"/>
 		
 		<TextBlock x:Name="AllowAdultContentTextBlock" Grid.Row="2" Grid.Column="0" Classes="left" Text="{manager:LocaleKey Settings_AllowAdultContent}" ToolTip.Tip="{manager:LocaleKey Settings_AllowAdultContent_ToolTip}" />
 		<CheckBox x:Name="AllowAdultContentCheckBox" Grid.Row="2" Grid.Column="1" Classes="right" IsChecked ="{Binding AllowAdultContent}" ToolTip.Tip="{manager:LocaleKey Settings_AllowAdultContent_ToolTip}"/>
