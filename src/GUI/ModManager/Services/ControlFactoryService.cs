@@ -33,33 +33,40 @@ public class ControlFactoryService(ILocaleService localeService, IFusionCache ca
 
 			string? finalPath = null;
 
-			//Remote icons
-			if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
+			if (!path.StartsWith("avares://", StringComparison.OrdinalIgnoreCase))
 			{
-				finalPath = path;
-			}
-			else
-			{
-				if (!fs.Path.IsPathRooted(path))
-				{
-					string potentialPath;
-					if (fromRelativePath.IsValid())
-					{
-						potentialPath = DivinityApp.GetAppDirectory(fromRelativePath, path);
-					}
-					else
-					{
-						potentialPath = DivinityApp.GetAppDirectory(path);
-					}
-					if (fs.File.Exists(potentialPath))
-					{
-						finalPath = potentialPath;
-					}
-				}
-				else
+				//Remote icons
+				if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
 				{
 					finalPath = path;
 				}
+				else
+				{
+					if (!fs.Path.IsPathRooted(path))
+					{
+						string potentialPath;
+						if (fromRelativePath.IsValid())
+						{
+							potentialPath = DivinityApp.GetAppDirectory(fromRelativePath, path);
+						}
+						else
+						{
+							potentialPath = DivinityApp.GetAppDirectory(path);
+						}
+						if (fs.File.Exists(potentialPath))
+						{
+							finalPath = potentialPath;
+						}
+					}
+					else
+					{
+						finalPath = path;
+					}
+				}
+			}
+			else
+			{
+				finalPath = path;
 			}
 
 			if (finalPath != null)

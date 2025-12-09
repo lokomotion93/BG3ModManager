@@ -10,17 +10,6 @@ namespace ModManager.ViewModels.Settings
     public partial class ModContainerSettingsViewModel
     {
         
-        private string _name;
-        /// <inheritdoc cref="_name"/>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
-        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public partial string Name
-        { 
-            get => _name;
-            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_name")]
-            set => this.RaiseAndSetIfChanged(ref _name, value);
-        }
-        
         private bool _isVisible;
         /// <inheritdoc cref="_isVisible"/>
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
@@ -32,6 +21,17 @@ namespace ModManager.ViewModels.Settings
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public partial double BorderThicknessPicker { get => _borderThicknessPicker; set => this.RaiseAndSetIfChanged(ref _borderThicknessPicker, value); }
+        
+        private global::ModManager.Models.Mod.ModContainerSettings? _target;
+        /// <inheritdoc cref="_target"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial global::ModManager.Models.Mod.ModContainerSettings? Target
+        { 
+            get => _target;
+            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_target")]
+            set => this.RaiseAndSetIfChanged(ref _target, value);
+        }
     }
 }
 #nullable restore

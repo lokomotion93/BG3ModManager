@@ -12,6 +12,12 @@ namespace ModManager.Views.Settings
         internal global::Avalonia.Controls.Border IconBorder;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         internal global::Avalonia.Controls.ContentControl IconPresenter;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::Avalonia.Controls.RadioButton PathIconTypeRadioButton;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::Avalonia.Controls.RadioButton MaterialIconTypeRadioButton;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::ModManager.Controls.EnhancedTextBox PathTextBox;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -30,6 +36,9 @@ namespace ModManager.Views.Settings
             var __thisNameScope__ = this.FindNameScope();
             IconBorder = __thisNameScope__?.Find<global::Avalonia.Controls.Border>("IconBorder");
             IconPresenter = __thisNameScope__?.Find<global::Avalonia.Controls.ContentControl>("IconPresenter");
+            PathIconTypeRadioButton = __thisNameScope__?.Find<global::Avalonia.Controls.RadioButton>("PathIconTypeRadioButton");
+            MaterialIconTypeRadioButton = __thisNameScope__?.Find<global::Avalonia.Controls.RadioButton>("MaterialIconTypeRadioButton");
+            PathTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("PathTextBox");
         }
     }
 }

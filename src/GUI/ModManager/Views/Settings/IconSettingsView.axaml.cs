@@ -6,7 +6,7 @@ using ModManager.ViewModels.Settings;
 
 namespace ModManager.Views.Settings;
 
-public partial class IconSettingsView : ReactiveUserControl<IconSettingsViewModel>
+public partial class IconSettingsView : ProtectedUserControl<IconSettingsViewModel>
 {
 	private static readonly Thickness _defaultThickness = new(0);
 
@@ -32,13 +32,15 @@ public partial class IconSettingsView : ReactiveUserControl<IconSettingsViewMode
 #if DEBUG
 		this.DesignSetup();
 #endif
-		_iconManager = new(IconPresenter);
+		_iconManager = new(IconPresenter, 3);
 
 		this.WhenActivated(d =>
 		{
 			if (ViewModel != null)
 			{
 				var fallbackBrush = ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush");
+
+				//PathTextBox[!TextBox.TextProperty] = ViewModel.Settings.WhenAnyValue(x => x.Path).ToBinding();
 
 				IconBorder.BorderThickness = _defaultThickness;
 				IconBorder[!BorderBrushProperty] = ViewModel.Settings.WhenAnyValue(x => x.BorderColor, x => ColorBrushCache.GetBrush(x, fallbackBrush)).ToBinding();
@@ -47,20 +49,27 @@ public partial class IconSettingsView : ReactiveUserControl<IconSettingsViewMode
 
 				IconBorder[!BorderThicknessProperty] = ViewModel.Settings.WhenAnyValue(x => x.BorderThickness, StringToThickness).ToBinding();
 
-				d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
-					h => (sender, e) => h(e),
-					h => Unloaded += h,
-					h => Unloaded -= h
-				).Subscribe(_ => _iconManager.Dispose()));
+				//d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
+				//	h => (sender, e) => h(e),
+				//	h => Unloaded += h,
+				//	h => Unloaded -= h
+				//).Subscribe(_ => _iconManager.Dispose()));
 
-				d(Observable.FromEvent<EventHandler<VisualTreeAttachmentEventArgs>, VisualTreeAttachmentEventArgs>(
-					h => (sender, e) => h(e),
-					h => DetachedFromVisualTree += h,
-					h => DetachedFromVisualTree -= h
-				).Subscribe(_ => _iconManager.Dispose()));
+				//d(Observable.FromEvent<EventHandler<VisualTreeAttachmentEventArgs>, VisualTreeAttachmentEventArgs>(
+				//	h => (sender, e) => h(e),
+				//	h => DetachedFromVisualTree += h,
+				//	h => DetachedFromVisualTree -= h
+				//).Subscribe(_ => _iconManager.Dispose()));
 
-				//ViewModel.BrowseForImageCommand
-				_iconManager.Load(ViewModel.Settings);
+				d(ViewModel.RenderImageCommand.IsExecuting.ObserveOn(RxApp.MainThreadScheduler).Subscribe(b =>
+				{
+					if (!b) _iconManager.Load(ViewModel.Settings);
+				}));
+
+				d(ViewModel.ClearImageCommand.IsExecuting.ObserveOn(RxApp.MainThreadScheduler).Subscribe(b =>
+				{
+					if (!b) _iconManager.Dispose();
+				}));
 			}
 		});
 	}

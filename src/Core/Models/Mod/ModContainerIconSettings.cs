@@ -1,7 +1,11 @@
-﻿using System.ComponentModel;
+﻿using DynamicData.Binding;
+
+using System.ComponentModel;
+using System.Reactive.Subjects;
 
 namespace ModManager.Models.Mod;
 
+[DataContract]
 public partial class ModContainerIconSettings : ReactiveObject
 {
 	[Reactive]
@@ -31,4 +35,19 @@ public partial class ModContainerIconSettings : ReactiveObject
 	[Reactive]
 	[property: DataMember, DefaultValue(null)]
 	public partial string? Size { get; set; }
+
+	[Reactive]
+	[property: JsonIgnore]
+	public partial bool IsDirty { get; set; }
+
+	public ModContainerIconSettings()
+	{
+		this.WhenAnyPropertyChanged(nameof(Path), nameof(Kind), nameof(ForegroundColor), nameof(BackgroundColor), nameof(BorderThickness), nameof(Size))
+			.Throttle(TimeSpan.FromTicks(5))
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.Subscribe(_ =>
+			{
+				IsDirty = true;
+			});
+	}
 }

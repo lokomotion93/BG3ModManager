@@ -12,7 +12,7 @@ namespace ModManager.ViewModels.Settings
 
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveCommandGenerator", "2.5.0.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public ReactiveUI.ReactiveCommand<global::System.Reactive.Unit, global::System.Reactive.Unit> ApplyCommand { get => _applyCommand ??= ReactiveUI.ReactiveCommand.Create(Apply, _hasTargetObs); }
+        public ReactiveUI.ReactiveCommand<global::System.Reactive.Unit, global::System.Reactive.Unit> ApplyCommand { get => _applyCommand ??= ReactiveUI.ReactiveCommand.Create(Apply, _hasTargetObs, outputScheduler: RxApp.MainThreadScheduler); }
     }
 }
 #nullable restore

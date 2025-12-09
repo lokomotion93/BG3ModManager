@@ -10,6 +10,17 @@ namespace ModManager.ViewModels.Settings
     public partial class IconSettingsViewModel
     {
         
+        private global::ModManager.Models.Mod.ModContainerIconSettings _settings;
+        /// <inheritdoc cref="_settings"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial global::ModManager.Models.Mod.ModContainerIconSettings Settings
+        { 
+            get => _settings;
+            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_settings")]
+            private set => this.RaiseAndSetIfChanged(ref _settings, value);
+        }
+        
         private global::ModManager.Models.Mod.ModContainerIconSettings? _target;
         /// <inheritdoc cref="_target"/>
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
@@ -20,6 +31,30 @@ namespace ModManager.ViewModels.Settings
             [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_target")]
             private set => this.RaiseAndSetIfChanged(ref _target, value);
         }
+        
+        private bool _isExpanded;
+        /// <inheritdoc cref="_isExpanded"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial bool IsExpanded { get => _isExpanded; set => this.RaiseAndSetIfChanged(ref _isExpanded, value); }
+        
+        private bool _isPathIconType;
+        /// <inheritdoc cref="_isPathIconType"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial bool IsPathIconType { get => _isPathIconType; set => this.RaiseAndSetIfChanged(ref _isPathIconType, value); }
+        
+        private bool _isMaterialIconType;
+        /// <inheritdoc cref="_isMaterialIconType"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial bool IsMaterialIconType { get => _isMaterialIconType; set => this.RaiseAndSetIfChanged(ref _isMaterialIconType, value); }
+        
+        private int _selectedMaterialIconIndex;
+        /// <inheritdoc cref="_selectedMaterialIconIndex"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial int SelectedMaterialIconIndex { get => _selectedMaterialIconIndex; set => this.RaiseAndSetIfChanged(ref _selectedMaterialIconIndex, value); }
     }
 }
 #nullable restore

@@ -545,7 +545,7 @@ You have version {2} installed.</value>
 		<value>Container ({0} Children)</value>
 	</data>
 	<data name="ModContainerSettingsView_Title" xml:space="preserve">
-		<value>{0} Settings</value>
+		<value>Container Settings</value>
 	</data>
 	<data name="MessageBox_DontAskAgain" xml:space="preserve">
 		<value>Don't Ask Again</value>

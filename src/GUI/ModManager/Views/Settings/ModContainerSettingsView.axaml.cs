@@ -18,7 +18,22 @@ public partial class ModContainerSettingsView : ReactiveUserControl<ModContainer
     {
         InitializeComponent();
 
-		ViewModel = new ModContainerSettingsViewModel();
+#if DEBUG
+		this.DesignSetup();
+#endif
+
+		if (!Design.IsDesignMode)
+		{
+			ViewModel = AppServices.Get<ModContainerSettingsViewModel>();
+		}
+		//var vmBinding = ViewModel.WhenAnyValue(x => x.Icon).ToBinding();
+		//IconSettings[!DataContextProperty] = vmBinding;
+		//IconSettings[!ViewModelProperty] = vmBinding;
+
+		IconExpander.Loaded += (o, e) =>
+		{
+			IconExpander.Content = new IconSettingsView() { ViewModel = ViewModel.Icon };
+		};
 
 		this.WhenActivated(d =>
 		{

@@ -51,7 +51,7 @@ public readonly record struct SettingsViewToGenerate
 		code.AppendLine(string.Empty);
 		code.AppendLine("namespace ModManager.Views.Generated;");
 		code.AppendLine(string.Empty);
-		code.AppendLine($"public partial class {DisplayName} : GeneratedUserControl<{TypeName}>");
+		code.AppendLine($"public partial class {DisplayName} : ProtectedUserControl<{TypeName}>");
 		code.StartScope();
 		code.AppendLine($"public {DisplayName}()");
 		code.StartScope();
@@ -170,7 +170,7 @@ public readonly record struct SettingsViewToGenerate
 					controlText = $"<CheckBox x:Name=\"{controlName}CheckBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" IsChecked =\"{{Binding {bindTo}}}\"{tooltipControlText}";
 					break;
 				case "String":
-					controlText = $"<controls:EnhancedTextBox x:Name=\"{controlName}TextBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"compact\" Text=\"{{Binding {bindTo}, UpdateSourceTrigger=LostFocus}}\"{tooltipControlText}";
+					controlText = $"<controls:EnhancedTextBox x:Name=\"{controlName}TextBox\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Text=\"{{Binding {bindTo}, UpdateSourceTrigger=LostFocus}}\"{tooltipControlText}";
 					break;
 				case "TimeSpan":
 					controlText = $"<controls:TimeSpanUpDown x:Name=\"{controlName}TimeSpanUpDown\" Grid.Row=\"{totalRows}\" Grid.Column=\"1\" Classes=\"right\" Value=\"{{Binding {bindTo}}}\"{tooltipControlText}";

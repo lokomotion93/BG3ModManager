@@ -4,6 +4,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 xmlns:vm="using:ModManager.ViewModels.Settings"
+			 xmlns:m="using:ModManager.Models.View"
 			 xmlns:local="using:ModManager.Views.Settings"
 			 xmlns:manager="using:ModManager"
 			 xmlns:controls="using:ModManager.Controls"
@@ -11,34 +12,89 @@
 			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
 			 x:DataType="vm:IconSettingsViewModel"
 			 x:Class="ModManager.Views.Settings.IconSettingsView">
+	<Design.DataContext>
+		<vm:DesignIconSettingsViewModel />
+	</Design.DataContext>
+	<UserControl.Styles>
+		<!--<Style Selector="TextBlock">
+			<Setter Property="FontSize" Value="10" />
+		</Style>
+		<Style Selector="controls|EnhancedTextBox">
+			<Setter Property="FontSize" Value="10" />
+			<Setter Property="VerticalAlignment" Value="Bottom" />
+		</Style>
+		<Style Selector="RadioButton">
+			<Setter Property="FontSize" Value="10" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>-->
+		<Style Selector="ColorPicker">
+			<Setter Property="VerticalAlignment" Value="Top" />
+			<Setter Property="HorizontalAlignment" Value="Stretch" />
+			<Setter Property="Margin" Value="4,4,0,0" />
+		</Style>
+	</UserControl.Styles>
 	<Grid RowDefinitions="auto,*">
-		<Border Grid.Column="1" BorderThickness="0" x:Name="IconBorder" Margin="12" Padding="32" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<Border Grid.Column="1" BorderThickness="0" x:Name="IconBorder" Margin="12" MinWidth="64" MinHeight="64" HorizontalAlignment="Center" VerticalAlignment="Center">
 			<ContentControl x:Name="IconPresenter" />
 		</Border>
-		<controls:AutoGrid Grid.Row="1" Margin="10,0"
-						   ColumnDefinitions="auto,*"
-						   RowCount="6"
-						   RowHeight="auto">
-			<TextBlock Text="Kind" Classes="left" />
-			<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.Kind, UpdateSourceTrigger=LostFocus}"/>
+		<controls:AutoGrid 
+			Grid.Row="1" 
+			Margin="10,0"
+			ColumnDefinitions="auto,*"
+			RowCount="6"
+			RowSpacing="8"
+			RowHeight="auto">
 
-			<TextBlock Text="Image Path" Classes="left" />
-			<Grid ColumnDefinitions="*,auto">
-				<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.Path, UpdateSourceTrigger=LostFocus}"/>
-				<Button Grid.Column="1" Content="..." VerticalAlignment="Stretch" HorizontalAlignment="Center" Margin="2,0,0,0" Padding="12,0" Command="{Binding BrowseForImageCommand}" />
+			<TextBlock Text="Image Type" />
+			<UniformGrid>
+				<RadioButton x:Name="PathIconTypeRadioButton" Content="File or URL" GroupName="IconType" IsChecked="{Binding IsPathIconType}" />
+				<RadioButton x:Name="MaterialIconTypeRadioButton" Content="Material Icon" GroupName="IconType" IsChecked="{Binding IsMaterialIconType}" />
+			</UniformGrid>
+
+			<TextBlock Text="Image Path" Classes="left" IsVisible="{Binding IsPathIconType}" />
+			<Grid ColumnDefinitions="*,auto" IsVisible="{Binding IsPathIconType}">
+				<controls:EnhancedTextBox  x:Name="PathTextBox" Classes="right" Text="{Binding Settings.Path, UpdateSourceTrigger=LostFocus}"/>
+				<Button Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="4,4,0,0" Width="64" Height="32" Command="{Binding BrowseForImageCommand}">
+					<TextBlock Text="..." />
+				</Button>
 			</Grid>
 
+			<TextBlock Text="Material Icon" Classes="left" IsVisible="{Binding IsMaterialIconType}" />
+			<!-- Replace with a searchable combo-box that displays the icons -->
+			<!--<controls:EnhancedTextBox x:Name="KindTextBox" Classes="compact" Text="{Binding Settings.Kind, UpdateSourceTrigger=LostFocus}"/>-->
+			<ComboBox Classes="right" IsVisible="{Binding IsMaterialIconType}" ItemsSource="{Binding MaterialIcons}" SelectedIndex="{Binding SelectedMaterialIconIndex}" TextSearch.Text="Item.Name" IsEditable="True" IsTextSearchEnabled="True" PlaceholderText="Kind" HorizontalAlignment="Stretch">
+				<ComboBox.DataTemplates>
+					<DataTemplate DataType="m:MaterialIconEntry">
+						<materialIcons:MaterialIconText Kind="{Binding Kind}" Text="{Binding Name}" />
+					</DataTemplate>
+				</ComboBox.DataTemplates>
+			</ComboBox>
+
 			<TextBlock Text="Foreground Color" Classes="left" />
-			<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.ForegroundColor, UpdateSourceTrigger=LostFocus}" />
+			<Grid ColumnDefinitions="*,auto" Classes="right" HorizontalAlignment="Stretch">
+				<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.ForegroundColor, UpdateSourceTrigger=LostFocus}" Foreground="{Binding ForegroundColorBrush}" />
+				<ColorPicker Grid.Column="1" Color="{Binding Settings.ForegroundColor, Converter={StaticResource StringToColorConverter}}" />
+			</Grid>
 
 			<TextBlock Text="Background Color" Classes="left" />
-			<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BackgroundColor, UpdateSourceTrigger=LostFocus}" />
+			<Grid ColumnDefinitions="*,auto" Classes="right" HorizontalAlignment="Stretch">
+				<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.BackgroundColor, UpdateSourceTrigger=LostFocus}" Foreground="{Binding BackgroundColorBrush}" />
+				<ColorPicker Grid.Column="1" Color="{Binding Settings.BackgroundColor, Converter={StaticResource StringToColorConverter}}" />
+			</Grid>
 
 			<TextBlock Text="Border Color" Classes="left" />
-			<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderColor, UpdateSourceTrigger=LostFocus}" />
+			<Grid ColumnDefinitions="*,auto" Classes="right" HorizontalAlignment="Stretch">
+				<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.BorderColor, UpdateSourceTrigger=LostFocus}" Foreground="{Binding BorderColorBrush}" />
+				<ColorPicker Grid.Column="1" Color="{Binding Settings.BorderColor, Converter={StaticResource StringToColorConverter}}" />
+			</Grid>
 
 			<TextBlock Text="Border Thickness" Classes="left" />
-			<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderThickness, UpdateSourceTrigger=LostFocus}" />
+			<Grid ColumnDefinitions="1*,8,2*">
+				<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.BorderThickness, UpdateSourceTrigger=LostFocus}" />
+				<Border Grid.Column="2" Margin="0,-4,0,0" Background="Transparent" BorderBrush="{Binding BorderColorBrush}" BorderThickness="{Binding BorderThickness}">
+					<Rectangle Stretch="Fill" Fill="{DynamicResource SukiPopupBackground}" Opacity="0.5" Height="32" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+				</Border>
+			</Grid>
 		</controls:AutoGrid>
 	</Grid>
 </UserControl>

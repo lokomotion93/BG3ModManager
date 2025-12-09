@@ -2,7 +2,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="764"
 			 xmlns:vm="using:ModManager.ViewModels.Settings"
 			 xmlns:local="using:ModManager.Views.Settings"
 			 xmlns:manager="using:ModManager"
@@ -11,56 +11,101 @@
 			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
 			 x:Class="ModManager.Views.Settings.ModContainerSettingsView">
+	<Design.DataContext>
+		<vm:DesignModContainerSettingsViewModel />
+	</Design.DataContext>
+	<UserControl.Styles>
+		<Style Selector="controls|EnhancedTextBox">
+			<Style Selector="^:pointerover">
+				<Setter Property="Foreground" Value="{DynamicResource SukiText}" />
+			</Style>
+		</Style>
+	</UserControl.Styles>
 	<Panel>
 		<suki:SukiBackground IsHitTestVisible="False" />
 		<suki:GlassCard CornerRadius="0" IsOpaque="True">
 			<Grid RowDefinitions="Auto,*,Auto">
-				<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+				<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
 					<TextBlock FontSize="24"
-							   Text="{Binding Name}"
+							   Text="{manager:LocaleKey ModContainerSettingsView_Title}"
 							   TextAlignment="Center"
-							   TextWrapping="Wrap" />
-					<Rectangle Height="2" Fill="LightGray" />
+							   TextWrapping="Wrap">
+						<TextBlock.Effect>
+							<DropShadowDirectionEffect BlurRadius="4"
+													   Direction="-150"
+													   Opacity="0.8"
+													   ShadowDepth="10"
+													   Color="Black" />
+						</TextBlock.Effect></TextBlock>
+					<Rectangle Height="2" Fill="LightGray">
+						<Rectangle.Effect>
+							<DropShadowDirectionEffect BlurRadius="4"
+                                Direction="-150"
+                                Opacity="0.8"
+                                ShadowDepth="10"
+                                Color="Black" />
+						</Rectangle.Effect>
+					</Rectangle>
+					<TextBlock FontSize="18"
+							   Text="{Binding Settings.DisplayName}"
+							   Margin="0,6"
+							   Foreground="Orange"
+							   FontStyle="Italic"
+							   TextAlignment="Center"
+							   TextWrapping="Wrap">
+						<TextBlock.Effect>
+							<DropShadowDirectionEffect BlurRadius="4"
+													   Direction="-150"
+													   Opacity="0.8"
+													   ShadowDepth="10"
+													   Color="Black" />
+						</TextBlock.Effect>
+					</TextBlock>
 				</StackPanel>
-				<controls:AutoGrid Margin="10,0"
-						    ColumnDefinitions="auto,*"
-						    RowCount="7"
-							Grid.Row="1"
-						    RowHeight="auto">
+				<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+					<controls:AutoGrid Margin="10,0"
+									   ColumnDefinitions="auto,*"
+									   RowCount="7"
+									   RowHeight="auto">
 
-					<TextBlock Text="Name" Classes="left" />
-					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.DisplayName, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
+						<TextBlock Text="Name" Classes="left" />
+						<controls:EnhancedTextBox Classes="right" TextWrapping="Wrap" Text="{Binding Settings.DisplayName, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
 
-					<TextBlock Text="Description" Classes="left" />
-					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.Description, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
+						<TextBlock Text="Description" Classes="left" />
+						<controls:EnhancedTextBox Classes="right" TextWrapping="Wrap" Text="{Binding Settings.Description, UpdateSourceTrigger=LostFocus}" ToolTip.Tip="{manager:LocaleKey Settings_GameDataPath_ToolTip}"/>
 
-					<Expander Header="Icon" Grid.ColumnSpan="2">
-						<local:IconSettingsView ViewModel="{Binding Icon}" />
-					</Expander>
-					
+						<TextBlock Text="Foreground Color" Classes="left" />
+						<Grid ColumnDefinitions="*,auto" Classes="right" HorizontalAlignment="Stretch">
+							<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.ForegroundColor, UpdateSourceTrigger=LostFocus}" Foreground="{Binding ForegroundColorBrush}" />
+							<ColorPicker Grid.Column="1" Color="{Binding Settings.ForegroundColor, Converter={StaticResource StringToColorConverter}}" />
+						</Grid>
 
-					<TextBlock Text="Foreground Color" Classes="left" />
-					<Grid ColumnDefinitions="*,auto" Classes="right">
-						<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.ForegroundColor, UpdateSourceTrigger=LostFocus}" />
-						<ColorPicker Grid.Column="1" Color="{Binding Settings.ForegroundColor, Converter={StaticResource StringToColorConverter}}" />
-					</Grid>
+						<TextBlock Text="Background Color" Classes="left" />
+						<Grid ColumnDefinitions="*,auto" Classes="right" HorizontalAlignment="Stretch">
+							<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.BackgroundColor, UpdateSourceTrigger=LostFocus}" Foreground="{Binding BackgroundColorBrush}" />
+							<ColorPicker Grid.Column="1" Color="{Binding Settings.BackgroundColor, Converter={StaticResource StringToColorConverter}}" />
+						</Grid>
 
-					<TextBlock Text="Background Color" Classes="left" />
-					<Grid ColumnDefinitions="*,auto" Classes="right">
-						<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BackgroundColor, UpdateSourceTrigger=LostFocus}" />
-						<ColorPicker Grid.Column="1" Color="{Binding Settings.BackgroundColor, Converter={StaticResource StringToColorConverter}}" />
-					</Grid>
-					
+						<TextBlock Text="Border Color" Classes="left" />
+						<Grid ColumnDefinitions="*,auto" Classes="right" HorizontalAlignment="Stretch">
+							<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.BorderColor, UpdateSourceTrigger=LostFocus}" Foreground="{Binding BorderColorBrush}" />
+							<ColorPicker Grid.Column="1" Color="{Binding Settings.BorderColor, Converter={StaticResource StringToColorConverter}}" />
+						</Grid>
 
-					<TextBlock Text="Border Color" Classes="left" />
-					<Grid ColumnDefinitions="*,auto" Classes="right">
-						<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderColor, UpdateSourceTrigger=LostFocus}" />
-						<ColorPicker Grid.Column="1" Color="{Binding Settings.BorderColor, Converter={StaticResource StringToColorConverter}}" />
-					</Grid>
+						<TextBlock Text="Border Thickness" Classes="left" />
+						<Grid ColumnDefinitions="1*,8,2*">
+							<controls:EnhancedTextBox Classes="right" Text="{Binding Settings.BorderThickness, UpdateSourceTrigger=LostFocus}" />
+							<Border Grid.Column="2" Margin="0,2,0,0" VerticalAlignment="Top" Height="32" Background="Transparent" BorderBrush="{Binding BorderColorBrush}" BorderThickness="{Binding BorderThickness}">
+								<Rectangle Stretch="Fill" Fill="#CCCCCC" Opacity="0.1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+							</Border>
+						</Grid>
 
-					<TextBlock Text="Border Thickness" Classes="left" />
-					<controls:EnhancedTextBox Classes="compact" Text="{Binding Settings.BorderThickness, UpdateSourceTrigger=LostFocus}" />
-				</controls:AutoGrid>
+						<Expander x:Name="IconExpander" Header="Icon" Grid.ColumnSpan="2" IsExpanded="{Binding Icon.IsExpanded}">
+							<!--<local:IconSettingsView x:Name="IconSettings" />-->
+						</Expander>
+					</controls:AutoGrid>
+
+				</ScrollViewer>
 				<UniformGrid Grid.Row="2"
 							 Margin="4"
 							 HorizontalAlignment="Center"

@@ -39,11 +39,11 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 
 	public RxCommandUnit ToggleForceAllowInLoadOrderCommand { get; }
 	public RxCommandUnit ToggleNameDisplayCommand { get; }
+	public RxCommandUnit RenderIconCommand { get; }
 
 	[ObservableAsProperty] public partial string? DisplayName { get; }
 	[ObservableAsProperty] public partial string? Description { get; }
 	[ObservableAsProperty] public partial string? ContainerToolTipTitleText { get; }
-	[ObservableAsProperty] public partial ModContainerIconSettings? Icon { get; }
 	[ObservableAsProperty] public partial bool CanForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public partial bool ForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public partial bool DisplayFileForName { get; }
@@ -191,8 +191,7 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 		_descriptionHelper = Settings.WhenAnyValue(x => x.Description).ToUIProperty(this, x => x.Description);
 		_hasDescriptionHelper = this.WhenAnyValue(x => x.Description, Validators.IsValid).ToUIProperty(this, x => x.HasDescription, false);
 
-		_iconHelper = Settings.WhenAnyValue(x => x.Icon).ToUIProperty(this, x => x.Icon);
-		_hasIconHelper = this.WhenAnyValue(x => x.Icon).Select(x => x != null).ToUIProperty(this, x => x.HasIcon);
+		_hasIconHelper = Settings.WhenAnyValue(x => x.Icon).Select(x => x != null).ToUIProperty(this, x => x.HasIcon);
 
 		Settings.WhenAnyValue(x => x.IsExpanded).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.IsExpanded);
 		this.WhenAnyValue(x => x.IsExpanded).BindTo(Settings, x => x.IsExpanded);
@@ -227,6 +226,14 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 			var b = !DisplayFileForName;
 			SetProperty(this, nameof(ModData.DisplayFileForName), b);
 		}, hasChildren);
+
+		RenderIconCommand = ReactiveCommand.Create(() => { Settings.Icon?.IsDirty = false; });
+
+		Settings.WhenAnyValue(x => x.Icon, x => x.Icon.IsDirty)
+			.Where(b => b.Item2 == true)
+			.Select(_ => Unit.Default)
+			.ObserveOn(RxApp.MainThreadScheduler)
+			.InvokeCommand(RenderIconCommand);
 
 		this.WhenAnyValue(x => x.EnableAutosaving).Subscribe(ToggleAutosaving);
 	}

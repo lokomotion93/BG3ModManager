@@ -23,7 +23,28 @@ public class ContentControlIconManager(ContentControl targetControl, double mult
 		Control? result = null;
 		if (iconSettings != null)
 		{
-			if (iconSettings.Kind.IsValid())
+			if (iconSettings.Path.IsValid())
+			{
+				var taskResult = await AppServices.ControlFactory.ImageFromPathAsync(iconSettings.Path, "Orders", token);
+				result = taskResult.Result;
+				if (taskResult.Stream != null)
+				{
+					_iconStream = taskResult.Stream;
+				}
+
+				if (result is TemplatedControl templatedControl)
+				{
+					if (iconSettings.ForegroundColor.IsValid())
+					{
+						var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
+						if (brush != null)
+						{
+							templatedControl.Foreground = brush;
+						}
+					}
+				}
+			}
+			if (result == null && iconSettings.Kind.IsValid())
 			{
 				var kind = iconSettings.Kind;
 				//Potential name taken from https://pictogrammers.com/library/mdi/
@@ -58,27 +79,6 @@ public class ContentControlIconManager(ContentControl targetControl, double mult
 					var msg = Loca.Alert_Error_ContainerIconMaterialKindParsing.SafeFormat("Container '{0}' has an invalid Icon.Kind value: \"{1}\"", Name, iconSettings.Kind);
 					AppServices.Commands.ShowAlert(msg, AlertType.Danger, 10);
 					DivinityApp.Log(kind);
-				}
-			}
-			else if (iconSettings.Path.IsValid())
-			{
-				var taskResult = await AppServices.ControlFactory.ImageFromPathAsync(iconSettings.Path, "Orders", token);
-				result = taskResult.Result;
-				if (taskResult.Stream != null)
-				{
-					_iconStream = taskResult.Stream;
-				}
-
-				if (result is TemplatedControl templatedControl)
-				{
-					if (iconSettings.ForegroundColor.IsValid())
-					{
-						var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
-						if (brush != null)
-						{
-							templatedControl.Foreground = brush;
-						}
-					}
 				}
 			}
 		}

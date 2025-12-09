@@ -27,6 +27,11 @@ namespace Splat
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Services.ControlFactoryService));
             }
             {
+                global::System.Lazy<ModManager.Services.IColorResourceService> lazy = new global::System.Lazy<ModManager.Services.IColorResourceService>(() => new global::ModManager.Services.ColorResourceService());
+                Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.Services.IColorResourceService>));
+                Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Services.IColorResourceService));
+            }
+            {
                 global::System.Lazy<ModManager.ViewModels.Main.MainWindowViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.Main.MainWindowViewModel>(() => new global::ModManager.ViewModels.Main.MainWindowViewModel((global::ModManager.IPathwaysService)resolver.GetService(typeof(global::ModManager.IPathwaysService)), (global::ModManager.ISettingsService)resolver.GetService(typeof(global::ModManager.ISettingsService)), (global::ModManager.Services.ModImportService)resolver.GetService(typeof(global::ModManager.Services.ModImportService)), (global::ModManager.IModManagerService)resolver.GetService(typeof(global::ModManager.IModManagerService)), (global::ModManager.IModUpdaterService)resolver.GetService(typeof(global::ModManager.IModUpdaterService)), (global::ModManager.INexusModsService)resolver.GetService(typeof(global::ModManager.INexusModsService)), (global::ModManager.IInteractionsService)resolver.GetService(typeof(global::ModManager.IInteractionsService)), (global::ModManager.IEnvironmentService)resolver.GetService(typeof(global::ModManager.IEnvironmentService)), (global::ModManager.Services.IFileSystemService)resolver.GetService(typeof(global::ModManager.Services.IFileSystemService)), (global::ModManager.IGlobalCommandsService)resolver.GetService(typeof(global::ModManager.IGlobalCommandsService)), (global::ModManager.IDialogService)resolver.GetService(typeof(global::ModManager.IDialogService))));
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.ViewModels.Main.MainWindowViewModel>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.Main.MainWindowViewModel));
@@ -125,6 +130,11 @@ namespace Splat
                 global::System.Lazy<ModManager.ViewModels.Mods.ModPickerViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.Mods.ModPickerViewModel>(() => new global::ModManager.ViewModels.Mods.ModPickerViewModel());
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.ViewModels.Mods.ModPickerViewModel>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.Mods.ModPickerViewModel));
+            }
+            {
+                global::System.Lazy<ModManager.ViewModels.Settings.ModContainerSettingsViewModel> lazy = new global::System.Lazy<ModManager.ViewModels.Settings.ModContainerSettingsViewModel>(() => new global::ModManager.ViewModels.Settings.ModContainerSettingsViewModel());
+                Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.ViewModels.Settings.ModContainerSettingsViewModel>));
+                Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.ViewModels.Settings.ModContainerSettingsViewModel));
             }
             {
                 global::System.Lazy<ModManager.Views.Main.MainCommandBar> lazy = new global::System.Lazy<ModManager.Views.Main.MainCommandBar>(() => new global::ModManager.Views.Main.MainCommandBar());

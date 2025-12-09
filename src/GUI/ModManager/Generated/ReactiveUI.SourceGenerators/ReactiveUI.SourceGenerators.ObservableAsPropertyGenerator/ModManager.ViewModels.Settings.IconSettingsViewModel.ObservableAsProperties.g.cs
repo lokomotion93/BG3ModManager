@@ -4,15 +4,8 @@
 namespace ModManager.ViewModels.Settings
 {
     
-    public partial class ModContainerSettingsViewModel
+    public partial class IconSettingsViewModel
     {
-        /// <inheritdoc cref="_hasTargetHelper"/>
-        private readonly ReactiveUI.ObservableAsPropertyHelper<bool> _hasTargetHelper;
-
-        /// <inheritdoc cref="_hasTarget"/>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ObservableAsPropertyGenerator", "2.5.0.0")]
-        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        public bool HasTarget { get => _hasTarget = _hasTargetHelper?.Value ?? _hasTarget; }
         /// <inheritdoc cref="_foregroundColorBrushHelper"/>
         private readonly ReactiveUI.ObservableAsPropertyHelper<global::Avalonia.Media.IBrush?> _foregroundColorBrushHelper;
 

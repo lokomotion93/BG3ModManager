@@ -52,7 +52,7 @@
 								</StackPanel>
 							</Panel>
 							<ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
-								<Panel>
+								<Panel VerticalAlignment="Bottom">
 									<TextBlock Name="watermark"
 									    FontSize="{TemplateBinding FontSize}"
 									    IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
@@ -206,7 +206,7 @@
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Padding" Value="4" />
 		<Setter Property="Margin" Value="0,0,0,8" />
-		<Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="VerticalAlignment" Value="Bottom" />
 		<Setter Property="HorizontalAlignment" Value="Stretch" />
 		<Setter Property="Template" Value="{StaticResource CompactTextBox}" />
 		<Setter Property="TextAlignment" Value="Left" />
@@ -409,5 +409,13 @@
 
 	<Style Selector="labs|AsyncImage">
 		<Setter Property="IsCacheEnabled" Value="True" />
+	</Style>
+
+	<Style Selector="materialIcons|MaterialIconText /template/ TextBlock, SelectableTextBlock">
+		<Setter Property="Foreground" Value="{DynamicResource SukiText}" />
+	</Style>
+
+	<Style Selector="materialIcons|MaterialIconText /template/ materialIcons|MaterialIcon">
+		<Setter Property="Foreground" Value="{DynamicResource SukiText}" />
 	</Style>
 </Styles>
