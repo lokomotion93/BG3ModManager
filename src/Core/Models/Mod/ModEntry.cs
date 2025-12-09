@@ -158,14 +158,16 @@ public partial class ModEntry : ReactiveObject, IModEntry
 		return Loca.Mod_MissingDependenciesToolTip.SafeFormat($"Missing Dependencies:\n{missingDependenciesText}", missingDependenciesText);
 	}
 
+	private static IColorResourceService? _colorRes => Locator.Current.GetService<IColorResourceService>();
+
 	//Green
-	private static readonly string EditorProjectBackgroundColor = "#0C00FF4D";
-	private static readonly string EditorProjectBackgroundSelectedColor = "#3200ED48";
-	private static readonly string EditorProjectBackgroundPointerOverColor = "#6400ED48";
+	private static string EditorProjectBackgroundColor => _colorRes?.GetColorHex("EditorProjectBackgroundColor", "#0C00FF4D") ?? "#0C00FF4D";
+	private static string EditorProjectBackgroundSelectedColor => _colorRes?.GetColorHex("EditorProjectBackgroundColor", "#3200ED48") ?? "#3200ED48";
+	private static string EditorProjectBackgroundPointerOverColor => _colorRes?.GetColorHex("EditorProjectBackgroundPointerOverColor", "#6400ED48") ?? "#6400ED48";
 	//Brownish
-	private static readonly string ForceLoadedBackgroundColor = "#32C1AE00";
-	private static readonly string ForceLoadedBackgroundSelectedColor = "#32F2DE00";
-	private static readonly string ForceLoadedBackgroundPointerOverColor = "#64F2DE00";
+	private static string ForceLoadedBackgroundColor => _colorRes?.GetColorHex("ForceLoadedBackgroundColor", "#32C1AE00") ?? "#32C1AE00";
+	private static string ForceLoadedBackgroundSelectedColor => _colorRes?.GetColorHex("ForceLoadedBackgroundColor", "#32F2DE00") ?? "#32F2DE00";
+	private static string ForceLoadedBackgroundPointerOverColor => _colorRes?.GetColorHex("ForceLoadedBackgroundColor", "#64F2DE00") ?? "#64F2DE00";
 
 	private void UpdateColors(ValueTuple<bool, bool, bool, bool, bool> x)
 	{
