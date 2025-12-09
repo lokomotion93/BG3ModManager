@@ -21,6 +21,13 @@
 	<Color x:Key="HyperlinkForegroundColor">#0075C7</Color>
 	<SolidColorBrush x:Key="HyperlinkForegroundBrush" Color="{DynamicResource HyperlinkForegroundColor}" />
 
+	<Color x:Key="EditorProjectBackgroundColor">#0C00FF4D</Color>
+	<Color x:Key="EditorProjectBackgroundSelectedColor">#3200ED48</Color>
+	<Color x:Key="EditorProjectBackgroundPointerOverColor">#6400ED48</Color>
+	<Color x:Key="ForceLoadedBackgroundColor">#32C1AE00</Color>
+	<Color x:Key="ForceLoadedBackgroundSelectedColor">#32F2DE00</Color>
+	<Color x:Key="ForceLoadedBackgroundPointerOverColor">#64F2DE00</Color>
+
 	<ControlTemplate x:Key="CompactTextBox" TargetType="TextBox">
 		<Border>
 			<Border Name="border"
@@ -195,5 +202,5 @@
 	<sys:Double x:Key="ModEntryToolTipWidth">480</sys:Double>
 	<Thickness x:Key="ModEntryToolTipBorderThickness">2</Thickness>
 
-	<Image x:Key="ExtenderIcon" Source="avares://Assets/Icons/DivinityEngine2_64x.png" RenderOptions.BitmapInterpolationMode="HighQuality" />
+	<Image x:Key="ExtenderIcon" Source="avares://ModManager/Assets/Icons/DivinityEngine2_64x.png" RenderOptions.BitmapInterpolationMode="HighQuality" />
 </ResourceDictionary>
