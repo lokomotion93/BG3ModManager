@@ -578,6 +578,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					row[!IsVisibleProperty] = entry.WhenAnyValue(x => x.IsVisible).ToBinding();
 					row.GetObservable(TreeDataGridRow.IsSelectedProperty).BindTo(entry, x => x.IsSelected);
 
+					entry.IsActive = ViewModel.ListType == ModListType.Active;
+
 					if (entry.EntryType == ModEntryType.Mod)
 					{
 						entry.ContextMenu = modContext;
@@ -597,9 +599,12 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 						{
 							if (container.IsExpanded) hierarchicalRow.IsExpanded = true;
 						}
-					}
 
-					entry.IsActive = ViewModel.ListType == ModListType.Active;
+						foreach (var child in container.ForEachNested())
+						{
+							child.IsActive = ViewModel.ListType == ModListType.Active;
+						}
+					}
 				}
 
 				//Initialize context menus. RowPrepared apparently doesn't fire until a row is interacted with
