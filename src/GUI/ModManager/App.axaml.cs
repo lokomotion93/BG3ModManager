@@ -3,11 +3,10 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 
 using ModManager.Services;
+using ModManager.Utils;
 using ModManager.Windows;
 
 using SukiUI;
-
-using System.Globalization;
 
 namespace ModManager;
 public partial class App : Application
@@ -36,6 +35,8 @@ public partial class App : Application
 		var desktop = DesktopLifetime;
 		if (desktop != null)
 		{
+			RxApp.DefaultExceptionHandler = new ExceptionSuppressionHandler();
+
 			ToolTip.ShowDelayProperty.OverrideDefaultValue<Panel>(500);
 			ToolTip.BetweenShowDelayProperty.OverrideDefaultValue<Panel>(500);
 			ToolTip.PlacementProperty.OverrideDefaultValue<Panel>(PlacementMode.RightEdgeAlignedTop);

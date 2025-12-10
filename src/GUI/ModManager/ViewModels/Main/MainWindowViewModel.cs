@@ -1,8 +1,6 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
-using Material.Icons;
-
 using ModManager.Locale;
 using ModManager.Models;
 using ModManager.Models.App;
@@ -1678,8 +1676,6 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		});
 
 		DownloadBar = new DownloadActivityBarViewModel();
-
-		RxApp.DefaultExceptionHandler = new MainWindowExceptionHandler(this);
 
 		_version = _environment.AppVersion.ToString();
 		_title = $"{_environment.AppProductName} {_version}";
