@@ -17,209 +17,209 @@ public partial class ModManagerSettings : BaseSettings<ModManagerSettings>, ISer
 {
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_GameDataPath), nameof(Resources.Settings_GameDataPath_ToolTip))]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_GameDataPath), nameof(Resources.Settings_GameDataPath_ToolTip))]
 	public string? GameDataPath { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_GameExecutablePath), nameof(Resources.Settings_GameExecutablePath_ToolTip))]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_GameExecutablePath), nameof(Resources.Settings_GameExecutablePath_ToolTip))]
 	public string? GameExecutablePath { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_LaunchDX11), nameof(Resources.Settings_LaunchDX11_ToolTip))]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_LaunchDX11), nameof(Resources.Settings_LaunchDX11_ToolTip))]
+	[DefaultValue(false)]
 	public bool LaunchDX11 { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_GameStoryLogEnabled), nameof(Resources.Settings_GameStoryLogEnabled_ToolTip))]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_GameStoryLogEnabled), nameof(Resources.Settings_GameStoryLogEnabled_ToolTip))]
+	[DefaultValue(false)]
 	public bool GameStoryLogEnabled { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_DisableLauncherTelemetry), nameof(Resources.Settings_DisableLauncherTelemetry_ToolTip))]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_DisableLauncherTelemetry), nameof(Resources.Settings_DisableLauncherTelemetry_ToolTip))]
+	[DefaultValue(false)]
 	public bool DisableLauncherTelemetry { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_DisableLauncherModWarnings), nameof(Resources.Settings_DisableLauncherModWarnings_ToolTip))]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_DisableLauncherModWarnings), nameof(Resources.Settings_DisableLauncherModWarnings_ToolTip))]
+	[DefaultValue(false)]
 	public bool DisableLauncherModWarnings { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_LaunchType), nameof(Resources.Settings_LaunchType_ToolTip), bindTo: nameof(LaunchTypeIndex))]
-	[property: DefaultValue(LaunchGameType.Exe)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_LaunchType), nameof(Resources.Settings_LaunchType_ToolTip), bindTo: nameof(LaunchTypeIndex))]
+	[DefaultValue(LaunchGameType.Exe)]
 	public LaunchGameType LaunchType { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_CustomLaunchAction), nameof(Resources.Settings_CustomLaunchAction_ToolTip), bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
-	[property: DefaultValue("")]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_CustomLaunchAction), nameof(Resources.Settings_CustomLaunchAction_ToolTip), bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
+	[DefaultValue("")]
 	public string? CustomLaunchAction { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_CustomLaunchArgs), nameof(Resources.Settings_CustomLaunchArgs_ToolTip), bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
-	[property: DefaultValue("")]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_CustomLaunchArgs), nameof(Resources.Settings_CustomLaunchArgs_ToolTip), bindVisibilityTo: nameof(IsCustomLaunchEnabled))]
+	[DefaultValue("")]
 	public string? CustomLaunchArgs { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_LoadOrderPath), nameof(Resources.Settings_LoadOrderPath_ToolTip))]
-	[property: DefaultValue("Orders")]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_LoadOrderPath), nameof(Resources.Settings_LoadOrderPath_ToolTip))]
+	[DefaultValue("Orders")]
 	public string? LoadOrderPath { get; set; }
 
-	[property: DefaultValue(false)]
+	[DefaultValue(false)]
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public bool LogEnabled { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_AutoAddDependenciesWhenExporting), nameof(Resources.Settings_AutoAddDependenciesWhenExporting_ToolTip))]
-	[property: DefaultValue(true)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_AutoAddDependenciesWhenExporting), nameof(Resources.Settings_AutoAddDependenciesWhenExporting_ToolTip))]
+	[DefaultValue(true)]
 	public bool AutoAddDependenciesWhenExporting { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_CheckForUpdates), nameof(Resources.Settings_CheckForUpdates_ToolTip))]
-	[property: DefaultValue(true)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_CheckForUpdates), nameof(Resources.Settings_CheckForUpdates_ToolTip))]
+	[DefaultValue(true)]
 	public bool CheckForUpdates { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_LimitToSingleInstance), nameof(Resources.Settings_LimitToSingleInstance_ToolTip))]
-	[property: DefaultValue(true)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_LimitToSingleInstance), nameof(Resources.Settings_LimitToSingleInstance_ToolTip))]
+	[DefaultValue(true)]
 	public bool LimitToSingleInstance { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_DocumentsFolderPathOverride), nameof(Resources.Settings_DocumentsFolderPathOverride_ToolTip))]
-	[property: DefaultValue("")]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_DocumentsFolderPathOverride), nameof(Resources.Settings_DocumentsFolderPathOverride_ToolTip))]
+	[DefaultValue("")]
 	public string? DocumentsFolderPathOverride { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_EnableColorblindSupport), nameof(Resources.Settings_EnableColorblindSupport_ToolTip))]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_EnableColorblindSupport), nameof(Resources.Settings_EnableColorblindSupport_ToolTip))]
+	[DefaultValue(false)]
 	public bool EnableColorblindSupport { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_Theme), nameof(Resources.Settings_Theme_ToolTip), bindTo: nameof(ThemeIndex))]
-	[property: DefaultValue(ColorThemeType.BaldursDrip)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_Theme), nameof(Resources.Settings_Theme_ToolTip), bindTo: nameof(ThemeIndex))]
+	[DefaultValue(ColorThemeType.BaldursDrip)]
 	public ColorThemeType Theme { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: DefaultValue(true)]
-	[property: SettingsEntry(nameof(Resources.Settings_ShiftListFocusOnSwap), nameof(Resources.Settings_ShiftListFocusOnSwap_ToolTip))]
+	[DataMember]
+	[DefaultValue(true)]
+	[SettingsEntry(nameof(Resources.Settings_ShiftListFocusOnSwap), nameof(Resources.Settings_ShiftListFocusOnSwap_ToolTip))]
 	public bool ShiftListFocusOnSwap { get; set; }
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_ActionOnGameLaunch), nameof(Resources.Settings_ActionOnGameLaunch_ToolTip), bindTo: nameof(ActionOnGameLaunchIndex))]
-	[property: DefaultValue(GameLaunchWindowAction.None)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_ActionOnGameLaunch), nameof(Resources.Settings_ActionOnGameLaunch_ToolTip), bindTo: nameof(ActionOnGameLaunchIndex))]
+	[DefaultValue(GameLaunchWindowAction.None)]
 	public GameLaunchWindowAction ActionOnGameLaunch { get; set; }
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_DisableMissingModWarnings), nameof(Resources.Settings_DisableMissingModWarnings_ToolTip))]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_DisableMissingModWarnings), nameof(Resources.Settings_DisableMissingModWarnings_ToolTip))]
+	[DefaultValue(false)]
 	public bool DisableMissingModWarnings { get; set; }
 
 	[Reactive]
-	[property: DefaultValue(false)]
+	[DefaultValue(false)]
 	public partial bool DisplayFileNames { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[DefaultValue(false)]
 	public partial bool DebugModeEnabled { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: DefaultValue("")]
+	[DataMember]
+	[DefaultValue("")]
 	public string? GameLaunchParams { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_SaveWindowLocation), nameof(Resources.Settings_SaveWindowLocation_ToolTip))]
-	[property: DefaultValue(false)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_SaveWindowLocation), nameof(Resources.Settings_SaveWindowLocation_ToolTip))]
+	[DefaultValue(false)]
 	public bool SaveWindowLocation { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: SettingsEntry(nameof(Resources.Settings_DeleteModCrashSanityCheck), nameof(Resources.Settings_DeleteModCrashSanityCheck_ToolTip))]
-	[property: DefaultValue(true)]
+	[DataMember]
+	[SettingsEntry(nameof(Resources.Settings_DeleteModCrashSanityCheck), nameof(Resources.Settings_DeleteModCrashSanityCheck_ToolTip))]
+	[DefaultValue(true)]
 	public bool DeleteModCrashSanityCheck { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public long LastUpdateCheck { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string? LastOrder { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string? LastImportDirectoryPath { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string? LastLoadedOrderFilePath { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string? LastExtractOutputPath { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
-	[property: DefaultValue("en")]
+	[DataMember]
+	[DefaultValue("en")]
 	public string? Language { get; set; }
 	public ObservableCollectionExtended<CultureInfo> Languages { get; }
 	[Reactive] public partial CultureInfo? SelectedLanguage { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public ModManagerUpdateSettings UpdateSettings { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public WindowSettings Window { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public ConfirmationSettings Confirmations { get; set; }
 
 	[Reactive] public partial bool Loaded { get; set; }

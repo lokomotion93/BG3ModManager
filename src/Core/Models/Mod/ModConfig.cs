@@ -16,19 +16,19 @@ public partial class ModConfig : ReactiveObject, IObjectWithId
 	public string Id { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? Notes { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? GitHub { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial long NexusModsId { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? ModioId { get; set; }
 
 	[ObservableAsProperty] public partial string? GitHubAuthor { get; }

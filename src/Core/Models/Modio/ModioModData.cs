@@ -15,16 +15,16 @@ public partial class ModioModData : ReactiveObject
 	[MemberNotNullWhen(true, nameof(IsEnabled))]
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial ModioMod? Data { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial uint Id { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? NameId { get; set; }
 
 	[Reactive] public partial bool IsEnabled { get; private set; }

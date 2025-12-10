@@ -6,11 +6,11 @@ namespace ModManager.Models.GitHub;
 public partial class GitHubModData : ReactiveObject
 {
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? Url { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial GitHubLatestReleaseData LatestRelease { get; set; }
 
 	/// <summary>

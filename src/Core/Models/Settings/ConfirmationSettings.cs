@@ -11,10 +11,10 @@ public partial class ConfirmationSettings : ReactiveObject
 {
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial bool DisableAdminModeWarning { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial bool? OpenExtractedModFolder { get; set; }
 }

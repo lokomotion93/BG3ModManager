@@ -6,14 +6,14 @@ namespace ModManager.Models.GitHub.Json;
 public partial class GitHubReleaseJsonEntry : ReactiveObject
 {
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? UUID { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? Version { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? DownloadUrl { get; set; }
 }

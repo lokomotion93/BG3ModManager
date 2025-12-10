@@ -16,52 +16,52 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 {
 	#region meta.lsx Properties
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string UUID { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? Folder { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? Name { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? Description { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? Author { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? ModType { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial string? MD5 { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial LarianVersion Version { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial ulong PublishHandle { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial ulong FileSize { get; set; }
 
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial LarianVersion HeaderVersion { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public partial LarianVersion PublishVersion { get; set; }
 
 	public List<string> Tags { get; set; } = [];

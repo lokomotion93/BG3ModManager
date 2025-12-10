@@ -10,27 +10,27 @@ namespace ModManager.Models.Mod.Game;
 public class ModuleShortDesc : ReactiveObject, IModuleShortDesc
 {
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string UUID { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string? Name { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string? Folder { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public string? MD5 { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public ulong PublishHandle { get; set; }
 
 	[Reactive]
-	[property: DataMember]
+	[DataMember]
 	public LarianVersion Version { get; set; }
 	public DateTimeOffset? LastModified { get; set; }
 
