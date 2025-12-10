@@ -19,7 +19,6 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 	[Reactive] public partial bool IsSelected { get; set; }
 	[Reactive] public partial bool IsExpanded { get; set; }
 	[Reactive] public partial bool IsDraggable { get; set; }
-	[Reactive] public partial bool PreserveSelection { get; set; }
 	[Reactive] public partial bool PreserveExpanded { get; set; }
 	[Reactive] public partial string? SelectedColor { get; set; }
 	[Reactive] public partial string? ListColor { get; set; }
@@ -174,6 +173,39 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 			}
 		}
 		Children.Remove(toRemove);
+	}
+
+	public void SetChildSelection(bool isSelected)
+	{
+		foreach(var child in this.ForEachNested())
+		{
+			child.IsSelected = isSelected;
+		}
+	}
+
+	public int[]? GetIndexPath(string uuid, int? parentIndex)
+	{
+		for (var i = 0; i < Children.Count; i++)
+		{
+			var child = Children[i];
+			if (child.UUID == uuid)
+			{
+				if(parentIndex != null)
+				{
+					return [parentIndex.Value, i];
+				}
+				return [i];
+			}
+			else if (child.EntryType == ModEntryType.Container && child is ModContainer container)
+			{
+				var path = container.GetIndexPath(uuid, i);
+				if (path != null)
+				{
+					return path;
+				}
+			}
+		}
+		return null;
 	}
 
 	public ModContainer(string uuid)
