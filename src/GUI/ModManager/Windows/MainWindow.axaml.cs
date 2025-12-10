@@ -148,9 +148,9 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 				{
 					if (ViewModel?.Settings.DebugModeEnabled == true) DivinityApp.Log(data.Message);
 					var shortenedMessage = data.Message;
-					if(shortenedMessage.Length > 127)
+					if(shortenedMessage.Length > 255)
 					{
-						shortenedMessage = string.Concat(shortenedMessage.AsSpan(0, 127), "...");
+						shortenedMessage = string.Concat(shortenedMessage.AsSpan(0, 255), "...");
 					}
 					var content = new TextBlock() {
 						Text = shortenedMessage,
