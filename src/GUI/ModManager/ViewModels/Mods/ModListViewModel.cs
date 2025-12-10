@@ -256,7 +256,14 @@ public partial class ModListViewModel : ReactiveObject
 						if(VisibleRows.Count > 2)
 						{
 							var middleRow = VisibleRows[VisibleRows.Count / 2];
-							_mods.Insert(middleRow, container);
+							if(middleRow < _mods.Count)
+							{
+								_mods.Insert(middleRow, container);
+							}
+							else
+							{
+								_mods.Add(container);
+							}
 						}
 						else
 						{
