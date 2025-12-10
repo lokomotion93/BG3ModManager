@@ -9,6 +9,7 @@ public partial class ModContainerSettings(string id) : ReactiveObject, IObjectWi
 {
 	public string Id { get; set; } = id;
 	[Reactive] public partial string? DisplayName { get; set; }
+	[Reactive] public partial bool IsGlobal { get; set; }
 
 
 	[Reactive]

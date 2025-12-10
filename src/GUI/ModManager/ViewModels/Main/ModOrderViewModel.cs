@@ -1256,6 +1256,14 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	private static bool CanAddActiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && mod.IsActive;
 	private static bool CanAddInactiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && !mod.IsActive;
+	private static bool CanAddInactiveContainer(ModOrderContainer container, HashSet<string> activeEntries)
+	{
+		if(activeEntries.Contains(container.Id))
+		{
+			return container.Settings.IsGlobal;
+		}
+		return true;
+	}
 
 	public bool LoadModOrder(ModOrder order, List<MissingModData>? missingModsFromProfileOrder = null)
 	{
@@ -1357,7 +1365,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 					InactiveMods.Add(mod.ToModInterface());
 				}
 			}
-			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
+			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container && CanAddInactiveContainer(container, addedActiveMods))
 			{
 				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveModToOrder);
 			}
