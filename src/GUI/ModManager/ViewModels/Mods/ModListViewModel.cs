@@ -108,7 +108,10 @@ public partial class ModListViewModel : ReactiveObject
 
 	private void UpdateSelection(TreeSelectionModelSelectionChangedEventArgs<IModEntry> e)
 	{
-		if(e.SelectedItems.Count > 0)
+#if DEBUG
+		DivinityApp.Log($"[{ListType}] e.SelectedItems({string.Join(";", e.SelectedItems?.Select(x => x.DisplayName) ?? [])}) e.DeselectedItems({string.Join(";", e.DeselectedItems?.Select(x => x.DisplayName) ?? [])})");
+#endif
+		if(e.SelectedItems?.Count > 0)
 		{
 			SelectedItem = e.SelectedItems[0];
 		}
@@ -117,24 +120,41 @@ public partial class ModListViewModel : ReactiveObject
 			SelectedItem = null;
 		}
 
-		foreach (var item in e.SelectedItems)
+		//Need a _mods.Contains check since the entry may have been moved via drag&drop
+
+		if (e.SelectedItems != null)
 		{
-			item?.IsSelected = true;
+			foreach (var item in e.SelectedItems)
+			{
+				if(item != null && _mods.Contains(item))
+				{
+					item.IsSelected = true;
+				}
+			}
 		}
 
-		foreach (var item in e.DeselectedItems)
+		if (e.DeselectedItems != null)
 		{
-			item?.IsSelected = false;
+			foreach (var item in e.DeselectedItems)
+			{
+				if (item != null && _mods.Contains(item))
+				{
+					item.IsSelected = false;
+				}
+			}
 		}
 	}
 
 	[ReactiveCommand]
 	public void UpdateSelections(HashSet<int> selectedIndexes)
 	{
-		foreach(var entry in _mods)
-		{
-			entry.IsSelected = selectedIndexes.Contains(entry.Index);
-		}
+		//RxApp.MainThreadScheduler.Schedule(() =>
+		//{
+		//	foreach (var entry in _mods)
+		//	{
+		//		entry.IsSelected = selectedIndexes.Contains(entry.Index);
+		//	}
+		//});
 	}
 
 	private void OnSorted(TreeDataGridSortedEventArgs e)
