@@ -22,7 +22,6 @@ public partial class ModEntry : ReactiveObject, IModEntry
 	[Reactive] public partial bool IsSelected { get; set; }
 	[Reactive] public partial bool IsExpanded { get; set; }
 	[Reactive] public partial bool IsDraggable { get; set; }
-	[Reactive] public partial bool PreserveSelection { get; set; }
 	public bool PreserveExpanded { get => false; set { } }
 	[Reactive] public partial bool IsDirty { get; set; }
 	[Reactive] public partial object? ContextMenu { get; set; }

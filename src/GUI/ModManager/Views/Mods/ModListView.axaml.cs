@@ -11,6 +11,7 @@ using DynamicData;
 using DynamicData.Binding;
 
 using ModManager.Controls;
+using ModManager.Models;
 using ModManager.Models.Mod;
 using ModManager.Services;
 using ModManager.Styling;
@@ -50,6 +51,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 						//Prevent moving any nested entries since they'll follow the container anyway
 						foreach(var child in container.ForEachNested())
 						{
+							child.IsSelected = true;
 							selected.Remove(child);
 						}
 					}
@@ -58,7 +60,11 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 			foreach(var entry in selected)
 			{
-				if (entry != null) entriesToInsert.Add(entry);
+				if (entry != null)
+				{
+					entry.IsSelected = true;
+					entriesToInsert.Add(entry);
+				}
 			}
 
 			if(source.Items is ObservableCollectionExtended<IModEntry> sourceCollection)
@@ -110,6 +116,37 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					{
 						targetCollection.AddRange(entriesToInsert);
 					}
+				}
+
+				var selectedIndexes = new List<IndexPath>();
+				var newIndex = 0;
+				foreach (var entry in targetCollection)
+				{
+					entry.Index = newIndex;
+					if (entry.IsSelected) selectedIndexes.Add(newIndex);
+					newIndex++;
+
+					if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+					{
+						foreach (var child in container.ForEachNested())
+						{
+							child.Index = newIndex;
+							if (child.IsSelected)
+							{
+								var path = container.GetIndexPath(child.UUID, entry.Index);
+								if(path != null)
+								{
+									selectedIndexes.Add(new(path));
+								}
+							}
+							newIndex++;
+						}
+					}
+				}
+
+				foreach (var path in selectedIndexes)
+				{
+					target.RowSelection!.Select(path);
 				}
 			}
 
@@ -277,20 +314,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				{
 					if (entry != null)
 					{
-						entry.PreserveSelection = true;
 						entry.IsExpanded = entry.PreserveExpanded;
 						entry.PreserveExpanded = false;
-
-						if(entry.EntryType == ModEntryType.Container && entry is ModContainer container)
-						{
-							foreach(var child in container.ForEachNested())
-							{
-								if(child.IsSelected)
-								{
-									child.PreserveSelection = true;
-								}
-							}
-						}
 					}
 				}
 
@@ -631,20 +656,9 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				void PrepareRow(TreeDataGridRow row, IModEntry entry)
 				{
 					row[!IsVisibleProperty] = entry.WhenAnyValue(x => x.IsVisible).ToBinding();
-					row.GetObservable(TreeDataGridRow.IsSelectedProperty).BindTo(entry, x => x.IsSelected);
+					//row.GetObservable(TreeDataGridRow.IsSelectedProperty).BindTo(entry, x => x.IsSelected);
 
 					entry.IsActive = ViewModel.ListType == ModListType.Active;
-
-					if (entry.PreserveSelection)
-					{
-						/*ModEntryTreeDataGridRowSelectionModel preserves the selection after drag + drop visually,
-						while this makes sure the backing data stays selected.
-						If this isn't set here, then the next drag + drop will only move the directly selected item.
-						*/
-						ModsTreeDataGrid.RowSelection?.Select(row.RowIndex);
-						entry.PreserveSelection = false;
-						entry.IsSelected = true;
-					}
 
 					if (entry.EntryType == ModEntryType.Mod)
 					{
@@ -671,6 +685,9 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 							child.IsActive = ViewModel.ListType == ModListType.Active;
 						}
 					}
+
+					_trackVisibleTask?.Dispose();
+					_trackVisibleTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), TrackVisibleRows);
 				}
 
 				//Initialize context menus. RowPrepared apparently doesn't fire until a row is interacted with
@@ -698,8 +715,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					h => ModsTreeDataGrid.RowPrepared -= h
 				).Subscribe(e =>
 				{
-					_trackVisibleTask?.Dispose();
-					_trackVisibleTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromTicks(30), TrackVisibleRows);
 					if (e.Row.Model is IModEntry entry)
 					{
 						//entry.IsExpanded = false;

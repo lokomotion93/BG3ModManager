@@ -17,7 +17,6 @@ public class ModEntryTreeDataGridRowSelectionModel(ITreeDataGridSource<IModEntry
 {
 	bool ITreeDataGridSelectionInteraction.IsRowSelected(IRow rowModel)
 	{
-		if (rowModel.Model is IModEntry mod && mod.PreserveSelection) return true;
 		if (rowModel is IModelIndexableRow indexable)
 			return IsSelected(indexable.ModelIndexPath);
 		return false;
@@ -29,7 +28,6 @@ public class ModEntryTreeDataGridRowSelectionModel(ITreeDataGridSource<IModEntry
 		{
 			if (source.Rows[rowIndex] is IModelIndexableRow indexable)
 			{
-				if (indexable.Model is IModEntry mod && mod.PreserveSelection) return true;
 				return IsSelected(indexable.ModelIndexPath);
 			}
 		}

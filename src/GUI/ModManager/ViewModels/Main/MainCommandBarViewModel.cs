@@ -533,11 +533,6 @@ public partial class MainCommandBarViewModel : ReactiveObject
 				var selectedMod = selectedMods[0];
 				var nextSelectedIndex = sourceCollection.IndexOf(selectedMod);
 
-				foreach (var mod in selectedMods)
-				{
-					if (mod != null) mod.PreserveSelection = true;
-				}
-
 				var rowSelection = targetList.Mods.RowSelection;
 				var sourceSelectedIndexes = sourceList.Mods.RowSelection?.SelectedIndexes;
 				if (rowSelection != null && sourceSelectedIndexes != null)
