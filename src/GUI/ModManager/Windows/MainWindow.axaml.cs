@@ -14,6 +14,8 @@ using SukiUI.Controls;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
 
+using TextCopy;
+
 namespace ModManager.Windows;
 
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
@@ -154,9 +156,33 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 					}
 					var content = new TextBlock() {
 						Text = shortenedMessage,
-						TextWrapping = TextWrapping.Wrap
+						TextWrapping = TextWrapping.Wrap,
 					};
-					ToolTip.SetTip(content, data.Message);
+					var tooltipElement = new TextBlock()
+					{
+						Text = data.Message,
+						TextWrapping = TextWrapping.Wrap,
+						MaxWidth = 400
+					};
+					void OnKeyDown(object? sender, KeyEventArgs e)
+					{
+						if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.C)
+						{
+							ClipboardService.SetText(data.Message);
+						}
+					};
+
+					tooltipElement.AttachedToVisualTree += (o, e) =>
+					{
+						AddHandler(KeyDownEvent, OnKeyDown);
+					};
+
+					tooltipElement.DetachedFromVisualTree += (o, e) =>
+					{
+						RemoveHandler(KeyDownEvent, OnKeyDown);
+					};
+
+					ToolTip.SetTip(content, tooltipElement);.
 					var toastBuilder = _toastManager.CreateToast().WithTitle(title).WithContent(content);
 					toastBuilder.SetCanDismissByClicking(true);
 					toastBuilder.SetDismissAfter(duration);
