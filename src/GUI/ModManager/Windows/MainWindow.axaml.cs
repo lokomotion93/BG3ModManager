@@ -182,7 +182,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 						RemoveHandler(KeyDownEvent, OnKeyDown);
 					};
 
-					ToolTip.SetTip(content, tooltipElement);.
+					ToolTip.SetTip(content, tooltipElement);
 					var toastBuilder = _toastManager.CreateToast().WithTitle(title).WithContent(content);
 					toastBuilder.SetCanDismissByClicking(true);
 					toastBuilder.SetDismissAfter(duration);
