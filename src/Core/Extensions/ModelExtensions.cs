@@ -79,6 +79,23 @@ public static class ModelExtensions
 		}
 	}
 
+	public static bool IsDefault<T>(this T model) where T : class
+	{
+		var props = model.GetType().GetRuntimeProperties().Where(prop => Attribute.IsDefined(prop, typeof(DefaultValueAttribute))).ToArray();
+		foreach(var prop in props)
+		{
+			if(prop.GetCustomAttribute<DefaultValueAttribute>() is DefaultValueAttribute defaultValueAtt)
+			{
+				var defaultVal = defaultValueAtt.Value;
+				if(prop.GetValue(model) == defaultVal)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public static void SetFrom<T>(this T target, T from) where T : ReactiveObject
 	{
 		var props = TypeDescriptor.GetProperties(target.GetType());
@@ -93,14 +110,14 @@ public static class ModelExtensions
 		}
 	}
 
-	public static void SetFrom<T, T2>(this T target, T from) where T : ReactiveObject where T2 : Attribute
+	public static void SetFrom<T, T2>(this T target, T from, bool setNull = true) where T : ReactiveObject where T2 : Attribute
 	{
 		var attributeType = typeof(T2);
 		var props = typeof(T).GetRuntimeProperties().Where(prop => Attribute.IsDefined(prop, attributeType)).ToList();
 		foreach (var pr in props)
 		{
 			var value = pr.GetValue(from);
-			if (value != null)
+			if (value != null || setNull)
 			{
 				pr.SetValue(target, value);
 				target.RaisePropertyChanged(pr.Name);
@@ -108,7 +125,7 @@ public static class ModelExtensions
 		}
 	}
 
-	public static void SetFromDataMember<T>(this T target, T from) where T : ReactiveObject => SetFrom<T, DataMemberAttribute>(target, from);
+	public static void SetFromDataMember<T>(this T target, T from, bool setNull = true) where T : ReactiveObject => SetFrom<T, DataMemberAttribute>(target, from, setNull);
 
 	public static bool Save<T>(this T data, out Exception? error) where T : ISerializableSettings
 	{
@@ -220,7 +237,7 @@ public static class ModelExtensions
 			}
 			else
 			{
-				throw new DirectoryNotFoundException($"Failed to find settings ({data.FileName}) output directory at '{directory}'");
+				//throw new DirectoryNotFoundException($"Failed to find settings ({data.FileName}) output directory at '{directory}'");
 			}
 		}
 		catch (Exception ex)

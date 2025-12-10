@@ -50,6 +50,7 @@ public partial class IconSettingsViewModel : ReactiveObject
 	[Reactive] public partial bool IsPathIconType { get; set; }
 	[Reactive] public partial bool IsMaterialIconType { get; set; }
 	[Reactive] public partial int SelectedMaterialIconIndex { get; set; }
+	[Reactive] public partial MaterialIconEntry? SelectedMaterialIcon { get; set; }
 
 	private readonly SourceCache<MaterialIconEntry, string> _materialIconsSource = new(x => x.Name);
 
@@ -93,20 +94,15 @@ public partial class IconSettingsViewModel : ReactiveObject
 		Settings.IsDirty = true;
 	}
 
-	public void Apply()
+	public void Apply(ModContainerSettings containerSettings)
 	{
-		if(Target != null)
+		if (Settings.BorderThickness == "0") Settings.BorderThickness = null;
+		if (Target == null && containerSettings.Icon == null && !Settings.IsDefault())
 		{
-			if(IsMaterialIconType)
-			{
-				Settings.Path = null;
-			}
-			else
-			{
-				Settings.Kind = null;
-			}
-			Target.SetFromDataMember(Settings);
+			containerSettings.Icon = new();
+			Target = containerSettings.Icon;
 		}
+		Target?.SetFromDataMember(Settings);
 	}
 
 	public void Clear()
@@ -126,7 +122,9 @@ public partial class IconSettingsViewModel : ReactiveObject
 			var entry = _materialIconsSource.Lookup(kind);
 			if(entry.HasValue)
 			{
-				return _materialIcons.IndexOf(entry.Value);
+				var index = _materialIcons.IndexOf(entry.Value);
+				SelectedMaterialIcon = entry.Value;
+				return index;
 			}
 		}
 		return 0;

@@ -69,10 +69,14 @@ public partial class ModContainerSettingsViewModel : ReactiveObject, IClosableVi
 	{
 		if(Target != null)
 		{
-			Icon.Apply();
 			Target.SetFromDataMember(Settings);
+			Icon.Apply(Target);
 		}
 		
+		if(_targetContainer != null && !_targetContainer.IsActive)
+		{
+			AppServices.Settings.TrySave(AppServices.Settings.InactiveMods, out _);
+		}
 		CloseCommand.Execute().Subscribe();
 	}
 
