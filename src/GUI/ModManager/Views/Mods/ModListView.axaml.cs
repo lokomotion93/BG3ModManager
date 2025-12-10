@@ -92,29 +92,65 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				}
 				else
 				{
-					var index = targetIndex[^1];
-					if (position == TreeDataGridRowDropPosition.Inside && targetCollection.ElementAtOrDefault(index) is ModContainer targetContainer)
+					if (position == TreeDataGridRowDropPosition.Inside && target.TryGetModelAt(targetIndex, out var insideEntry)
+						&& insideEntry.EntryType == ModEntryType.Container
+						&& insideEntry is ModContainer insideContainer)
 					{
-						targetContainer.Children.AddRange(entriesToInsert);
-					}
-					else if (position == TreeDataGridRowDropPosition.Before)
-					{
-						targetCollection.InsertRange(entriesToInsert, index);
-					}
-					else if (position == TreeDataGridRowDropPosition.After)
-					{
-						if (index >= targetCollection.Count - 1)
-						{
-							targetCollection.AddRange(entriesToInsert);
-						}
-						else
-						{
-							targetCollection.InsertRange(entriesToInsert, index + 1);
-						}
+						insideContainer.Children.AddRange(entriesToInsert);
 					}
 					else
 					{
-						targetCollection.AddRange(entriesToInsert);
+						var targetEntryIndex = targetIndex[.. ^1];
+						if (target.TryGetModelAt(targetEntryIndex, out var targetEntry)
+						&& targetEntry.EntryType == ModEntryType.Container
+						&& targetEntry is ModContainer targetContainer
+						&& targetContainer.Children is ObservableCollectionExtended<IModEntry> children)
+						{
+							var childIndex = targetIndex[^1];
+
+							if (position == TreeDataGridRowDropPosition.Before)
+							{
+								children.InsertRange(entriesToInsert, childIndex);
+							}
+							else if (position == TreeDataGridRowDropPosition.After)
+							{
+								if (childIndex >= children.Count - 1)
+								{
+									children.AddRange(entriesToInsert);
+								}
+								else
+								{
+									children.InsertRange(entriesToInsert, childIndex + 1);
+								}
+							}
+							else
+							{
+								children.AddRange(entriesToInsert);
+							}
+						}
+						else
+						{
+							var index = targetIndex[^1];
+							if (position == TreeDataGridRowDropPosition.Before)
+							{
+								targetCollection.InsertRange(entriesToInsert, index);
+							}
+							else if (position == TreeDataGridRowDropPosition.After)
+							{
+								if (index >= targetCollection.Count - 1)
+								{
+									targetCollection.AddRange(entriesToInsert);
+								}
+								else
+								{
+									targetCollection.InsertRange(entriesToInsert, index + 1);
+								}
+							}
+							else
+							{
+								targetCollection.AddRange(entriesToInsert);
+							}
+						}
 					}
 				}
 
@@ -353,9 +389,16 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 						{
 							insertAtEnd = true;
 						}
-						else
+						else if(e.TargetRow.Model is IModEntry targetEntry)
 						{
-							targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
+							if(targetEntry.EntryType == ModEntryType.Container && target.Rows[e.TargetRow.RowIndex] is HierarchicalRow<IModEntry> containerRow)
+							{
+								targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
+							}
+							else
+							{
+								targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
+							}
 						}
 					}
 					DragDropRows(listSource, target, targetIndex, e.Position, e.Inner.DragEffects, insertAtEnd);
@@ -375,29 +418,35 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 	private void OnPointerDown(object? sender, PointerPressedEventArgs e)
 	{
-		_isSingleSelect = false;
-
-		if(sender is Control source && !e.GetCurrentPoint(source).Properties.IsLeftButtonPressed)
+		if(sender is TreeDataGridRow row)
 		{
-			return;
-		}
+			_isSingleSelect = false;
 
-		//Allow deselecting with just left click, if no modifiers are pressed and a single item is selected
-		if (!_isDragging && e.KeyModifiers == KeyModifiers.None && sender is TreeDataGridRow row && row.IsSelected && ModsTreeDataGrid.RowSelection?.Count == 1)
-		{
-			_isSingleSelect = true;
+			if (sender is Control source && !e.GetCurrentPoint(source).Properties.IsLeftButtonPressed)
+			{
+				return;
+			}
+
+			//Allow deselecting with just left click, if no modifiers are pressed and a single item is selected
+			if (!_isDragging && e.KeyModifiers == KeyModifiers.None && row.IsSelected && ModsTreeDataGrid.RowSelection?.Count == 1)
+			{
+				_isSingleSelect = true;
+			}
 		}
 	}
 
 	private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
 	{
-		var row = sender as TreeDataGridRow;
-
-		if(row != null)
+		if (sender is TreeDataGridRow row)
 		{
 			if (!e.KeyModifiers.HasFlag(KeyModifiers.Control) && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && row.Model is IModEntry entry && entry.EntryType == ModEntryType.Container)
 			{
 				entry.IsExpanded = !entry.IsExpanded;
+
+				if (row.Rows != null && row.Rows[row.RowIndex] is HierarchicalRow<IModEntry> hierarchicalRow)
+				{
+					hierarchicalRow.IsExpanded = entry.IsExpanded;
+				}
 			}
 
 			if (!e.GetCurrentPoint(row).Properties.IsLeftButtonPressed)
@@ -531,11 +580,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 	private Dictionary<int, CompositeDisposable> _rowEventHandlers = [];
 
-	private static HashSet<int> FlattenIndexes(IReadOnlyList<IndexPath> indexes)
-	{
-		return [.. indexes.SelectMany(x => x)];
-	}
-
 	private object? _modContext;
 	private object? _modContainerContext;
 	private static readonly Thickness _defaultModThickness = new(0);
@@ -578,6 +622,24 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		_trackVisibleTask?.Dispose();
 		_trackVisibleTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), TrackVisibleRows);
+
+		var clickDownDisp = Observable.FromEventPattern<EventHandler<PointerPressedEventArgs>, PointerPressedEventArgs>(
+			h => row.PointerPressed += h,
+			h => row.PointerPressed -= h
+		).Subscribe(x => OnPointerDown(x.Sender, x.EventArgs));
+
+		var clickUpDisp = Observable.FromEventPattern<EventHandler<PointerReleasedEventArgs>, PointerReleasedEventArgs>(
+			h => row.PointerReleased += h,
+			h => row.PointerReleased -= h
+		).Subscribe(x => OnPointerReleased(x.Sender, x.EventArgs));
+
+		if (_rowEventHandlers.TryGetValue(row.RowIndex, out var disp))
+		{
+			disp?.Dispose();
+		}
+
+		var compDisp = new CompositeDisposable(clickDownDisp, clickUpDisp);
+		_rowEventHandlers[row.RowIndex] = compDisp;
 	}
 
 	public void Refresh()
@@ -621,33 +683,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			{
 				d(Observable.FromEvent<EventHandler<TreeDataGridRowEventArgs>, TreeDataGridRowEventArgs>(
 					h => (sender, e) => h(e),
-					h => ModsTreeDataGrid.RowPrepared += h,
-					h => ModsTreeDataGrid.RowPrepared -= h
-				).Subscribe(e =>
-				{
-					var row = e.Row;
-					var clickDownDisp = Observable.FromEventPattern<EventHandler<PointerPressedEventArgs>, PointerPressedEventArgs>(
-						h => row.PointerPressed += h,
-						h => row.PointerPressed -= h
-					).Subscribe(x => OnPointerDown(x.Sender, x.EventArgs));
-
-					var clickUpDisp = Observable.FromEventPattern<EventHandler<PointerReleasedEventArgs>, PointerReleasedEventArgs>(
-						h => row.PointerReleased += h,
-						h => row.PointerReleased -= h
-					).Subscribe(x => OnPointerReleased(x.Sender, x.EventArgs));
-
-					if (_rowEventHandlers.TryGetValue(row.RowIndex, out var disp))
-					{
-						disp?.Dispose();
-					}
-
-					var compDisp = new CompositeDisposable(clickDownDisp, clickUpDisp);
-					_rowEventHandlers[row.RowIndex] = compDisp;
-					d(compDisp);
-				}, OnError));
-
-				d(Observable.FromEvent<EventHandler<TreeDataGridRowEventArgs>, TreeDataGridRowEventArgs>(
-					h => (sender, e) => h(e),
 					h => ModsTreeDataGrid.RowClearing += h,
 					h => ModsTreeDataGrid.RowClearing -= h
 				).Subscribe(e =>
@@ -680,8 +715,8 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					}
 				}));
 
-				ModsTreeDataGrid.GetObservable(IsFocusedProperty).BindTo(ViewModel, x => x.IsFocused);
-				ModsTreeDataGrid.GetObservable(IsKeyboardFocusWithinProperty).BindTo(ViewModel, x => x.IsKeyboardFocusWithin);
+				d(ModsTreeDataGrid.GetObservable(IsFocusedProperty).BindTo(ViewModel, x => x.IsFocused));
+				d(ModsTreeDataGrid.GetObservable(IsKeyboardFocusWithinProperty).BindTo(ViewModel, x => x.IsKeyboardFocusWithin));
 
 				d(Observable.FromEvent<EventHandler<TreeDataGridRowDragEventArgs>, TreeDataGridRowDragEventArgs>(
 					h => (sender, e) => h(e),
