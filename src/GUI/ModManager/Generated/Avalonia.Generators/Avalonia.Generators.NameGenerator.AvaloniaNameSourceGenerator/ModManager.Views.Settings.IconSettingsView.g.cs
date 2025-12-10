@@ -18,6 +18,8 @@ namespace ModManager.Views.Settings
         internal global::Avalonia.Controls.RadioButton MaterialIconTypeRadioButton;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
         internal global::ModManager.Controls.EnhancedTextBox PathTextBox;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "11.3.9.0")]
+        internal global::Avalonia.Controls.ComboBox MaterialIconsComboBox;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -39,6 +41,7 @@ namespace ModManager.Views.Settings
             PathIconTypeRadioButton = __thisNameScope__?.Find<global::Avalonia.Controls.RadioButton>("PathIconTypeRadioButton");
             MaterialIconTypeRadioButton = __thisNameScope__?.Find<global::Avalonia.Controls.RadioButton>("MaterialIconTypeRadioButton");
             PathTextBox = __thisNameScope__?.Find<global::ModManager.Controls.EnhancedTextBox>("PathTextBox");
+            MaterialIconsComboBox = __thisNameScope__?.Find<global::Avalonia.Controls.ComboBox>("MaterialIconsComboBox");
         }
     }
 }

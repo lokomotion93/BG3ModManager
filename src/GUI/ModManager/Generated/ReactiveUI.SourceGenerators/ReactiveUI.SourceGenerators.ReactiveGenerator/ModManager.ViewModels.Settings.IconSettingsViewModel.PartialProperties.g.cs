@@ -55,6 +55,17 @@ namespace ModManager.ViewModels.Settings
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public partial int SelectedMaterialIconIndex { get => _selectedMaterialIconIndex; set => this.RaiseAndSetIfChanged(ref _selectedMaterialIconIndex, value); }
+        
+        private global::ModManager.Models.View.MaterialIconEntry? _selectedMaterialIcon;
+        /// <inheritdoc cref="_selectedMaterialIcon"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ReactiveGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial global::ModManager.Models.View.MaterialIconEntry? SelectedMaterialIcon
+        { 
+            get => _selectedMaterialIcon;
+            [global::System.Diagnostics.CodeAnalysis.MemberNotNull("_selectedMaterialIcon")]
+            set => this.RaiseAndSetIfChanged(ref _selectedMaterialIcon, value);
+        }
     }
 }
 #nullable restore

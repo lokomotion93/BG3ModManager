@@ -536,6 +536,64 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		return [.. indexes.SelectMany(x => x)];
 	}
 
+	private object? _modContext;
+	private object? _modContainerContext;
+	private static readonly Thickness _defaultModThickness = new(0);
+	private static readonly Thickness _defaultContainerThickness = new(0, 0, 0, 1);
+
+	private void PrepareRow(TreeDataGridRow row, IModEntry entry)
+	{
+		row[!IsVisibleProperty] = entry.WhenAnyValue(x => x.IsVisible).ToBinding();
+		//row.GetObservable(TreeDataGridRow.IsSelectedProperty).BindTo(entry, x => x.IsSelected);
+
+		entry.IsActive = ViewModel!.ListType == ModListType.Active;
+
+		//TODO Set ContextFlyout on the TreeDataGridRow instead?
+
+		if (entry.EntryType == ModEntryType.Mod)
+		{
+			entry.ContextMenu = _modContext;
+			row.BorderThickness = _defaultModThickness;
+		}
+		else if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+		{
+			entry.ContextMenu = _modContainerContext;
+			row.BorderThickness = _defaultContainerThickness;
+			row[!BorderBrushProperty] = container.Settings.WhenAnyValue(x => x.BorderColor).Select(x => x.IsValid() ? ColorBrushCache.GetBrush(x) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
+
+			var defaultBG = row.Background;
+			row[!BackgroundProperty] = container.Settings.WhenAnyValue(x => x.BackgroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultBG).ToBinding();
+			row[!BorderThicknessProperty] = container.Settings.WhenAnyValue(x => x.BorderThickness).Select(x => x.IsValid() ? Thickness.Parse(x) : _defaultContainerThickness).ToBinding();
+
+			if (row.Rows != null && row.Rows[row.RowIndex] is HierarchicalRow<IModEntry> hierarchicalRow)
+			{
+				if (container.IsExpanded) hierarchicalRow.IsExpanded = true;
+			}
+
+			foreach (var child in container.ForEachNested())
+			{
+				child.IsActive = ViewModel.ListType == ModListType.Active;
+			}
+		}
+
+		_trackVisibleTask?.Dispose();
+		_trackVisibleTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), TrackVisibleRows);
+	}
+
+	public void Refresh()
+	{
+		if (ModsTreeDataGrid.RowsPresenter != null)
+		{
+			foreach (var child in ModsTreeDataGrid.RowsPresenter.GetVisualChildren())
+			{
+				if (child is TreeDataGridRow row && row.Model is IModEntry entry)
+				{
+					PrepareRow(row, entry);
+				}
+			}
+		}
+	}
+
 	public ModListView()
 	{
 		InitializeComponent();
@@ -553,6 +611,9 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		AddHandler(DragDrop.DropEvent, OnDrop);
 
 		ModsTreeDataGrid.RowPrepared += (o,e) => { };
+
+		_modContext = this.FindResource("ModContextFlyout");
+		_modContainerContext = this.FindResource("ModContainerMenuFlyout");
 
 		this.WhenActivated(d =>
 		{
@@ -639,11 +700,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					h => ModsTreeDataGrid.RowDragStarted += h,
 					h => ModsTreeDataGrid.RowDragStarted -= h
 				).Subscribe(OnTreeDataGridDragStarted, OnError));
-				
-				var modContext = this.FindResource("ModContextFlyout");
-				var modContainerContext = this.FindResource("ModContainerMenuFlyout");
-				var modThickness = new Thickness(0);
-				var modContainerThickness = new Thickness(0, 0, 0, 1);
 
 				//d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SelectionChanged))
 				//	.Throttle(TimeSpan.FromTicks(50))
@@ -652,43 +708,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				//d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SourceReset))
 				//	.Throttle(TimeSpan.FromTicks(50))
 				//	.Select(_ => FlattenIndexes(ModsTreeDataGrid.RowSelection.SelectedIndexes)).InvokeCommand(ViewModel.UpdateSelectionsCommand));
-
-				void PrepareRow(TreeDataGridRow row, IModEntry entry)
-				{
-					row[!IsVisibleProperty] = entry.WhenAnyValue(x => x.IsVisible).ToBinding();
-					//row.GetObservable(TreeDataGridRow.IsSelectedProperty).BindTo(entry, x => x.IsSelected);
-
-					entry.IsActive = ViewModel.ListType == ModListType.Active;
-
-					if (entry.EntryType == ModEntryType.Mod)
-					{
-						entry.ContextMenu = modContext;
-						row.BorderThickness = modThickness;
-					}
-					else if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
-					{
-						entry.ContextMenu = modContainerContext;
-						row.BorderThickness = modContainerThickness;
-						row[!BorderBrushProperty] = container.Settings.WhenAnyValue(x => x.BorderColor).Select(x => x.IsValid() ? ColorBrushCache.GetBrush(x) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
-
-						var defaultBG = row.Background;
-						row[!BackgroundProperty] = container.Settings.WhenAnyValue(x => x.BackgroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultBG).ToBinding();
-						row[!BorderThicknessProperty] = container.Settings.WhenAnyValue(x => x.BorderThickness).Select(x => x.IsValid() ? Thickness.Parse(x) : modContainerThickness).ToBinding();
-
-						if(row.Rows != null && row.Rows[row.RowIndex] is HierarchicalRow<IModEntry> hierarchicalRow)
-						{
-							if (container.IsExpanded) hierarchicalRow.IsExpanded = true;
-						}
-
-						foreach (var child in container.ForEachNested())
-						{
-							child.IsActive = ViewModel.ListType == ModListType.Active;
-						}
-					}
-
-					_trackVisibleTask?.Dispose();
-					_trackVisibleTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), TrackVisibleRows);
-				}
 
 				//Initialize context menus. RowPrepared apparently doesn't fire until a row is interacted with
 				d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
@@ -738,9 +757,14 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					}
 				}));
 
-				d(ViewModel.FocusCommand.Subscribe(e =>
+				d(ViewModel.FocusCommand.IsExecuting.Where(b => !b).Subscribe(_ =>
 				{
 					ModsTreeDataGrid.Focus(NavigationMethod.Pointer);
+				}));
+
+				d(ViewModel.RefreshCommand.IsExecuting.Where(b => !b).Subscribe(_ =>
+				{
+					Refresh();
 				}));
 			}
 		});

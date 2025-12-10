@@ -43,6 +43,7 @@ public partial class ModListViewModel : ReactiveObject
 
 	public RxCommandUnit FocusCommand { get; }
 	public RxCommandUnit AddContainerCommand { get; }
+	public RxCommandUnit RefreshCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> DeleteContainerCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> DeleteContainerModsCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> RenameContainerCommand { get; }
@@ -298,6 +299,8 @@ public partial class ModListViewModel : ReactiveObject
 				await AppServices.Interactions.DeleteMods.Handle(new(nestedChildMods));
 			}
 		});
+
+		RefreshCommand = ReactiveCommand.Create(() => { });
 	}
 }
 

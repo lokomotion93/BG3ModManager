@@ -411,6 +411,10 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				if (ModOrderList.ElementAtOrDefault(SelectedModOrderIndex) is ModOrder order) SelectedModOrder = order;
 				if (AdventureMods.ElementAtOrDefault(SelectedAdventureModIndex) is ModData adventureMod) SelectedAdventureMod = adventureMod;
 
+				ActiveModsView.RefreshCommand.Execute().Subscribe();
+				InactiveModsView.RefreshCommand.Execute().Subscribe();
+				OverrideModsView.RefreshCommand.Execute().Subscribe();
+
 				IsLoadingOrder = false;
 				IsRefreshing = false;
 				ApplyProfile(SelectedProfile, SelectedModOrder);
