@@ -31,7 +31,9 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			HierarchicalTreeDataGridSource<IModEntry> target,
 			IndexPath targetIndex,
 			TreeDataGridRowDropPosition position,
-			DragDropEffects effects)
+			DragDropEffects effects,
+			bool insertAtEnd = false
+		)
 	{
 		if (effects == DragDropEffects.Move)
 		{
@@ -78,7 +80,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 			if(target.Items is ObservableCollectionExtended<IModEntry> targetCollection)
 			{
-				if (targetCollection.Count == 0)
+				if (targetCollection.Count == 0 || insertAtEnd)
 				{
 					targetCollection.AddRange(entriesToInsert);
 				}
@@ -89,9 +91,24 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					{
 						targetContainer.Children.AddRange(entriesToInsert);
 					}
-					else
+					else if (position == TreeDataGridRowDropPosition.Before)
 					{
 						targetCollection.InsertRange(entriesToInsert, index);
+					}
+					else if (position == TreeDataGridRowDropPosition.After)
+					{
+						if (index >= targetCollection.Count - 1)
+						{
+							targetCollection.AddRange(entriesToInsert);
+						}
+						else
+						{
+							targetCollection.InsertRange(entriesToInsert, index + 1);
+						}
+					}
+					else
+					{
+						targetCollection.AddRange(entriesToInsert);
 					}
 				}
 			}
@@ -286,22 +303,37 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					}
 
 					IndexPath targetIndex = 0;
+					var insertAtEnd = false;
 
 					//Clear the previous selection, so only the dropped items are selected
 					if (target.RowSelection != null)
 					{
 						foreach (var entry in target.RowSelection.SelectedItems)
 						{
-							entry?.IsSelected = false;
+							if(entry != null)
+							{
+								entry.IsSelected = false;
+								if (entry is ModContainer container)
+								{
+									container.SetChildSelection(false);
+								}
+							}
 						}
 						target.RowSelection.Clear();
 					}
 
 					if (ViewModel?.Mods.Rows.Count > 0)
 					{
-						targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
+						if(target.Rows == null || e.TargetRow.RowIndex >= target.Rows.Count)
+						{
+							insertAtEnd = true;
+						}
+						else
+						{
+							targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
+						}
 					}
-					DragDropRows(listSource, target, targetIndex, e.Position, e.Inner.DragEffects);
+					DragDropRows(listSource, target, targetIndex, e.Position, e.Inner.DragEffects, insertAtEnd);
 				}
 			}
 		}
@@ -588,13 +620,13 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				var modThickness = new Thickness(0);
 				var modContainerThickness = new Thickness(0, 0, 0, 1);
 
-				d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SelectionChanged))
-					.Throttle(TimeSpan.FromTicks(50))
-					.Select(_ => FlattenIndexes(ModsTreeDataGrid.RowSelection.SelectedIndexes)).InvokeCommand(ViewModel.UpdateSelectionsCommand));
+				//d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SelectionChanged))
+				//	.Throttle(TimeSpan.FromTicks(50))
+				//	.Select(_ => FlattenIndexes(ModsTreeDataGrid.RowSelection.SelectedIndexes)).InvokeCommand(ViewModel.UpdateSelectionsCommand));
 
-				d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SourceReset))
-					.Throttle(TimeSpan.FromTicks(50))
-					.Select(_ => FlattenIndexes(ModsTreeDataGrid.RowSelection.SelectedIndexes)).InvokeCommand(ViewModel.UpdateSelectionsCommand));
+				//d(Observable.FromEventPattern(ModsTreeDataGrid.RowSelection!, nameof(ModsTreeDataGrid.RowSelection.SourceReset))
+				//	.Throttle(TimeSpan.FromTicks(50))
+				//	.Select(_ => FlattenIndexes(ModsTreeDataGrid.RowSelection.SelectedIndexes)).InvokeCommand(ViewModel.UpdateSelectionsCommand));
 
 				void PrepareRow(TreeDataGridRow row, IModEntry entry)
 				{
@@ -602,6 +634,17 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					row.GetObservable(TreeDataGridRow.IsSelectedProperty).BindTo(entry, x => x.IsSelected);
 
 					entry.IsActive = ViewModel.ListType == ModListType.Active;
+
+					if (entry.PreserveSelection)
+					{
+						/*ModEntryTreeDataGridRowSelectionModel preserves the selection after drag + drop visually,
+						while this makes sure the backing data stays selected.
+						If this isn't set here, then the next drag + drop will only move the directly selected item.
+						*/
+						ModsTreeDataGrid.RowSelection?.Select(row.RowIndex);
+						entry.PreserveSelection = false;
+						entry.IsSelected = true;
+					}
 
 					if (entry.EntryType == ModEntryType.Mod)
 					{
@@ -659,15 +702,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					_trackVisibleTask = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromTicks(30), TrackVisibleRows);
 					if (e.Row.Model is IModEntry entry)
 					{
-						if (entry.PreserveSelection)
-						{
-							/*ModEntryTreeDataGridRowSelectionModel preserves the selection after drag + drop visually,
-							while this makes sure the backing data stays selected.
-							If this isn't set here, then the next drag + drop will only move the directly selected item.
-							*/
-							ModsTreeDataGrid.RowSelection!.Select(e.RowIndex);
-							entry.PreserveSelection = false;
-						}
 						//entry.IsExpanded = false;
 						PrepareRow(e.Row, entry);
 					}
