@@ -1335,8 +1335,6 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		}
 	}
 
-	private readonly MainWindowExceptionHandler exceptionHandler;
-
 	private void DeleteMods(IEnumerable<IModEntry> targetMods, bool isDeletingDuplicates = false, IEnumerable<ModData>? loadedMods = null)
 	{
 		var deleteFilesView = ViewModelLocator.DeleteFiles;
@@ -1363,121 +1361,124 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		}
 	}
 
-	private async Task ExtractSelectedMods_ChooseFolder()
+	private async Task ExtractSelectedModsRunAsync(IEnumerable<ModData> mods, string outputDirectory)
 	{
-		var result = await _dialogs.OpenFolderAsync(new(
-			Loca.Picker_ExtractSelectedMods_Title,
-			GetInitialStartingDirectory(Settings.LastExtractOutputPath)));
+		DivinityApp.Log($"Extracting selected mods to '{outputDirectory}'.");
 
-		if (result.Success && result.File.IsValid())
+		_fs.Directory.CreateDirectory(outputDirectory);
+
+		var targetMods = _manager.SelectedPakMods.ToImmutableList();
+
+		var totalWork = targetMods.Count;
+		var taskStepAmount = 100d / totalWork;
+		Progress.Title = Loca.Progress_ExtractSelectedMods_Title.SafeFormat($"Extracting {totalWork} mods...", totalWork);
+
+		var openOutputPath = outputDirectory;
+		var doOpenOutput = true;
+
+		var successes = 0;
+
+		List<string> filesToProcess = [.. targetMods.Where(x => x.FilePath.IsValid()).Select(x => x.FilePath!)];
+		await Progress.StartAsync(async token =>
 		{
-			Settings.LastExtractOutputPath = result.File;
-			SaveSettings();
-
-			var outputDirectory = result.File;
-			DivinityApp.Log($"Extracting selected mods to '{outputDirectory}'.");
-
-			var targetMods = _manager.SelectedPakMods.ToImmutableList();
-
-			var totalWork = targetMods.Count;
-			var taskStepAmount = 100d / totalWork;
-			Progress.Title = Loca.Progress_ExtractSelectedMods_Title.SafeFormat($"Extracting {totalWork} mods...", totalWork);
-
-			var openOutputPath = result.File;
-			var doOpenOutput = true;
-
-			var successes = 0;
-
-			List<string> filesToProcess = [.. targetMods.Where(x => x.FilePath.IsValid()).Select(x => x.FilePath)];
-			await Progress.StartAsync(async token =>
+			await Parallel.ForEachAsync(filesToProcess, token, async (path, t) =>
 			{
-				await Parallel.ForEachAsync(filesToProcess, token, async (path, t) =>
+				if (t.IsCancellationRequested) return;
+
+				try
 				{
-					if (t.IsCancellationRequested) return;
+					//Put each pak into its own folder
+					var pakName = _fs.Path.GetFileNameWithoutExtension(path);
+					Progress.WorkText += Loca.Progress_ExtractSelectedMods_ExtractPak.SafeFormat($"Extracting {pakName}...\n", pakName);
+					var destination = _fs.Path.Join(outputDirectory, pakName);
 
-					try
+					//In case the foldername == the pak name and we're only extracting one pak
+					if (totalWork == 1 && _fs.Path.GetDirectoryName(outputDirectory)?.Equals(pakName) == true)
 					{
-						//Put each pak into its own folder
-						var pakName = _fs.Path.GetFileNameWithoutExtension(path);
-						Progress.WorkText += Loca.Progress_ExtractSelectedMods_ExtractPak.SafeFormat($"Extracting {pakName}...\n", pakName);
-						var destination = _fs.Path.Join(outputDirectory, pakName);
-
-						//In case the foldername == the pak name and we're only extracting one pak
-						if (totalWork == 1 && _fs.Path.GetDirectoryName(outputDirectory)?.Equals(pakName) == true)
+						destination = outputDirectory;
+					}
+					var success = await FileUtils.ExtractPackageAsync(path, destination, token);
+					if (success)
+					{
+						successes += 1;
+						if (totalWork == 1)
 						{
-							destination = outputDirectory;
-						}
-						var success = await FileUtils.ExtractPackageAsync(path, destination, token);
-						if (success)
-						{
-							successes += 1;
-							if (totalWork == 1)
-							{
-								openOutputPath = destination;
-							}
+							openOutputPath = destination;
 						}
 					}
-					catch (Exception ex)
-					{
-						DivinityApp.Log($"Error extracting package: {ex}");
-					}
-					Progress.Value += taskStepAmount;
-
-					if(_settings.ManagerSettings.Confirmations.OpenExtractedModFolder == null)
-					{
-						var doOpenFolderResult = await AppServices.Interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ExtractSelectedMods_OpenOutputFolder_Title, Loca.MessageBox_ExtractSelectedMods_OpenOutputFolder_Message, InteractionMessageBoxType.YesNo | InteractionMessageBoxType.Remember));
-						doOpenOutput = doOpenFolderResult.Result;
-						if(doOpenFolderResult.RememberChoice)
-						{
-							_settings.ManagerSettings.Confirmations.OpenExtractedModFolder = doOpenOutput;
-							_settings.QueueSave(_settings.ManagerSettings, TimeSpan.FromMilliseconds(250));
-						}
-					}
-					else
-					{
-						doOpenOutput = _settings.ManagerSettings.Confirmations.OpenExtractedModFolder == true;
-					}
-				});
-				RxApp.MainThreadScheduler.Schedule(() =>
+				}
+				catch (Exception ex)
 				{
-					if (successes >= totalWork)
+					DivinityApp.Log($"Error extracting package: {ex}");
+				}
+				Progress.Value += taskStepAmount;
+
+				if (_settings.ManagerSettings.Confirmations.OpenExtractedModFolder == null)
+				{
+					var doOpenFolderResult = await AppServices.Interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ExtractSelectedMods_OpenOutputFolder_Title, Loca.MessageBox_ExtractSelectedMods_OpenOutputFolder_Message, InteractionMessageBoxType.YesNo | InteractionMessageBoxType.Remember));
+					doOpenOutput = doOpenFolderResult.Result;
+					if (doOpenFolderResult.RememberChoice)
 					{
-						_globalCommands.ShowAlert($"Successfully extracted all selected mods to '{result.File}'", AlertType.Success, 20);
-						if(doOpenOutput)
-						{
-							ProcessHelper.TryOpenPath(openOutputPath, _fs.Directory.Exists);
-						}
+						_settings.ManagerSettings.Confirmations.OpenExtractedModFolder = doOpenOutput;
+						_settings.QueueSave(_settings.ManagerSettings, TimeSpan.FromMilliseconds(250));
 					}
-					else
+				}
+				else
+				{
+					doOpenOutput = _settings.ManagerSettings.Confirmations.OpenExtractedModFolder == true;
+				}
+			});
+			RxApp.MainThreadScheduler.Schedule(() =>
+			{
+				if (successes >= totalWork)
+				{
+					_globalCommands.ShowAlert($"Successfully extracted all selected mods to '{outputDirectory}'", AlertType.Success, 20);
+					if (doOpenOutput)
 					{
-						_globalCommands.ShowAlert($"Error occurred when extracting selected mods to '{result.File}'", AlertType.Danger, 30);
+						ProcessHelper.TryOpenPath(openOutputPath, _fs.Directory.Exists);
 					}
-				});
-			}, true);
-		}
+				}
+				else
+				{
+					_globalCommands.ShowAlert($"Error occurred when extracting selected mods to '{outputDirectory}'", AlertType.Danger, 30);
+				}
+			});
+		}, true);
 	}
 
-	private async Task ExtractSelectedMods_Start()
+	public async Task ExtractSelectedModsAsync(IEnumerable<ModData> mods)
 	{
 		//var selectedMods = Mods.Where(x => x.IsSelected && !x.IsEditorMod).ToList();
 
-		if (_manager.SelectedPakMods.Count == 1)
+		var outputFolderResult = await _dialogs.OpenFolderAsync(new(
+			Loca.Picker_ExtractSelectedMods_Title,
+			GetInitialStartingDirectory(Settings.LastExtractOutputPath)));
+
+		if(outputFolderResult.Success && outputFolderResult.File.IsValid())
 		{
-			await ExtractSelectedMods_ChooseFolder();
-		}
-		else
-		{
-			var selectedModNames = string.Join("\n", _manager.SelectedPakMods.Select(x => $"{x.DisplayName}"));
-			var msg = Loca.MessageBox_ExtractSelectedMods_Message.SafeFormat($"Extract the following mods?\n{selectedModNames}", selectedModNames);
-			var result = await _interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ExtractSelectedMods_Title, msg, InteractionMessageBoxType.YesNo));
-			if (result)
+			var outputDir = outputFolderResult.File;
+
+			Settings.LastExtractOutputPath = outputDir;
+			SaveSettings();
+
+			if (_manager.SelectedPakMods.Count == 1)
 			{
-				await ExtractSelectedMods_ChooseFolder();
+				await ExtractSelectedModsRunAsync(mods, outputDir);
+			}
+			else
+			{
+				var selectedModNames = string.Join("\n", mods.Select(x => $"{x.DisplayName}"));
+				var msg = Loca.MessageBox_ExtractSelectedMods_Message.SafeFormat($"Extract the following mods?\n{selectedModNames}", selectedModNames);
+				var result = await _interactions.ShowMessageBox.Handle(new(Loca.MessageBox_ExtractSelectedMods_Title, msg, InteractionMessageBoxType.YesNo));
+				if (result)
+				{
+					await ExtractSelectedModsRunAsync(mods, outputDir);
+				}
 			}
 		}
 	}
 
-	private async Task ExtractSelectedAdventure()
+	public async Task ExtractSelectedAdventure()
 	{
 		var mod = ViewModelLocator.ModOrder.SelectedAdventureMod;
 
@@ -1678,8 +1679,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 
 		DownloadBar = new DownloadActivityBarViewModel();
 
-		exceptionHandler = new MainWindowExceptionHandler(this);
-		RxApp.DefaultExceptionHandler = exceptionHandler;
+		RxApp.DefaultExceptionHandler = new MainWindowExceptionHandler(this);
 
 		_version = _environment.AppVersion.ToString();
 		_title = $"{_environment.AppProductName} {_version}";
@@ -1832,9 +1832,6 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		#endregion
 
 		_updatesViewIsVisibleHelper = Router.CurrentViewModel.Select(x => x == ViewModelLocator.ModUpdates).ToUIProperty(this, x => x.UpdatesViewIsVisible, false);
-
-		var anyPakModSelectedObservable = _manager.SelectedPakMods.ToObservableChangeSet().CountChanged().Select(x => _manager.SelectedPakMods.Count > 0);
-		//Keys.ExtractSelectedMods.AddAsyncAction(ExtractSelectedMods_Start, anyPakModSelectedObservable);
 
 		_interactions.ConfirmModDeletion.RegisterHandler(async interaction =>
 		{

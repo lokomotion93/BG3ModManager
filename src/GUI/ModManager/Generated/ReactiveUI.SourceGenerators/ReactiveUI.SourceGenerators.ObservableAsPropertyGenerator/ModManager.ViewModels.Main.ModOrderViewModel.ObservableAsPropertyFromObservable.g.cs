@@ -49,6 +49,16 @@ namespace ModManager.ViewModels.Main
         [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ObservableAsPropertyGenerator", "2.5.0.0")]
         [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public partial string? SelectedProfileSavesPath { get => _selectedProfileSavesPath = (_selectedProfileSavesPathHelper == null ? _selectedProfileSavesPath : _selectedProfileSavesPathHelper.Value); }
+/// <inheritdoc cref="HasAnySelectedPakMods"/>
+        private bool _hasAnySelectedPakMods;
+
+        /// <inheritdoc cref="_hasAnySelectedPakModsHelper"/>
+        private readonly ReactiveUI.ObservableAsPropertyHelper<bool> _hasAnySelectedPakModsHelper;
+
+        /// <inheritdoc cref="_hasAnySelectedPakMods"/>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReactiveUI.SourceGenerators.ObservableAsPropertyGenerator", "2.5.0.0")]
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        public partial bool HasAnySelectedPakMods { get => _hasAnySelectedPakMods = (_hasAnySelectedPakModsHelper == null ? _hasAnySelectedPakMods : _hasAnySelectedPakModsHelper.Value); }
 /// <inheritdoc cref="AdventureModBoxVisibility"/>
         private bool _adventureModBoxVisibility;
 

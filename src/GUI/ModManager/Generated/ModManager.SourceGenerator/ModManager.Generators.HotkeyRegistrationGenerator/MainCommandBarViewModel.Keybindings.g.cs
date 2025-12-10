@@ -68,7 +68,6 @@ public partial class MainCommandBarViewModel
 		keys.RegisterCommand("MainCommandBarViewModel_ExtractAllSelectedModsCommand", "Keybinding_ExtractAllSelectedMods", ExtractAllSelectedModsCommand);
 		keys.RegisterCommand("MainCommandBarViewModel_ExtractSelectedActiveModsCommand", "Keybinding_ExtractSelectedActiveMods", ExtractSelectedActiveModsCommand);
 		keys.RegisterCommand("MainCommandBarViewModel_ExtractSelectedInactiveModsCommand", "Keybinding_ExtractSelectedInactiveMods", ExtractSelectedInactiveModsCommand);
-		keys.RegisterCommand("MainCommandBarViewModel_ExtractSelectedAdventureCommand", "Keybinding_ExtractSelectedAdventure", ExtractSelectedAdventureCommand);
 		keys.RegisterCommand("MainCommandBarViewModel_SpeakActiveModOrderCommand", "Keybinding_SpeakActiveModOrder", SpeakActiveModOrderCommand, Avalonia.Input.Key.Home, Avalonia.Input.KeyModifiers.Control);
 		keys.RegisterCommand("MainCommandBarViewModel_StopSpeakingCommand", "Keybinding_StopSpeaking", StopSpeakingCommand, Avalonia.Input.Key.Home, Avalonia.Input.KeyModifiers.None | Avalonia.Input.KeyModifiers.Control | Avalonia.Input.KeyModifiers.Shift);
 		keys.RegisterCommand("MainCommandBarViewModel_CheckForUpdatesCommand", "Keybinding_CheckForUpdates", CheckForUpdatesCommand, Avalonia.Input.Key.F7);

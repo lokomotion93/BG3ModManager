@@ -4,6 +4,38 @@
 
 namespace ModManager.ViewModels
 {
+    partial class MainWindowExceptionHandler
+    {
+        /// <remarks>
+        /// Pattern:<br/>
+        /// <code>\\\\([^\\\\]+\\.cs):line (\\d+)</code><br/>
+        /// Options:<br/>
+        /// <code>RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant</code><br/>
+        /// Explanation:<br/>
+        /// <code>
+        /// ○ Match '\\'.<br/>
+        /// ○ 1st capture group.<br/>
+        ///     ○ Match a character other than '\\' greedily at least once.<br/>
+        ///     ○ Match '.'.<br/>
+        ///     ○ Match a character in the set [Cc].<br/>
+        ///     ○ Match a character in the set [Ss].<br/>
+        /// ○ Match ':'.<br/>
+        /// ○ Match a character in the set [Ll].<br/>
+        /// ○ Match a character in the set [Ii].<br/>
+        /// ○ Match a character in the set [Nn].<br/>
+        /// ○ Match a character in the set [Ee].<br/>
+        /// ○ Match ' '.<br/>
+        /// ○ 2nd capture group.<br/>
+        ///     ○ Match a Unicode digit atomically at least once.<br/>
+        /// </code>
+        /// </remarks>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.13.7005")]
+        private static partial global::System.Text.RegularExpressions.Regex ExceptionClassPattern() => global::System.Text.RegularExpressions.Generated.ExceptionClassPattern_0.Instance;
+    }
+}
+
+namespace ModManager.ViewModels
+{
     partial class AppUpdateWindowViewModel
     {
         /// <remarks>
@@ -20,7 +52,7 @@ namespace ModManager.ViewModels
         /// </code>
         /// </remarks>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.13.7005")]
-        private static partial global::System.Text.RegularExpressions.Regex RemoveEmptyLinesRe() => global::System.Text.RegularExpressions.Generated.RemoveEmptyLinesRe_0.Instance;
+        private static partial global::System.Text.RegularExpressions.Regex RemoveEmptyLinesRe() => global::System.Text.RegularExpressions.Generated.RemoveEmptyLinesRe_1.Instance;
     }
 }
 
@@ -36,15 +68,225 @@ namespace System.Text.RegularExpressions.Generated
     using System.Text.RegularExpressions;
     using System.Threading;
 
-    /// <summary>Custom <see cref="Regex"/>-derived type for the RemoveEmptyLinesRe method.</summary>
+    /// <summary>Custom <see cref="Regex"/>-derived type for the ExceptionClassPattern method.</summary>
     [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.13.7005")]
-    file sealed class RemoveEmptyLinesRe_0 : Regex
+    file sealed class ExceptionClassPattern_0 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
-        internal static readonly RemoveEmptyLinesRe_0 Instance = new();
+        internal static readonly ExceptionClassPattern_0 Instance = new();
     
         /// <summary>Initializes the instance.</summary>
-        private RemoveEmptyLinesRe_0()
+        private ExceptionClassPattern_0()
+        {
+            base.pattern = "\\\\([^\\\\]+\\.cs):line (\\d+)";
+            base.roptions = RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant;
+            ValidateMatchTimeout(Utilities.s_defaultTimeout);
+            base.internalMatchTimeout = Utilities.s_defaultTimeout;
+            base.factory = new RunnerFactory();
+            base.capsize = 3;
+        }
+            
+        /// <summary>Provides a factory for creating <see cref="RegexRunner"/> instances to be used by methods on <see cref="Regex"/>.</summary>
+        private sealed class RunnerFactory : RegexRunnerFactory
+        {
+            /// <summary>Creates an instance of a <see cref="RegexRunner"/> used by methods on <see cref="Regex"/>.</summary>
+            protected override RegexRunner CreateInstance() => new Runner();
+        
+            /// <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+            private sealed class Runner : RegexRunner
+            {
+                /// <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+                /// <param name="inputSpan">The text being scanned by the regular expression.</param>
+                protected override void Scan(ReadOnlySpan<char> inputSpan)
+                {
+                    // Search until we can't find a valid starting position, we find a match, or we reach the end of the input.
+                    while (TryFindNextPossibleStartingPosition(inputSpan) &&
+                           !TryMatchAtCurrentPosition(inputSpan) &&
+                           base.runtextpos != inputSpan.Length)
+                    {
+                        base.runtextpos++;
+                        if (Utilities.s_hasTimeout)
+                        {
+                            base.CheckTimeout();
+                        }
+                    }
+                }
+        
+                /// <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+                /// <param name="inputSpan">The text being scanned by the regular expression.</param>
+                /// <returns>true if a possible match was found; false if no more matches are possible.</returns>
+                private bool TryFindNextPossibleStartingPosition(ReadOnlySpan<char> inputSpan)
+                {
+                    int pos = base.runtextpos;
+                    
+                    // Any possible match is at least 12 characters.
+                    if (pos <= inputSpan.Length - 12)
+                    {
+                        // The pattern begins with a character in the set \\.
+                        // Find the next occurrence. If it can't be found, there's no match.
+                        int i = inputSpan.Slice(pos).IndexOf('\\');
+                        if (i >= 0)
+                        {
+                            base.runtextpos = pos + i;
+                            return true;
+                        }
+                    }
+                    
+                    // No match found.
+                    base.runtextpos = inputSpan.Length;
+                    return false;
+                }
+        
+                /// <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+                /// <param name="inputSpan">The text being scanned by the regular expression.</param>
+                /// <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+                private bool TryMatchAtCurrentPosition(ReadOnlySpan<char> inputSpan)
+                {
+                    int pos = base.runtextpos;
+                    int matchStart = pos;
+                    int capture_starting_pos = 0;
+                    int capture_starting_pos1 = 0;
+                    int charloop_capture_pos = 0;
+                    int charloop_starting_pos = 0, charloop_ending_pos = 0;
+                    ReadOnlySpan<char> slice = inputSpan.Slice(pos);
+                    
+                    // Match '\\'.
+                    if (slice.IsEmpty || slice[0] != '\\')
+                    {
+                        UncaptureUntil(0);
+                        return false; // The input didn't match.
+                    }
+                    
+                    // 1st capture group.
+                    //{
+                        pos++;
+                        slice = inputSpan.Slice(pos);
+                        capture_starting_pos = pos;
+                        
+                        // Match a character other than '\\' greedily at least once.
+                        //{
+                            charloop_starting_pos = pos;
+                            
+                            int iteration = slice.IndexOf('\\');
+                            if (iteration < 0)
+                            {
+                                iteration = slice.Length;
+                            }
+                            
+                            if (iteration == 0)
+                            {
+                                UncaptureUntil(0);
+                                return false; // The input didn't match.
+                            }
+                            
+                            slice = slice.Slice(iteration);
+                            pos += iteration;
+                            
+                            charloop_ending_pos = pos;
+                            charloop_starting_pos++;
+                            goto CharLoopEnd;
+                            
+                            CharLoopBacktrack:
+                            UncaptureUntil(charloop_capture_pos);
+                            
+                            if (Utilities.s_hasTimeout)
+                            {
+                                base.CheckTimeout();
+                            }
+                            
+                            if (charloop_starting_pos >= charloop_ending_pos ||
+                                (charloop_ending_pos = inputSpan.Slice(charloop_starting_pos, charloop_ending_pos - charloop_starting_pos).LastIndexOf('.')) < 0)
+                            {
+                                UncaptureUntil(0);
+                                return false; // The input didn't match.
+                            }
+                            charloop_ending_pos += charloop_starting_pos;
+                            pos = charloop_ending_pos;
+                            slice = inputSpan.Slice(pos);
+                            
+                            CharLoopEnd:
+                            charloop_capture_pos = base.Crawlpos();
+                        //}
+                        
+                        if ((uint)slice.Length < 3 ||
+                            !slice.StartsWith(".cs", StringComparison.OrdinalIgnoreCase)) // Match the string ".cs" (ordinal case-insensitive)
+                        {
+                            goto CharLoopBacktrack;
+                        }
+                        
+                        pos += 3;
+                        slice = inputSpan.Slice(pos);
+                        base.Capture(1, capture_starting_pos, pos);
+                        
+                        goto CaptureSkipBacktrack;
+                        
+                        CaptureBacktrack:
+                        goto CharLoopBacktrack;
+                        
+                        CaptureSkipBacktrack:;
+                    //}
+                    
+                    if ((uint)slice.Length < 6 ||
+                        !slice.StartsWith(":line ", StringComparison.OrdinalIgnoreCase)) // Match the string ":line " (ordinal case-insensitive)
+                    {
+                        goto CaptureBacktrack;
+                    }
+                    
+                    // 2nd capture group.
+                    {
+                        pos += 6;
+                        slice = inputSpan.Slice(pos);
+                        capture_starting_pos1 = pos;
+                        
+                        // Match a Unicode digit atomically at least once.
+                        {
+                            int iteration1 = 0;
+                            while ((uint)iteration1 < (uint)slice.Length && char.IsDigit(slice[iteration1]))
+                            {
+                                iteration1++;
+                            }
+                            
+                            if (iteration1 == 0)
+                            {
+                                goto CaptureBacktrack;
+                            }
+                            
+                            slice = slice.Slice(iteration1);
+                            pos += iteration1;
+                        }
+                        
+                        base.Capture(2, capture_starting_pos1, pos);
+                    }
+                    
+                    // The input matched.
+                    base.runtextpos = pos;
+                    base.Capture(0, matchStart, pos);
+                    return true;
+                    
+                    // <summary>Undo captures until it reaches the specified capture position.</summary>
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    void UncaptureUntil(int capturePosition)
+                    {
+                        while (base.Crawlpos() > capturePosition)
+                        {
+                            base.Uncapture();
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    
+    /// <summary>Custom <see cref="Regex"/>-derived type for the RemoveEmptyLinesRe method.</summary>
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.13.7005")]
+    file sealed class RemoveEmptyLinesRe_1 : Regex
+    {
+        /// <summary>Cached, thread-safe singleton instance.</summary>
+        internal static readonly RemoveEmptyLinesRe_1 Instance = new();
+    
+        /// <summary>Initializes the instance.</summary>
+        private RemoveEmptyLinesRe_1()
         {
             base.pattern = "^\\s+$[\\r\\n]*";
             base.roptions = RegexOptions.Multiline;

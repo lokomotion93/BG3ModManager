@@ -201,9 +201,6 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedInactiveMods), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? ExtractSelectedInactiveModsCommand { get; }
 
-	[Keybinding(nameof(Resources.Keybinding_ExtractSelectedAdventure), Key.None, KeyModifiers.None)]
-	public RxCommandUnit? ExtractSelectedAdventureCommand { get; }
-
 	[Keybinding(nameof(Resources.Keybinding_SpeakActiveModOrder), Key.Home, KeyModifiers.Control)]
 	public RxCommandUnit? SpeakActiveModOrderCommand { get; }
 
@@ -686,10 +683,32 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		DownloadScriptExtenderCommand = ReactiveCommand.CreateFromTask(main.AskToDownloadScriptExtender, canExecuteCommands);
 
-		ExtractAllSelectedModsCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
-		ExtractSelectedActiveModsCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
-		ExtractSelectedInactiveModsCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
-		ExtractSelectedAdventureCommand = ReactiveCommand.Create(NotImplemented, canExecuteCommands);
+		var canExtract = modOrder.WhenAnyValue(x => x.HasAnySelectedPakMods).CombineLatest(canExecuteCommands).AllTrue();
+
+		void OnExtractError(Exception ex)
+		{
+			AppServices.Commands.ShowAlert(ex.ToString(), AlertType.Danger, 30, "Error Extracting Mods");
+		}
+
+		ExtractAllSelectedModsCommand = ReactiveCommand.CreateFromTask(async () =>
+		{
+			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods);
+		}, canExtract);
+
+		ExtractSelectedActiveModsCommand = ReactiveCommand.CreateFromTask(async () =>
+		{
+			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods.Where(x => x.IsActive || x.IsForceLoaded));
+		}, canExtract);
+
+		ExtractSelectedInactiveModsCommand = ReactiveCommand.CreateFromTask(async () =>
+		{
+			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods.Where(x => !x.IsActive));
+		}, canExtract);
+
+
+		ExtractAllSelectedModsCommand.ThrownExceptions.Subscribe(OnExtractError);
+		ExtractSelectedActiveModsCommand.ThrownExceptions.Subscribe(OnExtractError);
+		ExtractSelectedInactiveModsCommand.ThrownExceptions.Subscribe(OnExtractError);
 
 		SpeakActiveModOrderCommand = ReactiveCommand.Create(() =>
 		{
@@ -897,8 +916,6 @@ public partial class MainCommandBarViewModel : ReactiveObject
 						new MenuSeparator(),
 						MenuEntry.FromKeybinding(ExtractSelectedActiveModsCommand, nameof(ExtractSelectedActiveModsCommand), keybindings),
 						MenuEntry.FromKeybinding(ExtractSelectedInactiveModsCommand, nameof(ExtractSelectedInactiveModsCommand), keybindings),
-						new MenuSeparator(),
-						MenuEntry.FromKeybinding(ExtractSelectedAdventureCommand, nameof(ExtractSelectedAdventureCommand), keybindings),
 					]},
 					new MenuSeparator(),
 					new MenuEntry(nameof(Resources.TopMenu_Tools_Speak), useLocalization: true){

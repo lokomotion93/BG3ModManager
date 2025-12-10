@@ -91,6 +91,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	[ObservableAsProperty] public partial string? SelectedModOrderFilePath { get; }
 	[ObservableAsProperty] public partial string? SelectedProfilePath { get; }
 	[ObservableAsProperty] public partial string? SelectedProfileSavesPath { get; }
+	[ObservableAsProperty] public partial bool HasAnySelectedPakMods { get; }
 
 	[ObservableAsProperty] public partial bool AdventureModBoxVisibility { get; }
 	[ObservableAsProperty] public partial bool OverrideModsVisibility { get; }
@@ -106,6 +107,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	[ObservableAsProperty] public partial int TotalActiveMods { get; }
 	[ObservableAsProperty] public partial int TotalInactiveMods { get; }
+
 
 	public ReactiveCommand<ModOrder, Unit> DeleteOrderCommand { get; }
 	public RxCommandUnit CopyOrderToClipboardCommand { get; }
@@ -1799,6 +1801,12 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		_selectedProfileSavesPathHelper = whenProfileNotNull
 			.Select(x => _fs.Path.Join(x.FilePath, "Savegames", "Story"))
 			.ToUIProperty(this, x => x.SelectedProfileSavesPath);
+
+		_hasAnySelectedPakModsHelper = _manager.SelectedPakMods
+			.ToObservableChangeSet()
+			.CountChanged()
+			.Select(_ => _manager.SelectedPakMods.Count > 0)
+			.ToUIPropertyImmediate(this, x => x.HasAnySelectedPakMods);
 
 		_totalActiveModsHelper = ActiveMods.ToObservableChangeSet().CountChanged().Select(_ => ActiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalActiveMods);
 		_totalInactiveModsHelper = InactiveMods.ToObservableChangeSet().CountChanged().Select(_ => InactiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalInactiveMods);
