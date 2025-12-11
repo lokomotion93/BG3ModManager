@@ -1009,7 +1009,13 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 	public void RefreshGitHubModsUpdatesBackground()
 	{
 		_refreshGitHubModsUpdatesBackgroundTask?.Dispose();
-		_refreshGitHubModsUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshGitHubModsUpdatesBackgroundAsync);
+		var now = DateTimeOffset.Now.ToUnixTimeSeconds();
+		if (now - Settings.UpdateSettings.LastGitHubCheck > DivinityApp.UPDATES_MODS_THRESHOLD.TotalSeconds)
+		{
+			Settings.UpdateSettings.LastGitHubCheck = now;
+			_settings.QueueSave(_settings.ManagerSettings, TimeSpan.FromMilliseconds(250));
+			_refreshGitHubModsUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshGitHubModsUpdatesBackgroundAsync);
+		}
 	}
 
 	private IDisposable? _refreshNexusModsUpdatesBackgroundTask;
@@ -1061,7 +1067,13 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 	public void RefreshNexusModsUpdatesBackground()
 	{
 		_refreshNexusModsUpdatesBackgroundTask?.Dispose();
-		_refreshNexusModsUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshNexusModsUpdatesBackgroundAsync);
+		var now = DateTimeOffset.Now.ToUnixTimeSeconds();
+		if (now - Settings.UpdateSettings.LastNexusModsCheck > DivinityApp.UPDATES_MODS_THRESHOLD.TotalSeconds)
+		{
+			Settings.UpdateSettings.LastNexusModsCheck = now;
+			_settings.QueueSave(_settings.ManagerSettings, TimeSpan.FromMilliseconds(250));
+			_refreshNexusModsUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshNexusModsUpdatesBackgroundAsync);
+		}
 	}
 
 	private IDisposable? _refreshModioUpdatesBackgroundTask;
@@ -1099,7 +1111,13 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 	public void RefreshModioUpdatesBackground()
 	{
 		_refreshModioUpdatesBackgroundTask?.Dispose();
-		_refreshModioUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshModioUpdatesBackgroundAsync);
+		var now = DateTimeOffset.Now.ToUnixTimeSeconds();
+		if (now - Settings.UpdateSettings.LastModioCheck > DivinityApp.UPDATES_MODS_THRESHOLD.TotalSeconds)
+		{
+			Settings.UpdateSettings.LastModioCheck = now;
+			_settings.QueueSave(_settings.ManagerSettings, TimeSpan.FromMilliseconds(250));
+			_refreshModioUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(RefreshModioUpdatesBackgroundAsync);
+		}
 	}
 
 	private IDisposable? _refreshAllModUpdatesBackgroundTask;
@@ -1114,17 +1132,21 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 
 	public void RefreshAllModUpdatesBackground()
 	{
-		_refreshAllModUpdatesBackgroundTask?.Dispose();
-		_refreshAllModUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(TimeSpan.FromMilliseconds(250), async (sch, token) =>
-		{
-			await UpdateRefreshingStateAsync(true);
+		if (Settings.UpdateSettings.UpdateGitHubMods) RefreshGitHubModsUpdatesBackground();
+		if (Settings.UpdateSettings.UpdateNexusMods) RefreshNexusModsUpdatesBackground();
+		if (Settings.UpdateSettings.UpdateModioMods) RefreshModioUpdatesBackground();
 
-			if (Settings.UpdateSettings.UpdateGitHubMods) await RefreshGitHubModsUpdatesBackgroundAsync(sch, token);
-			if (Settings.UpdateSettings.UpdateNexusMods) await RefreshNexusModsUpdatesBackgroundAsync(sch, token);
-			if (Settings.UpdateSettings.UpdateModioMods) await RefreshModioUpdatesBackgroundAsync(sch, token);
+		//_refreshAllModUpdatesBackgroundTask?.Dispose();
+		//_refreshAllModUpdatesBackgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(TimeSpan.FromMilliseconds(250), async (sch, token) =>
+		//{
+		//	await UpdateRefreshingStateAsync(true);
 
-			await UpdateRefreshingStateAsync(false);
-		});
+		//	if (Settings.UpdateSettings.UpdateGitHubMods) await RefreshGitHubModsUpdatesBackgroundAsync(sch, token);
+		//	if (Settings.UpdateSettings.UpdateNexusMods) await RefreshNexusModsUpdatesBackgroundAsync(sch, token);
+		//	if (Settings.UpdateSettings.UpdateModioMods) await RefreshModioUpdatesBackgroundAsync(sch, token);
+
+		//	await UpdateRefreshingStateAsync(false);
+		//});
 	}
 
 	public async Task ExportLoadOrderToArchiveAsync()
@@ -1282,10 +1304,9 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 	{
 		var appUpdateVM = ViewModelLocator.AppUpdate;
 
-		Settings.LastUpdateCheck = DateTimeOffset.Now.ToUnixTimeSeconds();
 		if (!force)
 		{
-			if (skipTimeCheck || Settings.LastUpdateCheck == -1 || (DateTimeOffset.Now.ToUnixTimeSeconds() - Settings.LastUpdateCheck >= 43200))
+			if (skipTimeCheck || Settings.LastUpdateCheck == -1 || (DateTimeOffset.Now.ToUnixTimeSeconds() - Settings.LastUpdateCheck >= DivinityApp.UPDATES_APP_THRESHOLD.TotalSeconds))
 			{
 				appUpdateVM.ScheduleUpdateCheck();
 			}
@@ -1294,6 +1315,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		{
 			appUpdateVM.ScheduleUpdateCheck(true);
 		}
+		Settings.LastUpdateCheck = DateTimeOffset.Now.ToUnixTimeSeconds();
 	}
 
 	public async Task OnViewActivated(MainWindow window)
