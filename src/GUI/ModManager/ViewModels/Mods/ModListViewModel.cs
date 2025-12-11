@@ -71,7 +71,7 @@ public partial class ModListViewModel : ReactiveObject
 		return string.Join(", ", texts);
 	}
 
-	private void CountMods(Unit _)
+	private void CountMods()
 	{
 		var total = 0;
 		var totalHidden = 0;
@@ -85,6 +85,11 @@ public partial class ModListViewModel : ReactiveObject
 		TotalMods = total;
 		TotalModsHidden = totalHidden;
 		TotalModsSelected = totalSelected;
+
+		if (ListType == ModListType.Inactive)
+		{
+			AppServices.Settings.QueueSave(AppServices.Settings.InactiveMods, TimeSpan.FromMilliseconds(500));
+		}
 	}
 
 	public void UpdateIndexes()
@@ -206,10 +211,7 @@ public partial class ModListViewModel : ReactiveObject
 		.CombineLatest(recountMods)
 		.Throttle(TimeSpan.FromMilliseconds(50))
 		.ObserveOn(RxApp.MainThreadScheduler)
-		.Select(_ => Unit.Default)
-		.Subscribe(CountMods);
-
-		backingCollection.WhenAnyPropertyChanged(nameof(IModEntry.IsVisible));
+		.Subscribe(_ => CountMods());
 
 		_filterResultTextHelper = this.WhenAnyValue(x => x.TotalMods, x => x.TotalModsHidden, x => x.TotalModsSelected,
 			x => x.FilterInputText, x => x.IsFilterEnabled)

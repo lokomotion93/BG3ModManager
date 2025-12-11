@@ -75,7 +75,7 @@ public partial class ModContainerSettingsViewModel : ReactiveObject, IClosableVi
 		
 		if(_targetContainer != null && !_targetContainer.IsActive)
 		{
-			AppServices.Settings.TrySave(AppServices.Settings.InactiveMods, out _);
+			ViewModelLocator.ModOrder.UpdateInactiveModsConfig();
 		}
 		CloseCommand.Execute().Subscribe();
 	}
