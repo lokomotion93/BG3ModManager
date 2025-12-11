@@ -31,12 +31,12 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 	{
 		if(target == null)
 		{
-			_iconManager.Dispose();
-			_toolTipIconManager.Dispose();
+			_iconManager.Unload();
+			_toolTipIconManager.Unload();
 		}
 		else
 		{
-			target.Dispose();
+			target.Unload();
 		}
 	}
 

@@ -8,45 +8,104 @@ using Material.Icons.Avalonia;
 
 using ModManager.Models.Mod;
 using ModManager.Styling;
+using ModManager.Util;
+
+using Stateless;
 
 namespace ModManager.Controls;
 
-public class ContentControlIconManager(ContentControl targetControl, double multiplySize = 0d)
+public class ContentControlIconManager
 {
-	private readonly ContentControl _target = targetControl;
-	private IDisposable? _realizeIconTask = null;
-	private MemoryStream? _iconStream = null;
+	private enum IconManagerIconState
+	{
+		Disposed,
+		Rendering
+	}
+
+	private enum IconManagerAction
+	{
+		CreateIcon,
+		Dispose
+	}
+
+	private readonly ContentControl _target;
+	private double _sizeMult;
+	private ModContainerIconSettings? _iconSettings;
+
+	private CancellationTokenSource? _tokenSource;
+	private CompositeDisposable? _iconDisp = null;
+
+	private readonly RxStateMachine<IconManagerIconState, IconManagerAction> _sm;
+
+	private static readonly Thickness _defaultThickness = new(0d);
+	private readonly ValueTuple<double, double> _defaultSize;
+
 	public string Name { get; set; } = string.Empty;
 
-	private async Task RealizeIcon(ModContainerIconSettings? iconSettings, CancellationToken token)
+	public ContentControlIconManager(ContentControl targetControl, double multiplySize = 1d)
 	{
-		Control? result = null;
-		if (iconSettings != null)
+		_target = targetControl;
+		_sizeMult = multiplySize;
+		_defaultSize = new(16d * multiplySize, 16d * multiplySize);
+
+		_sm = new(IconManagerIconState.Disposed);
+
+		_sm.Configure(IconManagerIconState.Disposed)
+			.OnEntryAsync(DisposeAsync)
+			.Permit(IconManagerAction.CreateIcon, IconManagerIconState.Rendering)
+			.Ignore(IconManagerAction.Dispose);
+
+		_sm.Configure(IconManagerIconState.Rendering)
+			.OnEntryAsync(RealizeIcon)
+			.OnExitAsync(DisposeAsync)
+			.Permit(IconManagerAction.Dispose, IconManagerIconState.Disposed)
+			.Ignore(IconManagerAction.CreateIcon);
+	}
+
+	private void CreateToken()
+	{
+		_tokenSource?.Cancel();
+		_tokenSource?.Dispose();
+		_tokenSource = new CancellationTokenSource();
+	}
+
+	private ValueTuple<double, double> SizeStrToSize(string? sizeStr)
+	{
+		if (double.TryParse(sizeStr, out var singleSize))
 		{
-			if (iconSettings.Path.IsValid())
+			return (singleSize * _sizeMult, singleSize * _sizeMult);
+		}
+		else
+		{
+			var size = Size.Parse(sizeStr);
+			return (size.Width * _sizeMult, size.Height * _sizeMult);
+		}
+	}
+
+	private async Task RealizeIcon()
+	{
+		CreateToken();
+
+		Control? result = null;
+		var token = _tokenSource!.Token;
+
+		_iconDisp?.Dispose();
+		_iconDisp = [];
+
+		if (_iconSettings != null)
+		{
+			if (_iconSettings.Path.IsValid())
 			{
-				var taskResult = await AppServices.ControlFactory.ImageFromPathAsync(iconSettings.Path, "Orders", token);
+				var taskResult = await AppServices.ControlFactory.ImageFromPathAsync(_iconSettings.Path, "Orders", token);
 				result = taskResult.Result;
 				if (taskResult.Stream != null)
 				{
-					_iconStream = taskResult.Stream;
-				}
-
-				if (result is TemplatedControl templatedControl)
-				{
-					if (iconSettings.ForegroundColor.IsValid())
-					{
-						var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
-						if (brush != null)
-						{
-							templatedControl.Foreground = brush;
-						}
-					}
+					_iconDisp.Add(taskResult.Stream);
 				}
 			}
-			if (result == null && iconSettings.Kind.IsValid())
+			if (result == null && _iconSettings.Kind.IsValid())
 			{
-				var kind = iconSettings.Kind;
+				var kind = _iconSettings.Kind;
 				//Potential name taken from https://pictogrammers.com/library/mdi/
 				if (kind.Contains('-'))
 				{
@@ -63,20 +122,12 @@ public class ContentControlIconManager(ContentControl targetControl, double mult
 						{
 							Kind = materialIconKind,
 						};
-						if (iconSettings.ForegroundColor.IsValid())
-						{
-							var brush = ColorBrushCache.GetBrush(iconSettings.ForegroundColor);
-							if (brush != null)
-							{
-								icon.Foreground = brush;
-							}
-						}
 						return icon;
 					}, RxApp.MainThreadScheduler);
 				}
 				else
 				{
-					var msg = Loca.Alert_Error_ContainerIconMaterialKindParsing.SafeFormat("Container '{0}' has an invalid Icon.Kind value: \"{1}\"", Name, iconSettings.Kind);
+					var msg = Loca.Alert_Error_ContainerIconMaterialKindParsing.SafeFormat("Container '{0}' has an invalid Icon.Kind value: \"{1}\"", Name, _iconSettings.Kind);
 					AppServices.Commands.ShowAlert(msg, AlertType.Danger, 10);
 					DivinityApp.Log(kind);
 				}
@@ -86,62 +137,62 @@ public class ContentControlIconManager(ContentControl targetControl, double mult
 		{
 			if (result != null)
 			{
-				if (iconSettings?.Size.IsValid() == true)
-				{
-					try
-					{
-						if (double.TryParse(iconSettings.Size, out var singleSize))
-						{
-							result.Width = result.Height = singleSize;
-						}
-						else
-						{
-							var size = Size.Parse(iconSettings.Size);
-							result.Width = size.Width;
-							result.Height = size.Height;
-						}
-					}
-					catch (Exception) { }
-				}
-				else
+				if (_iconSettings?.Size.IsValid() == false)
 				{
 					result.Width = 16;
 					result.Height = 16;
 				}
-			}
-			if (result != null && multiplySize != 0)
-			{
-				result.Width *= multiplySize;
-				result.Height *= multiplySize;
+
+				if (result is TemplatedControl templatedControl)
+				{
+					templatedControl.Bind(TemplatedControl.ForegroundProperty, _iconSettings.WhenAnyValue(x => x.ForegroundColor).Where(Validators.IsValid).Select(x => ColorBrushCache.GetBrush(x))).DisposeWith(_iconDisp);
+					templatedControl.Bind(TemplatedControl.BackgroundProperty, _iconSettings.WhenAnyValue(x => x.BackgroundColor).Where(Validators.IsValid).Select(x => ColorBrushCache.GetBrush(x))).DisposeWith(_iconDisp);
+					templatedControl.Bind(TemplatedControl.BorderBrushProperty, _iconSettings.WhenAnyValue(x => x.BorderColor).Where(Validators.IsValid).Select(x => ColorBrushCache.GetBrush(x))).DisposeWith(_iconDisp);
+					templatedControl.Bind(TemplatedControl.BorderThicknessProperty, _iconSettings.WhenAnyValue(x => x.BorderThickness).SafeValueOrFallback(Thickness.Parse, _defaultThickness)).DisposeWith(_iconDisp);
+				}
+
+				_iconSettings.WhenAnyValue(x => x.Size).SafeValueOrFallback(SizeStrToSize, _defaultSize).Subscribe(size =>
+				{
+					result.Width = size.Item1;
+					result.Height = size.Item2;
+				}).DisposeWith(_iconDisp);
+
+				if (result is GifImage gif && gif.Source is GifStreamSource gifSource)
+				{
+					_iconDisp.Add(gifSource);
+				}
 			}
 			_target.Content = result;
 		}, RxApp.MainThreadScheduler);
 	}
 
+	private void Dispose()
+	{
+		_tokenSource?.Cancel();
+		_iconDisp?.Dispose();
+		_target.Content = null;
+	}
+
+	private async Task DisposeAsync()
+	{
+		await Observable.Start(Dispose, RxApp.MainThreadScheduler);
+	}
+
 	public void Load(ModContainerIconSettings? icon)
 	{
-		_realizeIconTask?.Dispose();
-		if (icon != null)
+		_iconSettings = icon;
+		if (_iconSettings != null)
 		{
-			_realizeIconTask = RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, t) =>
-			{
-				await RealizeIcon(icon, t);
-			});
+			_sm.Enqueue(IconManagerAction.CreateIcon);
 		}
 		else
 		{
-			Dispose();
+			_sm.Enqueue(IconManagerAction.Dispose);
 		}
 	}
 
-	public void Dispose()
+	public void Unload()
 	{
-		if (_target.Content is GifImage gif && gif.Source is GifStreamSource gifSource)
-		{
-			gifSource.Dispose();
-		}
-		_realizeIconTask?.Dispose();
-		_iconStream?.Dispose();
-		_target.Content = null;
+		_sm.Enqueue(IconManagerAction.Dispose);
 	}
 }

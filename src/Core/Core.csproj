@@ -31,5 +31,6 @@
 		<PackageReference Include="DynamicData" />
 		<PackageReference Include="SharpCompress" />
 		<PackageReference Include="System.IO.Abstractions" />
+		<PackageReference Include="Stateless" />
 	</ItemGroup>
 </Project>

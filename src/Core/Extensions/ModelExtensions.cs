@@ -96,8 +96,18 @@ public static class ModelExtensions
 		return true;
 	}
 
-	public static void SetFrom<T>(this T target, T from) where T : ReactiveObject
+	/// <summary>
+	/// Sets an object from an object of the same type.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="target"></param>
+	/// <param name="from"></param>
+	/// <returns>True if any of the properties differed in value.</returns>
+	public static bool SetFrom<T>(this T target, T? from) where T : ReactiveObject
 	{
+		if (from == null) return false;
+
+		var propertyChanged = false;
 		var props = TypeDescriptor.GetProperties(target.GetType());
 		foreach (PropertyDescriptor pr in props)
 		{
@@ -106,8 +116,14 @@ public static class ModelExtensions
 			{
 				pr.SetValue(target, value);
 				target.RaisePropertyChanged(pr.Name);
+
+				if(pr.GetValue(target) != value)
+				{
+					propertyChanged = true;
+				}
 			}
 		}
+		return propertyChanged;
 	}
 
 	public static void SetFrom<T, T2>(this T target, T from, bool setNull = true) where T : ReactiveObject where T2 : Attribute

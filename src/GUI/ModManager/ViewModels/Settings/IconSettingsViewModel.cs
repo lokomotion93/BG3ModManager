@@ -156,7 +156,8 @@ public partial class IconSettingsViewModel : ReactiveObject
 
 		var clearIsExecuting = ClearImageCommand.IsExecuting.Where(x => !x);
 
-		var shouldRenderIcon = this.WhenAnyValue(x => x.IsPathIconType, x => x.IsMaterialIconType, x => x.SelectedMaterialIconIndex);
+		var shouldRenderIcon = this.WhenAnyValue(x => x.IsPathIconType, x => x.IsMaterialIconType, x => x.SelectedMaterialIconIndex, x => x.Settings.Path)
+		.Where(x => (x.Item4.IsValid() && x.Item1) || (x.Item2 && x.Item3 > 0));
 		var isDirty = Settings.WhenAnyValue(x => x.IsDirty)
 			.Where(b => b == true)
 			.SkipUntil(clearIsExecuting);
