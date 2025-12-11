@@ -53,13 +53,13 @@ public partial class IconSettingsView : ProtectedUserControl<IconSettingsViewMod
 				//	h => (sender, e) => h(e),
 				//	h => Unloaded += h,
 				//	h => Unloaded -= h
-				//).Subscribe(_ => _iconManager.Dispose()));
+				//).Subscribe(_ => _iconManager.Unload()));
 
 				//d(Observable.FromEvent<EventHandler<VisualTreeAttachmentEventArgs>, VisualTreeAttachmentEventArgs>(
 				//	h => (sender, e) => h(e),
 				//	h => DetachedFromVisualTree += h,
 				//	h => DetachedFromVisualTree -= h
-				//).Subscribe(_ => _iconManager.Dispose()));
+				//).Subscribe(_ => _iconManager.Unload()));
 
 				//MaterialIconsComboBox[!ComboBox.SelectedIndexProperty] = ViewModel.WhenAnyValue(x => x.SelectedMaterialIconIndex).ToBinding();
 				MaterialIconsComboBox[!ComboBox.SelectedItemProperty] = ViewModel.WhenAnyValue(x => x.SelectedMaterialIcon).ToBinding();
@@ -79,12 +79,13 @@ public partial class IconSettingsView : ProtectedUserControl<IconSettingsViewMod
 
 				d(ViewModel.RenderImageCommand.IsExecuting.ObserveOn(RxApp.MainThreadScheduler).Subscribe(b =>
 				{
-					if (!b) _iconManager.Load(ViewModel.Settings);
+					MaterialIconsComboBox.SelectedItem = ViewModel.SelectedMaterialIcon;
+					if (b) _iconManager.Load(ViewModel.Settings);
 				}));
 
 				d(ViewModel.ClearImageCommand.IsExecuting.ObserveOn(RxApp.MainThreadScheduler).Subscribe(b =>
 				{
-					if (!b) _iconManager.Dispose();
+					if (b) _iconManager.Unload();
 				}));
 			}
 		});
