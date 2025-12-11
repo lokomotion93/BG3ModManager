@@ -52,10 +52,11 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 	public async Task<ImportOperationResults> ImportModFromFile(Dictionary<string, ModData> builtinMods, ImportOperationResults taskResult, string filePath, CancellationToken token, bool toActiveList = false)
 	{
+		var targetFolder = toActiveList ? Pathways.AppDataModsPath : Pathways.AppDataInactiveModsPath;
 		var ext = _fs.Path.GetExtension(filePath).ToLower();
 		if (ext.Equals(".pak", StringComparison.OrdinalIgnoreCase))
 		{
-			var outputFilePath = _fs.Path.Join(Pathways.AppDataModsPath, _fs.Path.GetFileName(filePath));
+			var outputFilePath = _fs.Path.Join(targetFolder, _fs.Path.GetFileName(filePath));
 			try
 			{
 				taskResult.TotalPaks++;
@@ -90,7 +91,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		}
 		else
 		{
-			var importOptions = new ImportParameters(filePath, Pathways.AppDataModsPath, token, taskResult)
+			var importOptions = new ImportParameters(filePath, targetFolder!, token, taskResult)
 			{
 				BuiltinMods = builtinMods,
 				OnlyMods = true,
@@ -154,7 +155,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 			{
 				var builtinMods = DivinityApp.IgnoredMods.Items.ToSafeDictionary(x => x.Folder);
 
-				var importOptions = new ImportParameters(filePath, Pathways.AppDataModsPath, token, result)
+				var importOptions = new ImportParameters(filePath, Pathways.AppDataInactiveModsPath, token, result)
 				{
 					BuiltinMods = builtinMods,
 					OnlyMods = false,
