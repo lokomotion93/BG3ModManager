@@ -365,8 +365,8 @@ public static class FileUtils
 	{
 		try
 		{
-			await using var sourceFile = new FileStream(copyFromPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
-			await using var outputFile = new FileStream(copyToPath, FileMode.Create, FileAccess.Write, FileShare.Read, 128000, FileOptions.Asynchronous);
+			await using var sourceFile = _fs.FileStream.New(copyFromPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
+			await using var outputFile = _fs.FileStream.New(copyToPath, FileMode.Create, FileAccess.Write, FileShare.Read, 128000, FileOptions.Asynchronous);
 			await sourceFile.CopyToAsync(outputFile, 128000, token); // 81920 default
 			return true;
 		}
@@ -416,7 +416,7 @@ public static class FileUtils
 				parentDir = path;
 				return true;
 			}
-			var dir = Directory.GetParent(path);
+			var dir = _fs.Directory.GetParent(path);
 			if (dir != null)
 			{
 				parentDir = dir.FullName;
@@ -434,9 +434,9 @@ public static class FileUtils
 		opts ??= _defaultOpts;
 		if (inclusionFilter != null)
 		{
-			return Directory.EnumerateFiles(path, "*", opts).Where(inclusionFilter);
+			return _fs.Directory.EnumerateFiles(path, "*", opts).Where(inclusionFilter);
 		}
-		return Directory.EnumerateFiles(path, "*", opts);
+		return _fs.Directory.EnumerateFiles(path, "*", opts);
 	}
 
 	public static IEnumerable<string> EnumerateDirectories(string path, EnumerationOptions? opts = null, Func<string, bool>? inclusionFilter = null)
@@ -444,9 +444,9 @@ public static class FileUtils
 		opts ??= _defaultOpts;
 		if (inclusionFilter != null)
 		{
-			return Directory.EnumerateDirectories(path, "*", opts).Where(inclusionFilter);
+			return _fs.Directory.EnumerateDirectories(path, "*", opts).Where(inclusionFilter);
 		}
-		return Directory.EnumerateDirectories(path, "*", opts);
+		return _fs.Directory.EnumerateDirectories(path, "*", opts);
 	}
 
 	private static readonly FileSystemRights _readAccessRights = FileSystemRights.Read | FileSystemRights.Synchronize;
@@ -459,7 +459,7 @@ public static class FileUtils
 			{
 				try
 				{
-					if (path.IsExistingFile() && new FileInfo(path) is FileInfo info)
+					if (path.IsExistingFile() && _fs.FileInfo.New(path) is IFileInfo info)
 					{
 						var security = info.GetAccessControl();
 						var usersSid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
@@ -493,7 +493,7 @@ public static class FileUtils
 			{
 				try
 				{
-					if (path.IsExistingDirectory() && new DirectoryInfo(path) is DirectoryInfo info)
+					if (path.IsExistingDirectory() && _fs.DirectoryInfo.New(path) is IDirectoryInfo info)
 					{
 						var security = info.GetAccessControl();
 						var usersSid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);

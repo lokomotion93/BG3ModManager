@@ -4,6 +4,8 @@ using ModManager.Models.Mod;
 using ModManager.Models.NexusMods;
 using ModManager.Models.Updates;
 
+using NexusModsNET.DataModels.GraphQL.Types;
+
 namespace ModManager;
 
 public interface INexusModsService
@@ -27,6 +29,7 @@ public interface INexusModsService
 
 	Task<Dictionary<string, NexusModsModDownloadLink>> GetLatestDownloadsForModsAsync(IEnumerable<ModData> mods, CancellationToken token);
 	Task<UpdateResult> FetchModInfoAsync(IEnumerable<ModData> mods, CancellationToken token);
+	Task<NexusModsDownloadResults> DownloadModFilesAsync(IEnumerable<NexusGraphModFile> files, CancellationToken token);
 	void ProcessNXMLinkBackground(string url);
 	void CancelDownloads();
 }

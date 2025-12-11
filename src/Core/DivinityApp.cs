@@ -128,11 +128,14 @@ public static class DivinityApp
 	private static readonly string _exePath;
 	private static readonly string _appDirectory;
 
+	private static readonly IFileSystemService _fs;
+
 	static DivinityApp()
 	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
 		_exeAssembly = Assembly.GetEntryAssembly()!;
 		_exePath = _exeAssembly.Location;
-		_appDirectory = Path.GetDirectoryName(_exeAssembly.Location)!;
+		_appDirectory = _fs.Path.GetDirectoryName(_exeAssembly.Location)!;
 
 		IgnoredMods = new(x => x.UUID ?? "");
 		IgnoredDependencyMods = [];
@@ -184,7 +187,7 @@ public static class DivinityApp
 
 	public static void Log(string msg, [CallerMemberName] string mName = "", [CallerFilePath] string path = "", [CallerLineNumber] int line = 0)
 	{
-		var finalMessage = $"[{Path.GetFileName(path)}:{mName}({line})] {StringUtils.ReplaceSpecialPathways(msg)}";
+		var finalMessage = $"[{_fs.Path.GetFileName(path)}:{mName}({line})] {StringUtils.ReplaceSpecialPathways(msg)}";
 		LogMethod(finalMessage);
 		//Console.WriteLine(finalMessage);
 	}
@@ -199,13 +202,13 @@ public static class DivinityApp
 		//return false;
 	}
 
-	public static string GetAppDirectory() => _appDirectory ?? Directory.GetCurrentDirectory();
+	public static string GetAppDirectory() => _appDirectory ?? _fs.Directory.GetCurrentDirectory();
 
 	public static string GetAppDirectory(params string[] joinPath)
 	{
 		var exeDir = GetAppDirectory();
 		var paths = joinPath.Prepend(exeDir).ToArray();
-		return Path.Join(paths);
+		return _fs.Path.Join(paths);
 	}
 
 	public static string GetExePath() => _exePath;

@@ -4,9 +4,15 @@ public static class RuntimeHelper
 {
 	private static readonly string NET_CORE_DIR = @"C:\Program Files\dotnet\shared\Microsoft.NETCore.App";
 
-	private static Version PathToVersion(string path)
+	private static readonly IFileSystemService _fs;
+	static RuntimeHelper()
 	{
-		if (Version.TryParse(Path.GetFileName(path), out var version))
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
+
+	private static Version? PathToVersion(string path)
+	{
+		if (Version.TryParse(_fs.Path.GetFileName(path), out var version))
 		{
 			return version;
 		}
@@ -15,11 +21,11 @@ public static class RuntimeHelper
 
 	public static bool NetCoreRuntimeGreaterThanOrEqualTo(int majorVersion)
 	{
-		if (Directory.Exists(NET_CORE_DIR))
+		if (_fs.Directory.Exists(NET_CORE_DIR))
 		{
 			try
 			{
-				var versions = Directory.EnumerateDirectories(NET_CORE_DIR).Select(PathToVersion);
+				var versions = _fs.Directory.EnumerateDirectories(NET_CORE_DIR).Select(PathToVersion);
 				foreach (var version in versions)
 				{
 					if (version != null && version.Major >= majorVersion)

@@ -2,17 +2,21 @@
 
 namespace ModManager.Models.NexusMods;
 
-public struct NexusModFileVersionData
+public partial struct NexusModFileVersionData
 {
 	public long ModId { get; set; }
 	public long FileId { get; set; }
 	public bool Success { get; set; }
 
-	static readonly Regex _filePattern = new(@"^.*?-(\d+)-(.*?)(\d+)");
 
+	[GeneratedRegex(@"^.*?-(\d+)-(.*?)(\d+)")]
+	private static partial Regex FilePatternRe();
+
+	static readonly Regex _filePattern = FilePatternRe();
+	
 	public static NexusModFileVersionData FromFilePath(string path)
 	{
-		var name = Path.GetFileNameWithoutExtension(path);
+		var name = Locator.Current.GetService<IFileSystemService>()!.Path.GetFileNameWithoutExtension(path);
 		var match = _filePattern.Match(name);
 
 		long modId = -1;

@@ -12,6 +12,12 @@ namespace ModManager.Util;
 
 public static partial class ModUtils
 {
+	private static readonly IFileSystemService _fs;
+	static ModUtils()
+	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
+
 	private record struct FileText(string FilePath, string[] Lines);
 
 	private static XmlDocument LoadXml(VFS vfs, string path)
@@ -85,7 +91,7 @@ public static partial class ModUtils
 		{
 			if (!mod.IsLooseMod)
 			{
-				if (File.Exists(mod.FilePath)) vfs.AttachPackage(mod.FilePath);
+				if (_fs.File.Exists(mod.FilePath)) vfs.AttachPackage(mod.FilePath);
 			}
 			else
 			{

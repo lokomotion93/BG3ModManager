@@ -44,6 +44,12 @@ public partial class PathwayData : ReactiveObject
 	[Reactive] public partial string? ScriptExtenderLatestReleaseUrl { get; set; }
 	[Reactive] public partial string? ScriptExtenderLatestReleaseVersion { get; set; }
 
+	private static readonly IFileSystemService _fs;
+	static PathwayData()
+	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
+
 	public void UpdateAppDataPathways(string? appDataGame = null)
 	{
 		AppDataGameFolder = appDataGame;
@@ -62,7 +68,7 @@ public partial class PathwayData : ReactiveObject
 	{
 		if (settings.GameExecutablePath?.IsExistingFile() == true)
 		{
-			return Path.Join(Path.GetDirectoryName(settings.GameExecutablePath), DivinityApp.EXTENDER_CONFIG_FILE);
+			return _fs.Path.Join(_fs.Path.GetDirectoryName(settings.GameExecutablePath), DivinityApp.EXTENDER_CONFIG_FILE);
 		}
 		return null;
 	}
@@ -71,7 +77,7 @@ public partial class PathwayData : ReactiveObject
 	{
 		if (settings.GameExecutablePath?.IsExistingFile() == true)
 		{
-			return Path.Join(Path.GetDirectoryName(settings.GameExecutablePath), DivinityApp.EXTENDER_UPDATER_CONFIG_FILE);
+			return _fs.Path.Join(_fs.Path.GetDirectoryName(settings.GameExecutablePath), DivinityApp.EXTENDER_UPDATER_CONFIG_FILE);
 		}
 		return null;
 	}

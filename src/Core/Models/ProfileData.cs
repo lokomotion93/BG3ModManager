@@ -32,11 +32,11 @@ public partial class ProfileData : ReactiveObject
 		}
 		return order;
 	}
-
+	
 	public ProfileData()
 	{
 		this.WhenAnyValue(x => x.FilePath)
-			.Select(x => x.IsValid() ? Path.Join(x, "modsettings.lsx") : string.Empty)
+			.Select(x => x.IsValid() ? Locator.Current.GetService<IFileSystemService>()!.Path.Join(x, "modsettings.lsx") : string.Empty)
 			.BindTo(this, x => x.ModSettingsFile);
 	}
 }

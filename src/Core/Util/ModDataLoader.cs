@@ -492,11 +492,11 @@ public static partial class ModDataLoader
 		PackagedFileInfo? modManagerConfigPath = null;
 
 		var fileModified = DateTimeOffset.Now;
-		if (File.Exists(pakPath))
+		if (_fs.File.Exists(pakPath))
 		{
 			try
 			{
-				fileModified = File.GetLastWriteTime(pakPath);
+				fileModified = _fs.File.GetLastWriteTime(pakPath);
 			}
 			catch (PlatformNotSupportedException ex)
 			{
@@ -728,7 +728,7 @@ public static partial class ModDataLoader
 		return null;
 	}
 
-	public static async Task<List<ModData>?> LoadModDataFromPakAsync(FileStream stream, string pakPath, IDictionary<string, ModData>? builtinFolders, CancellationToken token)
+	public static async Task<List<ModData>?> LoadModDataFromPakAsync(System.IO.FileStream stream, string pakPath, IDictionary<string, ModData>? builtinFolders, CancellationToken token)
 	{
 		try
 		{
@@ -765,7 +765,7 @@ public static partial class ModDataLoader
 		var modOrderUUIDs = new List<string>();
 		var activeMods = new List<ModuleShortDesc>();
 
-		if (File.Exists(path))
+		if (_fs.File.Exists(path))
 		{
 			Resource? modSettingsRes = null;
 			try
@@ -880,11 +880,11 @@ public static partial class ModDataLoader
 	{
 		try
 		{
-			await using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.Asynchronous);
-			var buffer = new byte[fs.Length];
-			await fs.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), token);
-			fs.Position = 0;
-			var resource = ResourceUtils.LoadResource(fs, resourceFormat, resourceParams ?? _loadParams);
+			await using var stream = _fs.FileStream.New(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.Asynchronous);
+			var buffer = new byte[stream.Length];
+			await stream.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), token);
+			stream.Position = 0;
+			var resource = ResourceUtils.LoadResource(stream, resourceFormat, resourceParams ?? _loadParams);
 			return resource;
 		}
 		catch (Exception ex)
@@ -935,7 +935,7 @@ public static partial class ModDataLoader
 				return true;
 			}
 			return false;
-		}).Select(x => new FileInfo(x)).OrderBy(x => x.LastWriteTime).ToList();
+		}).Select(x => _fs.FileInfo.New(x)).OrderBy(x => x.LastWriteTime).ToList();
 		return files.FirstOrDefault();
 	}
 
@@ -973,7 +973,7 @@ public static partial class ModDataLoader
 				return true;
 			}
 			return false;
-		}).Select(x => new FileInfo(x)).OrderByDescending(x => x.Extension, LsfCompare).ThenByDescending(x => x.LastWriteTime).ToList();
+		}).Select(x => _fs.FileInfo.New(x)).OrderByDescending(x => x.Extension, LsfCompare).ThenByDescending(x => x.LastWriteTime).ToList();
 		return files.FirstOrDefault();
 	}
 
@@ -1073,12 +1073,12 @@ public static partial class ModDataLoader
 			{
 				try
 				{
-					var fileText = File.ReadAllText(loadOrderFile);
+					var fileText = _fs.File.ReadAllText(loadOrderFile);
 					var order = JsonUtils.SafeDeserialize<ModOrder>(fileText);
 					if (order != null)
 					{
 						order.FilePath = loadOrderFile.NormalizeDirectorySep();
-						order.LastModifiedDate = File.GetLastAccessTime(loadOrderFile);
+						order.LastModifiedDate = _fs.File.GetLastAccessTime(loadOrderFile);
 						loadOrders.Add(order);
 					}
 				}
@@ -1094,12 +1094,12 @@ public static partial class ModDataLoader
 			{
 				try
 				{
-					var fileText = File.ReadAllText(loadOrderFile);
+					var fileText = _fs.File.ReadAllText(loadOrderFile);
 					var order = JsonUtils.SafeDeserialize<ModOrder>(fileText);
 					if (order != null)
 					{
 						order.FilePath = loadOrderFile.NormalizeDirectorySep();
-						order.LastModifiedDate = File.GetLastAccessTime(loadOrderFile);
+						order.LastModifiedDate = _fs.File.GetLastAccessTime(loadOrderFile);
 						loadOrders.Add(order);
 					}
 				}
@@ -1130,7 +1130,7 @@ public static partial class ModDataLoader
 			{
 				try
 				{
-					using var reader = File.OpenText(loadOrderFile);
+					using var reader = _fs.File.OpenText(loadOrderFile);
 					var fileText = await reader.ReadToEndAsync();
 
 					var order = JsonUtils.SafeDeserialize<ModOrder>(fileText);
@@ -1138,7 +1138,7 @@ public static partial class ModDataLoader
 					{
 						order.Name = _fs.Path.GetFileNameWithoutExtension(loadOrderFile);
 						order.FilePath = loadOrderFile.NormalizeDirectorySep();
-						order.LastModifiedDate = File.GetLastWriteTime(loadOrderFile);
+						order.LastModifiedDate = _fs.File.GetLastWriteTime(loadOrderFile);
 
 						loadOrders.Add(order);
 					}
@@ -1154,11 +1154,11 @@ public static partial class ModDataLoader
 	}
 	public static async Task<ModOrder> LoadOrderFromFileAsync(string loadOrderFile)
 	{
-		if (File.Exists(loadOrderFile))
+		if (_fs.File.Exists(loadOrderFile))
 		{
 			try
 			{
-				using var reader = File.OpenText(loadOrderFile);
+				using var reader = _fs.File.OpenText(loadOrderFile);
 				var fileText = await reader.ReadToEndAsync();
 				var order = JsonUtils.SafeDeserialize<ModOrder>(fileText);
 				if (order != null)
@@ -1216,7 +1216,7 @@ public static partial class ModDataLoader
 				break;
 			case ".txt":
 				var textPattern = new Regex(@"\((\S+\.pak)\)", RegexOptions.IgnoreCase);
-				var textLines = File.ReadAllLines(loadOrderFile);
+				var textLines = _fs.File.ReadAllLines(loadOrderFile);
 				order = new ModOrder();
 				foreach (var line in textLines)
 				{
@@ -1235,7 +1235,7 @@ public static partial class ModDataLoader
 				}
 				break;
 			case ".tsv":
-				var tsvLines = File.ReadAllLines(loadOrderFile);
+				var tsvLines = _fs.File.ReadAllLines(loadOrderFile);
 				var header = tsvLines[0].Split('\t');
 				var fileIndex = header.IndexOf("FileName");
 				var nameIndex = header.IndexOf("Name");
@@ -1275,7 +1275,7 @@ public static partial class ModDataLoader
 		//Patch 7 changes this to "Larian Studios" instead of "LarianStudios"
 		var folderDir = _fs.Path.Join(appDataLarianFolder, @"Launcher\Settings");
 		var settingsFilePath = _fs.Path.Join(folderDir, "preferences.json");
-		if (File.Exists(settingsFilePath))
+		if (_fs.File.Exists(settingsFilePath))
 		{
 			settings = JsonUtils.SafeDeserializeFromPath<Dictionary<string, object>>(settingsFilePath);
 		}
@@ -1554,7 +1554,7 @@ public static partial class ModDataLoader
 	{
 		try
 		{
-			using var reader = File.OpenText(configFile);
+			using var reader = _fs.File.OpenText(configFile);
 			var text = await reader.ReadToEndAsync();
 			if (text.IsValid() && JsonUtils.TrySafeDeserialize<ModScriptExtenderConfig>(text, out var config))
 			{
@@ -1618,7 +1618,7 @@ public static partial class ModDataLoader
 				{
 					try
 					{
-						modData.LastModified = File.GetLastWriteTime(filePath);
+						modData.LastModified = _fs.File.GetLastWriteTime(filePath);
 					}
 					catch (Exception ex)
 					{
@@ -1639,7 +1639,7 @@ public static partial class ModDataLoader
 
 					try
 					{
-						modData.LastModified = File.GetLastWriteTime(fileTimeFile);
+						modData.LastModified = _fs.File.GetLastWriteTime(fileTimeFile);
 					}
 					catch (Exception ex)
 					{
@@ -1711,7 +1711,7 @@ public static partial class ModDataLoader
 		return new ModsLoadingResults(dataDirMods, userMods);
 	}
 
-	public static ModuleInfo? TryGetMetaFromPakFileStream(FileStream stream, string filePath, CancellationToken token)
+	public static ModuleInfo? TryGetMetaFromPakFileStream(System.IO.FileStream stream, string filePath, CancellationToken token)
 	{
 		stream.Position = 0;
 		var pr = new PackageReader();
@@ -1748,7 +1748,7 @@ public static partial class ModDataLoader
 			var osiFile = pak.Files.FirstOrDefault(x => x.Name.EndsWith("story.div.osi")); //Or GustavDev/Story/story.div.osi
 			if (osiFile != null)
 			{
-				await using var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.Read, 32000, FileOptions.Asynchronous);
+				await using var fs = _fs.FileStream.New(outputPath, FileMode.Create, FileAccess.Write, FileShare.Read, 32000, FileOptions.Asynchronous);
 				await using var osiStream = osiFile.CreateContentReader();
 				await osiStream.CopyToAsync(fs, 32000, token);
 			}

@@ -39,8 +39,11 @@ public static class ModelExtensions
 		return false;
 	}
 
+	private static readonly IFileSystemService _fs;
+
 	static ModelExtensions()
 	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
 		_typeDataMemberProperties = [];
 
 		AddTypeProperties(typeof(ModManagerSettings));
@@ -151,26 +154,26 @@ public static class ModelExtensions
 			var directory = data.GetDirectory();
 			if(directory.IsValid())
 			{
-				Directory.CreateDirectory(directory);
+				_fs.Directory.CreateDirectory(directory);
 				if(directory.IsExistingDirectory())
 				{
-					var filePath = Path.Join(directory, data.FileName);
+					var filePath = _fs.Path.Join(directory, data.FileName);
 					data.ModManagerVersion = Locator.Current.GetService<IEnvironmentService>()?.AppVersion;
 					var contents = JsonSerializer.Serialize(data, data.GetType(), JsonUtils.DefaultSerializerSettings);
 					if(!data.SkipEmpty)
 					{
-						File.WriteAllText(filePath, contents);
+						_fs.File.WriteAllText(filePath, contents);
 					}
 					else
 					{
 						if (!string.IsNullOrWhiteSpace(contents) && !contents.Trim().Equals("{}"))
 						{
-							File.WriteAllText(filePath, contents);
+							_fs.File.WriteAllText(filePath, contents);
 						}
 						else
 						{
 							DivinityApp.Log("Output file would be empty, so we're skipping writing it.");
-							File.Delete(filePath);
+							_fs.File.Delete(filePath);
 						}
 					}
 					return true;
@@ -194,15 +197,15 @@ public static class ModelExtensions
 			var directory = data.GetDirectory();
 			if(saveIfNotFound && !directory.IsExistingDirectory() && directory.IsValid())
 			{
-				Directory.CreateDirectory(directory);
+				_fs.Directory.CreateDirectory(directory);
 			}
 			if (directory.IsExistingDirectory())
 			{
-				var filePath = Path.Join(directory, data.FileName);
+				var filePath = _fs.Path.Join(directory, data.FileName);
 				if (filePath.IsExistingFile())
 				{
 					var outputType = data.GetType();
-					var text = File.ReadAllText(filePath);
+					var text = _fs.File.ReadAllText(filePath);
 					var settings = JsonSerializer.Deserialize(text, outputType, JsonUtils.DefaultSerializerSettings);
 					if (settings != null)
 					{

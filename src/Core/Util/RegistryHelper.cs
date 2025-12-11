@@ -24,7 +24,7 @@ public static class RegistryHelper
 	{
 		get
 		{
-			if (lastSteamInstallPath == "" || !Directory.Exists(lastSteamInstallPath))
+			if (lastSteamInstallPath == "" || !_fs.Directory.Exists(lastSteamInstallPath))
 			{
 				lastSteamInstallPath = GetSteamInstallPath();
 			}
@@ -35,6 +35,12 @@ public static class RegistryHelper
 	private static string lastGamePath = "";
 	private static bool isGOG = false;
 	public static bool IsGOG => isGOG;
+
+	private static readonly IFileSystemService _fs;
+	static RegistryHelper()
+	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
 
 	private static object GetKey(RegistryKey reg, string subKey, string keyValue)
 	{
@@ -122,10 +128,10 @@ public static class RegistryHelper
 					return lastGamePath;
 				}
 
-				var appManifest = Path.Join(LastSteamInstallPath, "steamapps", $"appmanifest_{steamAppId}.acf");
+				var appManifest = _fs.Path.Join(LastSteamInstallPath, "steamapps", $"appmanifest_{steamAppId}.acf");
 				if (appManifest.IsExistingFile())
 				{
-					var manifestData = VdfConvert.Deserialize(File.ReadAllText(appManifest));
+					var manifestData = VdfConvert.Deserialize(_fs.File.ReadAllText(appManifest));
 					if (manifestData != null)
 					{
 						foreach (var prop in manifestData.Value.Children().OfType<VProperty>())
@@ -144,9 +150,9 @@ public static class RegistryHelper
 					}
 				}
 
-				var folder = Path.Join(LastSteamInstallPath, "steamapps", "common", steamGameInstallPath);
+				var folder = _fs.Path.Join(LastSteamInstallPath, "steamapps", "common", steamGameInstallPath);
 				DivinityApp.Log($"Looking for game at '{folder}'.");
-				if (Directory.Exists(folder))
+				if (_fs.Directory.Exists(folder))
 				{
 					DivinityApp.Log($"Found game at '{folder}'.");
 					lastGamePath = folder;
@@ -155,14 +161,14 @@ public static class RegistryHelper
 				}
 				else
 				{
-					var libraryFile = Path.Join(LastSteamInstallPath, PATH_Steam_LibraryFile);
+					var libraryFile = _fs.Path.Join(LastSteamInstallPath, PATH_Steam_LibraryFile);
 					DivinityApp.Log($"Game not found. Looking for Steam libraries in file '{libraryFile}'.");
-					if (File.Exists(libraryFile))
+					if (_fs.File.Exists(libraryFile))
 					{
 						List<string> libraryFolders = [];
 						try
 						{
-							var libraryData = VdfConvert.Deserialize(File.ReadAllText(libraryFile));
+							var libraryData = VdfConvert.Deserialize(_fs.File.ReadAllText(libraryFile));
 							foreach (VProperty token in libraryData.Value.Children())
 							{
 								if (token.Key != "TimeNextStatsReport" && token.Key != "ContentStatsID")
@@ -187,7 +193,7 @@ public static class RegistryHelper
 
 						foreach (var folderPath in libraryFolders)
 						{
-							var checkFolder = Path.Join(folderPath, "steamapps", "common", steamGameInstallPath);
+							var checkFolder = _fs.Path.Join(folderPath, "steamapps", "common", steamGameInstallPath);
 							if (checkFolder.IsExistingDirectory())
 							{
 								DivinityApp.Log($"Found game at '{checkFolder}'.");

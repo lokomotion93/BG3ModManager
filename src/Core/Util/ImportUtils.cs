@@ -2,6 +2,7 @@
 using ModManager.Models.Mod;
 using ModManager.Models.Mod.Order;
 using ModManager.Models.NexusMods;
+using ModManager.Services;
 
 using SharpCompress.Archives;
 using SharpCompress.Common;
@@ -10,6 +11,7 @@ using SharpCompress.Compressors.Xz;
 using SharpCompress.Readers;
 using SharpCompress.Writers;
 
+using System.IO.Abstractions;
 using System.Text;
 
 using ZstdSharp;
@@ -31,7 +33,7 @@ public class ImportParameters(string filePath, string outputDirectory, Cancellat
 	{
 		get
 		{
-			if (_ext == null) _ext = Path.GetExtension(FilePath)?.ToLower();
+			_ext ??= Locator.Current.GetService<IFileSystemService>()?.Path.GetExtension(FilePath)?.ToLower();
 			return _ext;
 		}
 		set => _ext = value?.ToLower();
@@ -61,6 +63,12 @@ public static class ImportUtils
 	private static readonly List<string> _archiveFormats = [".7z", ".7zip", ".gzip", ".rar", ".tar", ".tar.gz", ".zip"];
 	private static readonly List<string> _compressedFormats = [".bz2", ".xz", ".zst"];
 
+	private static readonly IFileSystemService _fs;
+	static ImportUtils()
+	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
+
 	public static async Task<bool> ImportArchiveAsync(ImportParameters options)
 	{
 		var taskStepAmount = 1.0 / 4;
@@ -69,7 +77,7 @@ public static class ImportUtils
 		{
 			if (!options.FilePath.IsValid()) throw new FileNotFoundException($"FilePath is not valid: {options.FilePath}");
 
-			await using var fileStream = new FileStream(options.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
+			await using var fileStream = _fs.FileStream.New(options.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
 			if (fileStream != null)
 			{
 				var info = NexusModFileVersionData.FromFilePath(options.FilePath);
@@ -86,12 +94,12 @@ public static class ImportUtils
 					{
 						if (file.Key.EndsWith(".pak", StringComparison.OrdinalIgnoreCase))
 						{
-							var outputName = Path.GetFileName(file.Key);
-							var outputFilePath = Path.Join(options.OutputDirectory, outputName);
+							var outputName = _fs.Path.GetFileName(file.Key);
+							var outputFilePath = _fs.Path.Join(options.OutputDirectory, outputName);
 							options.Result.TotalPaks++;
 							using (var entryStream = file.OpenEntryStream())
 							{
-								using var fs = File.Create(outputFilePath, ARCHIVE_BUFFER, FileOptions.Asynchronous);
+								using var fs = _fs.File.Create(outputFilePath, ARCHIVE_BUFFER, FileOptions.Asynchronous);
 								try
 								{
 									await entryStream.CopyToAsync(fs, ARCHIVE_BUFFER, options.Token);
@@ -126,7 +134,7 @@ public static class ImportUtils
 								var text = sr.ReadToEnd();
 								if (text.IsValid())
 								{
-									options.ImportedJsonFiles.Add(new ImportedJsonFile { FileName = Path.GetFileNameWithoutExtension(file.Key), Text = text });
+									options.ImportedJsonFiles.Add(new ImportedJsonFile { FileName = _fs.Path.GetFileNameWithoutExtension(file.Key), Text = text });
 								}
 							}
 							catch (Exception ex)
@@ -172,18 +180,20 @@ public static class ImportUtils
 
 	public static async Task<bool> ImportCompressedFileAsync(ImportParameters options)
 	{
-		FileStream? fileStream = null;
+		FileSystemStream? fileStream = null;
 		var taskStepAmount = 1.0 / 4;
 		var success = false;
 		try
 		{
-			fileStream = new FileStream(options.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
+			if (!options.FilePath.IsValid()) return false;
+
+			fileStream = _fs.FileStream.New(options.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
 			if (fileStream != null)
 			{
 				var info = NexusModFileVersionData.FromFilePath(options.FilePath);
 
 				var buffer = new byte[fileStream.Length];
-				await fileStream.ReadAsync(buffer.AsMemory(0, buffer.Length), options.Token);
+				await fileStream.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), options.Token);
 				fileStream.Position = 0;
 				options.ReportProgress?.Invoke(taskStepAmount);
 				Stream? decompressionStream = null;
@@ -205,9 +215,9 @@ public static class ImportUtils
 					if (decompressionStream != null)
 					{
 						DivinityApp.Log($"Checking if compressed file ({options.FilePath} => {options.Extension}) is a pak.");
-						var outputName = Path.GetFileNameWithoutExtension(options.FilePath);
+						var outputName = _fs.Path.GetFileNameWithoutExtension(options.FilePath);
 						if (!outputName.EndsWith(".pak", StringComparison.OrdinalIgnoreCase)) outputName += ".pak";
-						var outputFilePath = Path.Join(options.OutputDirectory, outputName);
+						var outputFilePath = _fs.Path.Join(options.OutputDirectory, outputName);
 
 						await using var tempFile = await TempFile.CreateAsync(options.FilePath, decompressionStream, options.Token);
 
@@ -220,7 +230,7 @@ public static class ImportUtils
 								{
 									try
 									{
-										mod.LastModified = File.GetLastWriteTime(options.FilePath);
+										mod.LastModified = _fs.File.GetLastWriteTime(options.FilePath);
 									}
 									catch (Exception ex)
 									{
@@ -230,10 +240,10 @@ public static class ImportUtils
 									if (!outputName.Contains(mod.Name))
 									{
 										var nameFromMeta = $"{mod.Folder}.pak";
-										outputFilePath = Path.Join(options.OutputDirectory, nameFromMeta);
+										outputFilePath = _fs.Path.Join(options.OutputDirectory, nameFromMeta);
 										mod.FilePath = outputFilePath.NormalizeDirectorySep();
 									}
-									using (var fs = File.Create(outputFilePath, ARCHIVE_BUFFER, FileOptions.Asynchronous))
+									using (var fs = _fs.File.Create(outputFilePath, ARCHIVE_BUFFER, FileOptions.Asynchronous))
 									{
 										try
 										{
@@ -309,14 +319,14 @@ public static class ImportUtils
 
 	public static async Task<bool> ImportPakAsync(ImportParameters options)
 	{
-		var outputFilePath = Path.Join(options.OutputDirectory, Path.GetFileName(options.FilePath));
+		var outputFilePath = _fs.Path.Join(options.OutputDirectory, _fs.Path.GetFileName(options.FilePath));
 		try
 		{
 			options.Result.TotalPaks++;
 
 			await FileUtils.CopyFileAsync(options.FilePath, outputFilePath, options.Token);
 
-			if (File.Exists(outputFilePath))
+			if (_fs.File.Exists(outputFilePath))
 			{
 				var parsed = await ModDataLoader.LoadModDataFromPakAsync(outputFilePath, options.BuiltinMods, options.Token);
 				if (parsed?.Count > 0)

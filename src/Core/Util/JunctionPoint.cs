@@ -84,6 +84,12 @@ public static class JunctionPoint
 		EFileAttributes dwFlagsAndAttributes,
 		IntPtr hTemplateFile);
 
+	private static readonly IFileSystemService _fs;
+	static JunctionPoint()
+	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
+
 	/// <summary>
 	///     Creates a junction point from the specified directory to the specified target directory.
 	/// </summary>
@@ -99,24 +105,24 @@ public static class JunctionPoint
 	/// </exception>
 	public static void Create(string junctionPoint, string targetDir, bool overwrite)
 	{
-		targetDir = Path.GetFullPath(targetDir);
+		targetDir = _fs.Path.GetFullPath(targetDir);
 
-		if (!Directory.Exists(targetDir))
+		if (!_fs.Directory.Exists(targetDir))
 			throw new IOException("Target path does not exist or is not a directory.");
 
-		if (Directory.Exists(junctionPoint))
+		if (_fs.Directory.Exists(junctionPoint))
 		{
 			if (!overwrite)
 				throw new IOException("Directory already exists and overwrite parameter is false.");
 		}
 		else
 		{
-			Directory.CreateDirectory(junctionPoint);
+			_fs.Directory.CreateDirectory(junctionPoint);
 		}
 
 		using (var handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericWrite))
 		{
-			var targetDirBytes = Encoding.Unicode.GetBytes(NonInterpretedPathPrefix + Path.GetFullPath(targetDir));
+			var targetDirBytes = Encoding.Unicode.GetBytes(NonInterpretedPathPrefix + _fs.Path.GetFullPath(targetDir));
 
 			var reparseDataBuffer =
 				new REPARSE_DATA_BUFFER
@@ -163,9 +169,9 @@ public static class JunctionPoint
 	/// <param name="junctionPoint">The junction point path</param>
 	public static void Delete(string junctionPoint)
 	{
-		if (!Directory.Exists(junctionPoint))
+		if (!_fs.Directory.Exists(junctionPoint))
 		{
-			if (File.Exists(junctionPoint))
+			if (_fs.File.Exists(junctionPoint))
 				throw new IOException("Path is not a junction point.");
 
 			return;
@@ -201,7 +207,7 @@ public static class JunctionPoint
 
 			try
 			{
-				Directory.Delete(junctionPoint);
+				_fs.Directory.Delete(junctionPoint);
 			}
 			catch (IOException ex)
 			{
@@ -221,7 +227,7 @@ public static class JunctionPoint
 	/// </exception>
 	public static bool Exists(string path)
 	{
-		if (!Directory.Exists(path))
+		if (!_fs.Directory.Exists(path))
 			return false;
 
 		using (var handle = OpenReparsePoint(path, EFileAccess.GenericRead))

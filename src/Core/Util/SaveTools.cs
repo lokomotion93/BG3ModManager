@@ -4,20 +4,26 @@ namespace ModManager.Util;
 
 public static class SaveTools
 {
+	private static readonly IFileSystemService _fs;
+	static SaveTools()
+	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
+	}
+
 	public static bool RenameSave(string pathToSave, string newName)
 	{
 		try
 		{
-			var baseOldName = Path.GetFileNameWithoutExtension(pathToSave);
-			var baseNewName = Path.GetFileNameWithoutExtension(newName);
-			var output = Path.ChangeExtension(Path.Join(Path.GetDirectoryName(pathToSave), newName), ".lsv");
+			var baseOldName = _fs.Path.GetFileNameWithoutExtension(pathToSave);
+			var baseNewName = _fs.Path.GetFileNameWithoutExtension(newName);
+			var output = _fs.Path.ChangeExtension(_fs.Path.Join(_fs.Path.GetDirectoryName(pathToSave), newName), ".lsv");
 
 			var reader = new PackageReader();
 			using var package = reader.Read(pathToSave);
 			var saveScreenshotImage = package.Files.FirstOrDefault(p => p.Name.EndsWith(".WebP"));
 			if (saveScreenshotImage != null)
 			{
-				saveScreenshotImage.Name = saveScreenshotImage.Name.Replace(Path.GetFileNameWithoutExtension(saveScreenshotImage.Name), baseNewName);
+				saveScreenshotImage.Name = saveScreenshotImage.Name.Replace(_fs.Path.GetFileNameWithoutExtension(saveScreenshotImage.Name), baseNewName);
 
 				DivinityApp.Log($"Renamed internal screenshot '{saveScreenshotImage.Name}' in '{output}'.");
 			}
@@ -34,8 +40,8 @@ public static class SaveTools
 			using var writer = PackageWriterFactory.Create(build, output);
 			writer.Write();
 
-			File.SetLastWriteTime(output, File.GetLastWriteTime(pathToSave));
-			File.SetLastAccessTime(output, File.GetLastAccessTime(pathToSave));
+			_fs.File.SetLastWriteTime(output, _fs.File.GetLastWriteTime(pathToSave));
+			_fs.File.SetLastAccessTime(output, _fs.File.GetLastAccessTime(pathToSave));
 
 			return true;
 

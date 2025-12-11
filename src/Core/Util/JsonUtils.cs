@@ -21,7 +21,6 @@ namespace ModManager.Util;
 public class DataContractDefaultValueResolver : DefaultJsonTypeInfoResolver
 {
 	private static readonly Lazy<DataContractDefaultValueResolver> s_defaultInstance = new(() => new DataContractDefaultValueResolver());
-
 	public static DataContractDefaultValueResolver Default => s_defaultInstance.Value;
 
 	private static bool IsNullOrDefault(object? obj)
@@ -222,8 +221,11 @@ public static class JsonUtils
 
 	public static JsonSerializerOptions DefaultSerializerSettings => _defaultSerializerSettings;
 
+	private static readonly IFileSystemService _fs;
+
 	static JsonUtils()
 	{
+		_fs = Locator.Current.GetService<IFileSystemService>()!;
 		_defaultSerializerSettings.Converters.Add(new JsonStringEnumConverter());
 		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModConfig>());
 		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModContainerSettings>());
@@ -236,7 +238,7 @@ public static class JsonUtils
 
 	public static T? Deserialize<T>(string text, JsonSerializerOptions? opts = null) => JsonSerializer.Deserialize<T?>(text, opts ?? _defaultSerializerSettings);
 
-	public static T? DeserializeFromPath<T>(string path, JsonSerializerOptions? opts = null) => Deserialize<T?>(File.ReadAllText(path), opts ?? _defaultSerializerSettings);
+	public static T? DeserializeFromPath<T>(string path, JsonSerializerOptions? opts = null) => Deserialize<T?>(_fs.File.ReadAllText(path), opts ?? _defaultSerializerSettings);
 
 	public static T? SafeDeserialize<T>(string text, JsonSerializerOptions? opts = null)
 	{
@@ -259,9 +261,9 @@ public static class JsonUtils
 	{
 		try
 		{
-			if (File.Exists(path))
+			if (_fs.File.Exists(path))
 			{
-				var contents = File.ReadAllText(path);
+				var contents = _fs.File.ReadAllText(path);
 				return SafeDeserialize<T?>(contents, opts ?? _defaultSerializerSettings);
 			}
 			else
@@ -284,9 +286,9 @@ public static class JsonUtils
 
 	public static bool TrySafeDeserializeFromPath<T>(string path, [NotNullWhen(true)] out T? result, JsonSerializerOptions? opts = null)
 	{
-		if (File.Exists(path))
+		if (_fs.File.Exists(path))
 		{
-			var contents = File.ReadAllText(path);
+			var contents = _fs.File.ReadAllText(path);
 			result = JsonSerializer.Deserialize<T?>(contents, opts ?? _defaultSerializerSettings);
 			return result != null;
 		}
@@ -298,7 +300,7 @@ public static class JsonUtils
 	{
 		try
 		{
-			await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.Asynchronous);
+			await using var stream = _fs.FileStream.New(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.Asynchronous);
 			var result = await JsonSerializer.DeserializeAsync<T?>(stream, opts ?? _defaultSerializerSettings, token);
 			return result;
 		}

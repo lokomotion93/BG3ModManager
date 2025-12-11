@@ -1,4 +1,5 @@
 ﻿using ModManager.Models.Cache;
+using ModManager.Services;
 using ModManager.Util;
 
 using System.Text;
@@ -8,9 +9,10 @@ public static class IExternalModCacheDataExtensions
 {
 	public static async Task<T?> LoadCacheAsync<T>(this IExternalModCacheHandler<T> handler, string currentAppVersion, CancellationToken token) where T : IModCacheData
 	{
+		var fs = Locator.Current.GetService<IFileSystemService>()!;
 		var filePath = DivinityApp.GetAppDirectory("Data", handler.FileName);
 
-		if (File.Exists(filePath))
+		if (fs.File.Exists(filePath))
 		{
 			var cachedData = await JsonUtils.DeserializeFromPathAsync<T>(filePath, token);
 			if (cachedData != null)
@@ -31,9 +33,11 @@ public static class IExternalModCacheDataExtensions
 	{
 		try
 		{
+			var fs = Locator.Current.GetService<IFileSystemService>()!;
+
 			var parentDir = DivinityApp.GetAppDirectory("Data");
-			var filePath = Path.Join(parentDir, handler.FileName);
-			if (!Directory.Exists(parentDir)) Directory.CreateDirectory(parentDir);
+			var filePath = fs.Path.Join(parentDir, handler.FileName);
+			if (!fs.Directory.Exists(parentDir)) fs.Directory.CreateDirectory(parentDir);
 
 			if (updateLastTimestamp)
 			{
@@ -44,8 +48,8 @@ public static class IExternalModCacheDataExtensions
 			var contents = JsonSerializer.Serialize(handler.CacheData, handler.SerializerSettings);
 
 			var buffer = Encoding.UTF8.GetBytes(contents);
-			await using var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, buffer.Length, FileOptions.Asynchronous);
-			await fs.WriteAsync(buffer, token);
+			await using var stream = fs.FileStream.New(filePath, FileMode.CreateNew, FileAccess.Write, FileShare.Read, buffer.Length, FileOptions.Asynchronous);
+			await stream.WriteAsync(buffer, token);
 
 			return true;
 		}
@@ -60,9 +64,10 @@ public static class IExternalModCacheDataExtensions
 	{
 		try
 		{
+			var fs = Locator.Current.GetService<IFileSystemService>()!;
 			var parentDir = DivinityApp.GetAppDirectory("Data");
-			var filePath = Path.Join(parentDir, handler.FileName);
-			if (File.Exists(filePath))
+			var filePath = fs.Path.Join(parentDir, handler.FileName);
+			if (fs.File.Exists(filePath))
 			{
 				RecycleBinHelper.DeleteFile(filePath, false, permanent);
 				return true;

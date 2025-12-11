@@ -228,11 +228,11 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 
 	public bool PakEquals(string fileName, StringComparison comparison = StringComparison.Ordinal)
 	{
-		var outputPackage = Path.ChangeExtension(Folder, "pak");
+		var outputPackage = _fs.Path.ChangeExtension(Folder, "pak");
 		//Imported Classic Projects
 		if (Folder.IsValid() && !Folder.Contains(UUID))
 		{
-			outputPackage = Path.ChangeExtension(Path.Join(Folder + "_" + UUID), "pak");
+			outputPackage = _fs.Path.ChangeExtension(_fs.Path.Join(Folder + "_" + UUID), "pak");
 		}
 		return outputPackage?.Equals(fileName, comparison) == true;
 	}
