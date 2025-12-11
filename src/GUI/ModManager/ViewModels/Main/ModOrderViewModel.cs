@@ -1217,42 +1217,64 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	public bool LoadModOrder() => LoadModOrder(SelectedModOrder);
 
-	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container, HashSet<string> addedEntries, Func<ModData, bool> canAddMod)
+	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container, HashSet<string> addedEntries, Func<ModData, bool> canAddMod, Func<ModOrderContainer, bool> canAddContainer)
 	{
-		//TODO fetch from some central container settings location
-		var uiContainer = new ModContainer(container.Id, container.Name ?? string.Empty);
-		if (container.Settings == null)
+		if(!canAddContainer(container))
 		{
-			var globalContainerSettings = _settings.ContainerSettings.Containers.Lookup(container.Id);
-			if (globalContainerSettings.HasValue)
+			// Can't add container, to add the children to the current parent
+			foreach (var child in container.Children)
 			{
-				uiContainer.Settings.SetFromDataMember(globalContainerSettings.Value);
+				if (child.Type == ModEntryType.Mod)
+				{
+					if (_manager.TryGetMod(child.Id, out var mod) && canAddMod(mod))
+					{
+						addedEntries.Add(child.Id);
+						targetList.Add(mod.ToModInterface());
+					}
+				}
+				else if (child.Type == ModEntryType.Container && child is ModOrderContainer childContainer)
+				{
+					AddNestedMods(targetList, container, addedEntries, canAddMod, canAddContainer);
+				}
 			}
 		}
 		else
 		{
-			uiContainer.Settings.SetFromDataMember(container.Settings);
-		}
-		uiContainer.Index = container.Index;
-		uiContainer.Settings.DisplayName = container.Name;
-		addedEntries.Add(container.Id);
-		targetList.Add(uiContainer);
-
-		foreach (var entry in container.Children)
-		{
-			if(!addedEntries.Contains(entry.Id))
+			//TODO fetch from some central container settings location
+			var uiContainer = new ModContainer(container.Id, container.Name ?? string.Empty);
+			if (container.Settings == null)
 			{
-				if (entry.Type == ModEntryType.Mod)
+				var globalContainerSettings = _settings.ContainerSettings.Containers.Lookup(container.Id);
+				if (globalContainerSettings.HasValue)
 				{
-					if (_manager.TryGetMod(entry.Id, out var mod) && canAddMod(mod))
-					{
-						addedEntries.Add(entry.Id);
-						uiContainer.Children.Add(mod.ToModInterface());
-					}
+					uiContainer.Settings.SetFromDataMember(globalContainerSettings.Value);
 				}
-				else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
+			}
+			else
+			{
+				uiContainer.Settings.SetFromDataMember(container.Settings);
+			}
+			uiContainer.Index = container.Index;
+			uiContainer.Settings.DisplayName = container.Name;
+			addedEntries.Add(container.Id);
+			targetList.Add(uiContainer);
+
+			foreach (var entry in container.Children)
+			{
+				if (!addedEntries.Contains(entry.Id))
 				{
-					AddNestedMods(uiContainer.Children, subContainer, addedEntries, canAddMod);
+					if (entry.Type == ModEntryType.Mod)
+					{
+						if (_manager.TryGetMod(entry.Id, out var mod) && canAddMod(mod))
+						{
+							addedEntries.Add(entry.Id);
+							uiContainer.Children.Add(mod.ToModInterface());
+						}
+					}
+					else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
+					{
+						AddNestedMods(uiContainer.Children, subContainer, addedEntries, canAddMod, canAddContainer);
+					}
 				}
 			}
 		}
@@ -1260,11 +1282,12 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	private static bool CanAddActiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && mod.IsActive;
 	private static bool CanAddInactiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && !mod.IsActive;
+	private static bool CanAddActiveContainer(ModOrderContainer container) => true;
 	private static bool CanAddInactiveContainer(ModOrderContainer container, HashSet<string> activeEntries)
 	{
 		if(activeEntries.Contains(container.Id))
 		{
-			return container.Settings.IsGlobal;
+			return container.Settings?.IsGlobal == true;
 		}
 		return true;
 	}
@@ -1353,9 +1376,11 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}
 			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
 			{
-				AddNestedMods(ActiveMods, container, addedActiveMods, CanAddActiveModToOrder);
+				AddNestedMods(ActiveMods, container, addedActiveMods, CanAddActiveModToOrder, CanAddActiveContainer);
 			}
 		}
+
+		bool canAddInactiveContainerTemp(ModOrderContainer container) => CanAddInactiveContainer(container, addedActiveMods);
 
 		InactiveMods.Clear();
 		var addedInactiveMods = new HashSet<string>();
@@ -1369,9 +1394,9 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 					InactiveMods.Add(mod.ToModInterface());
 				}
 			}
-			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container && CanAddInactiveContainer(container, addedActiveMods))
+			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
 			{
-				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveModToOrder);
+				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveModToOrder, canAddInactiveContainerTemp);
 			}
 		}
 
@@ -1688,6 +1713,12 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		{
 			_removeTask = RxApp.MainThreadScheduler.Schedule(ProcessRemovalQueue);
 		}
+	}
+
+	public void UpdateInactiveModsConfig()
+	{
+		_settings.InactiveMods.Order.AddRange(InactiveMods, true);
+		_settings.QueueSave(_settings.InactiveMods, TimeSpan.FromMilliseconds(250));
 	}
 
 	private static readonly HashSet<string> _migrateCampaigns = new HashSet<string>()
@@ -2057,8 +2088,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		.Throttle(TimeSpan.FromMilliseconds(250))
 		.Subscribe(e =>
 		{
-			_settings.InactiveMods.Order.AddRange(InactiveMods, true);
-			_settings.TrySave(_settings.InactiveMods, out _);
+			UpdateInactiveModsConfig();
 		});
 
 		_interactions.ForceAllowInLoadOrder.RegisterHandler(async req =>
