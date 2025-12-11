@@ -58,6 +58,11 @@ public partial class ModManagerUpdateSettings : ReactiveObject
 
 	[Reactive] public partial bool IsAssociatedWithNXM { get; set; }
 
+	[Reactive, DataMember] public partial long LastScriptExtender { get; set; }
+	[Reactive, DataMember] public partial long LastGitHubCheck { get; set; }
+	[Reactive, DataMember] public partial long LastNexusModsCheck { get; set; }
+	[Reactive, DataMember] public partial long LastModioCheck { get; set; }
+
 	public ModManagerUpdateSettings()
 	{
 		this.SetToDefault();
