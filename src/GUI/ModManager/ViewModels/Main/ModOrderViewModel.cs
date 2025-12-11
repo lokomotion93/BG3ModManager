@@ -1051,6 +1051,32 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		}
 	}
 
+	private static bool FindNestedMod(IList<IModEntry> searchList, string uuid, [NotNullWhen(true)] out IModEntry? existing, [NotNullWhen(true)] out IList<IModEntry>? fromList)
+	{
+		existing = null;
+		fromList = null;
+
+		foreach (var entry in searchList)
+		{
+			if(entry.UUID == uuid)
+			{
+				existing = entry;
+				fromList = searchList;
+				return true;
+			}
+			else if(entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+			{
+				if(FindNestedMod(container.Children, uuid, out var nestedExisting, out var nestedList))
+				{
+					existing = nestedExisting;
+					fromList = nestedList;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public void AddImportedMod(ModData mod, bool toActiveList = false)
 	{
 		mod.ModioEnabled = ModioSupportEnabled;
@@ -1077,30 +1103,37 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			return;
 		}
 
+
 		var entry = mod.ToModInterface();
-		if (mod.IsActive)
+		if (FindNestedMod(ActiveMods, mod.UUID, out var existing, out var fromList))
 		{
-			var existingInterface = ActiveMods.FirstOrDefault(x => x.UUID == mod.UUID);
-			if (existingInterface != null)
+			mod.IsActive = true;
+			fromList.Replace(existing, entry);
+		}
+		else if (FindNestedMod(InactiveMods, mod.UUID, out existing, out fromList))
+		{
+			fromList.Replace(existing, entry);
+		}
+		else if (FindNestedMod(OverrideMods, mod.UUID, out existing, out fromList))
+		{
+			fromList.Replace(existing, entry);
+		}
+		else
+		{
+			if (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod)
 			{
-				ActiveMods.Replace(existingInterface, entry);
+				OverrideMods.Add(entry);
+				mod.Index = OverrideMods.Count - 1;
 			}
-			else
+			else if (mod.IsActive)
 			{
 				ActiveMods.Add(entry);
 				mod.Index = ActiveMods.Count - 1;
 			}
-		}
-		else
-		{
-			var existingInterface = InactiveMods.FirstOrDefault(x => x.UUID == mod.UUID);
-			if (existingInterface != null)
-			{
-				InactiveMods.Replace(existingInterface, entry);
-			}
 			else
 			{
 				InactiveMods.Add(entry);
+				mod.Index = InactiveMods.Count - 1;
 			}
 		}
 
@@ -1216,9 +1249,9 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	public bool LoadModOrder() => LoadModOrder(SelectedModOrder);
 
-	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container, HashSet<string> addedEntries, Func<ModData, bool> canAddMod, Func<ModOrderContainer, bool> canAddContainer)
+	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container, HashSet<string> addedEntries, Func<ModData, bool> canAddMod, Func<ModOrderContainer, bool> canAddContainer, Func<string, bool> wasAdded)
 	{
-		if(!canAddContainer(container))
+		if(!canAddContainer(container) || wasAdded(container.Id))
 		{
 			// Can't add container, to add the children to the current parent
 			foreach (var child in container.Children)
@@ -1233,7 +1266,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				}
 				else if (child.Type == ModEntryType.Container && child is ModOrderContainer childContainer)
 				{
-					AddNestedMods(targetList, container, addedEntries, canAddMod, canAddContainer);
+					AddNestedMods(targetList, container, addedEntries, canAddMod, canAddContainer, wasAdded);
 				}
 			}
 		}
@@ -1272,7 +1305,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 					}
 					else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
 					{
-						AddNestedMods(uiContainer.Children, subContainer, addedEntries, canAddMod, canAddContainer);
+						AddNestedMods(uiContainer.Children, subContainer, addedEntries, canAddMod, canAddContainer, wasAdded);
 					}
 				}
 			}
@@ -1361,13 +1394,19 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			loadOrderIndex++;
 		}
 
-		ActiveMods.Clear();
 		var addedActiveMods = new HashSet<string>();
+		var addedInactiveMods = new HashSet<string>();
+		var addedOverrideMods = new HashSet<string>();
+
+		bool WasAdded(string uuid) => addedActiveMods.Contains(uuid) || addedInactiveMods.Contains(uuid) || addedOverrideMods.Contains(uuid);
+
+		ActiveMods.Clear();
+
 		foreach (var entry in order.Entries)
 		{
 			if(entry.Type == ModEntryType.Mod)
 			{
-				if(modManager.TryGetMod(entry.Id, out var mod))
+				if(!WasAdded(entry.Id) && modManager.TryGetMod(entry.Id, out var mod))
 				{
 					addedActiveMods.Add(entry.Id);
 					ActiveMods.Add(mod.ToModInterface());
@@ -1375,19 +1414,19 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}
 			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
 			{
-				AddNestedMods(ActiveMods, container, addedActiveMods, CanAddActiveModToOrder, CanAddActiveContainer);
+				AddNestedMods(ActiveMods, container, addedActiveMods, CanAddActiveModToOrder, CanAddActiveContainer, WasAdded);
 			}
 		}
 
 		bool canAddInactiveContainerTemp(ModOrderContainer container) => CanAddInactiveContainer(container, addedActiveMods);
 
 		InactiveMods.Clear();
-		var addedInactiveMods = new HashSet<string>();
+		
 		foreach (var entry in _settings.InactiveMods.Order.Entries)
 		{
 			if (entry.Type == ModEntryType.Mod)
 			{
-				if (modManager.TryGetMod(entry.Id, out var mod) && CanAddInactiveModToOrder(mod))
+				if (!WasAdded(entry.Id) && modManager.TryGetMod(entry.Id, out var mod) && CanAddInactiveModToOrder(mod))
 				{
 					addedInactiveMods.Add(entry.Id);
 					InactiveMods.Add(mod.ToModInterface());
@@ -1395,7 +1434,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}
 			else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer container)
 			{
-				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveModToOrder, canAddInactiveContainerTemp);
+				AddNestedMods(InactiveMods, container, addedInactiveMods, CanAddInactiveModToOrder, canAddInactiveContainerTemp, WasAdded);
 			}
 		}
 
@@ -1405,7 +1444,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		foreach (var entry in modManager.ForceLoadedMods)
 		{
-			if(!addedActiveMods.Contains(entry.UUID) && !addedInactiveMods.Contains(entry.UUID))
+			if(!WasAdded(entry.UUID))
 			{
 				//If the override mod is in the Mods_Disabled folder already, consider it "inactive"
 				var parentDir = _fs.Path.GetDirectoryName(entry.FilePath);
@@ -1416,6 +1455,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				}
 				else
 				{
+					addedOverrideMods.Add(entry.UUID);
 					OverrideMods.Add(entry.ToModInterface());
 				}
 			}
@@ -1426,8 +1466,11 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		{
 			foreach (var mod in remainingInactiveMods)
 			{
-				addedInactiveMods.Add(mod.UUID);
-				InactiveMods.Add(mod.ToModInterface());
+				if(!WasAdded(mod.UUID))
+				{
+					addedInactiveMods.Add(mod.UUID);
+					InactiveMods.Add(mod.ToModInterface());
+				}
 			}
 		}
 
@@ -1786,6 +1829,58 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		var inactiveModsConnection = InactiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
 		ColumnOptions<IModEntry> columnOpts = new() { CanUserSortColumn = true, CanUserResizeColumn = true };
+
+		/*
+var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts);
+		var versionColumn = new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto);
+		var authorColumn = new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto);
+		var lastUpdatedColumm = new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto);
+		var nameExpanderColumn = new HierarchicalExpanderColumn<IModEntry>(nameColumn, x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded);
+
+		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
+		{
+			Columns =
+			{
+				//Avalonia.Controls.Models.TreeDataGrid.
+				new TextColumn<IModEntry, int>("Index", x => x.Index, GridLength.Auto),
+				nameExpanderColumn,
+				versionColumn,
+				authorColumn,
+				lastUpdatedColumm,
+			}
+		}, ActiveMods, activeModsConnection, "Active")
+		{
+			ListType = ModListType.Active
+		};
+
+		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(OverrideMods)
+		{
+			Columns =
+			{
+				nameExpanderColumn,
+				versionColumn,
+				authorColumn,
+				lastUpdatedColumm,
+			}
+		}, OverrideMods, overrideModsConnection, "Overrides")
+		{
+			ListType = ModListType.Override
+		};
+
+		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(InactiveMods)
+		{
+			Columns =
+			{
+				nameExpanderColumn,
+				new TextColumn<IModEntry, string>("Version", x => x.Version, new GridLength(80d)),
+				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
+				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
+			}
+		}, InactiveMods, inactiveModsConnection, "Inactive")
+		{
+			ListType = ModListType.Inactive
+		};
+		 */
 
 		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
 		{
