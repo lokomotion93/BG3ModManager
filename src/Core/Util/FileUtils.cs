@@ -366,7 +366,7 @@ public static class FileUtils
 		try
 		{
 			await using var sourceFile = new FileStream(copyFromPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
-			await using var outputFile = new FileStream(copyToPath, FileMode.Create, FileAccess.Read, FileShare.Read, 128000, FileOptions.Asynchronous);
+			await using var outputFile = new FileStream(copyToPath, FileMode.Create, FileAccess.Write, FileShare.Read, 128000, FileOptions.Asynchronous);
 			await sourceFile.CopyToAsync(outputFile, 128000, token); // 81920 default
 			return true;
 		}
