@@ -541,7 +541,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 					//Clear the previous selection, so only the dropped items are selected
 					rowSelection.Clear();
 
-					ModListView.DragDropRows(sourceList.Mods, targetList.Mods, targetIndex, TreeDataGridRowDropPosition.After, DragDropEffects.Move);
+					ModListView.DragDropRows(sourceList.Mods, targetList.Mods, sourceSelectedIndexes, targetIndex, TreeDataGridRowDropPosition.After, DragDropEffects.Move);
 
 					string countSuffix = selectedMods.Count > 1 ? "mods" : "mod";
 					string text = $"Moved {selectedMods.Count} {countSuffix} to the {targetListName} mods list.";

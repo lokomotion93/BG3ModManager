@@ -30,163 +30,110 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	public static void DragDropRows(
 			HierarchicalTreeDataGridSource<IModEntry> source,
 			HierarchicalTreeDataGridSource<IModEntry> target,
+			IEnumerable<IndexPath> indexes,
 			IndexPath targetIndex,
 			TreeDataGridRowDropPosition position,
-			DragDropEffects effects,
-			bool insertAtEnd = false
-		)
+			DragDropEffects effects)
 	{
-		if (effects == DragDropEffects.Move)
+		IList<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
 		{
-			var entriesToInsert = new List<IModEntry>();
+			IEnumerable<IModEntry>? children;
 
-			List<IModEntry?> selected = [.. source.RowSelection!.SelectedItems];
-
-			foreach (var entry in source.RowSelection!.SelectedItems)
+			if (path.Count == 0)
 			{
-				if(entry != null)
-				{
-					if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
-					{
-						//Prevent moving any nested entries since they'll follow the container anyway
-						foreach(var child in container.ForEachNested())
-						{
-							child.IsSelected = true;
-							selected.Remove(child);
-						}
-					}
-				}
+				children = from.Items;
 			}
-
-			foreach(var entry in selected)
+			else if (from.TryGetModelAt(path, out var parent))
 			{
-				if (entry != null)
+				if (parent.EntryType == ModEntryType.Container && parent is ModContainer container)
 				{
-					entry.IsSelected = true;
-					entriesToInsert.Add(entry);
-				}
-			}
-
-			if(source.Items is ObservableCollectionExtended<IModEntry> sourceCollection)
-			{
-				sourceCollection.RemoveMany(entriesToInsert);
-
-				//Remove nested entries, in case what was drag/dropped was a nested container
-
-				var guidsToRemove = entriesToInsert.Select(x => x.UUID).ToHashSet();
-
-				foreach (var entry in sourceCollection)
-				{
-					if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
-					{
-						container.RemoveNested(guidsToRemove);
-					}
-				}
-			}
-
-			if(target.Items is ObservableCollectionExtended<IModEntry> targetCollection)
-			{
-				if (targetCollection.Count == 0 || insertAtEnd)
-				{
-					targetCollection.AddRange(entriesToInsert);
+					return container.Children;
 				}
 				else
 				{
-					if (position == TreeDataGridRowDropPosition.Inside && target.TryGetModelAt(targetIndex, out var insideEntry)
-						&& insideEntry.EntryType == ModEntryType.Container
-						&& insideEntry is ModContainer insideContainer)
-					{
-						insideContainer.Children.AddRange(entriesToInsert);
-					}
-					else
-					{
-						var targetEntryIndex = targetIndex[.. ^1];
-						if (target.TryGetModelAt(targetEntryIndex, out var targetEntry)
-						&& targetEntry.EntryType == ModEntryType.Container
-						&& targetEntry is ModContainer targetContainer
-						&& targetContainer.Children is ObservableCollectionExtended<IModEntry> children)
-						{
-							var childIndex = targetIndex[^1];
-
-							if (position == TreeDataGridRowDropPosition.Before)
-							{
-								children.InsertRange(entriesToInsert, childIndex);
-							}
-							else if (position == TreeDataGridRowDropPosition.After)
-							{
-								if (childIndex >= children.Count - 1)
-								{
-									children.AddRange(entriesToInsert);
-								}
-								else
-								{
-									children.InsertRange(entriesToInsert, childIndex + 1);
-								}
-							}
-							else
-							{
-								children.AddRange(entriesToInsert);
-							}
-						}
-						else
-						{
-							var index = targetIndex[^1];
-							if (position == TreeDataGridRowDropPosition.Before)
-							{
-								targetCollection.InsertRange(entriesToInsert, index);
-							}
-							else if (position == TreeDataGridRowDropPosition.After)
-							{
-								if (index >= targetCollection.Count - 1)
-								{
-									targetCollection.AddRange(entriesToInsert);
-								}
-								else
-								{
-									targetCollection.InsertRange(entriesToInsert, index + 1);
-								}
-							}
-							else
-							{
-								targetCollection.AddRange(entriesToInsert);
-							}
-						}
-					}
-				}
-
-				var selectedIndexes = new List<IndexPath>();
-				var newIndex = 0;
-				foreach (var entry in targetCollection)
-				{
-					entry.Index = newIndex;
-					if (entry.IsSelected) selectedIndexes.Add(newIndex);
-					newIndex++;
-
-					if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
-					{
-						foreach (var child in container.ForEachNested())
-						{
-							child.Index = newIndex;
-							if (child.IsSelected)
-							{
-								var path = container.GetIndexPath(child.UUID, entry.Index);
-								if(path != null)
-								{
-									selectedIndexes.Add(new(path));
-								}
-							}
-							newIndex++;
-						}
-					}
-				}
-
-				foreach (var path in selectedIndexes)
-				{
-					target.RowSelection!.Select(path);
+					children = from.GetModelChildren(parent);
 				}
 			}
+			else
+			{
+				throw new IndexOutOfRangeException();
+			}
 
-			source.RowSelection.Clear();
+			if (children is null) throw new InvalidOperationException("The requested drop target has no children.");
+			return children as IList<IModEntry> ?? throw new InvalidOperationException("Items does not implement IList<T>.");
+		}
+
+		IList<IModEntry> targetItems;
+		int ti;
+
+		if (position == TreeDataGridRowDropPosition.After
+			&& targetIndex.Count == 1
+			&& target.TryGetModelAt(targetIndex, out var afterEntry)
+			&& afterEntry.EntryType == ModEntryType.Container
+			&& afterEntry is ModContainer container && container.IsExpanded)
+		{
+			/* Fixes dropping entries into the first entry of an expanded container
+			 Normally this index path would be like [4], and after, which then puts the dropped entries after the expanded container, instead of inside it.
+			 */
+			position = TreeDataGridRowDropPosition.Before;
+			targetIndex = targetIndex.Append(0);
+		}
+
+		if (position == TreeDataGridRowDropPosition.Inside || targetIndex.Count == 0)
+		{
+			targetItems = GetItems(target, targetIndex);
+			ti = targetItems.Count;
+		}
+		else
+		{
+			targetItems = GetItems(target, targetIndex[..^1]);
+			ti = targetIndex[^1];
+		}
+
+		if (position == TreeDataGridRowDropPosition.After)
+		{
+			++ti;
+		}
+
+		var sourceItems = new List<IModEntry>();
+
+		foreach (var g in indexes.GroupBy(x => x[..^1]))
+		{
+			var items = GetItems(source, g.Key);
+
+			foreach (var i in g.Select(x => x[^1]).OrderByDescending(x => x))
+			{
+				var sourceItem = items.ElementAtOrDefault(i);
+				if(sourceItem != null)
+				{
+					sourceItems.Add(sourceItem);
+
+					if (items == targetItems && i < ti)
+						--ti;
+
+					items.RemoveAt(i);
+				}
+				else
+				{
+					DivinityApp.Log("");
+				}
+			}
+		}
+
+		if (targetIndex.Count == 0 || targetItems.Count == 0 || position == TreeDataGridRowDropPosition.None)
+		{
+			foreach (var entry in sourceItems.Reverse<IModEntry>())
+			{
+				targetItems.Add(entry);
+			}
+		}
+		else
+		{
+			//targetItems.AddOrInsertRange(sourceItems, ti);
+			for (var si = sourceItems.Count - 1; si >= 0; --si)
+			{
+				targetItems.Insert(ti++, sourceItems[si]);
+			}
 		}
 	}
 
@@ -261,6 +208,22 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	private void OnTreeDataGridDragStarted(TreeDataGridRowDragStartedEventArgs e)
 	{
 		_isDragging = true;
+
+		if (e.AllowedEffects != DragDropEffects.None && !e.Handled)
+		{
+			var info = new DragInfo(ModsTreeDataGrid.Source!, [.. ModsTreeDataGrid.RowSelection!.SelectedIndexes]);
+			var data = new DragDropDataTransfer() { Data = info };
+			try
+			{
+				DragDrop.DoDragDropAsync(e.Inner, data, e.AllowedEffects);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Trace.WriteLine(ex);
+			}
+		}
+
+		e.Handled = true;
 
 		foreach(var obj in e.Models)
 		{
@@ -355,54 +318,42 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 					}
 				}
 
-				//From one list to another
-				if (di.Source != ModsTreeDataGrid.Source)
+				if (e.Position == TreeDataGridRowDropPosition.None)
 				{
-					if (e.Position == TreeDataGridRowDropPosition.None)
-					{
-						e.Position = GetDropPosition(allowInside, e.Inner, e.TargetRow);
-					}
-
-					IndexPath targetIndex = 0;
-					var insertAtEnd = false;
-
-					//Clear the previous selection, so only the dropped items are selected
-					if (target.RowSelection != null)
-					{
-						foreach (var entry in target.RowSelection.SelectedItems)
-						{
-							if(entry != null)
-							{
-								entry.IsSelected = false;
-								if (entry is ModContainer container)
-								{
-									container.SetChildSelection(false);
-								}
-							}
-						}
-						target.RowSelection.Clear();
-					}
-
-					if (ViewModel?.Mods.Rows.Count > 0)
-					{
-						if(target.Rows == null || e.TargetRow.RowIndex >= target.Rows.Count)
-						{
-							insertAtEnd = true;
-						}
-						else if(e.TargetRow.Model is IModEntry targetEntry)
-						{
-							if(targetEntry.EntryType == ModEntryType.Container && target.Rows[e.TargetRow.RowIndex] is HierarchicalRow<IModEntry> containerRow)
-							{
-								targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
-							}
-							else
-							{
-								targetIndex = target.Rows.RowIndexToModelIndex(e.TargetRow.RowIndex);
-							}
-						}
-					}
-					DragDropRows(listSource, target, targetIndex, e.Position, e.Inner.DragEffects, insertAtEnd);
+					e.Position = GetDropPosition(allowInside, e.Inner, e.TargetRow);
 				}
+
+				IndexPath targetIndex = 0;
+
+				//Clear the previous selection, so only the dropped items are selected
+				if (target.RowSelection != null)
+				{
+					foreach (var entry in target.RowSelection.SelectedItems)
+					{
+						if (entry != null)
+						{
+							entry.IsSelected = false;
+							if (entry is ModContainer container)
+							{
+								container.SetChildSelection(false);
+							}
+						}
+					}
+					target.RowSelection.Clear();
+				}
+
+				targetIndex = target.Rows!.RowIndexToModelIndex(e.TargetRow.RowIndex);
+				//var selectedRowIndexes = di.Indexes.SelectMany(x => listSource.Rows.RowIndexToModelIndex(x));
+
+				try
+				{
+					DragDropRows(listSource, target, di.Indexes, targetIndex, e.Position, e.Inner.DragEffects);
+				}
+				catch(Exception ex)
+				{
+					DivinityApp.Log($"{ex}");
+				}
+				e.Handled = true;
 			}
 		}
 		catch(Exception ex)
