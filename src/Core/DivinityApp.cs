@@ -14,6 +14,9 @@ namespace ModManager;
 
 public static class DivinityApp
 {
+	public static readonly TimeSpan UPDATES_APP_THRESHOLD = TimeSpan.FromHours(12); // 12 hours
+	public static readonly TimeSpan UPDATES_MODS_THRESHOLD = TimeSpan.FromMinutes(30); // 30 minutes
+
 	public const string DIR_DATA = "Data\\";
 
 	public const string URL_DONATION = @"https://ko-fi.com/laughingleader";
@@ -181,7 +184,9 @@ public static class DivinityApp
 
 	public static void Log(string msg, [CallerMemberName] string mName = "", [CallerFilePath] string path = "", [CallerLineNumber] int line = 0)
 	{
-		LogMethod($"[{Path.GetFileName(path)}:{mName}({line})] {StringUtils.ReplaceSpecialPathways(msg)}");
+		var finalMessage = $"[{Path.GetFileName(path)}:{mName}({line})] {StringUtils.ReplaceSpecialPathways(msg)}";
+		LogMethod(finalMessage);
+		//Console.WriteLine(finalMessage);
 	}
 
 	public static bool IsScreenReaderActive()
