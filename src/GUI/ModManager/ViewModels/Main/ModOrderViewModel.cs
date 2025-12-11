@@ -742,26 +742,25 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	{
 		var filesToMove = new List<ModFileMoveTask>();
 
-		var fs = AppServices.FS;
 		var pathways = AppServices.Pathways.Data;
 
 		if(pathways.AppDataModsPath.IsExistingDirectory() && pathways.AppDataInactiveModsPath.IsExistingDirectory())
 		{
-			var userModsFolder = fs.Path.GetFullPath(pathways.AppDataModsPath);
-			var userModsDisabledFolder = fs.Path.GetFullPath(pathways.AppDataInactiveModsPath);
+			var userModsFolder = _fs.Path.GetFullPath(pathways.AppDataModsPath);
+			var userModsDisabledFolder = _fs.Path.GetFullPath(pathways.AppDataInactiveModsPath);
 
 			foreach (var mod in AppServices.Mods.UserMods)
 			{
 				if (mod.FilePath.IsExistingFile())
 				{
-					var parentDir = fs.Path.GetDirectoryName(mod.FilePath);
+					var parentDir = _fs.Path.GetDirectoryName(mod.FilePath);
 					if(parentDir.IsExistingDirectory())
 					{
 						var isActive = mod.IsActive || (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod && !mod.ForceAllowInLoadOrder);
 						var targetDir = isActive ? userModsFolder : userModsDisabledFolder;
 
-						var newFilePath = fs.Path.Join(targetDir, fs.Path.GetFileName(mod.FilePath));
-						if (!parentDir.Equals(targetDir, StringComparison.OrdinalIgnoreCase) && !fs.File.Exists(newFilePath))
+						var newFilePath = _fs.Path.Join(targetDir, _fs.Path.GetFileName(mod.FilePath));
+						if (!parentDir.Equals(targetDir, StringComparison.OrdinalIgnoreCase) && !_fs.File.Exists(newFilePath))
 						{
 							filesToMove.Add(new ModFileMoveTask(mod, mod.FilePath, newFilePath));
 						}
@@ -777,7 +776,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 			foreach (var task in filesToMove)
 			{
-				task.Move(fs, false);
+				task.Move(_fs, false);
 			}
 
 			LockAll(false);
@@ -1281,7 +1280,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	}
 
 	private static bool CanAddActiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && mod.IsActive;
-	private static bool CanAddInactiveModToOrder(ModData mod) => mod.CanAddToLoadOrder && !mod.IsActive;
+	private static bool CanAddInactiveModToOrder(ModData mod) => !mod.IsActive;
 	private static bool CanAddActiveContainer(ModOrderContainer container) => true;
 	private static bool CanAddInactiveContainer(ModOrderContainer container, HashSet<string> activeEntries)
 	{
@@ -1401,7 +1400,26 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		}
 
 		OverrideMods.Clear();
-		OverrideMods.AddRange(modManager.ForceLoadedMods.Where(x => !x.ForceAllowInLoadOrder && !x.IsActive).Select(x => x.ToModInterface()));
+
+		var userModsDisabledFolder = _fs.Path.GetFullPath(AppServices.Pathways.Data.AppDataInactiveModsPath!);
+
+		foreach (var entry in modManager.ForceLoadedMods)
+		{
+			if(!addedActiveMods.Contains(entry.UUID) && !addedInactiveMods.Contains(entry.UUID))
+			{
+				//If the override mod is in the Mods_Disabled folder already, consider it "inactive"
+				var parentDir = _fs.Path.GetDirectoryName(entry.FilePath);
+				if (parentDir.IsValid() && parentDir.Equals(userModsDisabledFolder, StringComparison.OrdinalIgnoreCase))
+				{
+					addedInactiveMods.Add(entry.UUID);
+					InactiveMods.Add(entry.ToModInterface());
+				}
+				else
+				{
+					OverrideMods.Add(entry.ToModInterface());
+				}
+			}
+		}
 
 		var remainingInactiveMods = modManager.AddonMods.Where(x => x.CanAddToLoadOrder && !x.IsActive && !addedInactiveMods.Contains(x.UUID)).ToList();
 		if (remainingInactiveMods.Count > 0)
