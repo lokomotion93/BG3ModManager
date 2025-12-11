@@ -27,6 +27,34 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	private bool _isSingleSelect = false;
 	private bool _isDragging = false;
 
+	private static IList<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
+	{
+		IEnumerable<IModEntry>? children;
+
+		if (path.Count == 0)
+		{
+			children = from.Items;
+		}
+		else if (from.TryGetModelAt(path, out var parent))
+		{
+			if (parent.EntryType == ModEntryType.Container && parent is ModContainer container)
+			{
+				return container.Children;
+			}
+			else
+			{
+				children = from.GetModelChildren(parent);
+			}
+		}
+		else
+		{
+			throw new IndexOutOfRangeException();
+		}
+
+		if (children is null) throw new InvalidOperationException("The requested drop target has no children.");
+		return children as IList<IModEntry> ?? throw new InvalidOperationException("Items does not implement IList<T>.");
+	}
+
 	public static void DragDropRows(
 			HierarchicalTreeDataGridSource<IModEntry> source,
 			HierarchicalTreeDataGridSource<IModEntry> target,
@@ -35,34 +63,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 			TreeDataGridRowDropPosition position,
 			DragDropEffects effects)
 	{
-		IList<IModEntry> GetItems(HierarchicalTreeDataGridSource<IModEntry> from, IndexPath path)
-		{
-			IEnumerable<IModEntry>? children;
-
-			if (path.Count == 0)
-			{
-				children = from.Items;
-			}
-			else if (from.TryGetModelAt(path, out var parent))
-			{
-				if (parent.EntryType == ModEntryType.Container && parent is ModContainer container)
-				{
-					return container.Children;
-				}
-				else
-				{
-					children = from.GetModelChildren(parent);
-				}
-			}
-			else
-			{
-				throw new IndexOutOfRangeException();
-			}
-
-			if (children is null) throw new InvalidOperationException("The requested drop target has no children.");
-			return children as IList<IModEntry> ?? throw new InvalidOperationException("Items does not implement IList<T>.");
-		}
-
 		IList<IModEntry> targetItems;
 		int ti;
 
@@ -97,14 +97,16 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		var sourceItems = new List<IModEntry>();
 
-		foreach (var g in indexes.GroupBy(x => x[..^1]))
+		var groupedIndexes = indexes.GroupBy(x => x[..^1]);
+
+		foreach (var g in groupedIndexes)
 		{
 			var items = GetItems(source, g.Key);
 
 			foreach (var i in g.Select(x => x[^1]).OrderByDescending(x => x))
 			{
 				var sourceItem = items.ElementAtOrDefault(i);
-				if(sourceItem != null)
+				if (sourceItem != null)
 				{
 					sourceItems.Add(sourceItem);
 
@@ -345,13 +347,36 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 				targetIndex = target.Rows!.RowIndexToModelIndex(e.TargetRow.RowIndex);
 				//var selectedRowIndexes = di.Indexes.SelectMany(x => listSource.Rows.RowIndexToModelIndex(x));
 
+				var sourceList = listSource.Items as IList<IModEntry>;
+				var targetList = target.Items as IList<IModEntry>;
+
+				List<IModEntry> backupSource = [.. listSource.Items];
+				List<IModEntry> backupTarget = [.. target.Items];
+
+				// No need to mess with selected children if their parent container is included
+				var selectedIndexes = new List<IndexPath>(di.Indexes.DistinctBy(x => x.Count > 1 ? x[0] : x));
+
 				try
 				{
-					DragDropRows(listSource, target, di.Indexes, targetIndex, e.Position, e.Inner.DragEffects);
+					DragDropRows(listSource, target, selectedIndexes, targetIndex, e.Position, e.Inner.DragEffects);
 				}
 				catch(Exception ex)
 				{
-					DivinityApp.Log($"{ex}");
+					DivinityApp.Log($"Error executing drag/drop: {ex}");
+					if(sourceList != null && targetList != null)
+					{
+						try
+						{
+							AppServices.Commands.ShowAlert($"Lists restored to their previous states.\nError:{ex}", AlertType.Danger, 30, "Drag & Drop Error");
+
+							sourceList.Clear();
+							targetList.Clear();
+
+							sourceList.AddRange(backupSource);
+							targetList.AddRange(backupTarget);
+						}
+						catch(Exception) { }
+					}
 				}
 				e.Handled = true;
 			}
