@@ -1,9 +1,9 @@
 [submodule "NexusModsNET"]
 	path = External/NexusModsNET
 	url = https://github.com/LaughingLeader/NexusModsNET
-[submodule "lslib"]
-	path = External/lslib
-	url = https://github.com/LaughingLeader/lslib
+[submodule "LSLibNet"]
+	path = External/LSLibNet
+	url = https://github.com/LaughingLeader/LSLibNet
 [submodule "SukiUI"]
 	path = External/SukiUI
 	url = https://github.com/LaughingLeader/SukiUI
