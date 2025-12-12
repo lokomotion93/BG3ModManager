@@ -808,6 +808,10 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 				AppServices.Get<LogWriterService>()?.ToggleLogging(true);
 			}
 		}
+		if(!_settings.ManagerSettings.UpdateSettings.IsAssociatedWithNXM)
+		{
+			_settings.ManagerSettings.UpdateSettings.IsAssociatedWithNXM = AppServices.Reg.IsAssociateWithNXMProtocol(DivinityApp.GetExePath());
+		}
 		LoadAppConfig();
 
 #if DOS2

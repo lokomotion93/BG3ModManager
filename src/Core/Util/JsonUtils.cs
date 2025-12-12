@@ -1,4 +1,5 @@
 ﻿using LSLib.LS;
+using LSLib.LS.Pak;
 
 using ModManager.Json;
 using ModManager.Models.Mod;

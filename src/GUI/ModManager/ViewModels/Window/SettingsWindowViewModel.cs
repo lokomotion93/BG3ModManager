@@ -225,7 +225,7 @@ public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewMode
 			if (attr.HasFlag(System.IO.FileAttributes.Directory))
 			{
 				var exeName = "";
-				if (!RegistryHelper.IsGOG)
+				if (!AppServices.Reg.IsGOG)
 				{
 					exeName = _fs.Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.Steam.ExePath);
 				}
@@ -287,7 +287,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		{
 			if (result.Result && DivinityApp.GetExePath() is string exePath)
 			{
-				if (RegistryHelper.AssociateWithNXMProtocol(exePath))
+				if (AppServices.Reg.SetNXMProtocol(exePath))
 				{
 					UpdateSettings.IsAssociatedWithNXM = true;
 					AppServices.Commands.ShowAlert("nxm:// protocol assocation successfully set");

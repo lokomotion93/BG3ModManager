@@ -5,6 +5,7 @@ using DynamicData;
 using DynamicData.Binding;
 
 using LSLib.LS;
+using LSLib.LS.Pak;
 
 using ModManager.Helpers.Sorting;
 using ModManager.Models.Mod;

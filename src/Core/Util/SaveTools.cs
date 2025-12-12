@@ -1,4 +1,5 @@
 ﻿using LSLib.LS;
+using LSLib.LS.Pak;
 
 namespace ModManager.Util;
 

@@ -23,15 +23,13 @@ public class BackgroundCommandService : IBackgroundCommandService
 
 				if (token.IsCancellationRequested) return;
 
-				using (var sr = new StreamReader(_pipe, Encoding.UTF8))
+				using var sr = new StreamReader(_pipe, Encoding.UTF8);
+				var message = await sr.ReadToEndAsync(token);
+				if (!string.IsNullOrEmpty(message))
 				{
-					var message = await sr.ReadToEndAsync();
-					if (!string.IsNullOrEmpty(message))
+					if (message.IndexOf("nxm://") > -1)
 					{
-						if (message.IndexOf("nxm://") > -1)
-						{
-							Locator.Current.GetService<INexusModsService>()?.ProcessNXMLinkBackground(message);
-						}
+						Locator.Current.GetService<INexusModsService>()?.ProcessNXMLinkBackground(message);
 					}
 				}
 			}
@@ -52,7 +50,14 @@ public class BackgroundCommandService : IBackgroundCommandService
 		_pipe?.Dispose();
 		try
 		{
-			_pipe = new NamedPipeServerStream(_id, PipeDirection.In, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+			if(OperatingSystem.IsWindows())
+			{
+				_pipe = new NamedPipeServerStream(_id, PipeDirection.In, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+			}
+			else if(OperatingSystem.IsLinux())
+			{
+				_pipe = new NamedPipeServerStream(_id, PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+			}
 			_backgroundTask = RxApp.TaskpoolScheduler.ScheduleAsync(WaitForCommandAsync);
 		}
 		catch (IOException)

@@ -17,11 +17,6 @@ namespace Splat
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Services.ILocaleService));
             }
             {
-                global::System.Lazy<ModManager.Services.IRegistryService> lazy = new global::System.Lazy<ModManager.Services.IRegistryService>(() => new global::ModManager.Services.RegistryService());
-                Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.Services.IRegistryService>));
-                Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Services.IRegistryService));
-            }
-            {
                 global::System.Lazy<ModManager.Services.IDirectoryOpusService> lazy = new global::System.Lazy<ModManager.Services.IDirectoryOpusService>(() => new global::ModManager.Services.DirectoryOpusService((global::ModManager.Services.IRegistryService)resolver.GetService(typeof(global::ModManager.Services.IRegistryService)), (global::ModManager.Services.IFileSystemService)resolver.GetService(typeof(global::ModManager.Services.IFileSystemService))));
                 Splat.Locator.CurrentMutable.Register(() => lazy, typeof(global::System.Lazy<ModManager.Services.IDirectoryOpusService>));
                 Splat.Locator.CurrentMutable.Register(() => lazy.Value, typeof(global::ModManager.Services.IDirectoryOpusService));

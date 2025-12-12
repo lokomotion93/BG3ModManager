@@ -1,43 +1,14 @@
-﻿using Avalonia.Platform.Storage;
+﻿using Avalonia.Media;
 
 using DynamicData;
-using DynamicData.Binding;
 
 using Material.Icons;
 
 using ModManager.Models.Mod;
 using ModManager.Models.View;
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-
-using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.VisualTree;
-
-using DynamicData;
-using DynamicData.Binding;
-
-using ModManager.Controls.TreeDataGrid;
-using ModManager.Models;
-using ModManager.Models.App;
-using ModManager.Models.Mod;
-using ModManager.Models.Mod.Game;
-using ModManager.Models.Mod.Order;
-using ModManager.Models.Settings;
-using ModManager.Services;
-using ModManager.Util;
-using ModManager.ViewModels.Mods;
-using ModManager.Windows;
-
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Runtime.Serialization.DataContracts;
-using Avalonia.Media;
 using ModManager.Styling;
+
+using System.Collections.ObjectModel;
 
 
 namespace ModManager.ViewModels.Settings;

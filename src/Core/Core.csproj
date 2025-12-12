@@ -17,9 +17,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\External\NexusModsNET\NexusModsNET\NexusModsNET.csproj" />
 		<ProjectReference Include="..\..\External\modio.net\Modio\Modio.csproj" />
-		<ProjectReference Include="..\..\External\lslib\LSLibNative\LSLibNative.vcxproj" />
-		<ProjectReference Include="..\..\External\lslib\LSLib\LSLib.csproj" />
-		<ProjectReference Include="..\..\External\lslib\LSLibStats\LSLibStats.csproj" />
+		<ProjectReference Include="..\..\External\LSLibNet\src\LSLib\LSLib.csproj" />
+		<ProjectReference Include="..\..\External\LSLibNet\src\LSLibStats\LSLibStats.csproj" />
 		<ProjectReference Include="..\GUI\Locale\Locale.csproj" />
 	</ItemGroup>
 	

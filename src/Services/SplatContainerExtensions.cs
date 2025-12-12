@@ -28,13 +28,15 @@ public static class SplatContainerExtensions
 
 		SplatRegistrations.RegisterLazySingleton<ILocaleService, LocaleService>();
 
-		SplatRegistrations.RegisterLazySingleton<IRegistryService, RegistryService>();
-
 		SplatRegistrations.RegisterLazySingleton<IDirectoryOpusService, DirectoryOpusService>();
 
 		var settingsService = new SettingsService(fileSystemService);
 		SplatRegistrations.RegisterConstant<ISettingsService>(settingsService);
-		SplatRegistrations.RegisterConstant<IPathwaysService>(new PathwaysService(settingsService, fileSystemService));
+
+		var regService = new RegistryService(fileSystemService);
+		SplatRegistrations.RegisterConstant<IRegistryService>(regService);
+
+		SplatRegistrations.RegisterConstant<IPathwaysService>(new PathwaysService(settingsService, fileSystemService, regService));
 
 		SplatRegistrations.RegisterLazySingleton<HttpClient, AppHttpClient>();
 

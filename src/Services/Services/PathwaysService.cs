@@ -2,10 +2,11 @@
 using ModManager.Util;
 
 namespace ModManager.Services;
-public class PathwaysService(ISettingsService settingsService, IFileSystemService fs) : IPathwaysService
+public class PathwaysService(ISettingsService settingsService, IFileSystemService fs, IRegistryService reg) : IPathwaysService
 {
 	private readonly ISettingsService _settingsService = settingsService;
 	private readonly IFileSystemService _fs = fs;
+	private readonly IRegistryService _reg = reg;
 
 	public PathwayData Data { get; } = new();
 
@@ -87,8 +88,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 			if (string.IsNullOrWhiteSpace(currentGameDataPath) || !_fs.Directory.Exists(currentGameDataPath))
 			{
 				var defaultPathways = _settingsService.AppSettings.DefaultPathways;
-				var installPath = RegistryHelper.GetGameInstallPath(defaultPathways.Steam.RootFolderName,
-					defaultPathways.GOG.Registry_32, defaultPathways.GOG.Registry_64, defaultPathways.Steam.AppID);
+				var installPath = _reg.GetGameInstallPath(defaultPathways.Steam.RootFolderName!, defaultPathways.Steam.AppID!);
 
 				if (!string.IsNullOrEmpty(installPath) && _fs.Directory.Exists(installPath))
 				{
@@ -96,7 +96,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 					if (!_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
 					{
 						var exePath = "";
-						if (!RegistryHelper.IsGOG)
+						if (!_reg.IsGOG)
 						{
 							exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
 						}
@@ -130,7 +130,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 				if (!_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
 				{
 					var exePath = "";
-					if (!RegistryHelper.IsGOG)
+					if (!_reg.IsGOG)
 					{
 						exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
 					}

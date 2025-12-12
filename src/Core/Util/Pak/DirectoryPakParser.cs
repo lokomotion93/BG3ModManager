@@ -1,4 +1,5 @@
 ﻿using LSLib.LS;
+using LSLib.LS.Pak;
 
 using ModManager.Extensions;
 using ModManager.Models.App;

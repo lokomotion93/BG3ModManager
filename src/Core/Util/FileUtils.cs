@@ -1,4 +1,5 @@
 ﻿using LSLib.LS;
+using LSLib.LS.Pak;
 
 using ModManager.Extensions;
 using ModManager.Services;
@@ -449,37 +450,45 @@ public static class FileUtils
 		return _fs.Directory.EnumerateDirectories(path, "*", opts);
 	}
 
-	private static readonly FileSystemRights _readAccessRights = FileSystemRights.Read | FileSystemRights.Synchronize;
-
 	public static bool HasFileReadPermission(params string[] paths)
 	{
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+		foreach (var path in paths)
 		{
-			foreach (var path in paths)
+			try
 			{
-				try
+				if (path.IsExistingFile() && _fs.FileInfo.New(path) is IFileInfo info)
 				{
-					if (path.IsExistingFile() && _fs.FileInfo.New(path) is IFileInfo info)
+					if (OperatingSystem.IsWindows())
 					{
 						var security = info.GetAccessControl();
 						var usersSid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
 						var rules = security.GetAccessRules(true, true, usersSid.GetType()).OfType<FileSystemAccessRule>();
-						if (!rules.Any(r => r.FileSystemRights == _readAccessRights || r.FileSystemRights == FileSystemRights.FullControl))
+#pragma warning disable CA1416
+						if (!rules.Any(r => r.FileSystemRights.HasFlag(FileSystemRights.FullControl) || (r.FileSystemRights.HasFlag(FileSystemRights.Read) && r.FileSystemRights.HasFlag(FileSystemRights.Synchronize))))
 						{
 							DivinityApp.Log($"Lacking permission for file '{path}'");
 							return false;
 						}
+#pragma warning restore CA1416
+					}
+					else if (OperatingSystem.IsLinux())
+					{
+						if (info.UnixFileMode.HasFlag(UnixFileMode.UserRead) || !info.UnixFileMode.HasFlag(UnixFileMode.OtherRead) || info.UnixFileMode.HasFlag(UnixFileMode.GroupRead))
+						{
+							return true;
+						}
+						return false;
 					}
 				}
-				catch (UnauthorizedAccessException ex)
-				{
-					DivinityApp.Log($"Lacking permission for file '{path}':\n{ex}");
-					return false;
-				}
-				catch (Exception ex)
-				{
-					DivinityApp.Log($"Error checking permissions for '{path}':\n{ex}");
-				}
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				DivinityApp.Log($"Lacking permission for file '{path}':\n{ex}");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				DivinityApp.Log($"Error checking permissions for '{path}':\n{ex}");
 			}
 		}
 		return true;
@@ -487,33 +496,44 @@ public static class FileUtils
 
 	public static bool HasDirectoryReadPermission(params string[] paths)
 	{
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+		foreach (var path in paths)
 		{
-			foreach (var path in paths)
+			try
 			{
-				try
+				if (path.IsExistingDirectory() && _fs.DirectoryInfo.New(path) is IDirectoryInfo info)
 				{
-					if (path.IsExistingDirectory() && _fs.DirectoryInfo.New(path) is IDirectoryInfo info)
+					if (OperatingSystem.IsWindows())
 					{
+#pragma warning disable CA1416
 						var security = info.GetAccessControl();
 						var usersSid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
 						var rules = security.GetAccessRules(true, true, usersSid.GetType()).OfType<FileSystemAccessRule>();
-						if (!rules.Any(r => r.FileSystemRights == _readAccessRights || r.FileSystemRights == FileSystemRights.FullControl))
+						var hasReadPermission = !rules.Any(r => r.FileSystemRights.HasFlag(FileSystemRights.FullControl) || (r.FileSystemRights.HasFlag(FileSystemRights.Read) && r.FileSystemRights.HasFlag(FileSystemRights.Synchronize)));
+						if (hasReadPermission)
 						{
 							DivinityApp.Log($"Lacking permission for directory '{path}'. Rights({string.Join(";", rules.Select(x => x.FileSystemRights))})");
 							return false;
 						}
+#pragma warning restore CA1416
+					}
+					else if (OperatingSystem.IsLinux())
+					{
+						if (info.UnixFileMode.HasFlag(UnixFileMode.UserRead) || !info.UnixFileMode.HasFlag(UnixFileMode.OtherRead) || info.UnixFileMode.HasFlag(UnixFileMode.GroupRead))
+						{
+							return true;
+						}
+						return false;
 					}
 				}
-				catch (UnauthorizedAccessException ex)
-				{
-					DivinityApp.Log($"Lacking permission for directory '{path}':\n{ex}");
-					return false;
-				}
-				catch (Exception ex)
-				{
-					DivinityApp.Log($"Error checking permissions for '{path}':\n{ex}");
-				}
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				DivinityApp.Log($"Lacking permission for directory '{path}':\n{ex}");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				DivinityApp.Log($"Error checking permissions for '{path}':\n{ex}");
 			}
 		}
 		return true;

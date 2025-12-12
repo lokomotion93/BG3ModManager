@@ -28,6 +28,7 @@ public static class AppServices
 
 	public static IEnvironmentService Env => Get<IEnvironmentService>()!;
 	public static IFileSystemService FS => Get<IFileSystemService>()!;
+	public static IRegistryService Reg => Get<IRegistryService>()!;
 	public static IFileWatcherService FileWatcher => Get<IFileWatcherService>()!;
 	public static IDirectoryOpusService Dopus => Get<IDirectoryOpusService>()!;
 
