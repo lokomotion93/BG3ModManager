@@ -10,6 +10,45 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 
 	public PathwayData Data { get; } = new();
 
+	private string GetAppDataFolder()
+	{
+		if (OperatingSystem.IsWindows())
+		{
+			var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
+			if (string.IsNullOrEmpty(appDataFolder) || !_fs.Directory.Exists(appDataFolder))
+			{
+				var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
+				if (_fs.Directory.Exists(userFolder))
+				{
+					appDataFolder = _fs.Path.Join(userFolder, "AppData", "Local");
+				}
+			}
+			else
+			{
+				appDataFolder = _fs.Path.Join(appDataFolder);
+			}
+		}
+		else if (OperatingSystem.IsLinux())
+		{
+			var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("$XDG_DATA_HOME");
+			if (string.IsNullOrEmpty(appDataFolder) || !_fs.Directory.Exists(appDataFolder))
+			{
+				//$XDG_DATA_HOME/.local/share/Larian Studios
+				var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("$HOME");
+				if (home.IsExistingDirectory())
+				{
+					appDataFolder = _fs.Path.Join(home, ".local", "share");
+				}
+				else
+				{
+					appDataFolder = "~/.local/share";
+				}
+			}
+			return appDataFolder;
+		}
+		return string.Empty;
+	}
+
 	public string GetLarianStudiosAppDataFolder()
 	{
 		if (_fs.Directory.Exists(Data.AppDataGameFolder))
@@ -20,28 +59,12 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 				return parentDir.FullName;
 			}
 		}
-		string appDataFolder;
 		if (!string.IsNullOrEmpty(_settingsService.ManagerSettings.DocumentsFolderPathOverride))
 		{
-			appDataFolder = _settingsService.ManagerSettings.DocumentsFolderPathOverride;
+			return _settingsService.ManagerSettings.DocumentsFolderPathOverride;
 		}
-		else
-		{
-			appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
-			if (string.IsNullOrEmpty(appDataFolder) || !_fs.Directory.Exists(appDataFolder))
-			{
-				var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
-				if (_fs.Directory.Exists(userFolder))
-				{
-					appDataFolder = _fs.Path.Join(userFolder, "AppData", "Local", "Larian Studios");
-				}
-			}
-			else
-			{
-				appDataFolder = _fs.Path.Join(appDataFolder, "Larian Studios");
-			}
-		}
-		return appDataFolder;
+		var appDataFolder = GetAppDataFolder();
+		return _fs.Path.Join(appDataFolder, "Larian Studios");
 	}
 
 	//TODO Make this work for both DOS2 and BG3
@@ -49,7 +72,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 	{
 		try
 		{
-			var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
+			var localAppDataFolder = GetAppDataFolder();
 
 			if (string.IsNullOrWhiteSpace(_settingsService.AppSettings.DefaultPathways.DocumentsGameFolder))
 			{
@@ -67,22 +90,13 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 					localAppDataFolder = parentDir.FullName;
 				}
 			}
-			else if (!_fs.Directory.Exists(appDataGameFolder))
-			{
-				var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
-				if (_fs.Directory.Exists(userFolder))
-				{
-					localAppDataFolder = _fs.Path.Join(userFolder, "AppData", "Local");
-					appDataGameFolder = _fs.Path.Join(localAppDataFolder, _settingsService.AppSettings.DefaultPathways.DocumentsGameFolder);
-				}
-			}
 
 			Data.UpdateAppDataPathways(appDataGameFolder);
 
 			if (!_fs.Directory.Exists(localAppDataFolder))
 			{
 				Locator.Current.GetService<IGlobalCommandsService>()?.ShowAlert("Failed to find %LOCALAPPDATA% folder - This is weird", AlertType.Danger);
-				DivinityApp.Log($"Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.DoNotVerify) return a non-existent path?\nResult({Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.DoNotVerify)})");
+				DivinityApp.Log($"Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify) return a non-existent path?\nResult({Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)})");
 			}
 
 			if (string.IsNullOrWhiteSpace(currentGameDataPath) || !_fs.Directory.Exists(currentGameDataPath))
