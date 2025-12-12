@@ -15,7 +15,9 @@
 		<Copyright>Copyright © 2020</Copyright>
 		<Description>A mod manager for Baldur's Gate 3.</Description>
 
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -26,15 +28,20 @@
 		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
 
+	<!--<PropertyGroup Condition="$([System.OperatingSystem]::IsWindows())">
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$([System.OperatingSystem]::IsLinux())">
+		<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+	</PropertyGroup>-->
+
 	<PropertyGroup Condition="'$(Configuration)' == 'AoT'">
 		<PublishAot>true</PublishAot>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\ModManager\ModManager.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Avalonia.Desktop" />
 	</ItemGroup>
 
@@ -59,7 +66,8 @@
 		<Delete Files="@(DeleteDebug)" ContinueOnError="true" TreatErrorsAsWarnings="true">
 			<Output TaskParameter="DeletedFiles" ItemName="DeletedList" />
 		</Delete>
-		<RemoveDir Directories="$(OutputPath)de;$(OutputPath)en;$(OutputPath)es;$(OutputPath)fr;$(OutputPath)it;$(OutputPath)ja;$(OutputPath)ko;$(OutputPath)ru;$(OutputPath)zh-Hans;$(OutputPath)zh-Hant;$(OutputPath)cs-CZ;$(OutputPath)hu;$(OutputPath)ja-JP;$(OutputPath)pt-BR;$(OutputPath)ro;$(OutputPath)sv;$(OutputPath)ar;$(OutputPath)cs;$(OutputPath)da;$(OutputPath)lv;$(OutputPath)nl;$(OutputPath)pl;$(OutputPath)pt;$(OutputPath)sk;$(OutputPath)th;$(OutputPath)tr;$(OutputPath)zh;$(OutputPath)zh-TW;$(OutputPath)runtimes;$(OutputPath)_Logs;$(OutputPath)Data" ContinueOnError="true" />
+		<!--<RemoveDir Directories="$(OutputPath)de;$(OutputPath)en;$(OutputPath)es;$(OutputPath)fr;$(OutputPath)it;$(OutputPath)ja;$(OutputPath)ko;$(OutputPath)ru;$(OutputPath)zh-Hans;$(OutputPath)zh-Hant;$(OutputPath)cs-CZ;$(OutputPath)hu;$(OutputPath)ja-JP;$(OutputPath)pt-BR;$(OutputPath)ro;$(OutputPath)sv;$(OutputPath)ar;$(OutputPath)cs;$(OutputPath)da;$(OutputPath)lv;$(OutputPath)nl;$(OutputPath)pl;$(OutputPath)pt;$(OutputPath)sk;$(OutputPath)th;$(OutputPath)tr;$(OutputPath)zh;$(OutputPath)zh-TW;$(OutputPath)runtimes;$(OutputPath)_Logs;$(OutputPath)Data" ContinueOnError="true" />-->
+		<RemoveDir Directories="(OutputPath)_Logs;$(OutputPath)Data" ContinueOnError="true" />
 	</Target>
 
 	<Target Name="RunBuildRelease" AfterTargets="SetupLibFolder" Condition="'$(Configuration)' == 'Publish'">
@@ -71,5 +79,17 @@
 
 	<Target Name="CleanRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
 		<RemoveDir Directories="$(OutputPath)Data;$(OutputPath)_Logs" ContinueOnError="true" />
+	</Target>
+
+	<PropertyGroup>
+		<SrcDirectory>$([System.IO.Directory]::GetParent($(MSBuildThisFileDirectory)).Parent.Parent.FullName)</SrcDirectory>
+		<ToolboxOutputDir>$(SrcDirectory)\Toolbox\bin\$(Configuration)</ToolboxOutputDir>
+	</PropertyGroup>
+
+	<Target Name="CopyToolboxToOutput" AfterTargets="AfterBuild">
+		<ItemGroup>
+			<ToolboxFiles Include="$(ToolboxOutputDir)\*.*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(ToolboxFiles)" DestinationFolder="$(OutputPath)\Tools" ContinueOnError="true" />
 	</Target>
 </Project>
