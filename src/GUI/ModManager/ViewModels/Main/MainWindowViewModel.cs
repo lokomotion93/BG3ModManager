@@ -810,7 +810,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		}
 		if(!_settings.ManagerSettings.UpdateSettings.IsAssociatedWithNXM)
 		{
-			_settings.ManagerSettings.UpdateSettings.IsAssociatedWithNXM = AppServices.Reg.IsAssociateWithNXMProtocol(DivinityApp.GetExePath());
+			_settings.ManagerSettings.UpdateSettings.IsAssociatedWithNXM = AppServices.Reg.IsAssociatedWithNXMProtocol(DivinityApp.GetExePath());
 		}
 		LoadAppConfig();
 
