@@ -204,7 +204,7 @@ public partial class RegistryService : IRegistryService
 		}
 		else if (OperatingSystem.IsLinux())
 		{
-			_regHelper = new LinuxRegistryHelper();
+			_regHelper = new LinuxRegistryHelper(fs);
 			//TODO register protocol with x-scheme-handler / mime handler
 		}
 		else
