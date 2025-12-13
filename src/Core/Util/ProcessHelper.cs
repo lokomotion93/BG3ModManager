@@ -69,7 +69,11 @@ public static class ProcessHelper
 				}
 				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 				{
-					Process.Start("xdg-open", path);
+					var info = new ProcessStartInfo("xdg-open", $"\"{path}\"");
+					TrySetUseShellExecute(info);
+					if (workingDirectory != null) info.WorkingDirectory = workingDirectory;
+					Process.Start(info);
+					//Process.Start("xdg-open", path);
 					return true;
 				}
 				else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
