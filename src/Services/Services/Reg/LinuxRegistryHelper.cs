@@ -18,14 +18,36 @@ internal class LinuxRegistryHelper(IFileSystemService fs) : IRegHelper
 
 	public string? GetSteamInstallPath()
 	{
-		var homeFolder = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-		if(homeFolder.IsExistingDirectory())
+		var homeDataFolder = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+		var homeFolder = Environment.GetEnvironmentVariable("HOME");
+		DivinityApp.Log($"Checking for 'XDG_DATA_HOME' environment variable: '{homeDataFolder}'");
+		if(!homeDataFolder.IsExistingDirectory())
 		{
-			var steamPath = fs.Path.Join(homeFolder, "Steam");
+			if(homeFolder.IsExistingDirectory())
+			{
+				homeDataFolder = fs.Path.Join(homeFolder, ".local", "share");
+			}
+			else
+			{
+				DivinityApp.Log("'XDG_DATA_HOME' not set. Trying '~/.local/share'");
+				homeDataFolder = "~/.local/share";
+			}
+		}
+		if(homeDataFolder.IsExistingDirectory())
+		{
+			var steamPath = fs.Path.Join(homeDataFolder, "Steam");
 			if(steamPath.IsExistingDirectory())
 			{
 				return steamPath;
 			}
+			else
+			{
+				DivinityApp.Log($"Failed to find steam folder at '{steamPath}'");
+			}
+		}
+		else
+		{
+			DivinityApp.Log($"Failed to find home data folder at '{homeDataFolder}'");
 		}
 		return null;
 	}

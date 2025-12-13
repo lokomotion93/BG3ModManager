@@ -185,6 +185,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 					{
 						///steamapps/compatdata/1086940/pfx/
 						var steamInstall = _reg.GetSteamInstallPath();
+						DivinityApp.Log($"Looking for linux steam path at '{steamInstall}'.");
 						if (steamInstall.IsExistingDirectory())
 						{
 							var gameFolder = _fs.Path.Join(steamInstall, $"steamapps/compatdata/{defaultPathways.Steam.AppID ?? "1086940"}");
