@@ -214,7 +214,10 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 										var currentOrder = ViewModelLocator.ModOrder.ModOrderList.FirstOrDefault(x => x.IsModSettings);
 										if (currentOrder != null)
 										{
-											ViewModelLocator.ModOrder.SelectedModOrder.SetFrom(currentOrder);
+											if(ViewModelLocator.ModOrder.SelectedModOrder != null)
+											{
+												ViewModelLocator.ModOrder.SelectedModOrder.SetFrom(currentOrder);
+											}
 										}
 									}
 								}
