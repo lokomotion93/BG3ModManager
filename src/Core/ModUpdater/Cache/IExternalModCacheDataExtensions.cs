@@ -48,7 +48,7 @@ public static class IExternalModCacheDataExtensions
 			var contents = JsonSerializer.Serialize(handler.CacheData, handler.SerializerSettings);
 
 			var buffer = Encoding.UTF8.GetBytes(contents);
-			await using var stream = fs.FileStream.New(filePath, FileMode.CreateNew, FileAccess.Write, FileShare.Read, buffer.Length, FileOptions.Asynchronous);
+			await using var stream = fs.FileStream.New(filePath, FileMode.Create, FileAccess.Write, FileShare.Read, buffer.Length, FileOptions.Asynchronous);
 			await stream.WriteAsync(buffer, token);
 
 			return true;
