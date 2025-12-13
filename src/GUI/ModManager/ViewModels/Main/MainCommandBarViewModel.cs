@@ -311,7 +311,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		}
 	}
 
-	public MainCommandBarViewModel(MainWindowViewModel main, ModOrderViewModel modOrder, ModImportService modImporter, IFileSystemService fs, IDirectoryOpusService dopus, IInteractionsService interactions) : this()
+	public MainCommandBarViewModel(MainWindowViewModel main, ModOrderViewModel modOrder, ModImportService modImporter, IFileSystemService fs, IInteractionsService interactions) : this()
 	{
 		ModOrder = modOrder;
 		Settings = main.Settings;
@@ -734,7 +734,10 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		var whenProfileSavesPath = canExecuteModOrderCommands.CombineLatest(modOrder.WhenAnyValue(x => x.SelectedProfileSavesPath, Validators.IsExistingDirectory)).AllTrue();
 		var whenModOrderPath = canExecuteModOrderCommands.CombineLatest(modOrder.WhenAnyValue(x => x.SelectedModOrderFilePath, Validators.IsExistingFile)).AllTrue();
 
-		dopus.WhenAnyValue(x => x.IsEnabled).BindTo(this, x => x.HasDopus);
+		if (AppServices.Dopus?.IsEnabled == true)
+		{
+			HasDopus = true;
+		}
 		main.WhenAnyValue(x => x.DeveloperModeVisibility).BindTo(this, x => x.IsDeveloperMode);
 
 		OpenSelectedProfileFolderCommand = ReactiveCommand.Create<string?, bool>(mode => OpenInExplorerOrOther(mode, modOrder.SelectedProfilePath), whenProfilePath);
@@ -935,7 +938,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 public class DesignMainCommandBarViewModel : MainCommandBarViewModel
 {
-	public DesignMainCommandBarViewModel() : base(ViewModelLocator.Main, ModelGlobals.ModOrderViewModel, AppServices.ModImporter, AppServices.FS, AppServices.Dopus, AppServices.Interactions)
+	public DesignMainCommandBarViewModel() : base(ViewModelLocator.Main, ModelGlobals.ModOrderViewModel, AppServices.ModImporter, AppServices.FS, AppServices.Interactions)
 	{
 
 	}
