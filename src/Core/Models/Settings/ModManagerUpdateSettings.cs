@@ -1,4 +1,5 @@
 ﻿using ModManager.Locale;
+using ModManager.Services;
 using ModManager.Util;
 
 using System.ComponentModel;
@@ -66,8 +67,6 @@ public partial class ModManagerUpdateSettings : ReactiveObject
 	public ModManagerUpdateSettings()
 	{
 		this.SetToDefault();
-
-		IsAssociatedWithNXM = RegistryHelper.IsAssociatedWithNXMProtocol(DivinityApp.GetExePath());
 
 #if DEBUG
 		NexusModsAPIKey = Environment.GetEnvironmentVariable("NEXUSMODS_API_KEY", EnvironmentVariableTarget.User);
