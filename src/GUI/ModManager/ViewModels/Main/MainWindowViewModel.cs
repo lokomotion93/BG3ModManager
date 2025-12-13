@@ -1348,7 +1348,11 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 				SaveSettings();
 			}
 
-			AppServices.Get<WindowManagerService>().RestoreSavedWindowPosition();
+			if(OperatingSystem.IsWindows())
+			{
+				//TODO potentially add linux support, check for wayland vs xdg etc
+				AppServices.Get<WindowManagerService>().RestoreSavedWindowPosition();
+			}
 		}
 		catch(Exception ex)
 		{

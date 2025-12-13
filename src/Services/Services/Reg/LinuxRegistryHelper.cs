@@ -32,11 +32,11 @@ internal class LinuxRegistryHelper(IFileSystemService fs) : IRegHelper
 
 	public bool IsAssociatedWithNXMProtocol(string appExePath)
 	{
-		throw new NotImplementedException();
+		return false;
 	}
 
 	public bool SetNXMProtocol(string appExePath)
 	{
-		throw new NotImplementedException();
+		return false;
 	}
 }
