@@ -224,6 +224,11 @@ public class SettingsService : ReactiveObject, ISettingsService
 		{
 			return directory;
 		}
+		var pathways = Locator.Current.GetService<PathwaysService>();
+		if(pathways != null && pathways.Data.InstallPath.IsExistingDirectory())
+		{
+			return _fs.Path.Join(pathways.Data.InstallPath, "bin");
+		}
 		return null;
 	}
 
