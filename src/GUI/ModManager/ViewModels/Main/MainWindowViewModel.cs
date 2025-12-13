@@ -1340,13 +1340,20 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		//	Window.Activate();
 		//});
 
-		var loaded = await LoadSettings();
-		if(!loaded)
+		try
 		{
-			SaveSettings();
-		}
+			var loaded = await LoadSettings();
+			if (!loaded)
+			{
+				SaveSettings();
+			}
 
-		AppServices.Get<WindowManagerService>().RestoreSavedWindowPosition();
+			AppServices.Get<WindowManagerService>().RestoreSavedWindowPosition();
+		}
+		catch(Exception ex)
+		{
+			DivinityApp.Log($"Error initializing view: {ex}");
+		}
 
 		LoadInitial();
 	}
