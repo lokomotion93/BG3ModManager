@@ -56,6 +56,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Labs.Gif", "External\Avalonia.Labs\src\Avalonia.Labs.Gif\Avalonia.Labs.Gif.csproj", "{DFC148CD-3831-EA10-A8F6-8CFAE5D27F41}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LSLibNet", "LSLibNet", "{FBC50A41-684C-4B1E-BF52-6169F91577D2}"
+	ProjectSection(SolutionItems) = preProject
+		External\LSLibNet\Directory.build.props = External\LSLibNet\Directory.build.props
+		External\LSLibNet\Directory.Packages.props = External\LSLibNet\Directory.Packages.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSLib", "External\LSLibNet\src\LSLib\LSLib.csproj", "{2228AA37-AB04-869C-2760-D152017C7A4C}"
 EndProject
