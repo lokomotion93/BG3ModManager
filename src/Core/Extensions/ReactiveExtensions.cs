@@ -144,8 +144,24 @@ public static class ReactiveExtensions
 		return selector.Invoke(obj) ?? fallback;
 	}
 
+	private static TResult SafeInvokeOrFallback<TSource, TResult>(TSource? obj, Func<TSource, TResult> selector, TResult fallback)
+	{
+		try
+		{
+			if (obj == null) return fallback;
+			return selector.Invoke(obj) ?? fallback;
+		}
+		catch(Exception) { }
+		return fallback;
+	}
+
 	public static IObservable<TResult> ValueOrFallback<TSource, TResult>(this IObservable<TSource?> obs, [NotNull] Func<TSource, TResult> selector, TResult fallback)
 	{
 		return obs.Select(x => InvokeOrFallback(x, selector, fallback));
+	}
+
+	public static IObservable<TResult> SafeValueOrFallback<TSource, TResult>(this IObservable<TSource?> obs, [NotNull] Func<TSource, TResult> selector, TResult fallback)
+	{
+		return obs.Select(x => SafeInvokeOrFallback(x, selector, fallback));
 	}
 }
