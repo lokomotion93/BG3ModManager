@@ -340,3 +340,7 @@ ASALocalRun/
 .mfractor/
 *.zip
 *.psd
+
+src/Tests/tests.runsettings
+.vscode/launch.json
+.vscode/settings.json
