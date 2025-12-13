@@ -328,39 +328,70 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		DivinityApp.Log($"Looking for Script Extender at '{extenderUpdaterPath}'.");
 		if (_fs.File.Exists(extenderUpdaterPath))
 		{
-			DivinityApp.Log($"Checking {DivinityApp.EXTENDER_UPDATER_FILE} for Script Extender ASCII bytes.");
-			try
+			if (OperatingSystem.IsWindows())
 			{
-				var fvi = FileVersionInfo.GetVersionInfo(extenderUpdaterPath);
-				if (fvi != null && fvi.ProductName.IndexOf("Script Extender", StringComparison.OrdinalIgnoreCase) >= 0)
+				DivinityApp.Log($"Checking {DivinityApp.EXTENDER_UPDATER_FILE} for Script Extender ASCII bytes.");
+				try
 				{
-					_settings.ExtenderUpdaterSettings.UpdaterIsAvailable = true;
-					DivinityApp.Log($"Found the Extender at '{extenderUpdaterPath}'.");
-					var extenderInfo = FileVersionInfo.GetVersionInfo(extenderUpdaterPath);
-					if (extenderInfo.FileVersion.IsValid())
+					//FileVersionInfo.GetVersionInfo typically doesn't work on Linux/MacOS
+					var fvi = FileVersionInfo.GetVersionInfo(extenderUpdaterPath);
+					if (fvi?.ProductName?.Contains("Script Extender", StringComparison.OrdinalIgnoreCase) == true)
 					{
-						var version = extenderInfo.FileVersion.Split('.')[0];
-						if (int.TryParse(version, out var intVersion))
+						_settings.ExtenderUpdaterSettings.UpdaterIsAvailable = true;
+						DivinityApp.Log($"Found the Extender at '{extenderUpdaterPath}'.");
+						var extenderInfo = FileVersionInfo.GetVersionInfo(extenderUpdaterPath);
+						if (extenderInfo.FileVersion.IsValid())
 						{
-							_settings.ExtenderUpdaterSettings.UpdaterVersion = intVersion;
+							var version = extenderInfo.FileVersion.Split('.')[0];
+							if (int.TryParse(version, out var intVersion))
+							{
+								_settings.ExtenderUpdaterSettings.UpdaterVersion = intVersion;
+							}
 						}
 					}
+					else
+					{
+						DivinityApp.Log($"'{extenderUpdaterPath}' isn't the Script Extender?");
+					}
 				}
-				else
+				catch (System.IO.IOException)
 				{
-					DivinityApp.Log($"'{extenderUpdaterPath}' isn't the Script Extender?");
+					// This can happen if the game locks up the dll.
+					// Assume it's the extender for now.
+					_settings.ExtenderUpdaterSettings.UpdaterIsAvailable = true;
+					DivinityApp.Log($"WARNING: {extenderUpdaterPath} is locked by a process.");
+				}
+				catch (Exception ex)
+				{
+					DivinityApp.Log($"Error reading: '{extenderUpdaterPath}'\n{ex}");
 				}
 			}
-			catch (System.IO.IOException)
+			else
 			{
-				// This can happen if the game locks up the dll.
-				// Assume it's the extender for now.
-				_settings.ExtenderUpdaterSettings.UpdaterIsAvailable = true;
-				DivinityApp.Log($"WARNING: {extenderUpdaterPath} is locked by a process.");
-			}
-			catch (Exception ex)
-			{
-				DivinityApp.Log($"Error reading: '{extenderUpdaterPath}'\n{ex}");
+				try
+				{
+					using var stream = _fs.FileStream.New(extenderUpdaterPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+					byte[] bytes = StreamUtils.ReadToEnd(stream);
+					if (bytes.IndexOf(Encoding.ASCII.GetBytes("Script Extender")) > -1)
+					{
+						_settings.ExtenderUpdaterSettings.UpdaterIsAvailable = true;
+						DivinityApp.Log($"Found the Extender at '{extenderUpdaterPath}'.");
+					}
+					else
+					{
+						DivinityApp.Log($"Failed to find ASCII bytes in '{extenderUpdaterPath}'.");
+					}
+					
+				}
+				catch (System.IO.IOException ex)
+				{
+					_settings.ExtenderUpdaterSettings.UpdaterIsAvailable = true;
+					DivinityApp.Log($"WARNING: {extenderUpdaterPath} is locked by a process.");
+				}
+				catch (Exception ex)
+				{
+					DivinityApp.Log($"Error reading: '{extenderUpdaterPath}'\n{ex}");
+				}
 			}
 		}
 		else
