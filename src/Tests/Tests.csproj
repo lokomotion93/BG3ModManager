@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>ModManager.Tests</RootNamespace>
 		<AssemblyName>ModManager.Tests</AssemblyName>
@@ -15,14 +16,13 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="xunit" />
-		<PackageReference Include="xunit.runner.visualstudio" >
+		<PackageReference Include="xunit.runner.visualstudio">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\External\lslib\LSLib\LSLib.csproj" />
 	  <ProjectReference Include="..\..\External\NexusModsNET\NexusModsNET\NexusModsNET.csproj" />
 	  <ProjectReference Include="..\Services\Services.csproj" />
 	</ItemGroup>
