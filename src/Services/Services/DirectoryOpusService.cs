@@ -18,7 +18,10 @@ public partial class DirectoryOpusService : ReactiveObject, IDirectoryOpusServic
 		_reg = registryService;
 		_fs = fs;
 
-		IsEnabled = GetExecutablePath().IsExistingFile();
+		if (OperatingSystem.IsWindows())
+		{
+			IsEnabled = GetExecutablePath().IsExistingFile();
+		}
 	}
 
 	public bool IsInstalled(out string? exePath)
