@@ -2,8 +2,6 @@
 
 public interface IRegistryService
 {
-	bool IsGOG { get; }
-
 	string GetTruePath(string path);
 
 	/// <summary>
@@ -13,7 +11,9 @@ public interface IRegistryService
 	/// <returns></returns>
 	string? GetApplicationInstallPath(string displayName);
 
-	string GetGameInstallPath(string steamGameInstallPath, string steamAppId);
+	string? GetSteamInstallPath();
+	string? GetGoGInstallPath();
+	string? GetSteamGameInstallPath(string gameFolder, string steamAppId);
 	bool IsAssociatedWithNXMProtocol(string exePath);
 	bool SetNXMProtocol(string exePath);
 }

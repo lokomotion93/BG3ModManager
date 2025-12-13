@@ -20,22 +20,7 @@ public partial class RegistryService : IRegistryService
 
 	private readonly IRegHelper? _regHelper;
 
-	private string _lastGamePath = "";
-	private bool _isGOG = false;
-	public bool IsGOG => _isGOG;
-
-	private string? _lastSteamInstallPath;
-	private string? LastSteamInstallPath
-	{
-		get
-		{
-			if (_lastSteamInstallPath == "" || !_fs.Directory.Exists(_lastSteamInstallPath))
-			{
-				_lastSteamInstallPath = _regHelper?.GetSteamInstallPath();
-			}
-			return _lastSteamInstallPath;
-		}
-	}
+	public string? GetSteamInstallPath() => _regHelper?.GetSteamInstallPath();
 
 	public string GetTruePath(string path)
 	{
@@ -65,16 +50,13 @@ public partial class RegistryService : IRegistryService
 		return path;
 	}
 
-	public string GetGameInstallPath(string steamGameInstallPath, string steamAppId)
+	public string? GetGoGInstallPath() => _regHelper?.GetGOGInstallPath();
+
+	public string? GetSteamGameInstallPath(string gameFolder, string steamAppId)
 	{
 		try
 		{
-			if (_lastGamePath.IsExistingDirectory())
-			{
-				return _lastGamePath;
-			}
-
-			var steamInstallPath = LastSteamInstallPath;
+			var steamInstallPath = GetSteamInstallPath();
 			if (steamInstallPath.IsExistingDirectory())
 			{
 				var appManifest = _fs.Path.Join(steamInstallPath, "steamapps", $"appmanifest_{steamAppId}.acf");
@@ -90,7 +72,7 @@ public partial class RegistryService : IRegistryService
 								var installDir = prop.Value?.Value<string>();
 								if (installDir.IsValid())
 								{
-									steamGameInstallPath = installDir;
+									gameFolder = installDir;
 									DivinityApp.Log($"Using appmanifest installDir '{installDir}'");
 								}
 								break;
@@ -99,14 +81,12 @@ public partial class RegistryService : IRegistryService
 					}
 				}
 
-				var folder = _fs.Path.Join(steamInstallPath, "steamapps", "common", steamGameInstallPath);
+				var folder = _fs.Path.Join(steamInstallPath, "steamapps", "common", gameFolder);
 				DivinityApp.Log($"Looking for game at '{folder}'.");
 				if (_fs.Directory.Exists(folder))
 				{
 					DivinityApp.Log($"Found game at '{folder}'.");
-					_lastGamePath = folder;
-					_isGOG = false;
-					return _lastGamePath;
+					return folder;
 				}
 				else
 				{
@@ -142,13 +122,11 @@ public partial class RegistryService : IRegistryService
 
 						foreach (var folderPath in libraryFolders)
 						{
-							var checkFolder = _fs.Path.Join(folderPath, "steamapps", "common", steamGameInstallPath);
+							var checkFolder = _fs.Path.Join(folderPath, "steamapps", "common", gameFolder);
 							if (checkFolder.IsExistingDirectory())
 							{
 								DivinityApp.Log($"Found game at '{checkFolder}'.");
-								_lastGamePath = checkFolder;
-								_isGOG = false;
-								return _lastGamePath;
+								return checkFolder;
 							}
 						}
 					}
@@ -158,22 +136,12 @@ public partial class RegistryService : IRegistryService
 					}
 				}
 			}
-
-			var gogGamePath = _regHelper?.GetGOGInstallPath();
-			if (gogGamePath.IsExistingDirectory())
-			{
-				_isGOG = true;
-				_lastGamePath = gogGamePath;
-				DivinityApp.Log($"Found game (GoG) install at '{_lastGamePath}'.");
-				return _lastGamePath;
-			}
 		}
 		catch (Exception ex)
 		{
 			DivinityApp.Log($"[*ERROR*] Error finding game path: {ex}");
 		}
-
-		return "";
+		return null;
 	}
 
 	/// <inheritdoc />

@@ -74,12 +74,15 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 		{
 			var localAppDataFolder = GetAppDataFolder();
 
-			if (string.IsNullOrWhiteSpace(_settingsService.AppSettings.DefaultPathways.DocumentsGameFolder))
+			var defaultPathways = _settingsService.AppSettings.DefaultPathways;
+			var settings = _settingsService.ManagerSettings;
+
+			if (string.IsNullOrWhiteSpace(defaultPathways.DocumentsGameFolder))
 			{
-				_settingsService.AppSettings.DefaultPathways.DocumentsGameFolder = "Larian Studios\\Baldur's Gate 3";
+				defaultPathways.DocumentsGameFolder = "Larian Studios\\Baldur's Gate 3";
 			}
 
-			var appDataGameFolder = _fs.Path.Join(localAppDataFolder, _settingsService.AppSettings.DefaultPathways.DocumentsGameFolder);
+			var appDataGameFolder = _fs.Path.Join(localAppDataFolder, defaultPathways.DocumentsGameFolder);
 
 			if (!string.IsNullOrEmpty(gameDataFolderOverride) && _fs.Directory.Exists(gameDataFolderOverride))
 			{
@@ -101,69 +104,116 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 
 			if (string.IsNullOrWhiteSpace(currentGameDataPath) || !_fs.Directory.Exists(currentGameDataPath))
 			{
-				var defaultPathways = _settingsService.AppSettings.DefaultPathways;
-				var installPath = _reg.GetGameInstallPath(defaultPathways.Steam.RootFolderName!, defaultPathways.Steam.AppID!);
-
-				if (!string.IsNullOrEmpty(installPath) && _fs.Directory.Exists(installPath))
+				if (OperatingSystem.IsWindows())
 				{
-					Data.InstallPath = installPath;
-					if (!_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
+					var installPath = _reg.GetSteamGameInstallPath(defaultPathways.Steam.RootFolderName!, defaultPathways.Steam.AppID!);
+
+					if (installPath.IsExistingDirectory())
 					{
-						var exePath = "";
-						if (!_reg.IsGOG)
+						Data.InstallPath = installPath;
+						if (!_fs.File.Exists(settings.GameExecutablePath))
 						{
-							exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
+							var exePath = _fs.Path.Join(installPath, defaultPathways.Steam.ExePath);
+							if (_fs.File.Exists(exePath))
+							{
+								settings.GameExecutablePath = exePath.Replace("\\", "/");
+								DivinityApp.Log($"Exe path set to '{exePath}'.");
+							}
+						}
+
+						var gameDataPath = _fs.Path.Join(installPath, defaultPathways.GameDataFolder).Replace("\\", "/");
+						if (_fs.Directory.Exists(gameDataPath))
+						{
+							DivinityApp.Log($"Set game data path to '{gameDataPath}'.");
+							settings.GameDataPath = gameDataPath;
 						}
 						else
 						{
-							exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GOG.ExePath);
+							DivinityApp.Log($"Failed to find game data path at '{gameDataPath}'.");
 						}
-						if (_fs.File.Exists(exePath))
-						{
-							_settingsService.ManagerSettings.GameExecutablePath = exePath.Replace("\\", "/");
-							DivinityApp.Log($"Exe path set to '{exePath}'.");
-						}
-					}
-
-					var gameDataPath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GameDataFolder).Replace("\\", "/");
-					if (_fs.Directory.Exists(gameDataPath))
-					{
-						DivinityApp.Log($"Set game data path to '{gameDataPath}'.");
-						_settingsService.ManagerSettings.GameDataPath = gameDataPath;
 					}
 					else
 					{
-						DivinityApp.Log($"Failed to find game data path at '{gameDataPath}'.");
+						var gogFolder = _reg.GetGoGInstallPath();
+						if (gogFolder.IsExistingDirectory())
+						{
+							var gogGameFolder = _fs.Path.Join(gogFolder, defaultPathways.GOG.RootFolderName);
+							if (gogGameFolder.IsExistingDirectory())
+							{
+								var gogExePath = _fs.Path.Join(gogGameFolder, defaultPathways.GOG.ExePath);
+								if (gogExePath.IsExistingFile())
+								{
+									settings.GameExecutablePath = gogExePath.Replace("\\", "/");
+									DivinityApp.Log($"Exe path set to GoG install at '{gogExePath}'.");
+
+									var gameDataPath = _fs.Path.Join(gogGameFolder, defaultPathways.GameDataFolder).Replace("\\", "/");
+									if (_fs.Directory.Exists(gameDataPath))
+									{
+										DivinityApp.Log($"Set game data path to '{gameDataPath}'.");
+										settings.GameDataPath = gameDataPath;
+									}
+									else
+									{
+										DivinityApp.Log($"Failed to find game data path at '{gameDataPath}'.");
+									}
+								}
+							}
+						}
+					}
+				}
+				else if(OperatingSystem.IsLinux())
+				{
+					///steamapps/compatdata/1086940/pfx/
+					var steamInstall = _reg.GetSteamInstallPath();
+					if(steamInstall.IsExistingDirectory())
+					{
+						var gameFolder = _fs.Path.Join(steamInstall, $"steamapps/compatdata/{defaultPathways.Steam.AppID ?? "1086940"}");
+						if(gameFolder.IsExistingDirectory())
+						{
+							Data.InstallPath = gameFolder;
+							if (!_fs.File.Exists(settings.GameExecutablePath))
+							{
+								var exePath = _fs.Path.Join(gameFolder, defaultPathways.Steam.ExePath);
+								if (_fs.File.Exists(exePath))
+								{
+									settings.GameExecutablePath = exePath.Replace("\\", "/");
+									DivinityApp.Log($"Exe path set to '{exePath}'.");
+								}
+							}
+
+							var gameDataPath = _fs.Path.Join(gameFolder, defaultPathways.GameDataFolder).Replace("\\", "/");
+							if (_fs.Directory.Exists(gameDataPath))
+							{
+								DivinityApp.Log($"Set game data path to '{gameDataPath}'.");
+								settings.GameDataPath = gameDataPath;
+							}
+							else
+							{
+								DivinityApp.Log($"Failed to find game data path at '{gameDataPath}'.");
+							}
+						}
 					}
 				}
 			}
 			else
 			{
-				var installPath = _fs.Path.GetFullPath(_fs.Path.Join(_settingsService.ManagerSettings.GameDataPath, @"..\..\"));
+				var installPath = _fs.Path.GetFullPath(_fs.Path.Join(settings.GameDataPath, @"..\..\"));
 				Data.InstallPath = installPath;
-				if (!_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
+				if (!_fs.File.Exists(settings.GameExecutablePath))
 				{
-					var exePath = "";
-					if (!_reg.IsGOG)
-					{
-						exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.Steam.ExePath);
-					}
-					else
-					{
-						exePath = _fs.Path.Join(installPath, _settingsService.AppSettings.DefaultPathways.GOG.ExePath);
-					}
+					var exePath = _fs.Path.Join(installPath, defaultPathways.Steam.ExePath);
 					if (_fs.File.Exists(exePath))
 					{
-						_settingsService.ManagerSettings.GameExecutablePath = exePath.Replace("\\", "/");
+						settings.GameExecutablePath = exePath.Replace("\\", "/");
 						DivinityApp.Log($"Exe path set to '{exePath}'.");
 					}
 				}
 			}
 
 
-			if (!_fs.Directory.Exists(_settingsService.ManagerSettings.GameDataPath) || !_fs.File.Exists(_settingsService.ManagerSettings.GameExecutablePath))
+			if (!_fs.Directory.Exists(settings.GameDataPath) || !_fs.File.Exists(settings.GameExecutablePath))
 			{
-				DivinityApp.Log($"Failed to find game data path at '{_settingsService.ManagerSettings.GameDataPath}', and/or executable at '{_settingsService.ManagerSettings.GameExecutablePath}'");
+				DivinityApp.Log($"Failed to find game data path at '{settings.GameDataPath}', and/or executable at '{settings.GameExecutablePath}'");
 				return false;
 			}
 
