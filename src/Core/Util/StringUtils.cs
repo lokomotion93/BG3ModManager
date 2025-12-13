@@ -55,9 +55,16 @@ public static class StringUtils
 
 	static StringUtils()
 	{
-		MaybeAddReplacement("%LOCALAPPDATA%", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-		MaybeAddReplacement("%APPDATA%", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-		MaybeAddReplacement("%USERPROFILE%", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+		if (OperatingSystem.IsWindows())
+		{
+			MaybeAddReplacement("%LOCALAPPDATA%", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+			MaybeAddReplacement("%APPDATA%", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+			MaybeAddReplacement("%USERPROFILE%", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+		}
+		else if (OperatingSystem.IsLinux())
+		{
+			MaybeAddReplacement("$HOME", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+		}
 	}
 
 	public static string? GetSpecialPathway(string symbol)

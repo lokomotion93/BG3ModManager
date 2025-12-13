@@ -38,6 +38,7 @@ internal class LinuxRegistryHelper(IFileSystemService fs) : IRegHelper
 			var steamPath = fs.Path.Join(homeDataFolder, "Steam");
 			if(steamPath.IsExistingDirectory())
 			{
+				DivinityApp.Log($"Found steam at {steamPath}");
 				return steamPath;
 			}
 			else
