@@ -16,14 +16,14 @@ internal class LinuxRegistryHelper(IFileSystemService fs) : IRegHelper
 		return null;
 	}
 
-	public string? GetSteamInstallPath()
+	public string? GetAppDataPath()
 	{
 		var homeDataFolder = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
 		var homeFolder = Environment.GetEnvironmentVariable("HOME");
 		DivinityApp.Log($"Checking for 'XDG_DATA_HOME' environment variable: '{homeDataFolder}'");
-		if(!homeDataFolder.IsExistingDirectory())
+		if (!homeDataFolder.IsExistingDirectory())
 		{
-			if(homeFolder.IsExistingDirectory())
+			if (homeFolder.IsExistingDirectory())
 			{
 				homeDataFolder = fs.Path.Join(homeFolder, ".local", "share");
 			}
@@ -33,6 +33,12 @@ internal class LinuxRegistryHelper(IFileSystemService fs) : IRegHelper
 				homeDataFolder = "~/.local/share";
 			}
 		}
+		return homeDataFolder;
+	}
+
+	public string? GetSteamInstallPath()
+	{
+		var homeDataFolder = GetAppDataPath();
 		if(homeDataFolder.IsExistingDirectory())
 		{
 			var steamPath = fs.Path.Join(homeDataFolder, "Steam");

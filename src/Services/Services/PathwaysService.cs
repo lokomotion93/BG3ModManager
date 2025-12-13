@@ -10,45 +10,6 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 
 	public PathwayData Data { get; } = new();
 
-	private string GetAppDataFolder()
-	{
-		if (OperatingSystem.IsWindows())
-		{
-			var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
-			if (string.IsNullOrEmpty(appDataFolder) || !_fs.Directory.Exists(appDataFolder))
-			{
-				var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
-				if (_fs.Directory.Exists(userFolder))
-				{
-					appDataFolder = _fs.Path.Join(userFolder, "AppData", "Local");
-				}
-			}
-			else
-			{
-				appDataFolder = _fs.Path.Join(appDataFolder);
-			}
-		}
-		else if (OperatingSystem.IsLinux())
-		{
-			var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-			if (string.IsNullOrEmpty(appDataFolder) || !_fs.Directory.Exists(appDataFolder))
-			{
-				//$XDG_DATA_HOME/.local/share/Larian Studios
-				var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("HOME");
-				if (home.IsExistingDirectory())
-				{
-					appDataFolder = _fs.Path.Join(home, ".local", "share");
-				}
-				else
-				{
-					appDataFolder = "~/.local/share";
-				}
-			}
-			return appDataFolder;
-		}
-		return string.Empty;
-	}
-
 	public string GetLarianStudiosAppDataFolder()
 	{
 		if (_fs.Directory.Exists(Data.AppDataGameFolder))
@@ -63,7 +24,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 		{
 			return _settingsService.ManagerSettings.DocumentsFolderPathOverride;
 		}
-		var appDataFolder = GetAppDataFolder();
+		var appDataFolder = _reg.GetAppDataPath();
 		return _fs.Path.Join(appDataFolder, "Larian Studios");
 	}
 
@@ -72,7 +33,8 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 	{
 		try
 		{
-			var localAppDataFolder = GetAppDataFolder();
+			var localAppDataFolder = _reg.GetAppDataPath();
+			DivinityApp.Log($"Looking for local app data folder at '{localAppDataFolder}'");
 
 			var defaultPathways = _settingsService.AppSettings.DefaultPathways;
 			var settings = _settingsService.ManagerSettings;
@@ -92,6 +54,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 				{
 					localAppDataFolder = parentDir.FullName;
 				}
+				DivinityApp.Log($"Using override folder for appDataGameFolder: '{gameDataFolderOverride}'");
 			}
 
 			Data.UpdateAppDataPathways(appDataGameFolder);

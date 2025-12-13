@@ -2,6 +2,7 @@
 
 internal interface IRegHelper
 {
+	string? GetAppDataPath();
 	string? GetSteamInstallPath();
 	string? GetGOGInstallPath();
 	string? GetApplicationInstallPath(string displayName);

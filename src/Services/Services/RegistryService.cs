@@ -144,6 +144,8 @@ public partial class RegistryService : IRegistryService
 		return null;
 	}
 
+	public string? GetAppDataPath() => _regHelper?.GetAppDataPath();
+
 	/// <inheritdoc />
 	public string? GetApplicationInstallPath(string displayName)
 	{
@@ -168,7 +170,7 @@ public partial class RegistryService : IRegistryService
 
 		if (OperatingSystem.IsWindows())
 		{
-			_regHelper = new WindowsRegistryHelper();
+			_regHelper = new WindowsRegistryHelper(fs);
 		}
 		else if (OperatingSystem.IsLinux())
 		{

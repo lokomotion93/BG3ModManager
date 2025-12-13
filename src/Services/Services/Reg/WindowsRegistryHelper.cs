@@ -3,7 +3,7 @@
 namespace ModManager.Services.Reg;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "This is only used if OperatingSystem.Windows is true.")]
-internal class WindowsRegistryHelper : IRegHelper
+internal class WindowsRegistryHelper(IFileSystemService fs) : IRegHelper
 {
 	const string REG_Steam_32 = @"SOFTWARE\Valve\Steam";
 	const string REG_Steam_64 = @"SOFTWARE\Wow6432Node\Valve\Steam";
@@ -14,7 +14,7 @@ internal class WindowsRegistryHelper : IRegHelper
 
 	const string REG_NXM_PROTOCOL_COMMAND = @"nxm\shell\open\command";
 
-	public object? GetKey(RegistryKey reg, string subKey, string keyValue)
+	private static object? GetKey(RegistryKey reg, string subKey, string keyValue)
 	{
 		try
 		{
@@ -29,6 +29,20 @@ internal class WindowsRegistryHelper : IRegHelper
 			DivinityApp.Log($"Error reading registry subKey ({subKey}): {e}");
 		}
 		return null;
+	}
+
+	public string? GetAppDataPath()
+	{
+		var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
+		if (!localAppData.IsExistingDirectory())
+		{
+			var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
+			if (userFolder.IsExistingDirectory())
+			{
+				localAppData = fs.Path.Join(userFolder, "AppData", "Local");
+			}	
+		}
+		return localAppData;
 	}
 
 	public string? GetApplicationInstallPath(string displayName)

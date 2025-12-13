@@ -53,14 +53,18 @@ public partial class PathwayData : ReactiveObject
 	public void UpdateAppDataPathways(string? appDataGame = null)
 	{
 		AppDataGameFolder = appDataGame;
-		var fs = Locator.Current.GetService<IFileSystemService>();
-		if (fs != null && appDataGame.IsValid())
+		if (appDataGame.IsValid())
 		{
-			AppDataModsPath = fs.Path.Join(appDataGame, "Mods");
-			AppDataInactiveModsPath = fs.Path.Join(appDataGame, "Mods_Disabled");
-			AppDataProfilesPath = fs.Path.Join(appDataGame, "PlayerProfiles");
-			AppDataModCrashSanityCheck = fs.Path.Join(appDataGame, "ModCrashSanityCheck");
-			AppDataScriptExtenderPath = fs.Path.Join(appDataGame, "Script Extender");
+			DivinityApp.Log($"AppDataGameFolder set to '{AppDataGameFolder}'");
+			AppDataModsPath = _fs.Path.Join(appDataGame, "Mods");
+			AppDataInactiveModsPath = _fs.Path.Join(appDataGame, "Mods_Disabled");
+			AppDataProfilesPath = _fs.Path.Join(appDataGame, "PlayerProfiles");
+			AppDataModCrashSanityCheck = _fs.Path.Join(appDataGame, "ModCrashSanityCheck");
+			AppDataScriptExtenderPath = _fs.Path.Join(appDataGame, "Script Extender");
+		}
+		else
+		{
+			DivinityApp.Log($"AppDataGameFolder does not exist '{AppDataGameFolder}'");
 		}
 	}
 
