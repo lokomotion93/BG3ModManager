@@ -41,7 +41,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 
 			if (string.IsNullOrWhiteSpace(defaultPathways.DocumentsGameFolder))
 			{
-				defaultPathways.DocumentsGameFolder = "Larian Studios\\Baldur's Gate 3";
+				defaultPathways.DocumentsGameFolder = "Larian Studios/Baldur's Gate 3";
 			}
 
 			var appDataGameFolder = _fs.Path.Join(localAppDataFolder, defaultPathways.DocumentsGameFolder);
@@ -57,6 +57,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 				DivinityApp.Log($"Using override folder for appDataGameFolder: '{gameDataFolderOverride}'");
 			}
 
+			appDataGameFolder = appDataGameFolder.Replace("\\", "/");
 			Data.UpdateAppDataPathways(appDataGameFolder);
 
 			if (!_fs.Directory.Exists(localAppDataFolder))
@@ -189,7 +190,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 			}
 			else
 			{
-				var installPath = _fs.Path.GetFullPath(_fs.Path.Join(settings.GameDataPath, @"..\..\"));
+				var installPath = _fs.DirectoryInfo.New(settings.GameDataPath).Parent.Parent.FullName.Replace("\\", "/");
 				Data.InstallPath = installPath;
 				DivinityApp.Log($"Set install path at '{installPath}'.");
 			}
