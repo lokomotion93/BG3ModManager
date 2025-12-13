@@ -30,11 +30,11 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 		}
 		else if (OperatingSystem.IsLinux())
 		{
-			var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("$XDG_DATA_HOME");
+			var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("XDG_DATA_HOME");
 			if (string.IsNullOrEmpty(appDataFolder) || !_fs.Directory.Exists(appDataFolder))
 			{
 				//$XDG_DATA_HOME/.local/share/Larian Studios
-				var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("$HOME");
+				var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify) ?? Environment.GetEnvironmentVariable("HOME");
 				if (home.IsExistingDirectory())
 				{
 					appDataFolder = _fs.Path.Join(home, ".local", "share");

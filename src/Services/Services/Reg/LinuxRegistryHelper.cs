@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModManager.Services.Reg;
 
-internal class LinuxRegistryHelper : IRegHelper
+internal class LinuxRegistryHelper(IFileSystemService fs) : IRegHelper
 {
 	public string? GetApplicationInstallPath(string displayName)
 	{
@@ -13,12 +13,21 @@ internal class LinuxRegistryHelper : IRegHelper
 
 	public string? GetGOGInstallPath()
 	{
-		throw new NotImplementedException();
+		return null;
 	}
 
 	public string? GetSteamInstallPath()
 	{
-		throw new NotImplementedException();
+		var homeFolder = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+		if(homeFolder.IsExistingDirectory())
+		{
+			var steamPath = fs.Path.Join(homeFolder, "Steam");
+			if(steamPath.IsExistingDirectory())
+			{
+				return steamPath;
+			}
+		}
+		return null;
 	}
 
 	public bool IsAssociatedWithNXMProtocol(string appExePath)

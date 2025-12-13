@@ -33,11 +33,6 @@ internal class WindowsRegistryHelper : IRegHelper
 
 	public string? GetApplicationInstallPath(string displayName)
 	{
-		if (!OperatingSystem.IsWindows())
-		{
-			return null;
-		}
-
 		using var rk = Registry.LocalMachine.OpenSubKey(UninstallKey);
 		if (rk != null)
 		{
@@ -57,7 +52,7 @@ internal class WindowsRegistryHelper : IRegHelper
 		return null;
 	}
 
-	public string GetSteamInstallPath()
+	public string? GetSteamInstallPath()
 	{
 		var reg = Registry.LocalMachine;
 		var installPath = GetKey(reg, REG_Steam_64, "InstallPath");
@@ -69,10 +64,10 @@ internal class WindowsRegistryHelper : IRegHelper
 		{
 			return (string)installPath;
 		}
-		return "";
+		return null;
 	}
 
-	public string GetGOGInstallPath()
+	public string? GetGOGInstallPath()
 	{
 		var reg = Registry.LocalMachine;
 		var installPath = GetKey(reg, REG_GOG_32, "path");
@@ -84,7 +79,7 @@ internal class WindowsRegistryHelper : IRegHelper
 		{
 			return (string)installPath;
 		}
-		return "";
+		return null;
 	}
 
 	public bool IsAssociatedWithNXMProtocol(string appExePath)
