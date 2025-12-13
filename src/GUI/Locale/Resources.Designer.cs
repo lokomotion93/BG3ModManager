@@ -1179,15 +1179,6 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extract Active Adventure Mod To....
-        /// </summary>
-        public static string Keybinding_ExtractSelectedAdventure {
-            get {
-                return ResourceManager.GetString("Keybinding_ExtractSelectedAdventure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Extract Selected Inactive Mods To....
         /// </summary>
         public static string Keybinding_ExtractSelectedInactiveMods {
@@ -2188,7 +2179,7 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Settings.
+        ///   Looks up a localized string similar to Container Settings.
         /// </summary>
         public static string ModContainerSettingsView_Title {
             get {

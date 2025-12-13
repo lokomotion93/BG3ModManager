@@ -875,9 +875,6 @@ You have version {2} installed.</value>
 	<data name="Keybinding_ExtractSelectedInactiveMods" xml:space="preserve">
 		<value>Extract Selected Inactive Mods To...</value>
 	</data>
-	<data name="Keybinding_ExtractSelectedAdventure" xml:space="preserve">
-		<value>Extract Active Adventure Mod To...</value>
-	</data>
 	<data name="Keybinding_SpeakActiveModOrder" xml:space="preserve">
 		<value>Speak Active Order</value>
 	</data>
