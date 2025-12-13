@@ -221,23 +221,18 @@ public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewMode
 	{
 		try
 		{
-			var attr = _fs.File.GetAttributes(Settings.GameExecutablePath);
-			if (attr.HasFlag(System.IO.FileAttributes.Directory))
+			if(Settings.GameExecutablePath.IsValid())
 			{
-				var exeName = "";
-				if (!AppServices.Reg.IsGOG)
+				var attr = _fs.File.GetAttributes(Settings.GameExecutablePath);
+				if (attr.HasFlag(System.IO.FileAttributes.Directory))
 				{
-					exeName = _fs.Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.Steam.ExePath);
-				}
-				else
-				{
-					exeName = _fs.Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.GOG.ExePath);
-				}
+					var exeName = _fs.Path.GetFileName(AppServices.Settings.AppSettings.DefaultPathways.Steam.ExePath);
 
-				var exe = _fs.Path.Join(Settings.GameExecutablePath, exeName);
-				if (_fs.File.Exists(exe))
-				{
-					Settings.GameExecutablePath = exe;
+					var exe = _fs.Path.Join(Settings.GameExecutablePath, exeName);
+					if (_fs.File.Exists(exe))
+					{
+						Settings.GameExecutablePath = exe;
+					}
 				}
 			}
 		}
