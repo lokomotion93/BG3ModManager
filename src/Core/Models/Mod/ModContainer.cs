@@ -78,7 +78,7 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 		{
 			return _modDataType.GetProperty(propertyName)?.GetValue(modEntry.Data)?.Equals(value) == true;
 		}
-		else if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer && modContainer.Children != null)
+		else if (entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer && modContainer.Children.Count > 0)
 		{
 			return modContainer.Children.All(x => PropertyMatches(x, propertyName, value));
 		}
@@ -232,13 +232,14 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 			.Select(_ => GetContainerToolTipTitleText())
 			.ToUIProperty(this, x => x.ContainerToolTipTitleText);
 
-		var modsConn = _children.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(25));
+		var modsConn = _children.ToObservableChangeSet().AutoRefresh(x => x.IsDirty, TimeSpan.FromMilliseconds(500));
 
-		var hasChildren = modsConn.CountChanged().Select(_ => _children.Count > 0);
+		var childrenObs = modsConn.CountChanged().Throttle(TimeSpan.FromMilliseconds(50));
+		var hasChildren = childrenObs.Select(_ => _children.Count > 0);
 
-		_canForceAllowInLoadOrderHelper = modsConn.Select(_ => _children.All(AllCanForceAllowInLoadOrder)).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
-		_forceAllowInLoadOrderHelper = modsConn.Select(_ => _children.All(AllForceLoadedInLoadOrder)).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
-		_displayFileForNameHelper = modsConn.Select(_ => _children.All(AllDisplayFileForName)).ToUIProperty(this, x => x.DisplayFileForName);
+		_canForceAllowInLoadOrderHelper = childrenObs.Select(_ => _children.All(AllCanForceAllowInLoadOrder)).ObserveOn(RxApp.MainThreadScheduler).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
+		_forceAllowInLoadOrderHelper = childrenObs.Select(_ => _children.All(AllForceLoadedInLoadOrder)).ObserveOn(RxApp.MainThreadScheduler).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
+		_displayFileForNameHelper = childrenObs.Select(_ => _children.All(AllDisplayFileForName)).ObserveOn(RxApp.MainThreadScheduler).ToUIProperty(this, x => x.DisplayFileForName);
 
 		_toggleModNameLabelHelper = this.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
 
