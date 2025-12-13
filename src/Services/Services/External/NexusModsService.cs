@@ -12,7 +12,9 @@ using Newtonsoft.Json;
 using NexusModsNET;
 using NexusModsNET.DataModels;
 using NexusModsNET.DataModels.GraphQL.Query;
+using NexusModsNET.DataModels.GraphQL.Types;
 
+using System.Collections.Concurrent;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -218,6 +220,59 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 			DivinityApp.Log($"Error downloading url ({downloadUrl}):\n{ex}");
 			return Stream.Null;
 		}
+	}
+
+	private async Task DownloadFileAsync(string game, string outputFolder, NexusGraphModFile file, double taskIncrement, ConcurrentBag<NexusModsDownloadedFile> resultFiles, CancellationToken token)
+	{
+		var downloads = await _dataLoader!.ModFiles.GetModFileDownloadLinksAsync(game, file.ModId, file.FileId, token);
+		if (downloads != null)
+		{
+			var preferred = downloads.FirstOrDefault();
+			var fileName = Path.GetFileName(preferred.Name);
+			var filePath = Path.Join(outputFolder, fileName);
+			DivinityApp.Log($"Downloading {file.Uri} to {filePath}");
+			DownloadProgressText = $"Downloading {fileName}...";
+			using var stream = await DownloadUrlAsStreamAsync(ApiKey, preferred.Uri, token);
+			await using var outputStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 128000, FileOptions.Asynchronous);
+			await stream.CopyToAsync(outputStream, 128000, token);
+			DownloadResults.Add(filePath);
+			DivinityApp.Log("Download done.");
+			DownloadProgressText = $"Downloaded {fileName}";
+			DownloadProgressValue += taskIncrement;
+			resultFiles.Add(new(filePath, file));
+		}
+	}
+
+	public async Task<NexusModsDownloadResults> DownloadModFilesAsync(IEnumerable<NexusGraphModFile> files, CancellationToken token)
+	{
+		if (!CanFetchData || _dataLoader == null) return new(false, []);
+
+		var downloadedMods = new ConcurrentBag<NexusModsDownloadedFile>();
+
+		try
+		{
+			DownloadProgressValue = 0;
+			var game = DivinityApp.NEXUSMODS_GAME_DOMAIN;
+			var outputFolder = DivinityApp.GetAppDirectory("Downloads");
+			Directory.CreateDirectory(outputFolder);
+
+			List<Task> downloadTasks = [];
+
+			var taskIncrement = (double)(100 / files.Count());
+
+			foreach (var file in files)
+			{
+				downloadTasks.Add(DownloadFileAsync(game, outputFolder, file, taskIncrement, downloadedMods, token));
+			}
+
+			await Task.WhenAll(downloadTasks).WaitAsync(token);
+			return new(false, [.. downloadedMods]);
+		}
+		catch(Exception ex)
+		{
+			DivinityApp.Log($"Error downloading files: {ex}");
+		}
+		return new(false, [.. downloadedMods]);
 	}
 
 	private static INexusModsProtocol GetProtocolData(string url)

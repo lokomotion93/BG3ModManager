@@ -27,13 +27,11 @@ public partial class NexusModsCollectionDownloadWindowViewModel : ReactiveObject
 	[ObservableAsProperty] public partial bool IsGridView { get; }
 	[ObservableAsProperty] public partial bool AnyEnabled { get; }
 	[ObservableAsProperty] public partial bool AnyDisabled { get; }
+	[ObservableAsProperty] public partial bool HasMods { get; }
 
-	public ReactiveCommand<bool, Unit> SelectAllCommand { get; }
-	public RxCommandUnit SetGridViewCommand { get; }
-	public RxCommandUnit SetCardViewCommand { get; }
-	public RxCommandUnit EnableAllCommand { get; }
-	public RxCommandUnit DisableAllCommand { get; }
-	public RxCommandUnit? ConfirmCommand { get; set; }
+	private readonly IObservable<bool> _hasModsObs;
+	private readonly IObservable<bool> _anyEnabledObs;
+
 	public RxCommandUnit? CancelCommand { get; set; }
 
 	public void Load(NexusGraphCollectionRevision collectionRevision)
@@ -63,12 +61,38 @@ public partial class NexusModsCollectionDownloadWindowViewModel : ReactiveObject
 		return Loca.Window_CollectionDownloader_Heading_Unknown;
 	}
 
+	[ReactiveCommand(CanExecute = nameof(_hasModsObs), OutputScheduler = "RxApp.MainThreadScheduler")]
 	private void SelectAll(bool b)
 	{
 		foreach (var mod in Mods)
 		{
 			mod.IsSelected = b;
 		}
+	}
+
+	[ReactiveCommand(OutputScheduler = "RxApp.MainThreadScheduler")]
+	private void SetGridView() => IsCardView = false;
+
+	[ReactiveCommand(OutputScheduler = "RxApp.MainThreadScheduler")]
+	private void SetCardView() => IsCardView = true;
+
+	[ReactiveCommand(OutputScheduler = "RxApp.MainThreadScheduler")]
+	private void EnableAll() => SelectAll(true);
+
+	[ReactiveCommand(OutputScheduler = "RxApp.MainThreadScheduler")]
+	private void DisableAll() => SelectAll(false);
+
+	[ReactiveCommand(CanExecute = nameof(_anyEnabledObs), OutputScheduler = "RxApp.TaskpoolScheduler")]
+	private async Task Confirm()
+	{
+		var nexus = AppServices.NexusMods;
+		var progress = ViewModelLocator.Progress;
+		progress.Title = "Downloading mods...";
+		await progress.StartAsync(async token =>
+		{
+			var modFiles = Mods.Where(x => x.IsSelected && x.ModFileData != null).Select(x => x.ModFileData).ToList();
+			var results = await nexus.DownloadModFilesAsync(modFiles!, token);
+		}, true);
 	}
 
 	public NexusModsCollectionDownloadWindowViewModel(IScreen? host = null)
@@ -85,25 +109,14 @@ public partial class NexusModsCollectionDownloadWindowViewModel : ReactiveObject
 
 		_isGridViewHelper = this.WhenAnyValue(x => x.IsCardView).Select(b => !b).ToUIProperty(this, x => x.IsGridView, true);
 
-		SelectAllCommand = ReactiveCommand.Create<bool>(b =>
-		{
-			if (Data?.Mods != null)
-			{
-				foreach (var mod in Data.Mods.Items)
-				{
-					mod.IsSelected = b;
-				}
-			}
-		}, this.WhenAnyValue(x => x.Data).Select(x => x != null));
-
-		SetGridViewCommand = ReactiveCommand.Create(() => { IsCardView = false; });
-		SetCardViewCommand = ReactiveCommand.Create(() => { IsCardView = true; });
-		EnableAllCommand = ReactiveCommand.Create(() => SelectAll(true));
-		DisableAllCommand = ReactiveCommand.Create(() => SelectAll(false));
+		_hasModsHelper = Mods.ToObservableChangeSet().CountChanged().Select(_ => Mods.Count > 0).ToUIProperty(this, x => x.HasMods);
 
 		var modsConn = Mods.ToObservableChangeSet().AutoRefresh(x => x.IsSelected).ToCollection().Throttle(TimeSpan.FromMilliseconds(50)).ObserveOn(RxApp.MainThreadScheduler);
 		_anyEnabledHelper = modsConn.Select(x => x.Any(x => x.IsSelected)).ToUIProperty(this, x => x.AnyEnabled, initialValue: false);
 		_anyDisabledHelper = modsConn.Select(x => x.Any(x => !x.IsSelected)).ToUIProperty(this, x => x.AnyDisabled, initialValue: true);
+
+		_hasModsObs = this.WhenAnyValue(x => x.HasMods);
+		_anyEnabledObs = this.WhenAnyValue(x => x.AnyEnabled);
 	}
 }
 
