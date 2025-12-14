@@ -107,11 +107,11 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 
 					if (shouldFindExe)
 					{
-						var exePath = _fs.Path.Join(installPath, defaultPathways.Steam.ExePath);
+						var exePath = _fs.Path.Join(installPath, defaultPathways.Steam.ExePath).Replace("\\", "/");
 						DivinityApp.Log($"Looking for exe path at '{exePath}'.");
 						if (_fs.File.Exists(exePath))
 						{
-							settings.GameExecutablePath = exePath.Replace("\\", "/");
+							settings.GameExecutablePath = exePath;
 							DivinityApp.Log($"Exe path set to '{exePath}'.");
 						}
 						else
@@ -119,11 +119,11 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 							if(OperatingSystem.IsLinux())
 							{
 								//Newer versions may just have a "bg3" file, no bg3.exe/bg3_dx11.exe
-								exePath = _fs.Path.Join(installPath, "bin", "bg3");
+								exePath = _fs.Path.Join(installPath, "bin", "bg3").Replace("\\", "/");
 								DivinityApp.Log($"Looking for linux exe path at '{exePath}'.");
 								if (_fs.File.Exists(exePath))
 								{
-									settings.GameExecutablePath = exePath.Replace("\\", "/");
+									settings.GameExecutablePath = exePath;
 									DivinityApp.Log($"Exe path set to '{exePath}'.");
 								}
 							}
