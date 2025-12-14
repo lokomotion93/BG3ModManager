@@ -75,13 +75,10 @@ public partial class ModEntryView : ReactiveUserControl<ModEntry>
 		{
 			if(ViewModel != null)
 			{
-				//ExtenderStatusContentControl[!ContentProperty] = ViewModel.WhenAnyValue(x => x.ExtenderIcon, GetExtenderStatusContent).ToBinding();
 				d(ViewModel.WhenAnyValue(x => x.ExtenderIcon).Subscribe(icon =>
 				{
 					ExtenderStatusContentControl.Content = GetExtenderStatusContent(icon);
 				}));
-				//d(whenExtenderIcon.Select(ExtenderIconToKind).BindTo(this, x => x.ExtenderStatusImage.Kind));
-				//d(whenExtenderIcon.Select(ExtenderIconToForeground).BindTo(this, x => x.ExtenderStatusImage.Foreground));
 			}
 		});
 	}

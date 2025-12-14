@@ -57,16 +57,21 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 				var defaultForegroundColor = LabelTextBlock.Foreground;
 				var defaultBG = IconBorder.Background;
 
-				LabelTextBlock[!TextBlock.ForegroundProperty] = ViewModel.WhenAnyValue(x => x.ForegroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultForegroundColor).ToBinding();
+				var whenForeground = ViewModel.WhenAnyValue(x => x.ForegroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultForegroundColor);
+				d(LabelTextBlock.Bind(TextBlock.ForegroundProperty, whenForeground));
 
 				var hasIconSettings = ViewModel.WhenAnyValue(x => x.Icon).WhereNotNull();
 
 				IconBorder.BorderThickness = _defaultThickness;
-				IconBorder[!BorderBrushProperty] = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BorderColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
 
-				IconBorder[!BackgroundProperty] = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BackgroundColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : defaultBG).ToBinding();
+				var whenBorderColor = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BorderColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush"));
+				d(IconBorder.Bind(BorderBrushProperty, whenBorderColor));
 
-				IconBorder[!BorderThicknessProperty] = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BorderThickness)).Select(x => x.Second.IsValid() ? Thickness.Parse(x.Second) : _defaultThickness).ToBinding();
+				var whenBackground = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BackgroundColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : defaultBG);
+				d(IconBorder.Bind(BackgroundProperty, whenBackground));
+
+				var whenBorderThickness = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BorderThickness)).Select(x => x.Second.IsValid() ? Thickness.Parse(x.Second) : _defaultThickness);
+				d(IconBorder.Bind(BorderThicknessProperty, whenBorderThickness));
 
 				d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
 					h => (sender, e) => h(e),
