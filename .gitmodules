@@ -21,4 +21,4 @@
 	url = https://github.com/LITTOMA/Avalonia.MarkdownViewer.git
 [submodule "Avalonia.Labs"]
 	path = External/Avalonia.Labs
-	url = https://github.com/AvaloniaUI/Avalonia.Labs
+	url = https://github.com/LaughingLeader/Avalonia.Labs
