@@ -1232,6 +1232,37 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	public bool LoadModOrder() => LoadModOrder(SelectedModOrder);
 
+	public IEnumerable<ModContainer> GetAllContainers(IEnumerable<IModEntry> targetList)
+	{
+		foreach (var entry in targetList)
+		{
+			if (entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+			{
+				yield return container;
+
+				foreach (var child in container.ForEachNested())
+				{
+					if (child.EntryType == ModEntryType.Container && entry is ModContainer childContainer)
+					{
+						yield return childContainer;
+					}
+				}
+			}
+		}
+	}
+
+	public IEnumerable<ModContainer> GetAllContainers()
+	{
+		foreach (var entry in GetAllContainers(ActiveMods))
+		{
+			yield return entry;
+		}
+		foreach (var entry in GetAllContainers(InactiveMods))
+		{
+			yield return entry;
+		}
+	}
+
 	private void AddNestedMods(IList<IModEntry> targetList, ModOrderContainer container, HashSet<string> addedEntries, Func<ModData, bool> canAddMod, Func<ModOrderContainer, bool> canAddContainer, Func<string, bool> wasAdded)
 	{
 		if(!canAddContainer(container) || wasAdded(container.Id))
@@ -1260,17 +1291,10 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		{
 			//TODO fetch from some central container settings location
 			var uiContainer = new ModContainer(container.Id, container.Name ?? string.Empty);
-			if (container.Settings == null)
-			{
-				var globalContainerSettings = _settings.ContainerSettings.Containers.Lookup(container.Id);
-				if (globalContainerSettings.HasValue)
-				{
-					uiContainer.Settings.SetFromDataMember(globalContainerSettings.Value);
-				}
-			}
-			else
+			if (container.Settings != null)
 			{
 				uiContainer.Settings.SetFromDataMember(container.Settings);
+				AppServices.Settings.ContainerSettings.Containers.AddOrUpdate(uiContainer.Settings);
 			}
 			uiContainer.Index = container.Index;
 			uiContainer.Settings.DisplayName = container.Name;
@@ -1305,7 +1329,8 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	{
 		if(activeEntries.Contains(container.Id))
 		{
-			return container.Settings?.IsGlobal == true;
+			//return container.Settings?.IsGlobal == true;
+			return false;
 		}
 		return true;
 	}
@@ -1450,6 +1475,18 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				{
 					addedInactiveMods.Add(mod.UUID);
 					InactiveMods.Add(mod.ToModInterface());
+				}
+			}
+		}
+
+		foreach(var container in GetAllContainers())
+		{
+			if (container.Settings.ParentSettingsId.IsValid())
+			{
+				var globalContainerSettings = _settings.ContainerSettings.Containers.Lookup(container.Settings.ParentSettingsId);
+				if (globalContainerSettings.HasValue)
+				{
+					container.GlobalSettings = globalContainerSettings.Value;
 				}
 			}
 		}

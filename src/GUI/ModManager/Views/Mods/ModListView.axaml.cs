@@ -592,11 +592,11 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 		{
 			entry.ContextMenu = _modContainerContext;
 			row.BorderThickness = _defaultContainerThickness;
-			row[!BorderBrushProperty] = container.Settings.WhenAnyValue(x => x.BorderColor).Select(x => x.IsValid() ? ColorBrushCache.GetBrush(x) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
+			row[!BorderBrushProperty] = container.WhenAnyValue(x => x.BorderColor).Select(x => x.IsValid() ? ColorBrushCache.GetBrush(x) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
 
 			var defaultBG = row.Background;
-			row[!BackgroundProperty] = container.Settings.WhenAnyValue(x => x.BackgroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultBG).ToBinding();
-			row[!BorderThicknessProperty] = container.Settings.WhenAnyValue(x => x.BorderThickness).Select(x => x.IsValid() ? Thickness.Parse(x) : _defaultContainerThickness).ToBinding();
+			row[!BackgroundProperty] = container.WhenAnyValue(x => x.BackgroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultBG).ToBinding();
+			row[!BorderThicknessProperty] = container.WhenAnyValue(x => x.BorderThickness).Select(x => x.IsValid() ? Thickness.Parse(x) : _defaultContainerThickness).ToBinding();
 
 			if (row.Rows != null && row.Rows[row.RowIndex] is HierarchicalRow<IModEntry> hierarchicalRow)
 			{

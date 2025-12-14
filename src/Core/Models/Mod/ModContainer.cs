@@ -26,6 +26,7 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 	[Reactive] public partial bool IsDirty { get; set; }
 	[Reactive] public partial object? ContextMenu { get; set; }
 	[Reactive] public partial ModContainerSettings Settings { get; set; }
+	[Reactive] public partial ModContainerSettings? GlobalSettings { get; set; }
 	[Reactive] public partial bool EnableAutosaving { get; set; }
 
 	public string? Version => string.Empty;
@@ -37,7 +38,7 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 	public IObservableCollection<IModEntry> Children => _children;
 
 	public RxCommandUnit ToggleNameDisplayCommand { get; }
-	public RxCommandUnit RenderIconCommand { get; }
+	public ReactiveCommand<ModContainerIconSettings?, Unit> RenderIconCommand { get; }
 
 	[ObservableAsProperty] public partial string? DisplayName { get; }
 	[ObservableAsProperty] public partial string? Description { get; }
@@ -47,6 +48,12 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 	[ObservableAsProperty] public partial bool HasDescription { get; }
 	[ObservableAsProperty] public partial bool HasIcon { get; }
 	[ObservableAsProperty] public partial string? ToggleModNameLabel { get; }
+
+	[ObservableAsProperty] public partial string? ForegroundColor { get; }
+	[ObservableAsProperty] public partial string? BackgroundColor { get; }
+	[ObservableAsProperty] public partial string? BorderColor { get; }
+	[ObservableAsProperty] public partial string? BorderThickness { get; }
+	[ObservableAsProperty] public partial ModContainerIconSettings? Icon { get; }
 
 	public string? Export(ModExportType exportType) => string.Empty;
 
@@ -217,8 +224,6 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 		_descriptionHelper = Settings.WhenAnyValue(x => x.Description).ToUIProperty(this, x => x.Description);
 		_hasDescriptionHelper = this.WhenAnyValue(x => x.Description, Validators.IsValid).ToUIProperty(this, x => x.HasDescription, false);
 
-		_hasIconHelper = Settings.WhenAnyValue(x => x.Icon).Select(x => x != null).ToUIProperty(this, x => x.HasIcon);
-
 		Settings.WhenAnyValue(x => x.IsExpanded).ObserveOn(RxApp.MainThreadScheduler).BindTo(this, x => x.IsExpanded);
 		this.WhenAnyValue(x => x.IsExpanded).BindTo(Settings, x => x.IsExpanded);
 
@@ -241,15 +246,47 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 			SetProperty(this, nameof(ModData.DisplayFileForName), b);
 		}, hasChildren);
 
-		RenderIconCommand = ReactiveCommand.Create(() => { Settings.Icon?.IsDirty = false; });
+		RenderIconCommand = ReactiveCommand.Create<ModContainerIconSettings?>(settings => { 
+			Settings.Icon?.IsDirty = false;
+		});
 
-		Settings.WhenAnyValue(x => x.Icon, x => x.Icon.IsDirty)
-			.Where(b => b.Item2 == true)
-			.Select(_ => Unit.Default)
+		this.WhenAnyValue(x => x.EnableAutosaving).Subscribe(ToggleAutosaving);
+
+		string?[] nullStart = [null];
+
+		var whenGlobalForegroundColor = this.WhenAnyValue(x => x.GlobalSettings, x => x.GlobalSettings.ForegroundColor, (g, _) => g?.ForegroundColor).StartWith(RxApp.MainThreadScheduler, nullStart);
+		var whenGlobalBackgroundColor = this.WhenAnyValue(x => x.GlobalSettings, x => x.GlobalSettings.BackgroundColor, (g, _) => g?.BackgroundColor).StartWith(RxApp.MainThreadScheduler, nullStart);
+		var whenGlobalBorderColor = this.WhenAnyValue(x => x.GlobalSettings, x => x.GlobalSettings.BorderColor, (g, _) => g?.BorderColor).StartWith(RxApp.MainThreadScheduler, nullStart);
+		var whenGlobalThickness = this.WhenAnyValue(x => x.GlobalSettings, x => x.GlobalSettings.BorderThickness, (g, _) => g?.BorderThickness).StartWith(RxApp.MainThreadScheduler, nullStart);
+
+		var whenGlobalIcon = this.WhenAnyValue(x => x.GlobalSettings, x => x.GlobalSettings.Icon, (g, _) => g?.Icon).StartWith(RxApp.MainThreadScheduler, [null]);
+
+		_foregroundColorHelper = this.WhenAnyValue(x => x.Settings.ForegroundColor).CombineLatest(whenGlobalForegroundColor)
+			.Select(x => x.First ?? x.Second).ToUIPropertyImmediate(this, x => x.ForegroundColor);
+
+		_backgroundColorHelper = this.WhenAnyValue(x => x.Settings.BackgroundColor).CombineLatest(whenGlobalBackgroundColor)
+			.Select(x => x.First ?? x.Second).ToUIPropertyImmediate(this, x => x.BackgroundColor);
+
+		_borderColorHelper = this.WhenAnyValue(x => x.Settings.BorderColor).CombineLatest(whenGlobalBorderColor)
+			.Select(x => x.First ?? x.Second).ToUIPropertyImmediate(this, x => x.BorderColor);
+
+		_borderThicknessHelper = this.WhenAnyValue(x => x.Settings.BorderThickness).CombineLatest(whenGlobalThickness)
+			.Select(x => x.First ?? x.Second).ToUIPropertyImmediate(this, x => x.BorderThickness);
+
+		_iconHelper = this.WhenAnyValue(x => x.Settings.Icon).CombineLatest(whenGlobalIcon)
+			.Select(x => x.First ?? x.Second).ToUIPropertyImmediate(this, x => x.Icon);
+
+		var whenGlobalIconDirty = this.WhenAnyValue(x => x.GlobalSettings, x => x.GlobalSettings.Icon, x => x.GlobalSettings.Icon.IsDirty, (x, _, _) => x?.Icon?.IsDirty == true).StartWith(false);
+		var whenIconDirty = this.WhenAnyValue(x => x.Icon, x => x.Icon.IsDirty, (x, _) => x?.IsDirty == true).StartWith(false);
+
+		whenIconDirty.Merge(whenGlobalIconDirty)
+			.Where(x => x || GlobalSettings?.Icon?.IsDirty == true)
+			.Throttle(TimeSpan.FromMilliseconds(500))
+			.Select(_ => Icon)
 			.ObserveOn(RxApp.MainThreadScheduler)
 			.InvokeCommand(RenderIconCommand);
 
-		this.WhenAnyValue(x => x.EnableAutosaving).Subscribe(ToggleAutosaving);
+		_hasIconHelper = this.WhenAnyValue(x => x.Icon).Select(x => x != null).ToUIProperty(this, x => x.HasIcon);
 	}
 
 	public ModContainer(string id, string name) : this(id)

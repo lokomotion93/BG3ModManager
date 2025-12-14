@@ -79,8 +79,8 @@
                 <ColumnDefinition Width="auto" SharedSizeGroup="EntryIcons" />
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="LabelTextBlock" VerticalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Left" />
-            <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0" x:Name="IconBorder" IsVisible="{Binding HasIcon}" Margin="0,0,4,0">
-                <ContentControl x:Name="IconPresenter" />
+            <Border Grid.Column="1" Padding="0,0,4,0" BorderThickness="0" x:Name="IconBorder" IsVisible="{Binding HasIcon}">
+                <ContentControl HorizontalAlignment="Left" x:Name="IconPresenter" />
             </Border>
         </Grid>
     </Panel>

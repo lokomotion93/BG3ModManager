@@ -57,16 +57,16 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 				var defaultForegroundColor = LabelTextBlock.Foreground;
 				var defaultBG = IconBorder.Background;
 
-				LabelTextBlock[!TextBlock.ForegroundProperty] = ViewModel.Settings.WhenAnyValue(x => x.ForegroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultForegroundColor).ToBinding();
+				LabelTextBlock[!TextBlock.ForegroundProperty] = ViewModel.WhenAnyValue(x => x.ForegroundColor).Select(x => x != null ? ColorBrushCache.GetBrush(x) : defaultForegroundColor).ToBinding();
 
-				var hasIconSettings = ViewModel.Settings.WhenAnyValue(x => x.Icon).WhereNotNull();
+				var hasIconSettings = ViewModel.WhenAnyValue(x => x.Icon).WhereNotNull();
 
 				IconBorder.BorderThickness = _defaultThickness;
-				IconBorder[!BorderBrushProperty] = hasIconSettings.CombineLatest(ViewModel.Settings.Icon.WhenAnyValue(x => x.BorderColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
+				IconBorder[!BorderBrushProperty] = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BorderColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : ColorBrushCache.GetResourceBrush("SukiMediumBorderBrush")).ToBinding();
 
-				IconBorder[!BackgroundProperty] = hasIconSettings.CombineLatest(ViewModel.Settings.Icon.WhenAnyValue(x => x.BackgroundColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : defaultBG).ToBinding();
+				IconBorder[!BackgroundProperty] = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BackgroundColor)).Select(x => x.Second.IsValid() ? ColorBrushCache.GetBrush(x.Second) : defaultBG).ToBinding();
 
-				IconBorder[!BorderThicknessProperty] = hasIconSettings.CombineLatest(ViewModel.Settings.Icon.WhenAnyValue(x => x.BorderThickness)).Select(x => x.Second.IsValid() ? Thickness.Parse(x.Second) : _defaultThickness).ToBinding();
+				IconBorder[!BorderThicknessProperty] = hasIconSettings.CombineLatest(ViewModel.Icon.WhenAnyValue(x => x.BorderThickness)).Select(x => x.Second.IsValid() ? Thickness.Parse(x.Second) : _defaultThickness).ToBinding();
 
 				d(Observable.FromEvent<EventHandler<RoutedEventArgs>, RoutedEventArgs>(
 					h => (sender, e) => h(e),
@@ -92,7 +92,7 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 					h => ToolTipIconPresenter.AttachedToVisualTree -= h
 				).Subscribe(_ =>
 				{
-					_toolTipIconManager.Load(ViewModel.Settings.Icon);
+					_toolTipIconManager.Load(ViewModel.Icon);
 				}));
 
 				d(ViewModel.RenderIconCommand.IsExecuting.ObserveOn(RxApp.MainThreadScheduler).Subscribe(b =>
@@ -100,10 +100,10 @@ public partial class ModContainerEntryView : ReactiveUserControl<ModContainer>
 					if(!b)
 					{
 						Cleanup();
-						if(ViewModel.Settings.Icon != null)
+						if(ViewModel.Icon != null)
 						{
-							_iconManager.Load(ViewModel.Settings.Icon);
-							_toolTipIconManager.Load(ViewModel.Settings.Icon);
+							_iconManager.Load(ViewModel.Icon);
+							_toolTipIconManager.Load(ViewModel.Icon);
 						}
 					}
 				}));

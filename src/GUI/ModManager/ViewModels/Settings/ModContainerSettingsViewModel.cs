@@ -1,5 +1,7 @@
 ﻿using Avalonia.Media;
 
+using DynamicData;
+
 using Humanizer;
 
 using Material.Icons;
@@ -71,6 +73,8 @@ public partial class ModContainerSettingsViewModel : ReactiveObject, IClosableVi
 		{
 			Target.SetFromDataMember(Settings);
 			Icon.Apply(Target);
+
+			AppServices.Settings.ContainerSettings.Containers.AddOrUpdate(Target);
 		}
 		
 		if(_targetContainer != null && !_targetContainer.IsActive)

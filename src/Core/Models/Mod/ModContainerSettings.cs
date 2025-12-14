@@ -9,8 +9,6 @@ public partial class ModContainerSettings(string id) : ReactiveObject, IObjectWi
 {
 	public string Id { get; set; } = id;
 	[Reactive] public partial string? DisplayName { get; set; }
-	[Reactive] public partial bool IsGlobal { get; set; }
-
 
 	[Reactive]
 	[DataMember, DefaultValue(null)] 
@@ -40,9 +38,24 @@ public partial class ModContainerSettings(string id) : ReactiveObject, IObjectWi
 	[DataMember, DefaultValue(false)] 
 	public partial bool IsExpanded { get; set; }
 
+
+	/// <summary>
+	/// Loads settings from another container with the given Id. These settings are applied before the settings from this container.
+	/// </summary>
+	[Reactive]
+	[DataMember, DefaultValue(null)]
+	public partial string? ParentSettingsId { get; set; }
+
 	[JsonConstructor]
 	public ModContainerSettings() : this(string.Empty)
 	{
-		
+		if(BorderThickness == "0")
+		{
+			BorderThickness = null;
+		}
+		if(Icon != null && Icon.IsDefault())
+		{
+			Icon = null;
+		}
 	}
 }

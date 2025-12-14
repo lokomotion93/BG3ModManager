@@ -153,7 +153,10 @@ public class DataContractDefaultValueResolver : DefaultJsonTypeInfoResolver
 				if(defaultAttr != null)
 				{
 					//jsonPropertyInfo.ShouldSerialize = (_, obj) => obj != null && obj.Equals(defaultAttr.Value) == false;
-					jsonPropertyInfo.ShouldSerialize = (_, obj) => obj?.Equals(defaultAttr.Value) == false;
+					jsonPropertyInfo.ShouldSerialize = (_, obj) =>
+					{
+						return obj?.Equals(defaultAttr.Value) == false;
+					};
 					//jsonPropertyInfo.ShouldSerialize = (_, obj) =>
 					//{
 					//	DivinityApp.Log($"ShouldSerialize: {jsonPropertyInfo.Name}: {obj}");

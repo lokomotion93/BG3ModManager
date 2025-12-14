@@ -102,6 +102,10 @@ public class ContentControlIconManager
 				{
 					_iconDisp.Add(taskResult.Stream);
 				}
+				else
+				{
+					DivinityApp.Log($"Failed to load image from path ({_iconSettings.Path})");
+				}
 			}
 			if (result == null && _iconSettings.Kind.IsValid())
 			{
