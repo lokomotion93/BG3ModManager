@@ -42,7 +42,7 @@ public partial class ModListViewModel : ReactiveObject
 	[ObservableAsProperty] public partial bool HasAnyFocus { get; }
 
 	public RxCommandUnit FocusCommand { get; }
-	public RxCommandUnit AddContainerCommand { get; }
+	public ReactiveCommand<object?, Unit> AddContainerCommand { get; }
 	public RxCommandUnit RefreshCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> DeleteContainerCommand { get; }
 	public ReactiveCommand<ModContainer, Unit> DeleteContainerModsCommand { get; }
@@ -233,8 +233,23 @@ public partial class ModListViewModel : ReactiveObject
 
 		FocusCommand = ReactiveCommand.Create(() => { });
 
-		AddContainerCommand = ReactiveCommand.CreateFromTask(async () => {
-			var insertAt = treeGridSource.RowSelection?.AnchorIndex;
+		AddContainerCommand = ReactiveCommand.CreateFromTask<object?>(async maybeIndex => {
+			var insertAt = -2;
+			if(maybeIndex != null)
+			{
+				if (maybeIndex is int paramIndex)
+				{
+					insertAt = paramIndex;
+				}
+				else if (maybeIndex is string paramIndexStr && int.TryParse(paramIndexStr, out var tryIndex))
+				{
+					insertAt = tryIndex;
+				}
+			}
+			else if (treeGridSource.RowSelection!.AnchorIndex.Count > 0)
+			{
+				insertAt = treeGridSource.RowSelection!.AnchorIndex[0];
+			}
 			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Add Container", "Enter container name...", InteractionMessageBoxType.Input, "Container1"));
 			if(result.Result)
 			{
@@ -245,11 +260,35 @@ public partial class ModListViewModel : ReactiveObject
 				};
 				container.Settings.DisplayName = result.Input ?? string.Empty;
 				AppServices.Settings.ContainerSettings.Containers.AddOrUpdate(container.Settings);
-				if(insertAt != null)
+				if(insertAt != -2)
 				{
-					var indexPath = insertAt.Value;
-					var index = indexPath[0];
-					_mods.Insert(index, container);
+					if (insertAt < 0)
+					{
+						if(VisibleRows.Count > 0)
+						{
+							var lastRow = VisibleRows.LastOrDefault();
+							if (lastRow > 0)
+							{
+								_mods.Insert(lastRow, container);
+							}
+							else
+							{
+								_mods.Add(container);
+							}
+						}
+						else
+						{
+							_mods.Add(container);
+						}
+					}
+					else if(insertAt >= _mods.Count)
+					{
+						_mods.Add(container);
+					}
+					else
+					{
+						_mods.Insert(insertAt, container);
+					}
 				}
 				else
 				{
@@ -277,6 +316,25 @@ public partial class ModListViewModel : ReactiveObject
 						_mods.Insert(0, container);
 					}
 				}
+
+
+				RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(100), () =>
+				{
+					if(treeGridSource.Rows is HierarchicalRows<IModEntry> actualRows)
+					{
+						for (var i = 0; i < actualRows.Count; ++i)
+						{
+							var flattenedRow = actualRows[i];
+							if(flattenedRow.Model == container)
+							{
+								//IndexPath adds +1
+								treeGridSource.RowSelection!.Clear();
+								treeGridSource.RowSelection?.Select(new IndexPath(i-1));
+								return;
+							}
+						}
+					}
+				});
 			}
 		});
 

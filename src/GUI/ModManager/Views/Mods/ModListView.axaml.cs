@@ -115,10 +115,6 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 					items.RemoveAt(i);
 				}
-				else
-				{
-					DivinityApp.Log("");
-				}
 			}
 		}
 

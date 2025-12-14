@@ -109,7 +109,7 @@
     </UserControl.Resources>
     <UserControl.ContextFlyout>
         <MenuFlyout>
-            <MenuItem Command="{Binding AddContainerCommand}" Header="{manager:LocaleKey ModListView_AddContainer}" Icon="{materialIcons:MaterialIconExt Kind=Plus, IconForeground=Lime}" />
+            <MenuItem Command="{Binding AddContainerCommand}" CommandParameter="-1" Header="{manager:LocaleKey ModListView_AddContainer}" Icon="{materialIcons:MaterialIconExt Kind=Plus, IconForeground=Lime}" />
         </MenuFlyout>
     </UserControl.ContextFlyout>
     <Grid RowDefinitions="auto,*">
