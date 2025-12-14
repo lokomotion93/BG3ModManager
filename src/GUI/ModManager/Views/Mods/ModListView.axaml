@@ -165,6 +165,7 @@
             LockDragDropWhenSorted="False"
             Background="Transparent"
             Focusable="True"
+            RowsHorizontalScrollBarVisibility="Hidden"
             Source="{Binding Mods}" />
     </Grid>
 </UserControl>
