@@ -250,7 +250,7 @@ public class SettingsService : ReactiveObject, ISettingsService
 			_saveTasks.Remove(key);
 		};
 		var newDisp = RxApp.MainThreadScheduler.Schedule(TimeSpan.FromMilliseconds(250), saveAction);
-		_saveTasks.Add(key, newDisp);
+		_saveTasks[key] = newDisp;
 	}
 
 	public SettingsService(IFileSystemService fs)
