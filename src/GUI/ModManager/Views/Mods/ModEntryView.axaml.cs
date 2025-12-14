@@ -16,7 +16,7 @@ public class DesignModEntry() : ModEntry(new ModData("d23b7409-f085-4946-aacb-ae
 	IsToolkitProject = false,
 	IsLooseMod = true,
 	IsUserMod = true,
-	IsForceLoaded = true,
+	HasOverrideFiles = true,
 	LastModified = DateTimeOffset.Now,
 	OsirisModStatus = DivinityOsirisModStatus.MODFIXER,
 	ExtenderModStatus = ModExtenderStatus.Fulfilled,

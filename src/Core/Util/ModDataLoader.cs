@@ -641,7 +641,6 @@ public static partial class ModDataLoader
 						}
 						if (isOverridingBuiltinDirectory)
 						{
-							modData.IsForceLoadedMergedMod = hasModFolderData;
 							if (baseGameFiles.Count > 0 && baseGameFiles.Count < DivinityApp.MAX_FILE_OVERRIDE_DISPLAY)
 							{
 								modData.BuiltinOverrideModsText = string.Join(Environment.NewLine, baseGameFiles.OrderBy(x => x));
@@ -650,7 +649,7 @@ public static partial class ModDataLoader
 							{
 								modData.BuiltinOverrideModsText = string.Join(Environment.NewLine, builtinModOverrides.Values.OrderBy(x => x.Name).Select(x => $"{x.Folder} ({x.Name})"));
 							}
-							modData.IsForceLoaded = true;
+							modData.HasOverrideFiles = true;
 						}
 						modData.FilePath = pakPath.NormalizeDirectorySep();
 
@@ -703,7 +702,7 @@ public static partial class ModDataLoader
 					Description = "This file overrides base game data.",
 					ModType = "File Override",
 					LastModified = fileModified,
-					IsForceLoaded = true,
+					HasOverrideFiles = true,
 				});
 			}
 		}

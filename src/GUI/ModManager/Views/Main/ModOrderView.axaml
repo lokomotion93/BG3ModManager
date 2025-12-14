@@ -60,22 +60,7 @@
 
 		<Grid Grid.Row="1" Margin="4,0" ColumnDefinitions="*,auto,*">
 			<sukiControls:GlassCard IsOpaque="True">
-				<Grid Name="ActiveModsGrid" RowDefinitions="2*,auto,1*">
-					<mv:ModListView Name="ActiveModsList"
-									Grid.Row="0"
-									VerticalAlignment="Stretch"
-									DataContext="{Binding ActiveModsView}" />
-
-					<GridSplitter Grid.Row="1"
-								  MinHeight="4"
-								  Classes="splitter1"
-								  ResizeDirection="Rows" />
-
-					<mv:ModListView Name="OverrideModsList"
-									Grid.Row="2"
-									VerticalAlignment="Stretch"
-									DataContext="{Binding OverrideModsView}" />
-				</Grid>
+				<mv:ModListView Name="ActiveModsList" DataContext="{Binding ActiveModsView}" />
 			</sukiControls:GlassCard>
 			<GridSplitter Grid.Column="1"
 						  MinWidth="4"

@@ -692,7 +692,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		ExtractSelectedActiveModsCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
-			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods.Where(x => x.IsActive || x.IsForceLoaded));
+			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods.Where(x => x.IsActive));
 		}, canExtract);
 
 		ExtractSelectedInactiveModsCommand = ReactiveCommand.CreateFromTask(async () =>

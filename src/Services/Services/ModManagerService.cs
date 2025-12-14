@@ -18,14 +18,14 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 	//Derived collections
 	private readonly ReadOnlyObservableCollection<ModData> _addonMods;
 	private readonly ReadOnlyObservableCollection<ModData> _adventureMods;
-	private readonly ReadOnlyObservableCollection<ModData> _forceLoadedMods;
+	private readonly ReadOnlyObservableCollection<ModData> _overridePaks;
 	private readonly ReadOnlyObservableCollection<ModData> _selectedPakMods;
 	private readonly ReadOnlyObservableCollection<ModData> _userMods;
 
 	public IEnumerable<ModData> AllMods => mods.Items;
 	public ReadOnlyObservableCollection<ModData> AddonMods => _addonMods;
 	public ReadOnlyObservableCollection<ModData> AdventureMods => _adventureMods;
-	public ReadOnlyObservableCollection<ModData> ForceLoadedMods => _forceLoadedMods;
+	public ReadOnlyObservableCollection<ModData> OverridePakMods => _overridePaks;
 	public ReadOnlyObservableCollection<ModData> UserMods => _userMods;
 	public ReadOnlyObservableCollection<ModData> SelectedPakMods => _selectedPakMods;
 
@@ -34,7 +34,6 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 
 	[Reactive] public partial int ActiveSelected { get; private set; }
 	[Reactive] public partial int InactiveSelected { get; private set; }
-	[Reactive] public partial int OverrideModsSelected { get; private set; }
 
 	private readonly IObservable<IChangeSet<ModData, string>> _modsConnection;
 	public IObservable<IChangeSet<ModData, string>> ModsConnection => _modsConnection;
@@ -265,10 +264,8 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 		_modsConnection.AutoRefresh(x => x.CanAddToLoadOrder).Filter(x => x.CanAddToLoadOrder).Bind(out _addonMods).Subscribe();
 		_modsConnection.Filter(x => x.ModType == "Adventure" && (!x.IsHidden || x.UUID == MainCampaignGuid)).Bind(out _adventureMods).Subscribe();
 
-		var forceLoadedObs = _modsConnection.AutoRefresh(x => x.ForceAllowInLoadOrder)
-			.Filter(x => x.IsForceLoaded && !x.IsForceLoadedMergedMod && !x.ForceAllowInLoadOrder)
-			.ObserveOn(RxApp.MainThreadScheduler);
-		forceLoadedObs.Bind(out _forceLoadedMods).Subscribe();
+		var forceLoadedObs = _modsConnection.Filter(x => x.HasOverrideFiles && !x.HasMetadata).ObserveOn(RxApp.MainThreadScheduler);
+		forceLoadedObs.Bind(out _overridePaks).Subscribe();
 
 		var selectedModsConnection = _modsConnection.AutoRefresh(x => x.IsSelected, TimeSpan.FromMilliseconds(100))
 			.AutoRefresh(x => x.IsActive, TimeSpan.FromMilliseconds(25));
@@ -279,31 +276,22 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 		{
 			var totalActive = 0;
 			var totalInactive = 0;
-			var totalOverride = 0;
 			foreach(var mod in mods.Items)
 			{
 				if(mod.IsSelected)
 				{
-					if(mod.IsForceLoaded && !mod.IsForceLoadedMergedMod && !mod.ForceAllowInLoadOrder)
+					if (mod.IsActive)
 					{
-						totalOverride += 1;
+						totalActive += 1;
 					}
 					else
 					{
-						if (mod.IsActive)
-						{
-							totalActive += 1;
-						}
-						else
-						{
-							totalInactive += 1;
-						}
+						totalInactive += 1;
 					}
 				}
 			}
 			ActiveSelected = totalActive;
 			InactiveSelected = totalInactive;
-			OverrideModsSelected = totalOverride;
 		});
 
 		_interactions.ToggleModFileNameDisplay.RegisterHandler(interaction =>
@@ -315,7 +303,7 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 			interaction.SetOutput(true);
 		});
 
-		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, x => x.OverrideModsSelected, (a, b, c) => a > 0 || b > 0 || c > 0).BindTo(_commands, x => x.HasAnySelectedMods);
-		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, x => x.OverrideModsSelected, (a, b, c) => (a + b + c) > 1).BindTo(_commands, x => x.HasMultipleSelectedMods);
+		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, (a, b) => a > 0 || b > 0).BindTo(_commands, x => x.HasAnySelectedMods);
+		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, (a, b) => (a + b) > 1).BindTo(_commands, x => x.HasMultipleSelectedMods);
 	}
 }

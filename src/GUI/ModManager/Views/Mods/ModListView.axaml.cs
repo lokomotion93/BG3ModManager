@@ -179,19 +179,9 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 	{
 		if(entry.EntryType == ModEntryType.Mod && entry is ModEntry modEntry && modEntry.Data != null)
 		{
-			if(!modEntry.Data.IsForceLoaded)
+			if (listType == ModListType.Active)
 			{
-				if (listType == ModListType.Override)
-				{
-					return false;
-				}
-			}
-			else
-			{
-				if(listType == ModListType.Active)
-				{
-					return modEntry.Data.CanAddToLoadOrder;
-				}
+				return modEntry.Data.CanAddToLoadOrder;
 			}
 		}
 		else if(entry.EntryType == ModEntryType.Container && entry is ModContainer modContainer)

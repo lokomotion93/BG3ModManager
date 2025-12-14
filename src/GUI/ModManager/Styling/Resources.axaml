@@ -13,7 +13,6 @@
     xmlns:sys="using:System"
     xmlns:theme="using:SukiUI.Theme">
 
-	<conv:ForceAllowInLoadOrderIconConverter x:Key="ForceAllowInLoadOrderIconConverter" />
 	<conv:StringToBrushConverter x:Key="StringToBrushConverter" />
 	<conv:StringToColorConverter x:Key="StringToColorConverter" />
 	<conv:ModBackgroundColorConverter x:Key="ModBackgroundColorConverter" />
@@ -121,16 +120,6 @@
 		    Header="Open mod.io Page (Browser)..."
 		    Icon="{SvgImage /Assets/Icons/modio_Blue.svg}"
 		    IsVisible="{Binding HasModioLink}" />
-
-		<Separator IsVisible="{Binding Data.CanForceAllowInLoadOrder}" />
-		<MenuItem Command="{Binding Path=ToggleForceAllowInLoadOrderCommand, Source={x:Static manager:AppServices.Commands}}" CommandParameter="{Binding Data}" IsVisible="{Binding Data.CanForceAllowInLoadOrder}">
-			<MenuItem.Header>
-				<TextBlock Text="{Binding ForceAllowInLoadOrderLabel}" />
-			</MenuItem.Header>
-			<MenuItem.Icon>
-				<icons:MaterialIcon Kind="{Binding Data.ForceAllowInLoadOrder, Converter={StaticResource ForceAllowInLoadOrderIconConverter}}" />
-			</MenuItem.Icon>
-		</MenuItem>
 
 		<Separator />
 		<MenuItem Header="Delete..." Icon="{icons:MaterialIconExt Kind=Delete}">

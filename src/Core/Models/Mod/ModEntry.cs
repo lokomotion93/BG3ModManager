@@ -55,7 +55,6 @@ public partial class ModEntry : ReactiveObject, IModEntry
 	[ObservableAsProperty] public partial int TotalDependencies { get; }
 	[ObservableAsProperty] public partial int TotalConflicts { get; }
 
-	[ObservableAsProperty] public partial string? ForceAllowInLoadOrderLabel { get; }
 	[ObservableAsProperty] public partial string? ToggleModNameLabel { get; }
 	[ObservableAsProperty] public partial string? DisplayVersion { get; }
 	[ObservableAsProperty] public partial string? ModDisplayTypeName { get; }
@@ -168,20 +167,19 @@ public partial class ModEntry : ReactiveObject, IModEntry
 	private static string ForceLoadedBackgroundSelectedColor => _colorRes?.GetColorHex("ForceLoadedBackgroundSelectedColor", "#32F2DE00") ?? "#32F2DE00";
 	private static string ForceLoadedBackgroundPointerOverColor => _colorRes?.GetColorHex("ForceLoadedBackgroundPointerOverColor", "#64F2DE00") ?? "#64F2DE00";
 
-	private void UpdateColors(ValueTuple<bool, bool, bool, bool, bool> x)
+	//x.IsLooseMod, x => x.HasOverrideFiles, x => x.IsActive
+	private void UpdateColors(ValueTuple<bool, bool> x)
 	{
-		var isForceLoadedMergedMod = x.Item1;
-		var isEditorMod = x.Item2;
-		var isForceLoadedMod = x.Item3;
-		var isActive = x.Item4 || x.Item5;
+		var IsLooseMod = x.Item1;
+		var HasOverrideFiles = x.Item2;
 
-		if (isEditorMod)
+		if (IsLooseMod)
 		{
 			SelectedColor = EditorProjectBackgroundSelectedColor;
 			ListColor = EditorProjectBackgroundColor;
 			PointerOverColor = EditorProjectBackgroundPointerOverColor;
 		}
-		else if (isForceLoadedMergedMod || isForceLoadedMod && isActive)
+		else if (HasOverrideFiles)
 		{
 			SelectedColor = ForceLoadedBackgroundSelectedColor;
 			ListColor = ForceLoadedBackgroundColor;
@@ -387,7 +385,7 @@ public partial class ModEntry : ReactiveObject, IModEntry
 			.AllTrue()
 			.ToUIPropertyImmediate(this, x => x.HasLooseModIcon);
 
-		_hasOverrideIconHelper = mod.WhenAnyValue(x => x.IsForceLoaded).CombineLatest(whenDisplayExtraIcons)
+		_hasOverrideIconHelper = mod.WhenAnyValue(x => x.HasOverrideFiles).CombineLatest(whenDisplayExtraIcons)
 			.AllTrue()
 			.ToUIPropertyImmediate(this, x => x.HasOverrideIcon);
 
@@ -411,23 +409,6 @@ public partial class ModEntry : ReactiveObject, IModEntry
 			Data?.IsActive = b;
 		});
 
-		mod.WhenAnyValue(x => x.IsActive, x => x.IsForceLoaded, x => x.IsForceLoadedMergedMod, x => x.ForceAllowInLoadOrder).Subscribe((b) =>
-		{
-			var isActive = b.Item1;
-			var isForceLoaded = b.Item2;
-			var isForceLoadedMergedMod = b.Item3;
-			var forceAllowInLoadOrder = b.Item4;
-
-			if (forceAllowInLoadOrder || isActive)
-			{
-				CanDrag = true;
-			}
-			else
-			{
-				CanDrag = !isForceLoaded || isForceLoadedMergedMod;
-			}
-		});
-
 		this.WhenAnyValue(x => x.ListColor, x => x.SelectedColor)
 			.Select(x => x.Item1.IsValid() || x.Item2.IsValid())
 			.BindTo(this, x => x.HasColorOverride);
@@ -442,14 +423,14 @@ public partial class ModEntry : ReactiveObject, IModEntry
 		_nexusModsTooltipInfoHelper = this.WhenAnyValue(x => x.NexusModsCreatedDate, x => x.NexusModsUpdatedDate, x => x.Data.NexusModsData.EndorsementCount)
 			.Select(x => NexusModsInfoToTooltip(x.Item1, x.Item2, x.Item3)).ToUIProperty(this, x => x.NexusModsTooltipInfo);
 
-		mod.WhenAnyValue(x => x.IsForceLoadedMergedMod, x => x.IsLooseMod, x => x.IsForceLoaded, x => x.ForceAllowInLoadOrder, x => x.IsActive)
+		mod.WhenAnyValue(x => x.IsLooseMod, x => x.HasOverrideFiles)
 			.ObserveOn(RxApp.MainThreadScheduler).Subscribe(UpdateColors);
 
 		_hasToolTipHelper = this.WhenAnyValue(x => x.Data.Description, x => x.HasDependencies, x => x.UUID).
 			Select(x => x.Item1.IsValid() || x.Item2 || x.Item3.IsValid())
 			.ToUIProperty(this, x => x.HasToolTip, true);
 
-		var whenModDisplayType = mod.WhenAnyValue(x => x.IsLooseMod, x => x.IsToolkitProject, x => x.IsForceLoaded, x => x.ModType);
+		var whenModDisplayType = mod.WhenAnyValue(x => x.IsLooseMod, x => x.IsToolkitProject, x => x.HasOverrideFiles, x => x.ModType);
 		_modDisplayTypeNameHelper = whenModDisplayType.Select(GetModDisplayTypeName)
 			.ToUIProperty(this, x => x.ModDisplayTypeName, Loca.Mod_Type_Addon);
 
@@ -484,7 +465,5 @@ public partial class ModEntry : ReactiveObject, IModEntry
 		_displayVersionHelper = mod.WhenAnyValue(x => x.Version.Version).ToUIProperty(this, x => x.DisplayVersion, "0.0.0.0");
 
 		_toggleModNameLabelHelper = mod.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
-
-		_forceAllowInLoadOrderLabelHelper = mod.WhenAnyValue(x => x.ForceAllowInLoadOrder).Select(b => b ? Loca.Mod_Command_ForceAllowInLoadOrder_Disable : Loca.Mod_Command_ForceAllowInLoadOrder_Enable).ToUIProperty(this, x => x.ForceAllowInLoadOrderLabel);
 	}
 }

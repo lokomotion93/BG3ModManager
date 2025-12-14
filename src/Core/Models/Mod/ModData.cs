@@ -91,16 +91,8 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 	[Reactive] public partial bool HasMetadata { get; set; }
 
 	/// <summary>True if the mod has a base game mod directory. This data is always loaded regardless if the mod is enabled or not.</summary>
-	[Reactive] public partial bool IsForceLoaded { get; set; }
-	/// <summary>
-	/// Whether the mod has files of its own (i.e. it overrides Gustav, but it has Public/ModFolder/Assets files etc).
-	/// </summary>
-	[Reactive] public partial bool IsForceLoadedMergedMod { get; set; }
+	[Reactive] public partial bool HasOverrideFiles { get; set; }
 
-	/// <summary>
-	/// For situations where an override pak has a meta.lsx with no original files, but it needs to be allowed in the load order anyway.
-	/// </summary>
-	[Reactive] public partial bool ForceAllowInLoadOrder { get; set; }
 	[Reactive] public partial string? BuiltinOverrideModsText { get; set; }
 
 	[Reactive] public partial bool DisplayExtraIcons { get; set; }
@@ -148,7 +140,6 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 
 	[Reactive] public partial bool CanAddToLoadOrder { get; private set; }
 	[Reactive] public partial bool CanDelete { get; private set; }
-	[Reactive] public partial bool CanForceAllowInLoadOrder { get; private set; }
 
 	[Reactive] public partial bool GitHubEnabled { get; set; }
 	[Reactive] public partial bool NexusModsEnabled { get; set; }
@@ -318,12 +309,6 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 		};
 	}
 
-	public void AllowInLoadOrder(bool b)
-	{
-		ForceAllowInLoadOrder = b;
-		IsActive = b && IsForceLoaded;
-	}
-
 	private CompositeDisposable? _modConfigDisposables;
 	private ModConfig? _modManagerConfig;
 
@@ -387,15 +372,9 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 		return string.Empty;
 	}
 
-	private static bool CanAddToLoadOrderCheck(ValueTuple<string?, bool, bool, bool, bool> x)
+	private static bool CanAddToLoadOrderCheck(string? modType, bool isHidden)
 	{
-		//x => x.ModType, x => x.IsHidden, x => x.IsForceLoaded, x => x.IsForceLoadedMergedMod, x => x.ForceAllowInLoadOrder
-		var modType = x.Item1;
-		var isHidden = x.Item2;
-		var isForceLoaded = x.Item3;
-		var isForceLoadedMergedMod = x.Item4;
-		var forceAllowInLoadOrder = x.Item5;
-		return modType != "Adventure" && !isHidden && (!isForceLoaded || isForceLoadedMergedMod || forceAllowInLoadOrder);
+		return modType != "Adventure" && !isHidden;
 	}
 
 	private static string ModToXml(string? pattern, ModData mod, bool isFixedString = false)
@@ -503,12 +482,7 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 			.ObserveOn(RxApp.MainThreadScheduler)
 			.BindTo(this, x => x.DisplayName);
 
-		this.WhenAnyValue(x => x.ModType, x => x.IsHidden, x => x.IsForceLoaded, x => x.IsForceLoadedMergedMod, x => x.ForceAllowInLoadOrder)
-			.Select(CanAddToLoadOrderCheck).BindTo(this, x => x.CanAddToLoadOrder, true);
-
-		this.WhenAnyValue(x => x.IsForceLoaded, x => x.HasMetadata, x => x.IsForceLoadedMergedMod)
-			.Select(b => b.Item1 && b.Item2 && !b.Item3)
-			.BindTo(this, x => x.CanForceAllowInLoadOrder);
+		this.WhenAnyValue(x => x.ModType, x => x.IsHidden, CanAddToLoadOrderCheck).BindTo(this, x => x.CanAddToLoadOrder, true);
 
 		this.WhenAnyValue(x => x.UUID).BindTo(NexusModsData, x => x.UUID);
 

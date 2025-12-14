@@ -85,16 +85,6 @@
                 Header="{manager:LocaleKey ModListView_RenameContainer}"
                 Icon="{materialIcons:MaterialIconExt Kind=Rename}" />
 
-            <Separator IsVisible="{Binding CanForceAllowInLoadOrder}" />
-            <MenuItem Command="{Binding ToggleForceAllowInLoadOrderCommand}" IsVisible="{Binding CanForceAllowInLoadOrder}">
-                <MenuItem.Header>
-                    <TextBlock Text="{Binding ForceAllowInLoadOrderLabel}" />
-                </MenuItem.Header>
-                <MenuItem.Icon>
-                    <materialIcons:MaterialIcon Kind="{Binding ForceAllowInLoadOrder, Converter={StaticResource ForceAllowInLoadOrderIconConverter}}" />
-                </MenuItem.Icon>
-            </MenuItem>
-
             <Separator />
 
             <MenuItem Header="Delete..." Icon="{materialIcons:MaterialIconExt Kind=Delete}">

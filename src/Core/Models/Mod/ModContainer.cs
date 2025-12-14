@@ -36,20 +36,16 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 	private readonly ObservableCollectionExtended<IModEntry> _children = [];
 	public IObservableCollection<IModEntry> Children => _children;
 
-	public RxCommandUnit ToggleForceAllowInLoadOrderCommand { get; }
 	public RxCommandUnit ToggleNameDisplayCommand { get; }
 	public RxCommandUnit RenderIconCommand { get; }
 
 	[ObservableAsProperty] public partial string? DisplayName { get; }
 	[ObservableAsProperty] public partial string? Description { get; }
 	[ObservableAsProperty] public partial string? ContainerToolTipTitleText { get; }
-	[ObservableAsProperty] public partial bool CanForceAllowInLoadOrder { get; }
-	[ObservableAsProperty] public partial bool ForceAllowInLoadOrder { get; }
 	[ObservableAsProperty] public partial bool DisplayFileForName { get; }
 	[ObservableAsProperty] public partial bool IsVisible { get; }
 	[ObservableAsProperty] public partial bool HasDescription { get; }
 	[ObservableAsProperty] public partial bool HasIcon { get; }
-	[ObservableAsProperty] public partial string? ForceAllowInLoadOrderLabel { get; }
 	[ObservableAsProperty] public partial string? ToggleModNameLabel { get; }
 
 	public string? Export(ModExportType exportType) => string.Empty;
@@ -85,8 +81,6 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 		return false;
 	}
 
-	private static bool AllCanForceAllowInLoadOrder(IModEntry entry) => PropertyMatches(entry, nameof(ModData.CanForceAllowInLoadOrder), true);
-	private static bool AllForceLoadedInLoadOrder(IModEntry entry) => PropertyMatches(entry, nameof(ModData.ForceAllowInLoadOrder), true);
 	private static bool AllDisplayFileForName(IModEntry entry) => PropertyMatches(entry, nameof(ModData.DisplayFileForName), true);
 
 	private static readonly string[] _settingsProperties = [.. typeof(ModContainerSettings)
@@ -237,22 +231,9 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 		var childrenObs = modsConn.CountChanged().Throttle(TimeSpan.FromMilliseconds(50));
 		var hasChildren = childrenObs.Select(_ => _children.Count > 0);
 
-		_canForceAllowInLoadOrderHelper = childrenObs.Select(_ => _children.All(AllCanForceAllowInLoadOrder)).ObserveOn(RxApp.MainThreadScheduler).ToUIProperty(this, x => x.CanForceAllowInLoadOrder);
-		_forceAllowInLoadOrderHelper = childrenObs.Select(_ => _children.All(AllForceLoadedInLoadOrder)).ObserveOn(RxApp.MainThreadScheduler).ToUIProperty(this, x => x.ForceAllowInLoadOrder);
 		_displayFileForNameHelper = childrenObs.Select(_ => _children.All(AllDisplayFileForName)).ObserveOn(RxApp.MainThreadScheduler).ToUIProperty(this, x => x.DisplayFileForName);
 
 		_toggleModNameLabelHelper = this.WhenAnyValue(x => x.DisplayFileForName).Select(b => b ? Loca.Mod_Command_DisplayFileForName_Disable : Loca.Mod_Command_DisplayFileForName_Enable).ToUIProperty(this, x => x.ToggleModNameLabel);
-
-		_forceAllowInLoadOrderLabelHelper = this.WhenAnyValue(x => x.ForceAllowInLoadOrder)
-			.Select(b => b ? Loca.Mod_Command_ForceAllowInLoadOrder_Disable : Loca.Mod_Command_ForceAllowInLoadOrder_Enable)
-			.ToUIProperty(this, x => x.ForceAllowInLoadOrderLabel);
-
-		var canForceAllowInLoadOrder = this.WhenAnyValue(x => x.CanForceAllowInLoadOrder);
-		ToggleForceAllowInLoadOrderCommand = ReactiveCommand.Create(() =>
-		{
-			var b = !ForceAllowInLoadOrder;
-			SetProperty(this, nameof(ModData.ForceAllowInLoadOrder), b);
-		}, canForceAllowInLoadOrder);
 
 		ToggleNameDisplayCommand = ReactiveCommand.Create(() =>
 		{

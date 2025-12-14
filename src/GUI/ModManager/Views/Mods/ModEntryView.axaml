@@ -122,14 +122,8 @@
                     <TextBlock Foreground="Goldenrod" IsVisible="{Binding HasExtenderStatus}" Text="{Binding ScriptExtenderSupportToolTipText}" />
                     <TextBlock Margin="2" Text="{Binding LastModifiedDateText}" />
                 </StackPanel>
-                <StackPanel Margin="2" IsVisible="{Binding Data.IsForceLoaded}" Orientation="Vertical">
+                <StackPanel Margin="2" IsVisible="{Binding Data.HasOverrideFiles}" Orientation="Vertical">
                     <Separator />
-                    <TextBlock Foreground="OrangeRed">
-                        This mod overrides base game files directly.<LineBreak />
-                        As long as this mod exists in the Mods folder,<LineBreak />
-                        these files will be overwritten, even if the mod is disabled.</TextBlock>
-                    <TextBlock Text="If this is intended, you can ignore this warning." />
-                    <TextBlock Foreground="Lime" IsVisible="{Binding Data.IsForceLoadedMergedMod}" Text="This mod can be rearranged in the load order, due to it also having files of its own. Note that disabling it will not disable the file overrides." />
                     <TextBlock Foreground="OrangeRed" Text="Overwritten builtin folders:" />
                     <TextBlock Text="{Binding Data.BuiltinOverrideModsText}" />
                 </StackPanel>

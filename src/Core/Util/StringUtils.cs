@@ -100,10 +100,6 @@ public static class StringUtils
 	public static string ModToTSVLine(ModData mod)
 	{
 		var index = mod.Index.ToString();
-		if (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod)
-		{
-			index = "Override";
-		}
 		var urls = string.Join(";", mod.GetAllURLs());
 		return $"{index}\t{mod.Name}\t{mod.AuthorDisplayName}\t{mod.OutputPakName}\t{string.Join(", ", mod.Tags)}\t{string.Join(", ", mod.Dependencies.Items.Select(y => y.Name))}\t{urls}";
 	}
@@ -111,10 +107,6 @@ public static class StringUtils
 	public static string ModToTextLine(ModData mod)
 	{
 		var index = mod.Index.ToString() + ".";
-		if (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod)
-		{
-			index = "Override";
-		}
 		var urls = string.Join(";", mod.GetAllURLs());
 		return $"{index} {mod.Name} ({mod.OutputPakName}) {urls}";
 	}

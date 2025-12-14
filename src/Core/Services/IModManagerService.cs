@@ -13,14 +13,13 @@ public interface IModManagerService
 	IEnumerable<ModData> AllMods { get; }
 	ReadOnlyObservableCollection<ModData> AddonMods { get; }
 	ReadOnlyObservableCollection<ModData> AdventureMods { get; }
-	ReadOnlyObservableCollection<ModData> ForceLoadedMods { get; }
+	ReadOnlyObservableCollection<ModData> OverridePakMods { get; }
 	ReadOnlyObservableCollection<ModData> UserMods { get; }
 	ReadOnlyObservableCollection<ModData> SelectedPakMods { get; }
 	string MainCampaignGuid { get; set; }
 
 	int ActiveSelected { get; }
 	int InactiveSelected { get; }
-	int OverrideModsSelected { get; }
 	IObservable<IChangeSet<ModData, string>> ModsConnection { get; }
 	bool ModExists(string uuid);
 	void Add(ModData mod);

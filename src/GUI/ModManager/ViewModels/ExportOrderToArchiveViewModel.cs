@@ -33,7 +33,6 @@ public partial class ExportOrderFileEntry : ReactiveObject
 public partial class ExportOrderToArchiveViewModel : BaseProgressViewModel
 {
 	[Reactive] public partial string? OutputPath { get; set; }
-	[Reactive] public partial bool IncludeOverrides { get; set; }
 	[Reactive] public partial ExportOrderFileType SelectedOrderType { get; set; }
 
 	private readonly ObservableCollectionExtended<ExportOrderFileType> _orderTypes;
@@ -76,7 +75,6 @@ public partial class ExportOrderToArchiveViewModel : BaseProgressViewModel
 
 	public ExportOrderToArchiveViewModel() : base()
 	{
-		IncludeOverrides = true;
 		CanRun = true;
 
 		_orderTypes = new ObservableCollectionExtended<ExportOrderFileType>(Enum.GetValues(typeof(ExportOrderFileType)).Cast<ExportOrderFileType>());
@@ -92,16 +90,5 @@ public partial class ExportOrderToArchiveViewModel : BaseProgressViewModel
 		_selectAllToolTipHelper = this.WhenAnyValue(x => x.AllSelected).Select(b => $"{(b ? "Deselect" : "Select")} All").ToUIProperty(this, x => x.SelectAllToolTip);
 
 		SelectAllCommand = ReactiveCommand.Create(ToggleSelectAll, RunCommand.IsExecuting.Select(b => !b), RxApp.MainThreadScheduler);
-
-		this.WhenAnyValue(x => x.IncludeOverrides).Subscribe(b =>
-		{
-			foreach (var entry in _entries)
-			{
-				if (entry.Mod?.IsForceLoaded == true && !entry.Mod.IsForceLoadedMergedMod)
-				{
-					entry.IsVisible = b;
-				}
-			}
-		});
 	}
 }

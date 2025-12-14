@@ -139,14 +139,6 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 	}
 
 	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
-	private async Task ToggleForceAllowInLoadOrder(ModData? mod)
-	{
-		ArgumentNullException.ThrowIfNull(mod);
-		var b = !mod.ForceAllowInLoadOrder;
-		await _interactions.ForceAllowInLoadOrder.Handle(new(mod, b));
-	}
-
-	[ReactiveCommand(CanExecute = nameof(_canExecuteCommandsObs))]
 	private void OpenModProperties(ModData? mod)
 	{
 		ArgumentNullException.ThrowIfNull(mod);

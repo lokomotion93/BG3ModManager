@@ -60,13 +60,11 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 	public ObservableCollectionExtended<IModEntry> ActiveMods { get; }
 	public ObservableCollectionExtended<IModEntry> InactiveMods { get; }
-	public ObservableCollectionExtended<IModEntry> OverrideMods { get; }
 
 	private readonly ReadOnlyObservableCollection<ModData> _adventureMods;
 	public ReadOnlyObservableCollection<ModData> AdventureMods => _adventureMods;
 
 	public ModListViewModel ActiveModsView { get; }
-	public ModListViewModel OverrideModsView { get; }
 	public ModListViewModel InactiveModsView { get; }
 
 	public ObservableCollectionExtended<ModOrder> ModOrderList { get; }
@@ -94,7 +92,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	[ObservableAsProperty] public partial bool HasAnySelectedPakMods { get; }
 
 	[ObservableAsProperty] public partial bool AdventureModBoxVisibility { get; }
-	[ObservableAsProperty] public partial bool OverrideModsVisibility { get; }
 
 	[ObservableAsProperty] public partial bool GitHubModSupportEnabled { get; }
 	[ObservableAsProperty] public partial bool NexusModsSupportEnabled { get; }
@@ -413,7 +410,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 				ActiveModsView.RefreshCommand.Execute().Subscribe();
 				InactiveModsView.RefreshCommand.Execute().Subscribe();
-				OverrideModsView.RefreshCommand.Execute().Subscribe();
 
 				IsLoadingOrder = false;
 				IsRefreshing = false;
@@ -756,8 +752,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 					var parentDir = _fs.Path.GetDirectoryName(mod.FilePath);
 					if(parentDir.IsExistingDirectory())
 					{
-						var isActive = mod.IsActive || (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod && !mod.ForceAllowInLoadOrder);
-						var targetDir = isActive ? userModsFolder : userModsDisabledFolder;
+						var targetDir = mod.IsActive ? userModsFolder : userModsDisabledFolder;
 
 						var newFilePath = _fs.Path.Join(targetDir, _fs.Path.GetFileName(mod.FilePath));
 						if (!parentDir.Equals(targetDir, StringComparison.OrdinalIgnoreCase) && !_fs.File.Exists(newFilePath))
@@ -1014,8 +1009,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		if (entry != null) return true;
 		entry = InactiveMods.FirstOrDefault(x => x.UUID == uuid);
 		if (entry != null) return true;
-		entry = OverrideMods.FirstOrDefault(x => x.UUID == uuid);
-		if (entry != null) return true;
 		return false;
 	}
 
@@ -1036,7 +1029,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		SelectedModOrder?.Remove(mod.UUID);
 		ActiveMods.Remove(mod);
 		mod.IsActive = false;
-		if (mod.EntryType == ModEntryType.Mod && mod is ModEntry modEntry && modEntry.Data != null && (modEntry.Data.IsForceLoadedMergedMod || !modEntry.Data.IsForceLoaded))
+		if (mod.EntryType == ModEntryType.Mod && mod is ModEntry modEntry && modEntry.Data != null)
 		{
 			if (!InactiveMods.Any(x => x.UUID == mod.UUID))
 			{
@@ -1097,7 +1090,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		_manager.Add(mod);
 		mod.UpdateModExtenderStatus(extSettings, updateSettings);
 
-		if (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod)
+		if (mod.HasOverrideFiles)
 		{
 			DivinityApp.Log($"Imported Override Mod: {mod}");
 			return;
@@ -1114,18 +1107,9 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		{
 			fromList.Replace(existing, entry);
 		}
-		else if (FindNestedMod(OverrideMods, mod.UUID, out existing, out fromList))
-		{
-			fromList.Replace(existing, entry);
-		}
 		else
 		{
-			if (mod.IsForceLoaded && !mod.IsForceLoadedMergedMod)
-			{
-				OverrideMods.Add(entry);
-				mod.Index = OverrideMods.Count - 1;
-			}
-			else if (mod.IsActive)
+			if (mod.IsActive)
 			{
 				ActiveMods.Add(entry);
 				mod.Index = ActiveMods.Count - 1;
@@ -1175,7 +1159,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		var instant = TimeSpan.FromTicks(0);
 		QueueRemoval(deletedMods, ModListType.Active, instant);
 		QueueRemoval(deletedMods, ModListType.Inactive, instant);
-		QueueRemoval(deletedMods, ModListType.Override, instant);
 	}
 
 	public void DeleteMod(IModEntry mod)
@@ -1360,10 +1343,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 					{
 						mod.IsActive = true;
 						mod.Index = loadOrderIndex;
-						if (mod.IsForceLoaded)
-						{
-							mod.ForceAllowInLoadOrder = true;
-						}
 					}
 					else
 					{
@@ -1438,11 +1417,10 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}
 		}
 
-		OverrideMods.Clear();
-
 		var userModsDisabledFolder = _fs.Path.GetFullPath(AppServices.Pathways.Data.AppDataInactiveModsPath!);
 
-		foreach (var entry in modManager.ForceLoadedMods)
+		//Override paks with no metadata
+		foreach (var entry in modManager.OverridePakMods)
 		{
 			if(!WasAdded(entry.UUID))
 			{
@@ -1456,7 +1434,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				else
 				{
 					addedOverrideMods.Add(entry.UUID);
-					OverrideMods.Add(entry.ToModInterface());
+					ActiveMods.Add(entry.ToModInterface());
 				}
 			}
 		}
@@ -1537,8 +1515,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			if (result.Success)
 			{
 				var filePath = result.File!;
-				var exportMods = new List<IModEntry>(ActiveMods);
-				exportMods.AddRange(_manager.ForceLoadedMods.ToList().OrderBy(x => x.Name).ToModInterface());
+				var exportMods = ActiveMods.ToList();
 
 				await AppServices.ModImporter.ExportLoadOrderToTextFileAsync(filePath, exportMods, token);
 			}
@@ -1708,7 +1685,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	{
 		ActiveModsView.IsLocked = locked;
 		InactiveModsView.IsLocked = locked;
-		OverrideModsView.IsLocked = locked;
 	}
 
 	private IDisposable? _removeTask;
@@ -1726,9 +1702,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 					break;
 				case ModListType.Inactive:
 					target = InactiveMods;
-					break;
-				case ModListType.Override:
-					target = OverrideMods;
 					break;
 			}
 			if(target != null)
@@ -1810,7 +1783,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		ActiveMods = [];
 		InactiveMods = [];
-		OverrideMods = [];
+
 		ModOrderList = [];
 		ExternalModOrders = [];
 
@@ -1825,7 +1798,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		//Pass the connection to the original collections, so the view can observe the total count
 		var activeModsConnection = ActiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
-		var overrideModsConnection = OverrideMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 		var inactiveModsConnection = InactiveMods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
 		ColumnOptions<IModEntry> columnOpts = new() { CanUserSortColumn = true, CanUserResizeColumn = true };
@@ -1901,22 +1873,6 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 			ListType = ModListType.Active
 		};
 
-		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(OverrideMods)
-		{
-			Columns =
-			{
-				new HierarchicalExpanderColumn<IModEntry>(
-					new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts),
-					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
-				new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto),
-				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
-				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
-			}
-		}, OverrideMods, overrideModsConnection, "Overrides")
-		{
-			ListType = ModListType.Override
-		};
-
 		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(InactiveMods)
 		{
 			Columns =
@@ -1966,7 +1922,6 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 
 		_totalActiveModsHelper = ActiveMods.ToObservableChangeSet().CountChanged().Select(_ => ActiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalActiveMods);
 		_totalInactiveModsHelper = InactiveMods.ToObservableChangeSet().CountChanged().Select(_ => InactiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalInactiveMods);
-		_overrideModsVisibilityHelper = OverrideMods.ToObservableChangeSet().CountChanged().Select(_ => OverrideMods.Count > 0).ToUIPropertyImmediate(this, x => x.OverrideModsVisibility);
 
 		var whenDebugMode = host.WhenAnyValue(x => x.DebugMode);
 		_adventureModBoxVisibilityHelper = whenDebugMode.ToUIProperty(this, x => x.AdventureModBoxVisibility);
@@ -2110,9 +2065,6 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 			ApplyProfile(SelectedProfile, SelectedModOrder);
 		});
 
-		//this.WhenAnyValue(x => x.OverrideModsFilterText).Throttle(TimeSpan.FromMilliseconds(500)).ObserveOn(RxApp.MainThreadScheduler).
-		//	Subscribe((s) => { OnFilterTextChanged(s, modManagerService.ForceLoadedMods); });
-
 		ActiveMods.WhenAnyPropertyChanged(nameof(ModData.Index)).Throttle(TimeSpan.FromMilliseconds(25)).Subscribe(_ =>
 		{
 			SelectedModOrder?.Sort(SortModOrder);
@@ -2211,11 +2163,8 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 
 			await Observable.Start(() =>
 			{
-				mod.ForceAllowInLoadOrder = forceAllow;
-
 				if (forceAllow)
 				{
-					QueueRemoval([mod.UUID], ModListType.Override);
 					AddActiveMod(mod.ToModInterface());
 				}
 				else
@@ -2224,10 +2173,6 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 					SelectedModOrder?.Remove(mod.UUID);
 					QueueRemoval([mod.UUID], ModListType.Active);
 					QueueRemoval([mod.UUID], ModListType.Inactive);
-					if (!OverrideMods.Any(x => x.UUID == mod.UUID))
-					{
-						OverrideMods.Add(mod.ToModInterface());
-					}
 				}
 			}, RxApp.MainThreadScheduler);
 

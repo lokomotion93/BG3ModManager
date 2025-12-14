@@ -1761,13 +1761,6 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 						selectedMods.Add(mod);
 					}
 				}
-				foreach (var mod in modOrder.OverrideMods)
-				{
-					if(mod.IsSelected)
-					{
-						selectedMods.Add(mod);
-					}
-				}
 				DeleteMods(selectedMods, false);
 				input.SetOutput(true);
 			}, RxApp.MainThreadScheduler);
