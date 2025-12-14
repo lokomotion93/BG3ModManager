@@ -95,6 +95,13 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		RefreshAllModUpdatesBackground();
 	}
 
+	private void LoadModsConfig()
+	{
+		_settings.TryLoad(_settings.InactiveMods, out _, false);
+		_settings.TryLoad(_settings.ModConfig, out _, false);
+		_settings.TryLoad(_settings.ContainerSettings, out _, false);
+	}
+
 	public void RefreshStart()
 	{
 		_globalCommands.CanExecuteCommands = false;
@@ -108,6 +115,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		//Window.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
 		//Window.TaskbarItemInfo.ProgressValue = 0;
 		LoadAppConfig();
+		LoadModsConfig();
 		Progress.Start(RefreshAsync, false, ViewModelLocator.ModOrder);
 	}
 
