@@ -1249,7 +1249,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				}
 				else if (child.Type == ModEntryType.Container && child is ModOrderContainer childContainer)
 				{
-					AddNestedMods(targetList, container, addedEntries, canAddMod, canAddContainer, wasAdded);
+					AddNestedMods(targetList, childContainer, addedEntries, canAddMod, canAddContainer, wasAdded);
 				}
 			}
 		}
