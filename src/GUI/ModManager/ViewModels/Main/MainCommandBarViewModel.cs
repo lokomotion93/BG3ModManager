@@ -567,7 +567,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 			if (modOrder.ActiveModsView.TotalModsSelected == 0)
 			{
-				modOrderView.ActiveModsList.ModsTreeDataGrid.RowSelection?.Select(0);
+				modOrderView.ActiveModsList.ModsTreeDataGrid.RowSelection?.Select(-1);
 			}
 			//TODO FocusSelectedItem?
 		}, canExecuteModOrderCommands);
@@ -582,7 +582,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 			if (modOrder.InactiveModsView.TotalModsSelected == 0)
 			{
-				modOrderView.InactiveModsList.ModsTreeDataGrid.RowSelection?.Select(0);
+				modOrderView.InactiveModsList.ModsTreeDataGrid.RowSelection?.Select(-1);
 			}
 			//TODO FocusSelectedItem?
 		}, canExecuteModOrderCommands);
@@ -605,11 +605,11 @@ public partial class MainCommandBarViewModel : ReactiveObject
 			DivinityApp.IsKeyboardNavigating = true;
 			if (modOrder.ActiveModsView.HasAnyFocus)
 			{
-				modOrder.ActiveModsView.Mods.RowSelection?.Select(0);
+				modOrder.ActiveModsView.Mods.RowSelection?.Select(-1);
 			}
 			else if (modOrder.InactiveModsView.HasAnyFocus)
 			{
-				modOrder.InactiveModsView.Mods.RowSelection?.Select(0);
+				modOrder.InactiveModsView.Mods.RowSelection?.Select(-1);
 			}
 		}, canExecuteModOrderCommands);
 
@@ -618,11 +618,11 @@ public partial class MainCommandBarViewModel : ReactiveObject
 			DivinityApp.IsKeyboardNavigating = true;
 			if (modOrder.ActiveModsView.HasAnyFocus)
 			{
-				modOrder.ActiveModsView.Mods.RowSelection?.Select(modOrder.ActiveModsView.Mods.Rows.Count-1);
+				modOrder.ActiveModsView.Mods.RowSelection?.Select(modOrder.ActiveModsView.Mods.Rows.Count-2);
 			}
 			else if (modOrder.InactiveModsView.HasAnyFocus)
 			{
-				modOrder.InactiveModsView.Mods.RowSelection?.Select(modOrder.InactiveModsView.Mods.Rows.Count - 1);
+				modOrder.InactiveModsView.Mods.RowSelection?.Select(modOrder.InactiveModsView.Mods.Rows.Count-2);
 			}
 		}, canExecuteModOrderCommands);
 
