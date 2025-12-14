@@ -31,13 +31,24 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 	//TODO Make this work for both DOS2 and BG3
 	public bool SetGamePathways(string? currentGameDataPath, string? gameDataFolderOverride = "")
 	{
+		var defaultPathways = _settingsService.AppSettings.DefaultPathways;
+		var settings = _settingsService.ManagerSettings;
+
 		try
 		{
-			var localAppDataFolder = _reg.GetAppDataPath();
-			DivinityApp.Log($"Looking for local app data folder at '{localAppDataFolder}'");
+			string? localAppDataFolder = null;
 
-			var defaultPathways = _settingsService.AppSettings.DefaultPathways;
-			var settings = _settingsService.ManagerSettings;
+			var protonFolder = _reg.GetProtonDataPath(defaultPathways.Steam.AppID!);
+			if(protonFolder.IsExistingDirectory())
+			{
+				localAppDataFolder = protonFolder;
+			}
+			else
+			{
+				localAppDataFolder = _reg.GetAppDataPath();
+			}
+
+			DivinityApp.Log($"Looking for local app data folder at '{localAppDataFolder}'");
 
 			if (string.IsNullOrWhiteSpace(defaultPathways.DocumentsGameFolder))
 			{
@@ -79,7 +90,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 				{
 					Data.InstallPath = installPath;
 
-					if(shouldFindData)
+					if (shouldFindData)
 					{
 						var gameDataPath = _fs.Path.Join(installPath, defaultPathways.GameDataFolder).Replace("\\", "/");
 						DivinityApp.Log($"Looking for data path at '{gameDataPath}'.");
@@ -102,6 +113,20 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 						{
 							settings.GameExecutablePath = exePath.Replace("\\", "/");
 							DivinityApp.Log($"Exe path set to '{exePath}'.");
+						}
+						else
+						{
+							if(OperatingSystem.IsLinux())
+							{
+								//Newer versions may just have a "bg3" file, no bg3.exe/bg3_dx11.exe
+								exePath = _fs.Path.Join(installPath, "bin", "bg3");
+								DivinityApp.Log($"Looking for linux exe path at '{exePath}'.");
+								if (_fs.File.Exists(exePath))
+								{
+									settings.GameExecutablePath = exePath.Replace("\\", "/");
+									DivinityApp.Log($"Exe path set to '{exePath}'.");
+								}
+							}
 						}
 					}
 				}
@@ -131,47 +156,6 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 								if(shouldFindData)
 								{
 									var gameDataPath = _fs.Path.Join(gogGameFolder, defaultPathways.GameDataFolder).Replace("\\", "/");
-									DivinityApp.Log($"Looking for data path at '{gameDataPath}'.");
-									if (_fs.Directory.Exists(gameDataPath))
-									{
-										DivinityApp.Log($"Set game data path to '{gameDataPath}'.");
-										settings.GameDataPath = gameDataPath;
-									}
-									else
-									{
-										DivinityApp.Log($"Failed to find game data path at '{gameDataPath}'.");
-									}
-								}
-							}
-						}
-					}
-					else if (OperatingSystem.IsLinux())
-					{
-						///steamapps/compatdata/1086940/pfx/
-						var steamInstall = _reg.GetSteamInstallPath();
-						DivinityApp.Log($"Looking for linux steam path at '{steamInstall}'.");
-						if (steamInstall.IsExistingDirectory())
-						{
-							var gameFolder = _fs.Path.Join(steamInstall, $"steamapps/compatdata/{defaultPathways.Steam.AppID ?? "1086940"}");
-							DivinityApp.Log($"Looking for linux game path at '{gameFolder}'.");
-							if (gameFolder.IsExistingDirectory())
-							{
-								Data.InstallPath = gameFolder;
-
-								if (shouldFindExe)
-								{
-									var exePath = _fs.Path.Join(gameFolder, defaultPathways.Steam.ExePath);
-									DivinityApp.Log($"Looking for linux exe path at '{exePath}'.");
-									if (_fs.File.Exists(exePath))
-									{
-										settings.GameExecutablePath = exePath.Replace("\\", "/");
-										DivinityApp.Log($"Exe path set to '{exePath}'.");
-									}
-								}
-
-								if(shouldFindData)
-								{
-									var gameDataPath = _fs.Path.Join(gameFolder, defaultPathways.GameDataFolder).Replace("\\", "/");
 									DivinityApp.Log($"Looking for data path at '{gameDataPath}'.");
 									if (_fs.Directory.Exists(gameDataPath))
 									{

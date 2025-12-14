@@ -13,8 +13,9 @@ public interface IRegistryService
 
 	string? GetAppDataPath();
 	string? GetSteamInstallPath();
-	string? GetGoGInstallPath();
+	string? GetProtonDataPath(string steamAppId);
 	string? GetSteamGameInstallPath(string gameFolder, string steamAppId);
+	string? GetGoGInstallPath();
 	bool IsAssociatedWithNXMProtocol(string exePath);
 	bool SetNXMProtocol(string exePath);
 }

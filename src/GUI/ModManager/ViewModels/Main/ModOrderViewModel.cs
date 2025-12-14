@@ -778,7 +778,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			{
 				task.Move(_fs, false);
 			}
-
+			DivinityApp.Log("Mod organization complete!");
 			LockAll(false);
 		}
 	}

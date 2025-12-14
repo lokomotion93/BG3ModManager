@@ -59,7 +59,7 @@ public static class ProcessHelper
 				{
 					return false;
 				}
-				if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				if (OperatingSystem.IsWindows())
 				{
 					var info = new ProcessStartInfo(path, args);
 					TrySetUseShellExecute(info);
@@ -67,7 +67,7 @@ public static class ProcessHelper
 					Process.Start(info);
 					return true;
 				}
-				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+				else if (OperatingSystem.IsLinux())
 				{
 					var info = new ProcessStartInfo("xdg-open", $"\"{path}\"");
 					TrySetUseShellExecute(info);
@@ -76,7 +76,7 @@ public static class ProcessHelper
 					//Process.Start("xdg-open", path);
 					return true;
 				}
-				else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+				else if (OperatingSystem.IsMacOS())
 				{
 					Process.Start("open", path);
 					return true;
@@ -100,18 +100,18 @@ public static class ProcessHelper
 		catch
 		{
 			// hack because of this: https://github.com/dotnet/corefx/issues/10361
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			if (OperatingSystem.IsWindows())
 			{
 				url = url.Replace("&", "^&");
 				var info = new ProcessStartInfo(url, args);
 				TrySetUseShellExecute(info);
 				Process.Start(info);
 			}
-			else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+			else if (OperatingSystem.IsLinux())
 			{
 				Process.Start("xdg-open", url);
 			}
-			else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+			else if (OperatingSystem.IsMacOS())
 			{
 				Process.Start("open", url);
 			}

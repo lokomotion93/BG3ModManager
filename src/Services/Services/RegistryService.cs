@@ -52,6 +52,22 @@ public partial class RegistryService : IRegistryService
 
 	public string? GetGoGInstallPath() => _regHelper?.GetGOGInstallPath();
 
+	public string? GetProtonDataPath(string steamAppId)
+	{
+		var steamInstallPath = GetSteamInstallPath();
+		if (steamInstallPath.IsExistingDirectory())
+		{
+			//Proton check
+			//~/.local/share/Steam/steamapps/compatdata/1086940/pfx/drive_c/users/steamuser/AppData/Local/Larian Studios
+			var protonLocalFolder = _fs.Path.Join(steamInstallPath, $"steamapps/compatdata/{steamAppId}/pfx/drive_c/users/steamuser/AppData/Local");
+			if(protonLocalFolder.IsExistingDirectory())
+			{
+				return protonLocalFolder;
+			}
+		}
+		return null;
+	}
+
 	public string? GetSteamGameInstallPath(string gameFolder, string steamAppId)
 	{
 		try
