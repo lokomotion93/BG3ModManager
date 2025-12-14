@@ -267,7 +267,7 @@ public partial class ModListViewModel : ReactiveObject
 						if(VisibleRows.Count > 0)
 						{
 							var lastRow = VisibleRows.LastOrDefault();
-							if (lastRow > 0)
+							if (lastRow > 0 && lastRow < _mods.Count)
 							{
 								_mods.Insert(lastRow, container);
 							}
