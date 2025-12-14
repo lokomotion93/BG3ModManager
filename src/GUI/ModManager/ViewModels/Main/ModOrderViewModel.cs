@@ -1378,9 +1378,8 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		var addedActiveMods = new HashSet<string>();
 		var addedInactiveMods = new HashSet<string>();
-		var addedOverrideMods = new HashSet<string>();
 
-		bool WasAdded(string uuid) => addedActiveMods.Contains(uuid) || addedInactiveMods.Contains(uuid) || addedOverrideMods.Contains(uuid);
+		bool WasAdded(string uuid) => addedActiveMods.Contains(uuid) || addedInactiveMods.Contains(uuid);
 
 		ActiveMods.Clear();
 
@@ -1436,7 +1435,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				}
 				else
 				{
-					addedOverrideMods.Add(entry.UUID);
+					addedActiveMods.Add(entry.UUID);
 					ActiveMods.Add(entry.ToModInterface());
 				}
 			}
