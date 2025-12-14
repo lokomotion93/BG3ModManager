@@ -36,17 +36,8 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 
 		try
 		{
-			string? localAppDataFolder = null;
-
-			var protonFolder = _reg.GetProtonDataPath(defaultPathways.Steam.AppID!);
-			if(protonFolder.IsExistingDirectory())
-			{
-				localAppDataFolder = protonFolder;
-			}
-			else
-			{
-				localAppDataFolder = _reg.GetAppDataPath();
-			}
+			string? localAppDataFolder = _reg.GetAppDataPath(defaultPathways.Steam.AppID ?? DivinityApp.STEAM_APPID);
+			Data.AppDataLocalFolder = localAppDataFolder;
 
 			DivinityApp.Log($"Looking for local app data folder at '{localAppDataFolder}'");
 
@@ -64,6 +55,7 @@ public class PathwaysService(ISettingsService settingsService, IFileSystemServic
 				if (parentDir != null)
 				{
 					localAppDataFolder = parentDir.FullName;
+					Data.AppDataLocalFolder = localAppDataFolder;
 				}
 				DivinityApp.Log($"Using override folder for appDataGameFolder: '{gameDataFolderOverride}'");
 			}

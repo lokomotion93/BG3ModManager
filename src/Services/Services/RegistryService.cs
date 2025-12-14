@@ -160,8 +160,18 @@ public partial class RegistryService : IRegistryService
 		return null;
 	}
 
-	public string? GetAppDataPath() => _regHelper?.GetAppDataPath();
-
+	public string? GetAppDataPath(string? steamAppId = null)
+	{
+		if (steamAppId.IsValid())
+		{
+			var protonPath = GetProtonDataPath(steamAppId);
+			if (protonPath.IsExistingDirectory())
+			{
+				return protonPath;
+			}
+		}
+		return _regHelper?.GetAppDataPath();
+	}
 	/// <inheritdoc />
 	public string? GetApplicationInstallPath(string displayName)
 	{

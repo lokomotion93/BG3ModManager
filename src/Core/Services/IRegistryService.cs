@@ -11,7 +11,7 @@ public interface IRegistryService
 	/// <returns></returns>
 	string? GetApplicationInstallPath(string displayName);
 
-	string? GetAppDataPath();
+	string? GetAppDataPath(string? steamAppId = null);
 	string? GetSteamInstallPath();
 	string? GetProtonDataPath(string steamAppId);
 	string? GetSteamGameInstallPath(string gameFolder, string steamAppId);

@@ -12,6 +12,11 @@ public partial class PathwayData : ReactiveObject
 	[Reactive] public partial string? InstallPath { get; set; }
 
 	/// <summary>
+	/// The path to %LOCALAPPDATA%
+	/// </summary>
+	[Reactive] public partial string? AppDataLocalFolder { get; set; }
+
+	/// <summary>
 	/// The path to %LOCALAPPDATA%\Larian Studios\Baldur's Gate 3
 	/// </summary>
 	[Reactive] public partial string? AppDataGameFolder { get; set; }

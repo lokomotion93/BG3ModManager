@@ -405,8 +405,10 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 
 	public bool CheckExtenderInstalledVersion(CancellationToken? t)
 	{
-		var extenderAppDataDir = _fs.Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DivinityApp.EXTENDER_APPDATA_DIRECTORY);
-		if (_fs.Directory.Exists(extenderAppDataDir))
+		//var extenderAppDataDir = _fs.Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DivinityApp.EXTENDER_APPDATA_DIRECTORY);
+		var extenderAppDataDir = _fs.Path.Join(_pathways.Data.AppDataLocalFolder, DivinityApp.EXTENDER_APPDATA_DIRECTORY);
+		DivinityApp.Log($"Checking for extender dlls at {extenderAppDataDir}");
+		if (extenderAppDataDir.IsExistingDirectory())
 		{
 			var files = FileUtils.EnumerateFiles(extenderAppDataDir, FileUtils.RecursiveOptions, (f) => f.EndsWith(DivinityApp.EXTENDER_APPDATA_DLL, StringComparison.OrdinalIgnoreCase));
 			var isInstalled = false;
@@ -414,25 +416,53 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			var majorVersion = -1;
 			var targetVersion = _settings.ExtenderUpdaterSettings.TargetVersion;
 
+			DivinityApp.Log($"Extender dlls found: {files.Count()}");
+
 			foreach (var f in files)
 			{
 				isInstalled = true;
 				try
 				{
-					var extenderInfo = FileVersionInfo.GetVersionInfo(f);
-					if (extenderInfo != null)
+					if (OperatingSystem.IsWindows())
 					{
-						var fileVersion = $"{extenderInfo.FileMajorPart}.{extenderInfo.FileMinorPart}.{extenderInfo.FileBuildPart}.{extenderInfo.FilePrivatePart}";
-						if (fileVersion == targetVersion)
+						var extenderInfo = FileVersionInfo.GetVersionInfo(f);
+						if (extenderInfo != null)
 						{
-							majorVersion = extenderInfo.FileMajorPart;
-							fullExtenderVersion = fileVersion;
-							break;
+							var fileVersion = $"{extenderInfo.FileMajorPart}.{extenderInfo.FileMinorPart}.{extenderInfo.FileBuildPart}.{extenderInfo.FilePrivatePart}";
+							if (fileVersion == targetVersion)
+							{
+								majorVersion = extenderInfo.FileMajorPart;
+								fullExtenderVersion = fileVersion;
+								break;
+							}
+							if (extenderInfo.FileMajorPart > majorVersion)
+							{
+								majorVersion = extenderInfo.FileMajorPart;
+								fullExtenderVersion = fileVersion;
+							}
 						}
-						if (extenderInfo.FileMajorPart > majorVersion)
+					}
+					else if(OperatingSystem.IsLinux())
+					{
+						var parentFolder = _fs.Directory.GetParent(f).Name;
+						var underscorePos = parentFolder.IndexOf("_");
+						DivinityApp.Log($"extender {parentFolder}");
+						if(underscorePos > -1)
 						{
-							majorVersion = extenderInfo.FileMajorPart;
-							fullExtenderVersion = fileVersion;
+							var versionStr = parentFolder[..underscorePos];
+							DivinityApp.Log($"extender {versionStr}");
+							var version = new Version(versionStr);
+							if (versionStr == targetVersion)
+							{
+								majorVersion = version.Major;
+								fullExtenderVersion = version.ToString();
+								break;
+							}
+							if (version.Major > majorVersion)
+							{
+								majorVersion = version.Major;
+								fullExtenderVersion = version.ToString();
+							}
 						}
 					}
 				}
