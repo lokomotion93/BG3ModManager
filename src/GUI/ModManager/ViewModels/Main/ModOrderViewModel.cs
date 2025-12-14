@@ -1239,17 +1239,20 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			// Can't add container, to add the children to the current parent
 			foreach (var child in container.Children)
 			{
-				if (child.Type == ModEntryType.Mod)
+				if(!wasAdded(child.Id))
 				{
-					if (_manager.TryGetMod(child.Id, out var mod) && canAddMod(mod))
+					if (child.Type == ModEntryType.Mod)
 					{
-						addedEntries.Add(child.Id);
-						targetList.Add(mod.ToModInterface());
+						if (_manager.TryGetMod(child.Id, out var mod))
+						{
+							addedEntries.Add(child.Id);
+							targetList.Add(mod.ToModInterface());
+						}
 					}
-				}
-				else if (child.Type == ModEntryType.Container && child is ModOrderContainer childContainer)
-				{
-					AddNestedMods(targetList, childContainer, addedEntries, canAddMod, canAddContainer, wasAdded);
+					else if (child.Type == ModEntryType.Container && child is ModOrderContainer childContainer)
+					{
+						AddNestedMods(targetList, childContainer, addedEntries, canAddMod, canAddContainer, wasAdded);
+					}
 				}
 			}
 		}
@@ -1276,7 +1279,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 			foreach (var entry in container.Children)
 			{
-				if (!addedEntries.Contains(entry.Id))
+				if (!wasAdded(entry.Id))
 				{
 					if (entry.Type == ModEntryType.Mod)
 					{
