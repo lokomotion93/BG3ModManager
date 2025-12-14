@@ -178,17 +178,15 @@ public partial class ModEntry : ReactiveObject, IModEntry
 			SelectedColor = EditorProjectBackgroundSelectedColor;
 			ListColor = EditorProjectBackgroundColor;
 			PointerOverColor = EditorProjectBackgroundPointerOverColor;
+			return;
 		}
-		else if (HasOverrideFiles)
-		{
-			SelectedColor = ForceLoadedBackgroundSelectedColor;
-			ListColor = ForceLoadedBackgroundColor;
-			PointerOverColor = ForceLoadedBackgroundPointerOverColor;
-		}
-		else
-		{
-			ListColor = SelectedColor = PointerOverColor = string.Empty;
-		}
+		//else if (HasOverrideFiles)
+		//{
+		//	SelectedColor = ForceLoadedBackgroundSelectedColor;
+		//	ListColor = ForceLoadedBackgroundColor;
+		//	PointerOverColor = ForceLoadedBackgroundPointerOverColor;
+		//}
+		ListColor = SelectedColor = PointerOverColor = string.Empty;
 	}
 
 	private static string? OsirisStatusToIconPath(DivinityOsirisModStatus status)
