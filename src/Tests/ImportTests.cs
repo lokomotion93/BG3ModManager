@@ -2,9 +2,9 @@
 
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
 
 using Xunit;
-using Xunit.Abstractions;
 
 namespace ModManager.Tests;
 
@@ -73,9 +73,9 @@ public class ImportTests : BaseTest
 		if (asArchive)
 		{
 			var zipPath = Path.Combine(testDir, @"Output\Test.zip");
-			var zip = ZipArchive.Create();
+			var zip = ZipArchive.CreateArchive();
 			zip.AddEntry(Path.GetFileName(pakPath), pakPath);
-			zip.SaveTo(zipPath, new SharpCompress.Writers.WriterOptions(SharpCompress.Common.CompressionType.Deflate));
+			zip.SaveTo(zipPath, new(CompressionType.Deflate));
 			importFilePath = zipPath;
 			zip.Dispose();
 		}

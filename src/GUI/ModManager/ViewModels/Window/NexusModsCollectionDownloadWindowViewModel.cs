@@ -97,7 +97,7 @@ public partial class NexusModsCollectionDownloadWindowViewModel : ReactiveObject
 
 	public NexusModsCollectionDownloadWindowViewModel(IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
 		Mods = [];

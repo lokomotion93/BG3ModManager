@@ -10,7 +10,7 @@ public static class ProcessHelper
 	private static readonly IFileSystemService _fs;
 	static ProcessHelper()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	/// <summary>

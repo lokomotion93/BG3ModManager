@@ -16,7 +16,7 @@ public partial class HelpWindowViewModel : ReactiveObject, IClosableViewModel, I
 
 	public HelpWindowViewModel(IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
 		WindowTitle = "Help";

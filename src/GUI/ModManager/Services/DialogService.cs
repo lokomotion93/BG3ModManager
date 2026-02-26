@@ -8,7 +8,7 @@ using System.Collections.Immutable;
 namespace ModManager.Services;
 public class DialogService : IDialogService
 {
-	private static Window _window => Locator.Current.GetService<MainWindow>()!;
+	private static Window _window => AppLocator.Current.GetService<MainWindow>()!;
 	private readonly IInteractionsService _interactions;
 	private readonly IFileSystemService _fs;
 	private readonly ISettingsService _settings;

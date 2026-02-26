@@ -126,7 +126,7 @@ public partial class DeleteFilesViewModel : BaseProgressViewModel, IRoutableView
 
 	public DeleteFilesViewModel(IScreen? host = null) : base()
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 
 		RemoveFromLoadOrder = true;
 		PermanentlyDelete = false;

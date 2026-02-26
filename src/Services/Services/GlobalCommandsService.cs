@@ -94,7 +94,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 		if (mod == null) throw new ArgumentNullException(nameof(mod));
 		try
 		{
-			var modExportService = Locator.Current.GetService<IModSettingsExportService>()!;
+			var modExportService = AppLocator.Current.GetService<IModSettingsExportService>()!;
 			var safeName = System.Security.SecurityElement.Escape(mod.Name);
 			var text = modExportService.ToFormattedModuleShortDesc(mod);
 			ClipboardService.SetText(text);
@@ -197,7 +197,7 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 	private async Task ExploreSelectedModFiles()
 	{
 		List<ModData> selectedMods = [];
-		var modManager = Locator.Current.GetService<IModManagerService>();
+		var modManager = AppLocator.Current.GetService<IModManagerService>();
 		if (modManager != null)
 		{
 			selectedMods.AddRange(modManager.AllMods.Where(x => x.IsSelected));

@@ -27,7 +27,7 @@ public static class ViewModelLocator
 	public static ExportOrderToArchiveViewModel ExportOrderToArchive => AppServices.Get<ExportOrderToArchiveViewModel>()!;
 	public static MessageBoxViewModel MessageBox => AppServices.Get<MessageBoxViewModel>()!;
 	public static ModPickerViewModel ModPicker => AppServices.Get<ModPickerViewModel>()!;
-	public static IProgressBarViewModel Progress => AppServices.Get<IProgressBarViewModel>()!;
+	public static ProgressBarViewModel Progress => AppServices.Get<ProgressBarViewModel>()!;
 	public static KeybindingsViewModel Keybindings => AppServices.Get<KeybindingsViewModel>()!;
 	public static FooterViewModel Footer => AppServices.Get<FooterViewModel>()!;
 

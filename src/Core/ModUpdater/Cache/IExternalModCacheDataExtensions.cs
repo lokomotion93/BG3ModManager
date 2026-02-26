@@ -9,7 +9,7 @@ public static class IExternalModCacheDataExtensions
 {
 	public static async Task<T?> LoadCacheAsync<T>(this IExternalModCacheHandler<T> handler, string currentAppVersion, CancellationToken token) where T : IModCacheData
 	{
-		var fs = Locator.Current.GetService<IFileSystemService>()!;
+		var fs = AppLocator.Current.GetService<IFileSystemService>()!;
 		var filePath = DivinityApp.GetAppDirectory("Data", handler.FileName);
 
 		if (fs.File.Exists(filePath))
@@ -33,7 +33,7 @@ public static class IExternalModCacheDataExtensions
 	{
 		try
 		{
-			var fs = Locator.Current.GetService<IFileSystemService>()!;
+			var fs = AppLocator.Current.GetService<IFileSystemService>()!;
 
 			var parentDir = DivinityApp.GetAppDirectory("Data");
 			var filePath = fs.Path.Join(parentDir, handler.FileName);
@@ -64,7 +64,7 @@ public static class IExternalModCacheDataExtensions
 	{
 		try
 		{
-			var fs = Locator.Current.GetService<IFileSystemService>()!;
+			var fs = AppLocator.Current.GetService<IFileSystemService>()!;
 			var parentDir = DivinityApp.GetAppDirectory("Data");
 			var filePath = fs.Path.Join(parentDir, handler.FileName);
 			if (fs.File.Exists(filePath))

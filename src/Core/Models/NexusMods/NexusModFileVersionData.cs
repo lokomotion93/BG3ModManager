@@ -16,7 +16,7 @@ public partial struct NexusModFileVersionData
 	
 	public static NexusModFileVersionData FromFilePath(string path)
 	{
-		var name = Locator.Current.GetService<IFileSystemService>()!.Path.GetFileNameWithoutExtension(path);
+		var name = AppLocator.Current.GetService<IFileSystemService>()!.Path.GetFileNameWithoutExtension(path);
 		var match = _filePattern.Match(name);
 
 		long modId = -1;

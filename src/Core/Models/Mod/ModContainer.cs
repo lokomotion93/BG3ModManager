@@ -108,7 +108,7 @@ public partial class ModContainer : ReactiveObject, IModEntry, INested<IObservab
 				_autosaveDisp?.Dispose();
 				_autosaveDisp = RxApp.TaskpoolScheduler.Schedule(TimeSpan.FromMilliseconds(250), () =>
 				{
-					var settings = Locator.Current.GetService<ISettingsService>();
+					var settings = AppLocator.Current.GetService<ISettingsService>();
 					if (settings != null)
 					{
 						settings.TrySave(settings.ContainerSettings, out _);

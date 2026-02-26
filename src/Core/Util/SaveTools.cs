@@ -8,7 +8,7 @@ public static class SaveTools
 	private static readonly IFileSystemService _fs;
 	static SaveTools()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	public static bool RenameSave(string pathToSave, string newName)

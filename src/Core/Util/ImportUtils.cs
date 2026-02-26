@@ -6,6 +6,7 @@ using ModManager.Services;
 
 using SharpCompress.Archives;
 using SharpCompress.Common;
+using SharpCompress.Compressors;
 using SharpCompress.Compressors.BZip2;
 using SharpCompress.Compressors.Xz;
 using SharpCompress.Readers;
@@ -33,7 +34,7 @@ public class ImportParameters(string filePath, string outputDirectory, Cancellat
 	{
 		get
 		{
-			_ext ??= Locator.Current.GetService<IFileSystemService>()?.Path.GetExtension(FilePath)?.ToLower();
+			_ext ??= AppLocator.Current.GetService<IFileSystemService>()?.Path.GetExtension(FilePath)?.ToLower();
 			return _ext;
 		}
 		set => _ext = value?.ToLower();
@@ -57,7 +58,7 @@ public static class ImportUtils
 {
 	private const int ARCHIVE_BUFFER = 128000;
 
-	private static readonly ArchiveEncoding _archiveEncoding = new(Encoding.UTF8, Encoding.UTF8);
+	private static readonly ArchiveEncoding _archiveEncoding = new();
 	private static readonly ReaderOptions _importReaderOptions = new() { ArchiveEncoding = _archiveEncoding };
 
 	private static readonly List<string> _archiveFormats = [".7z", ".7zip", ".gzip", ".rar", ".tar", ".tar.gz", ".zip"];
@@ -66,7 +67,7 @@ public static class ImportUtils
 	private static readonly IFileSystemService _fs;
 	static ImportUtils()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	public static async Task<bool> ImportArchiveAsync(ImportParameters options)
@@ -86,8 +87,8 @@ public static class ImportUtils
 				await fileStream.ReadExactlyAsync(buffer.AsMemory(0, buffer.Length), options.Token);
 				fileStream.Position = 0;
 				options.ReportProgress?.Invoke(taskStepAmount);
-				using var archive = ArchiveFactory.Open(fileStream, _importReaderOptions);
-				foreach (var file in archive.Entries)
+				await using var archive = await ArchiveFactory.OpenAsyncArchive(fileStream, _importReaderOptions, options.Token);
+				await foreach (var file in archive.EntriesAsync)
 				{
 					if (options.Token.IsCancellationRequested) return false;
 					if (!file.IsDirectory && file.Key.IsValid())
@@ -203,7 +204,8 @@ public static class ImportUtils
 					switch (options.Extension)
 					{
 						case ".bz2":
-							decompressionStream = new BZip2Stream(fileStream, SharpCompress.Compressors.CompressionMode.Decompress, true);
+							//decompressionStream = new BZip2Stream(fileStream, SharpCompress.Compressors.CompressionMode.Decompress, true);
+							decompressionStream = await BZip2Stream.CreateAsync(fileStream, CompressionMode.Decompress, decompressConcatenated: true, leaveOpen: false, cancellationToken: options.Token);
 							break;
 						case ".xz":
 							decompressionStream = new XZStream(fileStream);
@@ -287,7 +289,7 @@ public static class ImportUtils
 		catch (Exception ex)
 		{
 			DivinityApp.Log($"Error extracting package: {ex}");
-			options.Result.AddError(options?.FilePath ?? string.Empty, ex);
+			options.Result.AddError(options.FilePath ?? string.Empty, ex);
 			options.ShowAlert?.Invoke($"Error extracting archive (check the log): {ex.Message}", AlertType.Danger, 0);
 		}
 		finally

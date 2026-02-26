@@ -200,7 +200,7 @@ public partial class StatsValidatorWindowViewModel : ReactiveObject, IClosableVi
 	[DependencyInjectionConstructor]
 	public StatsValidatorWindowViewModel(IInteractionsService interactions, IStatsValidatorService statsValidator, IScreen? host = null) : this()
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		
 		_interactions = interactions;
 		_validator = statsValidator;

@@ -8,6 +8,8 @@ using ModManager.Windows;
 
 using SukiUI;
 
+using System.Reflection;
+
 namespace ModManager;
 public partial class App : Application
 {
@@ -32,28 +34,28 @@ public partial class App : Application
 			return;
 		}
 #endif
-		var desktop = DesktopLifetime;
-		if (desktop != null)
+		if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
 		{
-			RxApp.DefaultExceptionHandler = new ExceptionSuppressionHandler();
+			// Note: Avalonia handles ReactiveUI init via .UseReactiveUI(rxuiBuilder => {/* ... */})
+			//AppLocator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
 			ToolTip.ShowDelayProperty.OverrideDefaultValue<Panel>(500);
 			ToolTip.BetweenShowDelayProperty.OverrideDefaultValue<Panel>(500);
 			ToolTip.PlacementProperty.OverrideDefaultValue<Panel>(PlacementMode.RightEdgeAlignedTop);
 
 			var viewLocator = new ViewLocator();
-			Locator.CurrentMutable.RegisterConstant<IViewLocator>(viewLocator);
+			AppLocator.CurrentMutable.RegisterConstant<IViewLocator>(viewLocator);
 			DataTemplates.Add(viewLocator);
 
 			var mainWindow = new MainWindow();
 			desktop.MainWindow = mainWindow;
-			Locator.CurrentMutable.RegisterConstant(mainWindow);
+			AppLocator.CurrentMutable.RegisterConstant(mainWindow);
 			mainWindow.DataContext = ViewModelLocator.Main;
 
-			Locator.CurrentMutable.InitializeSplat();
-			Locator.CurrentMutable.InitializeReactiveUI();
+			AppLocator.CurrentMutable.InitializeSplat();
+			//AppLocator.CurrentMutable.InitializeReactiveUI();
 
-			Locator.CurrentMutable.RegisterConstant(new WindowManagerService(mainWindow, AppServices.Interactions));
+			AppLocator.CurrentMutable.RegisterConstant(new WindowManagerService(mainWindow, AppServices.Interactions));
 
 			RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
 

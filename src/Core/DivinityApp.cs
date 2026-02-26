@@ -132,7 +132,7 @@ public static class DivinityApp
 
 	static DivinityApp()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 		_exeAssembly = Assembly.GetEntryAssembly()!;
 		_exePath = _exeAssembly.Location;
 		_appDirectory = _fs.Path.GetDirectoryName(_exeAssembly.Location)!;
@@ -194,7 +194,7 @@ public static class DivinityApp
 
 	public static bool IsScreenReaderActive()
 	{
-		return Locator.Current.GetService<IScreenReaderService>()?.IsScreenReaderActive() == true;
+		return AppLocator.Current.GetService<IScreenReaderService>()?.IsScreenReaderActive() == true;
 		//if (AutomationPeer.ListenerExists(AutomationEvents.AutomationFocusChanged) || AutomationPeer.ListenerExists(AutomationEvents.LiveRegionChanged))
 		//{
 		//	return true;
@@ -217,13 +217,13 @@ public static class DivinityApp
 	[Obsolete("Use a direct service reference instead")]
 	public static void ShowAlert(string message, AlertType alertType = AlertType.Info, int timeout = 0)
 	{
-		Locator.Current.GetService<IGlobalCommandsService>()?.ShowAlert(message, alertType, timeout);
+		AppLocator.Current.GetService<IGlobalCommandsService>()?.ShowAlert(message, alertType, timeout);
 	}
 
 	[Obsolete("Use a direct service reference instead")]
 	public static async Task ShowAlertAsync(string message, AlertType alertType = AlertType.Info, int timeout = 0)
 	{
-		var commands = Locator.Current.GetService<IGlobalCommandsService>();
+		var commands = AppLocator.Current.GetService<IGlobalCommandsService>();
 		if (commands != null)
 		{
 			await commands.ShowAlertAsync(message, alertType, timeout);

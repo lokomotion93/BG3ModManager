@@ -7,7 +7,7 @@ public static class RuntimeHelper
 	private static readonly IFileSystemService _fs;
 	static RuntimeHelper()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	private static Version? PathToVersion(string path)

@@ -19,7 +19,7 @@ public class TempFile : IAsyncDisposable
 	//128 KB since we're using asynchronous streams, default is 4 KB
 	private TempFile(string sourcePath, int bufferSize = 128000)
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 
 		_bufferSize = bufferSize;
 		var tempDir = DivinityApp.GetAppDirectory("Temp");

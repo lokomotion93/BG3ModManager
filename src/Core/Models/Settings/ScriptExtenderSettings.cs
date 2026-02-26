@@ -9,7 +9,7 @@ namespace ModManager.Models.Settings;
 public partial class ScriptExtenderSettings : ReactiveObject, ISerializableSettings
 {
 	public string FileName => "ScriptExtenderSettings.json";
-	public string? GetDirectory() => Locator.Current.GetService<ISettingsService>()?.GetGameExecutableDirectory();
+	public string? GetDirectory() => AppLocator.Current.GetService<ISettingsService>()?.GetGameExecutableDirectory();
 	public bool SkipEmpty => true;
 
 	[Reactive] public partial bool DevOptionsEnabled { get; set; }

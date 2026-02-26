@@ -88,7 +88,7 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 
 	public void ApplyUserModConfig()
 	{
-		var userModConfig = Locator.Current.GetService<ISettingsService>()!.ModConfig;
+		var userModConfig = AppLocator.Current.GetService<ISettingsService>()!.ModConfig;
 
 		foreach (var mod in AddonMods)
 		{

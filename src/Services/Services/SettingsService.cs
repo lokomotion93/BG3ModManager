@@ -140,7 +140,7 @@ public class SettingsService : ReactiveObject, ISettingsService
 
 				if(ignoredModsData.MainCampaign?.IsValid() == true)
 				{
-					var modManager = Locator.Current.GetService<IModManagerService>();
+					var modManager = AppLocator.Current.GetService<IModManagerService>();
 					if (modManager != null)
 					{
 						modManager.MainCampaignGuid = ignoredModsData.MainCampaign;
@@ -224,7 +224,7 @@ public class SettingsService : ReactiveObject, ISettingsService
 		{
 			return directory;
 		}
-		var pathways = Locator.Current.GetService<PathwaysService>();
+		var pathways = AppLocator.Current.GetService<PathwaysService>();
 		if(pathways != null && pathways.Data.InstallPath.IsExistingDirectory())
 		{
 			return _fs.Path.Join(pathways.Data.InstallPath, "bin");
@@ -306,7 +306,7 @@ public class SettingsService : ReactiveObject, ISettingsService
 		ManagerSettings.WhenAnyValue(x => x.SelectedLanguage).SkipUntil(settingsWindowIsOpen).Select(x => x?.Name).BindTo(ManagerSettings, x => x.Language);
 		ManagerSettings.WhenAnyValue(x => x.Language).WhereNotNull().ObserveOn(RxApp.MainThreadScheduler).Subscribe(langName =>
 		{
-			var langService = Locator.Current.GetService<ILocaleService>();
+			var langService = AppLocator.Current.GetService<ILocaleService>();
 			if(langService != null)
 			{
 				try

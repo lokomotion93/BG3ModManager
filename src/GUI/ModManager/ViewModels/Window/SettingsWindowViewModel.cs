@@ -298,7 +298,7 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 
 	public SettingsWindowViewModel(IInteractionsService interactions, ISettingsService settingsService, IFileSystemService fileSystemService, IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
 		_interactions = interactions;

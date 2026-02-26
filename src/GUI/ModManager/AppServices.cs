@@ -48,7 +48,7 @@ public static class AppServices
 
 	static AppServices()
 	{
-		var resolver = Locator.CurrentMutable;
+		var resolver = AppLocator.CurrentMutable;
 		resolver.AddCommonServices();
 		resolver.AddAppServices();
 
@@ -73,7 +73,7 @@ public static class AppServices
 
 		SplatRegistrations.RegisterLazySingleton<DeleteFilesViewModel>();
 		SplatRegistrations.RegisterLazySingleton<ModUpdatesViewModel>();
-		SplatRegistrations.RegisterLazySingleton<IProgressBarViewModel, ProgressBarViewModel>();
+		SplatRegistrations.RegisterLazySingleton<ProgressBarViewModel, ProgressBarViewModel>();
 
 		SplatRegistrations.RegisterLazySingleton<SettingsWindowViewModel>();
 		SplatRegistrations.RegisterLazySingleton<AboutWindowViewModel>();
@@ -121,17 +121,17 @@ public static class AppServices
 
 	public static T Get<T>(string? contract = null)
 	{
-		return Locator.Current.GetService<T>(contract)!;
+		return AppLocator.Current.GetService<T>(contract)!;
 	}
 
 	public static void Register<T>(Func<object> constructorCallback, string? contract = null)
 	{
-		Locator.CurrentMutable.Register(constructorCallback, typeof(T), contract);
+		AppLocator.CurrentMutable.Register(constructorCallback, typeof(T), contract);
 	}
 
 	public static void RegisterSingleton<T>(T instance, string? contract = null)
 	{
-		Locator.CurrentMutable.RegisterConstant(instance, typeof(T), contract);
+		AppLocator.CurrentMutable.RegisterConstant(instance, typeof(T), contract);
 	}
 
 	/// <summary>
@@ -142,6 +142,6 @@ public static class AppServices
 	/// <param name="contract"></param>
 	public static void RegisterLazySingleton<T>(Func<object> constructorCallback, string contract = null)
 	{
-		Locator.CurrentMutable.RegisterLazySingleton(constructorCallback, typeof(T), contract);
+		AppLocator.CurrentMutable.RegisterLazySingleton(constructorCallback, typeof(T), contract);
 	}
 }

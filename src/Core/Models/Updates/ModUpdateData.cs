@@ -89,7 +89,7 @@ public partial class ModUpdateData : ReactiveObject, ISelectable
 			_sourceTextObs?.Dispose();
 			if (key.IsValid())
 			{
-				var locaService = Locator.Current.GetService<ILocaleService>();
+				var locaService = AppLocator.Current.GetService<ILocaleService>();
 				if(locaService != null)
 				{
 					_sourceTextObs = locaService.EntryToObservable(key).BindTo(this, x => x.SourceText);

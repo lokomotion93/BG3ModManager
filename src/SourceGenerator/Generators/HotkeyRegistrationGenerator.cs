@@ -88,7 +88,7 @@ public class HotkeyRegistrationGenerator : IIncrementalGenerator
 
 			code.AppendLine($"public void RegisterKeybindings()");
 			code.StartScope();
-			code.AppendLine("var keys = Locator.Current.GetService<AppKeysService>();");
+			code.AppendLine("var keys = AppLocator.Current.GetService<AppKeysService>();");
 			code.AppendLine("if (keys == null) throw new Exception(\"Failed to get AppKeysService - Is it registered?\");");
 			foreach (var entry in toGenerate.Hotkeys)
 			{

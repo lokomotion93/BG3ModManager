@@ -44,7 +44,7 @@ public partial class GitHubModsCacheHandler : ReactiveObject, IExternalModCacheH
 		var success = false;
 		try
 		{
-			var github = Locator.Current.GetService<IGitHubService>()!;
+			var github = AppLocator.Current.GetService<IGitHubService>()!;
 
 			foreach (var mod in mods)
 			{

@@ -156,7 +156,7 @@ public partial class ModEntry : ReactiveObject, IModEntry
 		return Loca.Mod_MissingDependenciesToolTip.SafeFormat($"Missing Dependencies:\n{missingDependenciesText}", missingDependenciesText);
 	}
 
-	private static IColorResourceService? _colorRes => Locator.Current.GetService<IColorResourceService>();
+	private static IColorResourceService? _colorRes => AppLocator.Current.GetService<IColorResourceService>();
 
 	//Green
 	private static string EditorProjectBackgroundColor => _colorRes?.GetColorHex("EditorProjectBackgroundColor", "#0C00FF4D") ?? "#0C00FF4D";
@@ -307,7 +307,7 @@ public partial class ModEntry : ReactiveObject, IModEntry
 		return string.Empty;
 	}
 
-	private static IFileSystemService _fs => Locator.Current.GetService<IFileSystemService>()!;
+	private static IFileSystemService _fs => AppLocator.Current.GetService<IFileSystemService>()!;
 
 	public ModEntry(ModData mod)
 	{

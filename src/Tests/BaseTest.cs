@@ -1,4 +1,4 @@
-﻿using Xunit.Abstractions;
+﻿using Xunit;
 
 namespace ModManager.Tests;
 
@@ -12,7 +12,6 @@ public abstract class BaseTest : IDisposable
 	{
 		_output = output;
 		DivinityApp.LogMethod = _output.WriteLine;
-		Console.SetOut(new ConsoleTextRedirecter(_output));
 	}
 
 	public virtual void Dispose()

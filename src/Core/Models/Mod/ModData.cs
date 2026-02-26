@@ -446,7 +446,7 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 		return false;
 	}
 
-	private static IFileSystemService _fs => Locator.Current.GetService<IFileSystemService>()!;
+	private static IFileSystemService _fs => AppLocator.Current.GetService<IFileSystemService>()!;
 
 	public ModData(string uuid)
 	{

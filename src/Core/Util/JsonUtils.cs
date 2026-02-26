@@ -229,7 +229,7 @@ public static class JsonUtils
 
 	static JsonUtils()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 		_defaultSerializerSettings.Converters.Add(new JsonStringEnumConverter());
 		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModConfig>());
 		_defaultSerializerSettings.Converters.Add(new DictionaryToSourceCacheConverter<ModContainerSettings>());

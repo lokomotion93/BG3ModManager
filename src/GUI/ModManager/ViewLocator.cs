@@ -24,16 +24,24 @@ public class ViewLocator : IViewLocator, IDataTemplate
 {
 	private static readonly Type _viewForType = typeof(IViewFor<>);
 
-	public IViewFor? ResolveView<T>(T? viewModel, string? contract = null)
+	public IViewFor<TViewModel>? ResolveView<TViewModel>(string? contract = null) where TViewModel : class
 	{
-		DivinityApp.Log($"ViewLocator.ResolveView: {viewModel}|{contract}");
-		if (viewModel != null)
+		var registered = AppLocator.Current.GetService(typeof(TViewModel), contract);
+		if (registered is IViewFor<TViewModel> view)
+		{
+			return view;
+		}
+		return null;
+	}
+
+	public IViewFor? ResolveView(object? instance, string? contract = null)
+	{
+		if (instance != null)
 		{
 			try
 			{
-				var viewType = _viewForType.MakeGenericType(viewModel.GetType());
-				var registered = Locator.Current.GetService(viewType, contract);
-				DivinityApp.Log($"ViewLocator.ResolveView: {viewModel}|{registered}");
+				var viewType = _viewForType.MakeGenericType(instance.GetType());
+				var registered = AppLocator.Current.GetService(viewType, contract);
 				if (registered is IViewFor view)
 				{
 					return view;
@@ -44,7 +52,7 @@ public class ViewLocator : IViewLocator, IDataTemplate
 				DivinityApp.Log($"Error fetching view: {ex}");
 			}
 		}
-		return new ViewLocatorErrorView() { Text = $"Failed to find view for {viewModel}" };
+		return new ViewLocatorErrorView() { Text = $"Failed to find view for {instance}" };
 	}
 
 	private static void RegisterConstant<TViewModel, TView>(IMutableDependencyResolver resolver) where TViewModel : ReactiveObject where TView : IViewFor<TViewModel>
@@ -54,15 +62,15 @@ public class ViewLocator : IViewLocator, IDataTemplate
 
 	static ViewLocator()
 	{
-		var resolver = Locator.CurrentMutable;
+		var resolver = AppLocator.CurrentMutable;
 
+		RegisterConstant<ProgressBarViewModel, ProgressBarView>(resolver);
 		RegisterConstant<MainCommandBarViewModel, MainCommandBar>(resolver);
 		RegisterConstant<DeleteFilesViewModel, DeleteFilesView>(resolver);
 		RegisterConstant<ModOrderViewModel, ModOrderView>(resolver);
 		RegisterConstant<ModUpdatesViewModel, ModUpdatesView>(resolver);
 		RegisterConstant<KeybindingsViewModel, KeybindingsView>(resolver);
 		RegisterConstant<FooterViewModel, FooterView>(resolver);
-		resolver.RegisterLazySingleton(() => (IViewFor<IProgressBarViewModel>)AppServices.Get<ProgressBarView>());
 
 		//resolver.RegisterLazySingleton(() => (IViewFor<SettingsWindowViewModel>)AppServices.Settings);
 		//resolver.RegisterLazySingleton(() => (IViewFor<ModManagerSettings>)AppServices.Settings.ManagerSettings);

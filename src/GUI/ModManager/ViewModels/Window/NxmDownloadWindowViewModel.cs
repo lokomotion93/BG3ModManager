@@ -15,7 +15,7 @@ public partial class NxmDownloadWindowViewModel : ReactiveObject, IClosableViewM
 
 	public NxmDownloadWindowViewModel(IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
 		var canConfirm = this.WhenAnyValue(x => x.Url).Select(x => x.IsValid() && x.StartsWith("nxm://"));

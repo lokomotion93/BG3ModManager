@@ -12,6 +12,7 @@ using ModManager.ViewModels.Main;
 
 using SharpCompress.Archives;
 using SharpCompress.Common;
+using SharpCompress.Compressors;
 using SharpCompress.Compressors.BZip2;
 using SharpCompress.Compressors.Xz;
 using SharpCompress.Readers;
@@ -36,7 +37,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 	private static PathwayData Pathways => AppServices.Pathways.Data;
 	private static MainWindowViewModel ViewModel => AppServices.Get<MainWindowViewModel>()!;
 
-	private static readonly ArchiveEncoding _archiveEncoding = new(Encoding.UTF8, Encoding.UTF8);
+	private static readonly ArchiveEncoding _archiveEncoding = new();
 	private static readonly ReaderOptions _importReaderOptions = new() { ArchiveEncoding = _archiveEncoding };
 	private static readonly WriterOptions _exportWriterOptions = new(CompressionType.Deflate) { ArchiveEncoding = _archiveEncoding };
 
@@ -254,8 +255,8 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 			var modManager = AppServices.Mods;
 
-			using var archive = ArchiveFactory.Open(fileStream, _importReaderOptions);
-			foreach (var file in archive.Entries)
+			await using var archive = await ArchiveFactory.OpenAsyncArchive(fileStream, _importReaderOptions, token);
+			await foreach (var file in archive.EntriesAsync)
 			{
 				if (token.IsCancellationRequested) return null;
 				if (!file.IsDirectory)
@@ -308,7 +309,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				switch (extension)
 				{
 					case ".bz2":
-						decompressionStream = new BZip2Stream(fileStream, SharpCompress.Compressors.CompressionMode.Decompress, true);
+						decompressionStream = await BZip2Stream.CreateAsync(fileStream, CompressionMode.Decompress, decompressConcatenated: true, leaveOpen: false, cancellationToken: token);
 						break;
 					case ".xz":
 						decompressionStream = new XZStream(fileStream);
@@ -560,39 +561,6 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 	#region Exporting
 
-	private static Task WriteZipAsync(IWriter writer, string entryName, string source, CancellationToken token)
-	{
-		if (token.IsCancellationRequested)
-		{
-			return Task.FromCanceled(token);
-		}
-
-		var task = Task.Run(async () =>
-		{
-			// execute actual operation in child task
-			var childTask = Task.Factory.StartNew(() =>
-			{
-				try
-				{
-					writer.Write(entryName, source);
-				}
-				catch (Exception)
-				{
-					// ignored because an exception on a cancellation request 
-					// cannot be avoided if the stream gets disposed afterwards 
-				}
-			}, TaskCreationOptions.AttachedToParent);
-
-			var awaiter = childTask.GetAwaiter();
-			while (!awaiter.IsCompleted)
-			{
-				await Task.Delay(0, token);
-			}
-		}, token);
-
-		return task;
-	}
-
 	public async Task<bool> ExportLoadOrderToArchiveAsync(ProfileData selectedProfile, ModOrder selectedModOrder, string outputPath, CancellationToken token)
 	{
 		var success = false;
@@ -623,7 +591,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 			{
 				_fs.EnsureParentDirectoryExists(outputPath);
 				using var stream = _fs.File.OpenWrite(outputPath);
-				using var zipWriter = WriterFactory.Open(stream, ArchiveType.Zip, _exportWriterOptions);
+				using var zipWriter = WriterFactory.OpenAsyncWriter(stream, ArchiveType.Zip, _exportWriterOptions, token);
 
 				var orderFileName = ModDataLoader.MakeSafeFilename(_fs.Path.Join(selectedModOrder.Name + ".json"), '_');
 				var contents = JsonSerializer.Serialize(selectedModOrder, _jsonOptIgnoreNone);
@@ -634,7 +602,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 				await swriter.WriteAsync(contents);
 				swriter.Flush();
 				ms.Position = 0;
-				zipWriter.Write(orderFileName, ms);
+				await zipWriter.WriteAsync(orderFileName, ms, token);
 
 				foreach (var mod in modPaks)
 				{
@@ -642,13 +610,16 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 					if (!mod.IsLooseMod)
 					{
 						var fileName = _fs.Path.GetFileName(mod.FilePath);
-						await WriteZipAsync(zipWriter, fileName, mod.FilePath, token);
+						if(fileName.IsValid() && mod.FilePath.IsValid())
+						{
+							await zipWriter.WriteAsync(fileName, mod.FilePath, token);
+						}
 					}
 					else
 					{
 						var outputPackage = _fs.Path.ChangeExtension(_fs.Path.Join(tempDir, mod.Folder), "pak");
 						//Imported Classic Projects
-						if (!mod.Folder.Contains(mod.UUID))
+						if (mod.Folder.IsValid() && !mod.Folder.Contains(mod.UUID))
 						{
 							outputPackage = _fs.Path.ChangeExtension(_fs.Path.Join(tempDir, mod.Folder + "_" + mod.UUID), "pak");
 						}
@@ -668,7 +639,7 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 						if (await FileUtils.CreatePackageAsync(gameDataFolder, sourceFolders, outputPackage, token, FileUtils.IgnoredPackageFiles))
 						{
 							var fileName = _fs.Path.GetFileName(outputPackage);
-							await WriteZipAsync(zipWriter, fileName, outputPackage, token);
+							await zipWriter.WriteAsync(fileName, outputPackage, token);
 							_fs.File.Delete(outputPackage);
 						}
 					}

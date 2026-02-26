@@ -120,7 +120,7 @@ public partial class ModUpdaterService : ReactiveObject, IModUpdaterService
 
 	public async Task<ModUpdaterResults> FetchUpdatesAsync(ModManagerSettings settings, IEnumerable<ModData> mods, CancellationToken token)
 	{
-		var appVersion = Locator.Current.GetService<IEnvironmentService>()?.AppVersion.ToString() ?? "Debug";
+		var appVersion = AppLocator.Current.GetService<IEnvironmentService>()?.AppVersion.ToString() ?? "Debug";
 
 		//TODO
 		IsRefreshing = true;
@@ -159,7 +159,7 @@ public partial class ModUpdaterService : ReactiveObject, IModUpdaterService
 				}, RxApp.MainThreadScheduler);
 			}
 			if (!GitHub.IsEnabled) return results;
-			return await Locator.Current.GetService<IGitHubService>().GetLatestDownloadsForModsAsync(mods, token);
+			return await AppLocator.Current.GetService<IGitHubService>().GetLatestDownloadsForModsAsync(mods, token);
 		}
 		catch (Exception ex)
 		{
@@ -194,7 +194,7 @@ public partial class ModUpdaterService : ReactiveObject, IModUpdaterService
 				}, RxApp.MainThreadScheduler);
 			}
 			if (!NexusMods.IsEnabled) return results;
-			return await Locator.Current.GetService<INexusModsService>().GetLatestDownloadsForModsAsync(mods, token);
+			return await AppLocator.Current.GetService<INexusModsService>().GetLatestDownloadsForModsAsync(mods, token);
 		}
 		catch (Exception ex)
 		{
@@ -230,7 +230,7 @@ public partial class ModUpdaterService : ReactiveObject, IModUpdaterService
 				}, RxApp.MainThreadScheduler);
 			}
 			if (!Modio.IsEnabled) return results;
-			return await Locator.Current.GetService<IModioService>()!.GetLatestDownloadsForModsAsync(mods, token);
+			return await AppLocator.Current.GetService<IModioService>()!.GetLatestDownloadsForModsAsync(mods, token);
 		}
 		catch (Exception ex)
 		{

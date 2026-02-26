@@ -37,7 +37,7 @@ public class SerializedModData(string uuid) : IModuleShortDesc
 
 	public static SerializedModData FromMod(ModData mod)
 	{
-		var version = Locator.Current.GetService<IEnvironmentService>()?.AppVersion;
+		var version = AppLocator.Current.GetService<IEnvironmentService>()?.AppVersion;
 		var result = new SerializedModData(mod.UUID)
 		{
 			Author = mod.AuthorDisplayName,

@@ -52,7 +52,7 @@ public partial class PathwayData : ReactiveObject
 	private static readonly IFileSystemService _fs;
 	static PathwayData()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	public void UpdateAppDataPathways(string? appDataGame = null)

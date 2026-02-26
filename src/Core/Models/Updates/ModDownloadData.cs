@@ -31,7 +31,7 @@ public partial class ModDownloadData : ReactiveObject
 	private static readonly IFileSystemService _fs;
 	static ModDownloadData()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	private static bool FileNamesMatch(string localFilePath, string newFilePath) => _fs.Path.GetFileName(localFilePath).Equals(_fs.Path.GetFileName(newFilePath), StringComparison.OrdinalIgnoreCase);
@@ -46,7 +46,7 @@ public partial class ModDownloadData : ReactiveObject
 
 	public async Task<ModDownloadResult> DownloadAsync(string? currentFilePath, string outputDirectory, CancellationToken token)
 	{
-		var fs = Locator.Current.GetService<IFileSystemService>()!;
+		var fs = AppLocator.Current.GetService<IFileSystemService>()!;
 
 		var result = new ModDownloadResult();
 		try

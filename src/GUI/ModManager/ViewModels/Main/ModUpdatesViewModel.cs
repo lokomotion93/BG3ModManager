@@ -147,7 +147,7 @@ public partial class ModUpdatesViewModel : ReactiveObject, IRoutableViewModel
 
 	internal ModUpdatesViewModel(IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 
 		Unlocked = true;
 

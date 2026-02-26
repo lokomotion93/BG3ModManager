@@ -5,16 +5,15 @@ using ModManager.Util;
 
 using Newtonsoft.Json;
 
-using ReactiveUI;
-
 using Splat;
+
+using ReactiveUI;
 
 using System.Reactive.Concurrency;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
 using Xunit;
-using Xunit.Abstractions;
 
 namespace ModManager.Tests;
 
@@ -35,12 +34,12 @@ public class NexusModsTests : BaseTest
 		var productName = Regex.Replace(appName.Trim(), @"\s+", String.Empty);
 
 		var envService = new EnvironmentService();
-		Locator.CurrentMutable.RegisterConstant(envService);
+		AppLocator.CurrentMutable.RegisterConstant(envService);
 		_service = new NexusModsService(new EnvironmentService())
 		{
 			ApiKey = apiKey
 		};
-		Locator.CurrentMutable.RegisterConstant<HttpClient>(new AppHttpClient(envService));
+		AppLocator.CurrentMutable.RegisterConstant<HttpClient>(new AppHttpClient(envService));
 
 		_mods =
 		[
@@ -64,7 +63,7 @@ public class NexusModsTests : BaseTest
 
 		if (cancelAfter > 0)
 		{
-			RxApp.TaskpoolScheduler.Schedule(TimeSpan.FromMilliseconds(cancelAfter), () => cts.Cancel(false));
+			RxSchedulers.TaskpoolScheduler.Schedule(TimeSpan.FromMilliseconds(cancelAfter), () => cts.Cancel(false));
 		}
 
 		var results = await _service.FetchModInfoAsync(_mods, cts.Token);

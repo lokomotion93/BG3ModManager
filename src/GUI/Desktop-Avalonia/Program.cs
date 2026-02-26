@@ -1,5 +1,9 @@
 ﻿using Avalonia;
+
+using ModManager.Utils;
+
 using ReactiveUI.Avalonia;
+using ReactiveUI.Builder;
 
 using System;
 using System.Diagnostics;
@@ -66,6 +70,11 @@ internal class Program
 			.UsePlatformDetect()
 			.WithInterFont()
 			.LogToTrace()
-			.UseReactiveUI();
+			.UseReactiveUI(config =>
+			{
+				config
+				.WithPlatformServices()
+				.WithExceptionHandler(new ExceptionSuppressionHandler());
+			});
 	}
 }

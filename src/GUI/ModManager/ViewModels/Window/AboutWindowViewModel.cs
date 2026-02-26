@@ -19,7 +19,7 @@ public partial class AboutWindowViewModel : ReactiveObject, IClosableViewModel, 
 
 	public AboutWindowViewModel(IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
 		Title = "About";

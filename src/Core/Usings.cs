@@ -51,3 +51,6 @@ global using RxCommandUnit = ReactiveUI.ReactiveCommand<System.Reactive.Unit, Sy
 global using ModioMod = Modio.Models.Mod;
 global using ModioFile = Modio.Models.File;
 global using Loca = ModManager.Locale.Resources;
+
+//23.1.0-beta.1 - 9308d79 Replace RxApp schedulers with RxSchedulers throughout codebase (#4213)
+global using RxApp = ReactiveUI.RxSchedulers;

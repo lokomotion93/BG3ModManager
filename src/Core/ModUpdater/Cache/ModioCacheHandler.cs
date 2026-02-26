@@ -41,7 +41,7 @@ public partial class ModioCacheHandler : ReactiveObject, IExternalModCacheHandle
 
 	public async Task<bool> Update(IEnumerable<ModData> mods, CancellationToken token)
 	{
-		var apiService = Locator.Current.GetService<IModioService>();
+		var apiService = AppLocator.Current.GetService<IModioService>();
 		if (apiService?.CanFetchData == true)
 		{
 			DivinityApp.Log("Checking for mod.io updates.");

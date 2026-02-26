@@ -28,7 +28,7 @@ public partial class StatsValidatorFileResults : TreeViewEntry
 		var childrenChanged = Children.ToObservableChangeSet().Transform(x => (StatsValidatorErrorEntry)x);
 		_totalHelper = childrenChanged.CountChanged().Select(_ => Children.Count).ToUIProperty(this, x => x.Total);
 		childrenChanged.Bind(out _errors).Subscribe();
-		var fs = Locator.Current.GetService<IFileSystemService>()!;
+		var fs = AppLocator.Current.GetService<IFileSystemService>()!;
 		_nameHelper = this.WhenAnyValue(x => x.FilePath).Select(fs.Path.GetFileName).ToUIProperty(this, x => x.Name);
 		_displayNameHelper = this.WhenAnyValue(x => x.Name, x => x.Total).Select(x => $"{x.Item1} ({x.Item2})").ToUIProperty(this, x => x.DisplayName);
 		_toolTipHelper = this.WhenAnyValue(x => x.FilePath, x => x.Total, ToToolTip).ToUIProperty(this, x => x.ToolTip);

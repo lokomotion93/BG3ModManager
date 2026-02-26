@@ -64,7 +64,7 @@ public static partial class ModDataLoader
 
 	static ModDataLoader()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	public static bool IgnoreMod([NotNullWhen(true)] string? modUUID)
@@ -1050,7 +1050,7 @@ public static partial class ModDataLoader
 	{
 		_fs.EnsureParentDirectoryExists(outputFilePath);
 
-		order.ModManagerVersion = Locator.Current.GetService<IEnvironmentService>()?.AppVersion;
+		order.ModManagerVersion = AppLocator.Current.GetService<IEnvironmentService>()?.AppVersion;
 
 		var contents = JsonSerializer.Serialize(order, JsonUtils.DefaultSerializerSettings);
 

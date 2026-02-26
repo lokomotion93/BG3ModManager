@@ -92,7 +92,7 @@ public partial class AppUpdateWindowViewModel : ReactiveObject, IClosableViewMod
 
 	public AppUpdateWindowViewModel(IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 		Title = Loca.Window_AppUpdate_Title;
 

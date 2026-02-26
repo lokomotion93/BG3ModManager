@@ -18,7 +18,7 @@ public static class FileUtils
 	private static readonly IFileSystemService _fs;
 	static FileUtils()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	public static readonly EnumerationOptions RecursiveOptions = new()

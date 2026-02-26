@@ -8,7 +8,7 @@ namespace ModManager.Util;
 
 public static class WebHelper
 {
-	private static HttpClient Client => Locator.Current.GetService<HttpClient>()!;
+	private static HttpClient Client => AppLocator.Current.GetService<HttpClient>()!;
 
 	public static Task<HttpResponseMessage> GetAsync([StringSyntax("Uri")] string? requestUri) => Client.GetAsync(requestUri);
 	public static Task<HttpResponseMessage> GetAsync([StringSyntax("Uri")] string? requestUri, CancellationToken cancellationToken) => Client.GetAsync(requestUri, cancellationToken);

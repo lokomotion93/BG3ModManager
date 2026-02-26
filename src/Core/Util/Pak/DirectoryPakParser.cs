@@ -18,8 +18,8 @@ public partial class DirectoryPakParser(string?[] directoryPaths, EnumerationOpt
 {
 	private bool _isDisposed;
 	private readonly ConcurrentBag<Package> _packages = [];
-	private readonly IFileSystemService _fs = Locator.Current.GetService<IFileSystemService>()!;
-	private readonly IEnvironmentService _environment = Locator.Current.GetService<IEnvironmentService>()!;
+	private readonly IFileSystemService _fs = AppLocator.Current.GetService<IFileSystemService>()!;
+	private readonly IEnvironmentService _environment = AppLocator.Current.GetService<IEnvironmentService>()!;
 	private readonly EnumerationOptions _opts = opts ?? FileUtils.FlatSearchOptions;
 	private readonly IDictionary<string, ModData> _baseMods = baseMods ?? new Dictionary<string, ModData>();
 	private readonly HashSet<string> _packageBlackList = packageBlackList ?? PackageBlacklistBG3;

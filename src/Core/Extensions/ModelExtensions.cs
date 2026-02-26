@@ -43,7 +43,7 @@ public static class ModelExtensions
 
 	static ModelExtensions()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 		_typeDataMemberProperties = [];
 
 		AddTypeProperties(typeof(ModManagerSettings));
@@ -158,7 +158,7 @@ public static class ModelExtensions
 				if(directory.IsExistingDirectory())
 				{
 					var filePath = _fs.Path.Join(directory, data.FileName);
-					data.ModManagerVersion = Locator.Current.GetService<IEnvironmentService>()?.AppVersion;
+					data.ModManagerVersion = AppLocator.Current.GetService<IEnvironmentService>()?.AppVersion;
 					var contents = JsonSerializer.Serialize(data, data.GetType(), JsonUtils.DefaultSerializerSettings);
 					if(!data.SkipEmpty)
 					{

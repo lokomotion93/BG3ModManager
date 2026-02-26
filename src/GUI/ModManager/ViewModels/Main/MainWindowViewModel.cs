@@ -1776,8 +1776,8 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 
 		DownloadBar = new DownloadActivityBarViewModel();
 
-		_version = _environment.AppVersion.ToString();
-		_title = $"{_environment.AppProductName} {_version}";
+		Version = _environment.AppVersion.ToString();
+		Title = $"{_environment.AppProductName} {Version}";
 		AppServices.Locale.EntryToObservable(nameof(Resources.Window_Main_Title)).Select(x => x.SafeFormat($"{_environment.AppProductName} {Version}", Version)).BindTo(this, x => x.Title);
 		DivinityApp.Log($"{Title} initializing...");
 

@@ -9,7 +9,7 @@ public static class StringExtensions
 	private static readonly IFileSystemService _fs;
 	static StringExtensions()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	/// <summary>

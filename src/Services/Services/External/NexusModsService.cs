@@ -335,7 +335,7 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 
 					case NexusModsProtocolType.Collection:
 						var collectionProtocol = (NexusDownloadCollectionProtocolData)data;
-						var allowAdultContent = Locator.Current.GetService<ISettingsService>()?.ManagerSettings.UpdateSettings.AllowAdultContent == true;
+						var allowAdultContent = AppLocator.Current.GetService<ISettingsService>()?.ManagerSettings.UpdateSettings.AllowAdultContent == true;
 
 						var queryData = new NexusGraphQueryCollectionRevisionRequestData(collectionProtocol.GameDomain, collectionProtocol.Slug,
 							collectionProtocol.Revision, allowAdultContent, NexusModsQuery.CollectionRevision);
@@ -349,7 +349,7 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 							if (modFiles != null && modFiles.Length > 0)
 							{
 								DivinityApp.Log($"Total mods in collection: {modFiles.Length}");
-								var interactions = Locator.Current.GetService<IInteractionsService>();
+								var interactions = AppLocator.Current.GetService<IInteractionsService>();
 								if (interactions != null)
 								{
 									var doDownload = await interactions.OpenDownloadCollectionView.Handle(collectionData.Data.CollectionRevision);

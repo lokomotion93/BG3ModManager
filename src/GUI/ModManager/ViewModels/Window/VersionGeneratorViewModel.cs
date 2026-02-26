@@ -26,7 +26,7 @@ public partial class VersionGeneratorViewModel : ReactiveObject, IClosableViewMo
 
 	public VersionGeneratorViewModel(IGlobalCommandsService globalCommands, IScreen? host = null)
 	{
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 		CloseCommand = this.CreateCloseCommand();
 
 		Version = new LarianVersion(36028797018963968);

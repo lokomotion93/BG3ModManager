@@ -11,3 +11,6 @@ global using ReactiveUI;
 global using ReactiveUI.SourceGenerators;
 
 global using RxCommandUnit = ReactiveUI.ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit>;
+
+//23.1.0-beta.1 - 9308d79 Replace RxApp schedulers with RxSchedulers throughout codebase (#4213)
+global using RxApp = ReactiveUI.RxSchedulers;

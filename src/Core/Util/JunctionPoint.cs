@@ -87,7 +87,7 @@ public static class JunctionPoint
 	private static readonly IFileSystemService _fs;
 	static JunctionPoint()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	/// <summary>

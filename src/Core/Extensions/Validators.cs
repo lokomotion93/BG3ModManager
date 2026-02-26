@@ -8,7 +8,7 @@ public static class Validators
 	private static readonly IFileSystemService _fs;
 	static Validators()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 	/// <summary>
 	/// AbsolutePath is not null or empty.

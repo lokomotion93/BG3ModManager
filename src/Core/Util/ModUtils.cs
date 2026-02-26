@@ -15,7 +15,7 @@ public static partial class ModUtils
 	private static readonly IFileSystemService _fs;
 	static ModUtils()
 	{
-		_fs = Locator.Current.GetService<IFileSystemService>()!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
 	}
 
 	private record struct FileText(string FilePath, string[] Lines);

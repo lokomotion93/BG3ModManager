@@ -134,7 +134,7 @@ public partial class ProgressBarViewModel : ReactiveObject, IProgressBarViewMode
 		Title = WorkText = string.Empty;
 		Value = 0d;
 
-		HostScreen = host ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
 
 		this.WhenAnyValue(x => x.TokenSource).WhereNotNull().Select(x => x.Token).BindTo(this, x => x.Token);
 
