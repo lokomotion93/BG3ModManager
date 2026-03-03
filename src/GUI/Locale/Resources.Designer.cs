@@ -999,6 +999,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Associate with &apos;Mod manager download&apos;....
+        /// </summary>
+        public static string Keybinding_AssociateWithNXMCommand {
+            get {
+                return ResourceManager.GetString("Keybinding_AssociateWithNXMCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check for All Mod Updates.
         /// </summary>
         public static string Keybinding_CheckAllModUpdates {
@@ -1728,6 +1737,26 @@ namespace ModManager.Locale {
         public static string LaunchGameType_Steam_ToolTip {
             get {
                 return ResourceManager.GetString("LaunchGameType_Steam_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will allow downloading mods via the &quot;Mod manager download&quot; button on the Nexus Mods website.
+        ///The following registry key will be added or updated:
+        ///HKEY_CLASSES_ROOT\nxm\shell\open\command.
+        /// </summary>
+        public static string MessageBox_AssociateWithNXM_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_AssociateWithNXM_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Associate BG3MM with Nexus Mods &apos;Mod manager download&apos; links?.
+        /// </summary>
+        public static string MessageBox_AssociateWithNXM_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_AssociateWithNXM_Title", resourceCulture);
             }
         }
         
@@ -2463,6 +2492,15 @@ namespace ModManager.Locale {
         public static string Picker_RenameSave_FileOutput_Title {
             get {
                 return ResourceManager.GetString("Picker_RenameSave_FileOutput_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {}{0}/{3} Files ({1:0}%).
+        /// </summary>
+        public static string Progress_DownloadActivity_ProgressFormat {
+            get {
+                return ResourceManager.GetString("Progress_DownloadActivity_ProgressFormat", resourceCulture);
             }
         }
         

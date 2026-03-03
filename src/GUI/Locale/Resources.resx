@@ -701,6 +701,9 @@ You have version {2} installed.</value>
 	<data name="Keybinding_CheckForModioUpdates" xml:space="preserve">
 		<value>Check for mod.io Updates</value>
 	</data>
+	<data name="Keybinding_AssociateWithNXMCommand" xml:space="preserve">
+		<value>Associate with 'Mod manager download'...</value>
+	</data>
 	<data name="Keybinding_ExportOrder" xml:space="preserve">
 		<value>Export Order to Game</value>
 	</data>
@@ -1564,6 +1567,9 @@ This is setting is intended for developers</value>
 	<data name="Progress_ImportMods_Title" xml:space="preserve">
 		<value>Importing Mods...</value>
 	</data>
+	<data name="Progress_DownloadActivity_ProgressFormat" xml:space="preserve">
+		<value>{}{0}/{3} Files ({1:0}%)</value>
+	</data>
 	<data name="Alert_Success_ScriptExtenderInstalled" xml:space="preserve">
 		<value>Successfully installed the Extender updater {0} to '{1}'</value>
 		<comment>Placeholders: latest release url, executable directory</comment>
@@ -1763,6 +1769,14 @@ Depending on the number of mods, this may take some time.</value>
 	</data>
 	<data name="MessageBox_ExtractSelectedMods_OpenOutputFolder_Message" xml:space="preserve">
 		<value>Open the output folder for extracted mods?</value>
+	</data>
+	<data name="MessageBox_AssociateWithNXM_Title" xml:space="preserve">
+		<value>Associate BG3MM with Nexus Mods 'Mod manager download' links?</value>
+	</data>
+	<data name="MessageBox_AssociateWithNXM_Message" xml:space="preserve">
+		<value>This will allow downloading mods via the "Mod manager download" button on the Nexus Mods website.
+The following registry key will be added or updated:
+HKEY_CLASSES_ROOT\nxm\shell\open\command</value>
 	</data>
 	<data name="Picker_GameDataPath_Title" xml:space="preserve">
 		<value>Set Game Installation Folder</value>

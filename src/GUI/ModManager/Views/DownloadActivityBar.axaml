@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:controls="using:ModManager.Controls"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:rxui="using:Avalonia.ReactiveUI"
+			 xmlns:sukiControls="using:SukiUI.Controls"
+			 xmlns:vm="using:ModManager.ViewModels"
+			 xmlns:manager="using:ModManager"
+			 d:DesignHeight="200"
+			 d:DesignWidth="600"
+			 x:CompileBindings="False"
+			 x:DataType="vm:DownloadActivityBarViewModel"
+			 Background="Transparent"
+			 mc:Ignorable="d"
+			 x:Class="ModManager.Views.DownloadActivityBar">
+	<Design.DataContext>
+		<vm:DesignDownloadActivityBarViewModel />
+	</Design.DataContext>
+	<StackPanel>
+		<ProgressBar x:Name="ProgressControl" Value="{Binding Value}" Minimum="0" Maximum="{Binding Maximum}" ShowProgressText="True" ProgressTextFormat="{manager:LocaleKey Progress_DownloadActivity_ProgressFormat}"  />
+	</StackPanel>
+</UserControl>

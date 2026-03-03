@@ -7,6 +7,9 @@
     xmlns:locale="using:ModManager.Locale"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="using:SukiUI.Controls"
+	xmlns:rxui="http://reactiveui.net"
+    xmlns:views="using:ModManager.Views"
+	xmlns:mm="using:ModManager"
     xmlns:vm="using:ModManager.ViewModels.Main"
     d:DesignHeight="24"
     d:DesignWidth="800"
@@ -14,31 +17,35 @@
     mc:Ignorable="d">
 	<Panel>
 		<suki:GlassCard Padding="0" CornerRadius="0" IsOpaque="False">
-			<Grid HorizontalAlignment="Right" VerticalAlignment="Center">
-				<StackPanel Margin="4,0" Orientation="Horizontal">
-					<controls:IconExpander Margin="0"
-					    VerticalAlignment="Center"
-					    BorderThickness="0"
-					    ExpandDirection="Left"
-					    IsExpanded="{Binding IsNexusModsSectionExpanded}"
-					    ToolTip.Tip="{x:Static locale:Resources.Footer_NexusModsAPILimit_ToolTip}">
-						<controls:IconExpander.Icon>
-							<Image Width="16" Height="16" Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />
-						</controls:IconExpander.Icon>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock HorizontalAlignment="Center"
-							    VerticalAlignment="Center"
-							    Text="{Binding NexusModsLimitsText}"
-							    TextAlignment="Center" />
-							<labs:AsyncImage Width="16"
-							    Height="16"
-							    Margin="4,0"
-							    IsVisible="{Binding HasNexusModsProfileAvatar}"
-							    Source="{Binding NexusModsProfileBitmapUri}"
-							    Stretch="UniformToFill" />
-						</StackPanel>
-					</controls:IconExpander>
-				</StackPanel>
+			<Grid ColumnDefinitions="*,*">
+				<!--<rxui:ViewModelViewHost Name="DownloadActivity" ViewModel="{x:Static mm:ViewModelLocator.DownloadActivity}" />-->
+				<views:DownloadActivityBar x:Name="DownloadActivity" />
+				<Grid HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1">
+					<StackPanel Margin="4,0" Orientation="Horizontal">
+						<controls:IconExpander Margin="0"
+							VerticalAlignment="Center"
+							BorderThickness="0"
+							ExpandDirection="Left"
+							IsExpanded="{Binding IsNexusModsSectionExpanded}"
+							ToolTip.Tip="{x:Static locale:Resources.Footer_NexusModsAPILimit_ToolTip}">
+							<controls:IconExpander.Icon>
+								<Image Width="16" Height="16" Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />
+							</controls:IconExpander.Icon>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock HorizontalAlignment="Center"
+									VerticalAlignment="Center"
+									Text="{Binding NexusModsLimitsText}"
+									TextAlignment="Center" />
+								<labs:AsyncImage Width="16"
+									Height="16"
+									Margin="4,0"
+									IsVisible="{Binding HasNexusModsProfileAvatar}"
+									Source="{Binding NexusModsProfileBitmapUri}"
+									Stretch="UniformToFill" />
+							</StackPanel>
+						</controls:IconExpander>
+					</StackPanel>
+				</Grid>
 			</Grid>
 		</suki:GlassCard>
 	</Panel>
