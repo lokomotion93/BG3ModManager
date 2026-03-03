@@ -124,18 +124,33 @@ public static class DivinityApp
 	public static SourceCache<ModData, string> IgnoredMods { get; }
 	public static HashSet<string> IgnoredDependencyMods { get; }
 
-	private static readonly Assembly? _exeAssembly;
 	private static readonly string _exePath;
 	private static readonly string _appDirectory;
 
-	private static readonly IFileSystemService _fs;
+	private static readonly IFileSystemService? _fs;
 
 	static DivinityApp()
 	{
-		_fs = AppLocator.Current.GetService<IFileSystemService>()!;
-		_exeAssembly = Assembly.GetEntryAssembly()!;
-		_exePath = _exeAssembly.Location;
-		_appDirectory = _fs.Path.GetDirectoryName(_exeAssembly.Location)!;
+		_fs = AppLocator.Current.GetService<IFileSystemService>();
+		if(Process.GetCurrentProcess().MainModule is ProcessModule mainModule && mainModule.FileName.IsValid())
+		{
+			//Get the exe path from the module since GetEntryAssembly will be the main dll.
+			_exePath = mainModule.FileName;
+		}
+		else
+		{
+			//GetEntryAssembly might be null during a unit test
+			var ass = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
+			_exePath = ass.Location;
+		}
+		if(_fs != null)
+		{
+			_appDirectory = _fs.Path.GetDirectoryName(_exePath)!;
+		}
+		else
+		{
+			_appDirectory = System.IO.Path.GetDirectoryName(_exePath)!;
+		}
 
 		IgnoredMods = new(x => x.UUID ?? "");
 		IgnoredDependencyMods = [];
@@ -208,7 +223,7 @@ public static class DivinityApp
 	{
 		var exeDir = GetAppDirectory();
 		var paths = joinPath.Prepend(exeDir).ToArray();
-		return _fs.Path.Join(paths);
+		return _fs != null ? _fs.Path.Join(paths) : System.IO.Path.Join(paths);
 	}
 
 	public static string GetExePath() => _exePath;
