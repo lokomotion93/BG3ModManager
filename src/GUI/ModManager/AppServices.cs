@@ -49,7 +49,7 @@ public static class AppServices
 	static AppServices()
 	{
 		var resolver = AppLocator.CurrentMutable;
-		resolver.AddCommonServices();
+		resolver.AddCommonServices(Design.IsDesignMode);
 		resolver.AddAppServices();
 
 		SplatRegistrations.RegisterConstant<IBackgroundCommandService>(new BackgroundCommandService(DivinityApp.PIPE_ID));
@@ -88,9 +88,11 @@ public static class AppServices
 		SplatRegistrations.RegisterLazySingleton<PakFileExplorerWindowViewModel>();
 		SplatRegistrations.RegisterLazySingleton<KeybindingsViewModel>();
 		SplatRegistrations.RegisterLazySingleton<MessageBoxViewModel>();
-		SplatRegistrations.RegisterLazySingleton<FooterViewModel>();
 		SplatRegistrations.RegisterLazySingleton<ModPickerViewModel>();
 		SplatRegistrations.RegisterLazySingleton<ModContainerSettingsViewModel>();
+
+		SplatRegistrations.RegisterLazySingleton<FooterViewModel>();
+		SplatRegistrations.RegisterLazySingleton<DownloadActivityBarViewModel>();
 
 		SplatRegistrations.RegisterLazySingleton<MainCommandBar>();
 		SplatRegistrations.RegisterLazySingleton<DeleteFilesView>();
@@ -98,6 +100,9 @@ public static class AppServices
 		SplatRegistrations.RegisterLazySingleton<ModUpdatesView>();
 
 		SplatRegistrations.RegisterLazySingleton<ProgressBarView>();
+
+		//SplatRegistrations.RegisterLazySingleton<DownloadActivityBar>();
+		SplatRegistrations.RegisterLazySingleton<FooterView>();
 
 		SplatRegistrations.RegisterLazySingleton<SettingsWindow>();
 		SplatRegistrations.RegisterLazySingleton<AppUpdateWindow>();

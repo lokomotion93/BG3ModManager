@@ -13,7 +13,7 @@ public static class SplatContainerExtensions
 	/// Registers standard Services classes with a DepedencyResolver.
 	/// </summary>
 	/// <param name="services">The IoC services container.</param>
-	public static IMutableDependencyResolver AddCommonServices(this IMutableDependencyResolver services)
+	public static IMutableDependencyResolver AddCommonServices(this IMutableDependencyResolver services, bool isDesign = false)
 	{
 		var env = new EnvironmentService();
 		var fileSystem = new FileSystem();
@@ -44,7 +44,10 @@ public static class SplatContainerExtensions
 		SplatRegistrations.RegisterConstant<IGitHubService>(new GitHubService(env));
 		SplatRegistrations.RegisterConstant<IModioService>(new ModioService(fileSystemService));
 
-		SplatRegistrations.RegisterConstant(new LogWriterService(fileSystemService));
+		if (!isDesign)
+		{
+			SplatRegistrations.RegisterConstant(new LogWriterService(fileSystemService));
+		}
 
 		SplatRegistrations.SetupIOC();
 
