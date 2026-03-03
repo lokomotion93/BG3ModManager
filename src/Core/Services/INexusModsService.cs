@@ -17,7 +17,8 @@ public interface INexusModsService
 	bool IsPremium { get; }
 	Uri? ProfileAvatarUrl { get; }
 
-	double DownloadProgressValue { get; }
+	int DownloadProgressCurrent { get; }
+	int DownloadProgressMax { get; }
 	string? DownloadProgressText { get; }
 	bool CanCancel { get; }
 
