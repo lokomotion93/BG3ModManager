@@ -75,9 +75,10 @@
 		</Grid>
 
 		<views:FooterView Grid.Row="2"
-						  Height="24"
-						  HorizontalAlignment="Stretch"
-						  VerticalAlignment="Bottom"
-						  ViewModel="{x:Static mm:ViewModelLocator.Footer}" />
+			x:Name="Footer"
+			Height="24"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Bottom"
+			ViewModel="{x:Static mm:ViewModelLocator.Footer}" />
 	</Grid>
 </UserControl>

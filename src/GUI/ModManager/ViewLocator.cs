@@ -70,7 +70,9 @@ public class ViewLocator : IViewLocator, IDataTemplate
 		RegisterConstant<ModOrderViewModel, ModOrderView>(resolver);
 		RegisterConstant<ModUpdatesViewModel, ModUpdatesView>(resolver);
 		RegisterConstant<KeybindingsViewModel, KeybindingsView>(resolver);
-		RegisterConstant<FooterViewModel, FooterView>(resolver);
+
+		//RegisterConstant<FooterViewModel, FooterView>(resolver);
+		//RegisterConstant<DownloadActivityBarViewModel, DownloadActivityBar>(resolver);
 
 		//resolver.RegisterLazySingleton(() => (IViewFor<SettingsWindowViewModel>)AppServices.Settings);
 		//resolver.RegisterLazySingleton(() => (IViewFor<ModManagerSettings>)AppServices.Settings.ManagerSettings);
@@ -78,7 +80,6 @@ public class ViewLocator : IViewLocator, IDataTemplate
 		//resolver.RegisterLazySingleton(() => (IViewFor<ScriptExtenderSettings>)AppServices.Settings.ManagerSettings.ExtenderSettings);
 		//resolver.RegisterLazySingleton(() => (IViewFor<ScriptExtenderUpdateConfig>)AppServices.Settings.ManagerSettings.ExtenderUpdaterSettings);
 
-		//Register<DownloadActivityBarViewModel, DownloadActivityBar>(resolver);
 
 		resolver.Register(() => new ModContainerEntryView(), typeof(IViewFor<ModContainer>));
 		resolver.Register(() => new ModEntryView(), typeof(IViewFor<ModEntry>));

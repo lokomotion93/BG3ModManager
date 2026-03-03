@@ -11,7 +11,6 @@ public partial class ModOrderView : ReactiveUserControl<ModOrderViewModel>
 #if DEBUG
 		this.DesignSetup();
 #endif
-
 		this.WhenActivated(d =>
 		{
 			d(AppServices.Interactions.OpenModContainerSettings.RegisterHandler(context =>
