@@ -42,6 +42,9 @@ public partial class MainCommandBarViewModel : ReactiveObject
 	[Keybinding(nameof(Resources.Keybinding_CheckForModioUpdates), Key.None, KeyModifiers.None)]
 	public RxCommandUnit? CheckForModioUpdatesCommand { get; }
 
+	[Keybinding(nameof(Resources.Keybinding_AssociateWithNXMCommand), Key.None, KeyModifiers.None)]
+	public RxCommandUnit? AssociateWithNXMCommand { get; }
+
 	[Keybinding(nameof(Resources.Keybinding_ExportOrder), Key.E, KeyModifiers.Control, nameof(Resources.Keybinding_ExportOrder_ToolTip))]
 	public RxBoolCommandUnit? ExportOrderCommand { get; }
 
@@ -308,6 +311,35 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		else
 		{
 			return AppServices.Commands.OpenInFileExplorer(path);
+		}
+	}
+
+	private async Task AssociateWithNXMAsync()
+	{
+		var result = await AppServices.Interactions.ShowMessageBox.Handle(new(Resources.MessageBox_AssociateWithNXM_Title, Resources.MessageBox_AssociateWithNXM_Message, InteractionMessageBoxType.YesNo));
+		if (result.Result)
+		{
+			var exePath = DivinityApp.GetExePath();
+			if(exePath.IsExistingFile())
+			{
+				RxApp.MainThreadScheduler.Schedule(() =>
+				{
+					if (AppServices.Reg.SetNXMProtocol(exePath))
+					{
+						AppServices.Settings.ManagerSettings.UpdateSettings.IsAssociatedWithNXM = true;
+						AppServices.Commands.ShowAlert("nxm:// protocol assocation successfully set");
+					}
+					else
+					{
+						AppServices.Settings.ManagerSettings.UpdateSettings.IsAssociatedWithNXM = false;
+						AppServices.Commands.ShowAlert("Failed to set nxm protocol in the registry. Check the log", AlertType.Danger);
+					}
+				});
+			}
+			else
+			{
+				AppServices.Commands.ShowAlert("Failed to find the BG3MM exe path. Something is wrong.", AlertType.Danger);
+			}
 		}
 	}
 
@@ -677,6 +709,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		var keybindings = this.GetType().GetProperties().ToDictionary(x => x.Name, x => x.GetCustomAttribute<KeybindingAttribute>());
 
 		DownloadScriptExtenderCommand = ReactiveCommand.CreateFromTask(main.AskToDownloadScriptExtender, canExecuteCommands);
+		AssociateWithNXMCommand = ReactiveCommand.CreateFromTask(AssociateWithNXMAsync, canExecuteCommands);
 
 		var canExtract = modOrder.WhenAnyValue(x => x.HasAnySelectedPakMods).CombineLatest(canExecuteCommands).AllTrue();
 
@@ -905,6 +938,8 @@ public partial class MainCommandBarViewModel : ReactiveObject
 						MenuEntry.FromKeybinding(CheckForNexusModsUpdatesCommand, nameof(CheckForNexusModsUpdatesCommand), keybindings),
 						MenuEntry.FromKeybinding(CheckForModioUpdatesCommand, nameof(CheckForModioUpdatesCommand), keybindings)
 					]},
+					new MenuSeparator(),
+					MenuEntry.FromKeybinding(AssociateWithNXMCommand, nameof(AssociateWithNXMCommand), keybindings)
 				]},
 			new MenuEntry(nameof(Resources.TopMenu_Tools), useLocalization: true, useAccessShortcut:true){
 				Children = [

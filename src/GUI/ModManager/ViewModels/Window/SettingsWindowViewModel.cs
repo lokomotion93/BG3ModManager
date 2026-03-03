@@ -86,7 +86,6 @@ public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewMode
 	public RxCommandUnit ClearCacheCommand { get; }
 	public ReactiveCommand<string, Unit> AddLaunchParamCommand { get; }
 	public RxCommandUnit ClearLaunchParamsCommand { get; }
-	public RxCommandUnit AssociateWithNXMCommand { get; }
 
 	private readonly ScriptExtenderUpdateVersion _emptyVersion = new();
 
@@ -271,31 +270,6 @@ public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewMode
 		AppServices.Settings.TrySaveAll(out _);
 	}
 
-	private static readonly string _associateNXMMessage = @"This will allow updating mods via the ""Mod Manager Download"" button on the Nexus Mods website.
-The following registry key will be added or updated:
-HKEY_CLASSES_ROOT\nxm\shell\open\command
-";
-
-	private void AssociateWithNXM()
-	{
-		_interactions.ShowMessageBox.Handle(new("Associate BG3MM with nxm:// links?", _associateNXMMessage, InteractionMessageBoxType.YesNo)).Subscribe(result =>
-		{
-			if (result.Result && DivinityApp.GetExePath() is string exePath)
-			{
-				if (AppServices.Reg.SetNXMProtocol(exePath))
-				{
-					UpdateSettings.IsAssociatedWithNXM = true;
-					AppServices.Commands.ShowAlert("nxm:// protocol assocation successfully set");
-				}
-				else
-				{
-					UpdateSettings.IsAssociatedWithNXM = false;
-					AppServices.Commands.ShowAlert("Failed to set nxm protocol in the registry. Check the log", AlertType.Danger);
-				}
-			}
-		});
-	}
-
 	public SettingsWindowViewModel(IInteractionsService interactions, ISettingsService settingsService, IFileSystemService fileSystemService, IScreen? host = null)
 	{
 		HostScreen = host ?? AppLocator.Current.GetService<IScreen>()!;
@@ -455,8 +429,6 @@ HKEY_CLASSES_ROOT\nxm\shell\open\command
 		});
 
 		this.WhenAnyValue(x => x.IsVisible).Subscribe(OnVisibilityChanged);
-
-		AssociateWithNXMCommand = ReactiveCommand.Create(AssociateWithNXM);
 
 		var properties = typeof(ModManagerSettings)
 		.GetRuntimeProperties()
