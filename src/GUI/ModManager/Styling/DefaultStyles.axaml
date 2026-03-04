@@ -211,7 +211,21 @@
 				</Transitions>
 			</Setter>
 		</Style>
+
+		<Style Selector="^:pointerover > controls|TintImage">
+			<Setter Property="Foreground" Value="{DynamicResource SukiPrimaryColor}" />
+		</Style>
+		<Style Selector="^ > controls|TintImage">
+			<Setter Property="Foreground" Value="Transparent" />
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Foreground" Duration="0:0:0.2" />
+				</Transitions>
+			</Setter>
+		</Style>
 	</Style>
+
+	
 
 	<!--<Style Selector="MenuItem /template/ TextBlock#PART_InputGestureText">
 		<Setter Property="FontSize" Value="8" />

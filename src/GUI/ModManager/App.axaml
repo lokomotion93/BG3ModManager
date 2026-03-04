@@ -24,6 +24,7 @@
 				<ResourceInclude Source="avares://ModManager/Styling/Controls/TimeSpanUpDown.axaml" />
 				<ResourceInclude Source="avares://ModManager/Styling/Controls/Hyperlink.axaml" />
 				<ResourceInclude Source="avares://ModManager/Styling/Controls/IconExpander.axaml" />
+				<ResourceInclude Source="avares://ModManager/Styling/Controls/TintImage.axaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<!--  TreeDataGrid Resources  -->

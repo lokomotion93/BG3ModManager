@@ -3,11 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<Image x:Key="NexusModsLogo16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/nexuslogo.png" Width="16" Height="16" Stretch="UniformToFill" RenderOptions.BitmapInterpolationMode="HighQuality" />
 
+	<controls:TintImage x:Key="NexusModsButtonLogo16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/nexuslogo.png" Width="16" Height="16" />
+
 	<Image x:Key="ModioLogoBlue16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/modio_Blue.png" Width="16" Height="16" Stretch="UniformToFill" RenderOptions.BitmapInterpolationMode="HighQuality" />
 
 	<Image x:Key="ExtenderIcon16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/DivinityEngine2_64x.png" Width="16" Height="16" Stretch="UniformToFill" RenderOptions.BitmapInterpolationMode="HighQuality"/>
 
-	<Image x:Key="CheckboxCheckAll16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/CheckboxCheckAll_16x.png" Width="16" Height="16"/>
-
-	<Image x:Key="CheckboxClearAll16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/CheckboxClearAll_16x.png" Width="16" Height="16"/>
+	<controls:TintImage x:Key="CheckboxCheckAll16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/CheckboxCheckAll_16x.png" Width="16" Height="16"/>
+	<controls:TintImage x:Key="CheckboxClearAll16x" x:Shared="false" Source="avares://ModManager/Assets/Icons/CheckboxClearAll_16x.png" Width="16" Height="16"/>
 </ResourceDictionary>

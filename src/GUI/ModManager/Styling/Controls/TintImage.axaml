@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:ModManager.Controls"
+    xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:manager="using:ModManager">
+	<ControlTheme x:Key="{x:Type controls:TintImage}" TargetType="controls:TintImage">
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Panel>
+					<Image x:Name="ImageControl" Source="{TemplateBinding Source}" Stretch="UniformToFill" RenderOptions.BitmapInterpolationMode="HighQuality" />
+					
+					<Rectangle Fill="{TemplateBinding Foreground}" Opacity="0.9">
+						<Rectangle.OpacityMask>
+							<ImageBrush Source="{Binding Source, ElementName=ImageControl}"/>
+						</Rectangle.OpacityMask>
+					</Rectangle>
+				</Panel>
+			</ControlTemplate>
+		</Setter>
+	</ControlTheme>
+</ResourceDictionary>
