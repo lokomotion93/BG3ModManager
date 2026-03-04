@@ -6,9 +6,10 @@
     xmlns:labs="using:Avalonia.Labs.Controls"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:rxui="using:Avalonia.ReactiveUI"
+    xmlns:sukiBase="using:SukiUI"
     xmlns:suki="using:SukiUI.Controls"
-    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-    xmlns:theme="using:SukiUI.Theme">
+    xmlns:theme="using:SukiUI.Theme"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
 	<!--  Default EnhancedTextBox styles, derived from SukiUI  -->
 	<Style Selector="controls|EnhancedTextBox">
@@ -23,7 +24,8 @@
 		<Setter Property="SelectionBrush" Value="{DynamicResource SukiPrimaryColor75}" />
 		<Setter Property="MinHeight" Value="36" />
 		<Setter Property="Padding" Value="6,8,5,6" />
-		<Setter Property="Template">
+		<Setter Property="theme:TextBoxExtensions.AddDeleteButton" Value="True" />
+		<!--<Setter Property="Template">
 			<ControlTemplate>
 				<Panel Name="PART_RootPanel">
 					<suki:GlassCard Name="border"
@@ -37,65 +39,10 @@
 							</Transitions>
 						</suki:GlassCard.Transitions>
 					</suki:GlassCard>
-					<DataValidationErrors>
-						<Grid Margin="{TemplateBinding Padding}"
-						    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-						    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-						    ColumnDefinitions="Auto,*,Auto">
-							<Panel>
-								<StackPanel Orientation="Horizontal">
-									<ContentPresenter Content="{TemplateBinding InnerLeftContent}" />
-									<TextBlock Margin="3,1,3,0"
-									    FontSize="14"
-									    Foreground="{DynamicResource SukiLowText}"
-									    Text="{TemplateBinding theme:TextBoxExtensions.Prefix}" />
-								</StackPanel>
-							</Panel>
-							<ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
-								<Panel VerticalAlignment="Bottom">
-									<TextBlock Name="watermark"
-									    FontSize="{TemplateBinding FontSize}"
-									    IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
-									    Opacity="0.5"
-									    Text="{TemplateBinding Watermark}"
-									    TextAlignment="{TemplateBinding TextAlignment}"
-									    TextWrapping="{TemplateBinding TextWrapping}" />
-									<TextPresenter Name="PART_TextPresenter"
-									    Margin="0,0,0,0"
-									    CaretBrush="{DynamicResource SukiLowText}"
-									    CaretIndex="{TemplateBinding CaretIndex}"
-									    PasswordChar="{TemplateBinding PasswordChar}"
-									    RevealPassword="{TemplateBinding RevealPassword}"
-									    SelectionBrush="{TemplateBinding SelectionBrush}"
-									    SelectionEnd="{TemplateBinding SelectionEnd}"
-									    SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
-									    SelectionStart="{TemplateBinding SelectionStart}"
-									    Text="{TemplateBinding Text, Mode=TwoWay}"
-									    TextAlignment="{TemplateBinding TextAlignment}"
-									    TextBlock.FontSize="{TemplateBinding FontSize}"
-									    TextBlock.Foreground="{TemplateBinding Foreground}"
-									    TextWrapping="{TemplateBinding TextWrapping}" />
-								</Panel>
-							</ScrollViewer>
-							<StackPanel Grid.Column="2" Orientation="Horizontal">
-								<theme:TextEraserButton Margin="5,0,2,0"
-								    Cursor="Hand"
-								    IsVisible="{TemplateBinding theme:TextBoxExtensions.AddDeleteButton}"
-								    Opacity="{TemplateBinding Text, Converter={StaticResource StringToDoubleC}}"
-								    Text="{TemplateBinding Text, Mode=TwoWay}">
-									<theme:TextEraserButton.Transitions>
-										<Transitions>
-											<DoubleTransition Property="Opacity" Duration="0:0:0.35" />
-										</Transitions>
-									</theme:TextEraserButton.Transitions>
-								</theme:TextEraserButton>
-								<ContentPresenter Content="{TemplateBinding InnerRightContent}" />
-							</StackPanel>
-						</Grid>
-					</DataValidationErrors>
+					<DataValidationErrors />
 				</Panel>
 			</ControlTemplate>
-		</Setter>
+		</Setter>-->
 	</Style>
 
 	<Style Selector="controls|EnhancedTextBox:pointerover /template/ suki|GlassCard#border">
