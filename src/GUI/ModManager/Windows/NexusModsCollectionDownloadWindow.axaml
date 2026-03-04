@@ -22,29 +22,29 @@
 		<vm:CollectionDownloadWindowDesignViewModel />
 	</Design.DataContext>
 	<Window.Styles>
-		<Style Selector="ToggleButton Svg.grid-on">
+		<Style Selector="ToggleButton Image.grid-on">
 			<Setter Property="IsVisible" Value="False" />
 		</Style>
-		<Style Selector="ToggleButton:checked Svg.grid-on">
+		<Style Selector="ToggleButton:checked Image.grid-on">
 			<Setter Property="IsVisible" Value="True" />
 		</Style>
-		<Style Selector="ToggleButton Svg.grid-off">
+		<Style Selector="ToggleButton Image.grid-off">
 			<Setter Property="IsVisible" Value="True" />
 		</Style>
-		<Style Selector="ToggleButton:checked Svg.grid-off">
+		<Style Selector="ToggleButton:checked Image.grid-off">
 			<Setter Property="IsVisible" Value="False" />
 		</Style>
 
-		<Style Selector="ToggleButton Svg.card-on">
+		<Style Selector="ToggleButton Image.card-on">
 			<Setter Property="IsVisible" Value="False" />
 		</Style>
-		<Style Selector="ToggleButton:checked Svg.card-on">
+		<Style Selector="ToggleButton:checked Image.card-on">
 			<Setter Property="IsVisible" Value="True" />
 		</Style>
-		<Style Selector="ToggleButton Svg.card-off">
+		<Style Selector="ToggleButton Image.card-off">
 			<Setter Property="IsVisible" Value="True" />
 		</Style>
-		<Style Selector="ToggleButton:checked Svg.card-off">
+		<Style Selector="ToggleButton:checked Image.card-off">
 			<Setter Property="IsVisible" Value="False" />
 		</Style>
 
@@ -90,8 +90,8 @@
 							    ToolTip.ShowDelay="0"
 							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_ListView_ToolTip}">
 								<Panel>
-									<Svg Classes="grid-on" Path="/Assets/Icons/ListView_16x.svg" Stretch="Uniform" />
-									<Svg Classes="grid-off" Path="/Assets/Icons/ListViewDisabled_16x.svg" Stretch="Uniform" />
+									<Image Classes="grid-on" Source="avares://ModManager/Assets/Icons/ListView_16x.png" Stretch="Uniform" />
+									<Image Classes="grid-off" Source="avares://ModManager/Assets/Icons/ListViewDisabled_16x.png" Stretch="Uniform" />
 								</Panel>
 							</ToggleButton>
 							<ToggleButton Classes="toolbar"
@@ -100,19 +100,19 @@
 							    ToolTip.ShowDelay="0"
 							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_CardView_ToolTip}">
 								<Panel>
-									<Svg Classes="card-on" Path="/Assets/Icons/ViewPortrait_16x.svg" />
-									<Svg Classes="card-off" Path="/Assets/Icons/ViewPortraitDisabled_16x.svg" />
+									<Image Classes="card-on" Source="avares://ModManager/Assets/Icons/ViewPortrait_16x.png" />
+									<Image Classes="card-off" Source="avares://ModManager/Assets/Icons/ViewPortraitDisabled_16x.png" />
 								</Panel>
 							</ToggleButton>
 							<Separator />
 							<Button Classes="toolbar"
 							    Command="{Binding EnableAllCommand}"
-							    Content="{SvgImage /Assets/Icons/CheckboxCheckAll_16x.svg}"
+							    Content="{StaticResource CheckboxCheckAll16x}"
 							    ToolTip.ShowDelay="0"
 							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_EnableAll_ToolTip}" />
 							<Button Classes="toolbar"
 							    Command="{Binding DisableAllCommand}"
-							    Content="{SvgImage /Assets/Icons/CheckboxClearAll_16x.svg}"
+							    Content="{StaticResource CheckboxClearAll16x}"
 							    ToolTip.ShowDelay="0"
 							    ToolTip.Tip="{manager:LocaleKey Window_CollectionDownloader_Button_DisableAll_ToolTip}" />
 						</StackPanel>

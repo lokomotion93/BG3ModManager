@@ -52,12 +52,24 @@ public partial class ModEntryView : ReactiveUserControl<ModEntry>
 	{
 		if (iconType == ScriptExtenderIconType.FulfilledRequired || iconType == ScriptExtenderIconType.FulfilledSupports)
 		{
-			var icon = new AsyncImage() { Source = new Uri("avares://ModManager/Assets/Icons/DivinityEngine2_64x.png"), Width = 16, Height = 16 };
-			if (iconType == ScriptExtenderIconType.FulfilledSupports)
+			if(Application.Current?.Resources.TryGetResource("ExtenderIcon16x", Application.Current.ActualThemeVariant, out var res) == true && res is Image icon)
 			{
-				icon.Opacity = 0.5d;
+				if (iconType == ScriptExtenderIconType.FulfilledSupports)
+				{
+					icon.Opacity = 0.5d;
+				}
+				return icon;
 			}
-			return icon;
+			else
+			{
+				var fallbackIcon = new AsyncImage() { Source = new Uri("avares://ModManager/Assets/Icons/DivinityEngine2_64x.png"), Width = 16, Height = 16 };
+				RenderOptions.SetBitmapInterpolationMode(fallbackIcon, Avalonia.Media.Imaging.BitmapInterpolationMode.HighQuality);
+				if (iconType == ScriptExtenderIconType.FulfilledSupports)
+				{
+					fallbackIcon.Opacity = 0.5d;
+				}
+				return fallbackIcon;
+			}
 		}
 		else if (iconType != ScriptExtenderIconType.None)
 		{

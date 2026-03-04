@@ -6,10 +6,7 @@
     xmlns:sukiControl="using:SukiUI.Controls">
 	<Design.PreviewWith>
 		<Grid Width="500" Height="200" Background="DarkGray">
-			<controls:IconExpander HorizontalAlignment="Center" VerticalAlignment="Center" ExpandDirection="Right">
-				<controls:IconExpander.Icon>
-					<Image Width="16" Height="16" Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />
-				</controls:IconExpander.Icon>
+			<controls:IconExpander HorizontalAlignment="Center" VerticalAlignment="Center" ExpandDirection="Right" Icon="{StaticResource NexusModsLogo16x}">
 				<TextBlock Text="Test hello" />
 			</controls:IconExpander>
 		</Grid>
@@ -69,7 +66,7 @@
 		<Style Selector="^:not(.no-transitions) /template/ sukiControl|ContentExpandControl#PART_ContentExpand">
 			<Setter Property="Transitions">
 				<Transitions>
-					<DoubleTransition Easing="CircularEaseOut" Property="Multiplier" Duration="0.25" />
+					<DoubleTransition Easing="CircularEaseOut" Property="Multiplier" Duration="0:0:0.25" />
 				</Transitions>
 			</Setter>
 		</Style>

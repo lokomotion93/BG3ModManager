@@ -27,10 +27,8 @@
 							BorderThickness="0"
 							ExpandDirection="Left"
 							IsExpanded="{Binding IsNexusModsSectionExpanded}"
+							Icon="{StaticResource NexusModsLogo16x}"
 							ToolTip.Tip="{x:Static locale:Resources.Footer_NexusModsAPILimit_ToolTip}">
-							<controls:IconExpander.Icon>
-								<Image Width="16" Height="16" Source="{SvgImage /Assets/Icons/nexuslogo.svg}" />
-							</controls:IconExpander.Icon>
 							<StackPanel Orientation="Horizontal">
 								<TextBlock HorizontalAlignment="Center"
 									VerticalAlignment="Center"
