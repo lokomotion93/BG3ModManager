@@ -27,4 +27,8 @@ public static class Sorters
 	public static readonly SortExpressionComparer<ProfileData> Profile = SortExpressionComparer<ProfileData>.Ascending(p => p.FolderName != "Public").ThenByAscending(p => p.Name ?? string.Empty);
 
 	public static readonly NaturalFileSortComparer FileIgnoreCase = new(StringComparison.OrdinalIgnoreCase);
+
+	public static readonly SortExpressionComparer<DateTimeOffset> OldestDateFirst = SortExpressionComparer<DateTimeOffset>
+		.Ascending(x => x != DateTime.MinValue)
+		.ThenByAscending(x => x);
 }
