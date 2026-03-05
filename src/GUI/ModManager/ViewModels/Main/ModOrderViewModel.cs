@@ -1800,6 +1800,19 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		"28ac9ce2-2aba-8cda-b3b5-6e922f71b6b8",
 	};
 
+	private static string ModOrderNameToDisplayName(string? fallbackName, ModOrder? order)
+	{
+		if(order?.Name != null)
+		{
+			if(string.IsNullOrWhiteSpace(order.Name))
+			{
+				return "Empty";
+			}
+			return order.Name;
+		}
+		return fallbackName ?? "None";
+	}
+
 	[DependencyInjectionConstructor]
 	public ModOrderViewModel(MainWindowViewModel host,
 		IModManagerService modManagerService,
@@ -1808,7 +1821,9 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		IModUpdaterService updateService,
 		ISettingsService settings,
 		IFileSystemService fs,
-		IInteractionsService interactions
+		IInteractionsService interactions,
+		ControlFactoryService cf,
+		ILocaleService locaService
 		)
 	{
 		_manager = modManagerService;
@@ -1841,73 +1856,26 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		ColumnOptions<IModEntry> columnOpts = new() { CanUserSortColumn = true, CanUserResizeColumn = true };
 
-		/*
-var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts);
-		var versionColumn = new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto);
-		var authorColumn = new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto);
-		var lastUpdatedColumm = new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto);
-		var nameExpanderColumn = new HierarchicalExpanderColumn<IModEntry>(nameColumn, x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded);
+		var indexHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Index), "Index");
+		var nameHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Name), "Name");
+		var versionHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Version), "Version");
+		var authorHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Author), "Author");
+		var lastUpdatedHeader = cf.LocalizedTextBlock(nameof(Loca.Column_LastUpdated), "Last Updated");
 
 		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
 		{
 			Columns =
 			{
 				//Avalonia.Controls.Models.TreeDataGrid.
-				new TextColumn<IModEntry, int>("Index", x => x.Index, GridLength.Auto),
-				nameExpanderColumn,
-				versionColumn,
-				authorColumn,
-				lastUpdatedColumm,
-			}
-		}, ActiveMods, activeModsConnection, "Active")
-		{
-			ListType = ModListType.Active
-		};
-
-		OverrideModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(OverrideMods)
-		{
-			Columns =
-			{
-				nameExpanderColumn,
-				versionColumn,
-				authorColumn,
-				lastUpdatedColumm,
-			}
-		}, OverrideMods, overrideModsConnection, "Overrides")
-		{
-			ListType = ModListType.Override
-		};
-
-		InactiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(InactiveMods)
-		{
-			Columns =
-			{
-				nameExpanderColumn,
-				new TextColumn<IModEntry, string>("Version", x => x.Version, new GridLength(80d)),
-				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
-				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
-			}
-		}, InactiveMods, inactiveModsConnection, "Inactive")
-		{
-			ListType = ModListType.Inactive
-		};
-		 */
-
-		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
-		{
-			Columns =
-			{
-				//Avalonia.Controls.Models.TreeDataGrid.
-				new TextColumn<IModEntry, int>("Index", x => x.Index, GridLength.Auto),
+				new TextColumn<IModEntry, int>(indexHeader, x => x.Index, GridLength.Auto),
 				new HierarchicalExpanderColumn<IModEntry>(
-					//new TextColumn<IModEntry, string>("Name", x => x.DisplayName, GridLength.Star),
-					new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts),
+					new ModEntryColumn<string>(x => x.DisplayName, nameHeader, GridLength.Star, columnOpts),
 					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
-				new TextColumn<IModEntry, string>("Version", x => x.Version, GridLength.Auto),
-				new TextColumn<IModEntry, string>("Author", x => x.Author, GridLength.Auto),
-				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, GridLength.Auto),
+				new TextColumn<IModEntry, string>(versionHeader, x => x.Version, GridLength.Auto),
+				new TextColumn<IModEntry, string>(authorHeader, x => x.Author, GridLength.Auto),
+				new TextColumn<IModEntry, string>(lastUpdatedHeader, x => x.LastUpdated, GridLength.Auto),
 			}
-		}, ActiveMods, activeModsConnection, "Active")
+		}, ActiveMods, activeModsConnection, locaService.EntryToObservable(nameof(Loca.ModList_Active_Title), "Active"))
 		{
 			ListType = ModListType.Active
 		};
@@ -1917,13 +1885,13 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 			Columns =
 			{
 				new HierarchicalExpanderColumn<IModEntry>(
-					new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLength.Star, columnOpts),
+					new ModEntryColumn<string>(x => x.DisplayName, nameHeader, GridLength.Star, columnOpts),
 					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
-				new TextColumn<IModEntry, string>("Version", x => x.Version, new GridLength(80d)),
-				new TextColumn<IModEntry, string>("Author", x => x.Author, new GridLength(100d)),
-				new TextColumn<IModEntry, string>("Last Updated", x => x.LastUpdated, new GridLength(200d)),
+				new TextColumn<IModEntry, string>(versionHeader, x => x.Version, new GridLength(80d)),
+				new TextColumn<IModEntry, string>(authorHeader, x => x.Author, new GridLength(100d)),
+				new TextColumn<IModEntry, string>(lastUpdatedHeader, x => x.LastUpdated, new GridLength(200d)),
 			}
-		}, InactiveMods, inactiveModsConnection, "Inactive")
+		}, InactiveMods, inactiveModsConnection, locaService.EntryToObservable(nameof(Loca.ModList_Inactive_Title), "Inactive"))
 		{
 			ListType = ModListType.Inactive
 		};
@@ -1965,7 +1933,8 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 		var whenDebugMode = host.WhenAnyValue(x => x.DebugMode);
 		_adventureModBoxVisibilityHelper = whenDebugMode.ToUIProperty(this, x => x.AdventureModBoxVisibility);
 
-		whenDebugMode.Select(b => !b ? "Main" : null).Subscribe(nameOverride =>
+		var mainCampaignNameObs = locaService.EntryToObservable(nameof(Loca.Larian_GustavDev_Name), "Main");
+		mainCampaignNameObs.CombineLatest(whenDebugMode).Select(x => !x.Second ? x.First : null).Subscribe(nameOverride =>
 		{
 			var mainCampaign = AdventureMods.FirstOrDefault(x => x.UUID == _manager.MainCampaignGuid);
 			if (mainCampaign != null)
@@ -2014,16 +1983,16 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 						if (i < ActiveMods.Count - 1) text += Environment.NewLine;
 					}
 					ClipboardService.SetText(text);
-					AppServices.Commands.ShowAlert("Copied mod order to clipboard", AlertType.Info, 10);
+					AppServices.Commands.ShowAlert(Loca.Alert_Success_CopyModOrderToClipboard, AlertType.Info, 10);
 				}
 				else
 				{
-					AppServices.Commands.ShowAlert("Current order is empty", AlertType.Warning, 10);
+					AppServices.Commands.ShowAlert(Loca.Alert_Warning_CopyModOrderToClipboard, AlertType.Warning, 10);
 				}
 			}
 			catch (Exception ex)
 			{
-				AppServices.Commands.ShowAlert($"Error copying order to clipboard: {ex}", AlertType.Danger, 15);
+				AppServices.Commands.ShowAlert(Loca.Alert_Error_CopyModOrderToClipboard.SafeFormat($"Error copying order to clipboard: {ex}", ex), AlertType.Danger, 15);
 			}
 		}, RxApp.MainThreadScheduler));
 
@@ -2081,7 +2050,8 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 
 		var whenModOrder = this.WhenAnyValue(x => x.SelectedModOrder);
 
-		_selectedModOrderNameHelper = whenModOrder.ValueOrFallback(x => x.Name, "None").ToUIProperty(this, x => x.SelectedModOrderName, "None");
+		var fallbackOrderNameObs = locaService.EntryToObservable(nameof(Loca.CommandBar_Section_Order_NoEntry), "None");
+		_selectedModOrderNameHelper = fallbackOrderNameObs.CombineLatest(whenModOrder).Select(x => ModOrderNameToDisplayName(x.First, x.Second)).ToUIProperty(this, x => x.SelectedModOrderName, Loca.CommandBar_Section_Order_NoEntry);
 		_selectedModOrderFilePathHelper = whenModOrder.ValueOrFallback(x => x.FilePath, string.Empty).ToUIProperty(this, x => x.SelectedModOrderFilePath, string.Empty);
 		_isModSettingsOrderHelper = whenModOrder.Select(x => x != null && x.IsModSettings).ToUIProperty(this, x => x.IsModSettingsOrder);
 
@@ -2235,7 +2205,7 @@ var nameColumn = new ModEntryColumn<string>(x => x.DisplayName, "Name", GridLeng
 
 public class DesignModOrderViewModel : ModOrderViewModel
 {
-	public DesignModOrderViewModel() : base(ViewModelLocator.Main, AppServices.Mods, AppServices.FileWatcher, AppServices.Dialog, AppServices.Updater, AppServices.Settings, AppServices.FS, AppServices.Interactions)
+	public DesignModOrderViewModel() : base(ViewModelLocator.Main, AppServices.Mods, AppServices.FileWatcher, AppServices.Dialog, AppServices.Updater, AppServices.Settings, AppServices.FS, AppServices.Interactions, AppServices.ControlFactory, AppServices.Locale)
 	{
 		var testProfile = new ProfileData()
 		{

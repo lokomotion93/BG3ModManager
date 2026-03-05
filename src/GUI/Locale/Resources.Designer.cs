@@ -70,6 +70,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error copying order to clipboard: {0}.
+        /// </summary>
+        public static string Alert_Error_CopyModOrderToClipboard {
+            get {
+                return ResourceManager.GetString("Alert_Error_CopyModOrderToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error deleting mod cache:
         ///{0}.
         /// </summary>
@@ -206,6 +215,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copied mod order to clipboard.
+        /// </summary>
+        public static string Alert_Success_CopyModOrderToClipboard {
+            get {
+                return ResourceManager.GetString("Alert_Success_CopyModOrderToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skip Launcher - Created &apos;{0}&apos;.
         /// </summary>
         public static string Alert_Success_CreateSteamApiTextFile {
@@ -338,6 +356,15 @@ namespace ModManager.Locale {
         public static string Alert_Success_ScriptExtenderInstalled {
             get {
                 return ResourceManager.GetString("Alert_Success_ScriptExtenderInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current order is empty.
+        /// </summary>
+        public static string Alert_Warning_CopyModOrderToClipboard {
+            get {
+                return ResourceManager.GetString("Alert_Warning_CopyModOrderToClipboard", resourceCulture);
             }
         }
         
@@ -531,6 +558,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string Column_Author {
+            get {
+                return ResourceManager.GetString("Column_Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Column_Date {
@@ -545,6 +581,24 @@ namespace ModManager.Locale {
         public static string Column_Ext {
             get {
                 return ResourceManager.GetString("Column_Ext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #.
+        /// </summary>
+        public static string Column_Index {
+            get {
+                return ResourceManager.GetString("Column_Index", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Updated.
+        /// </summary>
+        public static string Column_LastUpdated {
+            get {
+                return ResourceManager.GetString("Column_LastUpdated", resourceCulture);
             }
         }
         
@@ -815,6 +869,15 @@ namespace ModManager.Locale {
         public static string CommandBar_Section_Order {
             get {
                 return ResourceManager.GetString("CommandBar_Section_Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string CommandBar_Section_Order_NoEntry {
+            get {
+                return ResourceManager.GetString("CommandBar_Section_Order_NoEntry", resourceCulture);
             }
         }
         
@@ -1676,6 +1739,15 @@ namespace ModManager.Locale {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main.
+        /// </summary>
+        public static string Larian_GustavDev_Name {
+            get {
+                return ResourceManager.GetString("Larian_GustavDev_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Larian Studios.
         /// </summary>
         public static string LarianStudios {
@@ -1737,6 +1809,33 @@ namespace ModManager.Locale {
         public static string LaunchGameType_Steam_ToolTip {
             get {
                 return ResourceManager.GetString("LaunchGameType_Steam_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Container1.
+        /// </summary>
+        public static string MessageBox_AddContainer_DefaultName {
+            get {
+                return ResourceManager.GetString("MessageBox_AddContainer_DefaultName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter container name..
+        /// </summary>
+        public static string MessageBox_AddContainer_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_AddContainer_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Container.
+        /// </summary>
+        public static string MessageBox_AddContainer_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_AddContainer_Title", resourceCulture);
             }
         }
         
@@ -1897,6 +1996,24 @@ namespace ModManager.Locale {
         public static string MessageBox_LoadSettings_PermissionDenied_Title {
             get {
                 return ResourceManager.GetString("MessageBox_LoadSettings_PermissionDenied_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter container name..
+        /// </summary>
+        public static string MessageBox_RenameContainer_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_RenameContainer_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Container.
+        /// </summary>
+        public static string MessageBox_RenameContainer_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_RenameContainer_Title", resourceCulture);
             }
         }
         
@@ -2249,6 +2366,69 @@ namespace ModManager.Locale {
         public static string ModEntry_ToolTip_IsToolkitProject {
             get {
                 return ResourceManager.GetString("ModEntry_ToolTip_IsToolkitProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string ModList_Active_Title {
+            get {
+                return ResourceManager.GetString("ModList_Active_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter {0}.
+        /// </summary>
+        public static string ModList_Filter_Placeholder {
+            get {
+                return ResourceManager.GetString("ModList_Filter_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Hidden.
+        /// </summary>
+        public static string ModList_Filter_Result_Hidden {
+            get {
+                return ResourceManager.GetString("ModList_Filter_Result_Hidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Matched.
+        /// </summary>
+        public static string ModList_Filter_Result_Matched {
+            get {
+                return ResourceManager.GetString("ModList_Filter_Result_Matched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Selected.
+        /// </summary>
+        public static string ModList_Filter_Result_Selected {
+            get {
+                return ResourceManager.GetString("ModList_Filter_Result_Selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to , .
+        /// </summary>
+        public static string ModList_Filter_Result_Separator {
+            get {
+                return ResourceManager.GetString("ModList_Filter_Result_Separator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inactive.
+        /// </summary>
+        public static string ModList_Inactive_Title {
+            get {
+                return ResourceManager.GetString("ModList_Inactive_Title", resourceCulture);
             }
         }
         

@@ -4,6 +4,8 @@ using Avalonia.Controls.Selection;
 using DynamicData;
 using DynamicData.Binding;
 
+using LSLib.LS;
+
 using ModManager.Models;
 using ModManager.Models.Mod;
 using ModManager.Util;
@@ -21,7 +23,7 @@ public partial class ModListViewModel : ReactiveObject
 
 	public HierarchicalTreeDataGridSource<IModEntry> Mods { get; }
 
-	[Reactive] public partial string Title { get; set; }
+	[Reactive] public partial string? Title { get; set; }
 	[Reactive] public partial string? FilterInputText { get; set; }
 	[Reactive] public partial bool IsFilterEnabled { get; set; }
 	[Reactive] public partial int TotalMods { get; private set; }
@@ -63,12 +65,12 @@ public partial class ModListViewModel : ReactiveObject
 		if (!string.IsNullOrWhiteSpace(filterText))
 		{
 			var matched = Math.Max(0, total - totalHidden);
-			texts.Add($"{matched} Matched");
-			if(totalHidden > 0) texts.Add($"{totalHidden} Hidden");
+			texts.Add(Loca.ModList_Filter_Result_Matched.SafeFormat($"{matched} Matched", matched));
+			if(totalHidden > 0) texts.Add(Loca.ModList_Filter_Result_Hidden.SafeFormat($"{totalHidden} Hidden", totalHidden));
 		}
-		if(totalSelected > 0) texts.Add($"{totalSelected} Selected");
+		if(totalSelected > 0) texts.Add(Loca.ModList_Filter_Result_Selected.SafeFormat($"{totalSelected} Selected", totalSelected));
 		
-		return string.Join(", ", texts);
+		return string.Join(Loca.ModList_Filter_Result_Separator, texts);
 	}
 
 	private void CountMods()
@@ -163,9 +165,18 @@ public partial class ModListViewModel : ReactiveObject
 		//});
 	}
 
+	private static bool ColumnIsIndex(object? obj)
+	{
+		if (obj is LocalizedText tb && tb.Key == nameof(Loca.Column_Index))
+		{
+			return true;
+		}
+		return obj is string stringHeader && stringHeader == "Index";
+	}
+
 	private void OnSorted(TreeDataGridSortedEventArgs e)
 	{
-		if (e.Column.Header is string columnName && columnName == "Index" && e.Direction == System.ComponentModel.ListSortDirection.Ascending)
+		if (ColumnIsIndex(e.Column.Header) && e.Direction == System.ComponentModel.ListSortDirection.Ascending)
 		{
 			Mods.Sort(null);
 		}
@@ -178,12 +189,15 @@ public partial class ModListViewModel : ReactiveObject
 
 	public ModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
 		ObservableCollectionExtended<IModEntry> backingCollection,
-		IObservable<IChangeSet<IModEntry>> connection,
-		string title = "")
+		IObservable<IChangeSet<IModEntry>> connection, IObservable<string?>? titleObs = null)
 	{
 		_mods = backingCollection;
 		Mods = treeGridSource;
-		Title = title;
+
+		titleObs?.ObserveOn(RxApp.MainThreadScheduler).Subscribe(x =>
+		{
+			Title = x;
+		});
 
 		_rowSelection = new ModEntryTreeDataGridRowSelectionModel(treeGridSource) { SingleSelect = false };
 		treeGridSource.Selection = _rowSelection;
@@ -227,7 +241,15 @@ public partial class ModListViewModel : ReactiveObject
 				ModUtils.FilterMods(searchText, _mods);
 			});
 
-		_filterPlaceholderTextHelper = this.WhenAnyValue(x => x.Title).Select(x => $"Filter {x}").ToUIProperty(this, x => x.FilterPlaceholderText);
+		if(titleObs != null)
+		{
+			var filterPlaceholderObs = AppServices.Locale.EntryToObservable(nameof(Loca.ModList_Filter_Placeholder), "Filter {0}");
+			_filterPlaceholderTextHelper = titleObs.CombineLatest(filterPlaceholderObs).Select(x => x.First.IsValid() && x.Second.IsValid() ? string.Format(x.Second, x.First) : "Filter").ToUIProperty(this, x => x.FilterPlaceholderText);
+		}
+		else
+		{
+			_filterPlaceholderTextHelper = this.WhenAnyValue(x => x.Title, x => x.IsValid() ? $"Filter {x}" : string.Empty).ToUIProperty(this, x => x.FilterPlaceholderText);
+		}
 
 		_hasAnyFocusHelper = this.WhenAnyValue(x => x.IsFocused, x => x.IsKeyboardFocusWithin).Select(x => x.Item1 || x.Item2).ToUIPropertyImmediate(this, x => x.HasAnyFocus);
 
@@ -250,7 +272,9 @@ public partial class ModListViewModel : ReactiveObject
 			{
 				insertAt = treeGridSource.RowSelection!.AnchorIndex[0];
 			}
-			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Add Container", "Enter container name...", InteractionMessageBoxType.Input, "Container1"));
+
+			var result = await AppServices.Interactions.ShowMessageBox.Handle(new(Loca.MessageBox_AddContainer_Title, Loca.MessageBox_AddContainer_Message, InteractionMessageBoxType.Input, Loca.MessageBox_AddContainer_DefaultName));
+
 			if(result.Result)
 			{
 				var container = new ModContainer(Guid.NewGuid().ToString())
@@ -339,7 +363,7 @@ public partial class ModListViewModel : ReactiveObject
 		});
 
 		RenameContainerCommand = ReactiveCommand.CreateFromTask<ModContainer>(async modContainer => {
-			var result = await AppServices.Interactions.ShowMessageBox.Handle(new("Rename Container", "Enter container name...", InteractionMessageBoxType.Input, modContainer.DisplayName));
+			var result = await AppServices.Interactions.ShowMessageBox.Handle(new(Loca.MessageBox_RenameContainer_Title, Loca.MessageBox_RenameContainer_Message, InteractionMessageBoxType.Input, modContainer.DisplayName));
 			if (result.Result)
 			{
 				modContainer.Settings.DisplayName = result.Input ?? string.Empty;
@@ -405,16 +429,16 @@ public class DesignModListViewModel : ModListViewModel
 
 	public DesignModListViewModel() : base(DesignModListViewModelDataSource.DataSource,
 		DesignModListViewModelDataSource.Mods,
-		DesignModListViewModelDataSource.ModsConnection, "Active")
+		DesignModListViewModelDataSource.ModsConnection)
 	{
-
+		Title = "Active";
 	}
 
 	public DesignModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
 		ObservableCollectionExtended<IModEntry> collection,
 		IObservable<IChangeSet<IModEntry>> connection,
-		string title = "") : base(treeGridSource, collection, connection, title)
+		string title = "") : base(treeGridSource, collection, connection)
 	{
-
+		Title = title;
 	}
 }

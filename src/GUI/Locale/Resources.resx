@@ -496,6 +496,39 @@ You have version {2} installed.</value>
 	<data name="Window_SettingsWindow_Button_ClearKey_ToolTip" xml:space="preserve">
 		<value>Clear Keybinding</value>
 	</data>
+	<data name="ModList_Active_Title" xml:space="preserve">
+		<value>Active</value>
+	</data>
+	<data name="ModList_Inactive_Title" xml:space="preserve">
+		<value>Inactive</value>
+	</data>
+	<data name="ModList_Filter_Placeholder" xml:space="preserve">
+		<value>Filter {0}</value>
+	</data>
+	<data name="ModList_Filter_Result_Matched" xml:space="preserve">
+		<value>{0} Matched</value>
+	</data>
+	<data name="ModList_Filter_Result_Hidden" xml:space="preserve">
+		<value>{0} Hidden</value>
+	</data>
+	<data name="ModList_Filter_Result_Selected" xml:space="preserve">
+		<value>{0} Selected</value>
+	</data>
+	<data name="ModList_Filter_Result_Separator" xml:space="preserve">
+		<value>, </value>
+	</data>
+	<data name="Larian_GustavDev_Name" xml:space="preserve">
+		<value>Main</value>
+	</data>
+	<data name="Column_Index" xml:space="preserve">
+		<value>#</value>
+	</data>
+	<data name="Column_Author" xml:space="preserve">
+		<value>Author</value>
+	</data>
+	<data name="Column_LastUpdated" xml:space="preserve">
+		<value>Last Updated</value>
+	</data>
 	<data name="Column_Name" xml:space="preserve">
 		<value>Name</value>
 	</data>
@@ -624,6 +657,9 @@ You have version {2} installed.</value>
 	</data>
 	<data name="CommandBar_Section_Order" xml:space="preserve">
 		<value>Order</value>
+	</data>
+	<data name="CommandBar_Section_Order_NoEntry" xml:space="preserve">
+		<value>None</value>
 	</data>
 	<data name="CommandBar_Section_Export" xml:space="preserve">
 		<value>Export</value>
@@ -1632,6 +1668,15 @@ This is setting is intended for developers</value>
 		<value>Generated mods cache for all mods in the BG3MM Data folder: {0}</value>
 		<comment>Placeholders: Cache files</comment>
 	</data>
+	<data name="Alert_Success_CopyModOrderToClipboard" xml:space="preserve">
+		<value>Copied mod order to clipboard</value>
+	</data>
+	<data name="Alert_Warning_CopyModOrderToClipboard" xml:space="preserve">
+		<value>Current order is empty</value>
+	</data>
+	<data name="Alert_Error_CopyModOrderToClipboard" xml:space="preserve">
+		<value>Error copying order to clipboard: {0}</value>
+	</data>
 	<data name="Alert_Warning_ImportNexusModsIds_Failure" xml:space="preserve">
 		<value>No NexusMods ids found. Does the .zip name contain an id, with a .pak file inside?</value>
 	</data>
@@ -1777,6 +1822,21 @@ Depending on the number of mods, this may take some time.</value>
 		<value>This will allow downloading mods via the "Mod manager download" button on the Nexus Mods website.
 The following registry key will be added or updated:
 HKEY_CLASSES_ROOT\nxm\shell\open\command</value>
+	</data>
+	<data name="MessageBox_AddContainer_Title" xml:space="preserve">
+		<value>Add Container</value>
+	</data>
+	<data name="MessageBox_AddContainer_Message" xml:space="preserve">
+		<value>Enter container name.</value>
+	</data>
+	<data name="MessageBox_AddContainer_DefaultName" xml:space="preserve">
+		<value>Container1</value>
+	</data>
+	<data name="MessageBox_RenameContainer_Title" xml:space="preserve">
+		<value>Rename Container</value>
+	</data>
+	<data name="MessageBox_RenameContainer_Message" xml:space="preserve">
+		<value>Enter container name.</value>
 	</data>
 	<data name="Picker_GameDataPath_Title" xml:space="preserve">
 		<value>Set Game Installation Folder</value>
