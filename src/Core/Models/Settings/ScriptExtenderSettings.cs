@@ -24,197 +24,197 @@ public partial class ScriptExtenderSettings : ReactiveObject, ISerializableSetti
 	[DataMember]
 	[DefaultValue(false)]
 	[JsonIgnore]
-	public bool ExportDefaultExtenderSettings { get; set; }
+	public partial bool ExportDefaultExtenderSettings { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_DeveloperMode), nameof(Resources.Settings_Extender_DeveloperMode_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool DeveloperMode { get; set; }
+	public partial bool DeveloperMode { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_CustomProfile), nameof(Resources.Settings_Extender_CustomProfile_ToolTip))]
 	[DataMember]
 	[DefaultValue("")]
-	public string? CustomProfile { get; set; }
+	public partial string? CustomProfile { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_CreateConsole), nameof(Resources.Settings_Extender_CreateConsole_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool CreateConsole { get; set; }
+	public partial bool CreateConsole { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_LogFailedCompile), nameof(Resources.Settings_Extender_LogFailedCompile_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool LogFailedCompile { get; set; }
+	public partial bool LogFailedCompile { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_EnableLogging), nameof(Resources.Settings_Extender_EnableLogging_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool EnableLogging { get; set; }
+	public partial bool EnableLogging { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_LogCompile), nameof(Resources.Settings_Extender_LogCompile_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool LogCompile { get; set; }
+	public partial bool LogCompile { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_LogDirectory), nameof(Resources.Settings_Extender_LogDirectory_ToolTip))]
 	[DataMember]
 	[DefaultValue("")]
-	public string? LogDirectory { get; set; }
+	public partial string? LogDirectory { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_LogRuntime), nameof(Resources.Settings_Extender_LogRuntime_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool LogRuntime { get; set; }
+	public partial bool LogRuntime { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_DisableLauncher), nameof(Resources.Settings_Extender_DisableLauncher_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool DisableLauncher { get; set; }
+	public partial bool DisableLauncher { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_DisableStoryMerge), nameof(Resources.Settings_Extender_DisableStoryMerge_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool DisableStoryMerge { get; set; }
+	public partial bool DisableStoryMerge { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_DisableStoryPatching), nameof(Resources.Settings_Extender_DisableStoryPatching_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool DisableStoryPatching { get; set; }
+	public partial bool DisableStoryPatching { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_ExtendStory), nameof(Resources.Settings_Extender_ExtendStory_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool ExtendStory { get; set; }
+	public partial bool ExtendStory { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_EnableAchievements), nameof(Resources.Settings_Extender_EnableAchievements_ToolTip))]
 	[DataMember]
 	[DefaultValue(true)]
-	public bool EnableAchievements { get; set; }
+	public partial bool EnableAchievements { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_SendCrashReports), nameof(Resources.Settings_Extender_SendCrashReports_ToolTip))]
 	[DataMember]
 	[DefaultValue(true)]
-	public bool SendCrashReports { get; set; }
+	public partial bool SendCrashReports { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_EnableDebugger), nameof(Resources.Settings_Extender_EnableDebugger_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool EnableDebugger { get; set; }
+	public partial bool EnableDebugger { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_DebuggerPort), nameof(Resources.Settings_Extender_DebuggerPort_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(9999)]
-	public int DebuggerPort { get; set; }
+	public partial int DebuggerPort { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_DebuggerFlags), nameof(Resources.Settings_Extender_DebuggerFlags_ToolTip))]
 	[DataMember]
 	[DefaultValue(0)]
-	public int DebuggerFlags { get; set; }
+	public partial int DebuggerFlags { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_EnableLuaDebugger), nameof(Resources.Settings_Extender_EnableLuaDebugger_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool EnableLuaDebugger { get; set; }
+	public partial bool EnableLuaDebugger { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_LuaBuiltinResourceDirectory), nameof(Resources.Settings_Extender_LuaBuiltinResourceDirectory_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue("")]
-	public string? LuaBuiltinResourceDirectory { get; set; }
+	public partial string? LuaBuiltinResourceDirectory { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_ClearOnReset), nameof(Resources.Settings_Extender_ClearOnReset_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool ClearOnReset { get; set; }
+	public partial bool ClearOnReset { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_DefaultToClientConsole), nameof(Resources.Settings_Extender_DefaultToClientConsole_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool DefaultToClientConsole { get; set; }
+	public partial bool DefaultToClientConsole { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_InsanityCheck), nameof(Resources.Settings_Extender_InsanityCheck_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool InsanityCheck { get; set; }
+	public partial bool InsanityCheck { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_Optick), nameof(Resources.Settings_Extender_Optick_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(true)]
-	public bool Optick { get; set; }
+	public partial bool Optick { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_EnablePerfMessages), nameof(Resources.Settings_Extender_EnablePerfMessages_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(true)]
-	public bool EnablePerfMessages { get; set; }
+	public partial bool EnablePerfMessages { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerWarnings), nameof(Resources.Settings_Extender_ProfilerWarnings_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool ProfilerWarnings { get; set; }
+	public partial bool ProfilerWarnings { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(50000u)]
-	public uint ProfilerLoadThresholdWarn { get; set; }
+	public partial uint ProfilerLoadThresholdWarn { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(50000u)]
-	public uint ProfilerLoadThresholdError { get; set; }
+	public partial uint ProfilerLoadThresholdError { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(50000u)]
-	public uint ProfilerLoadCallbackThresholdWarn { get; set; }
+	public partial uint ProfilerLoadCallbackThresholdWarn { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(50000u)]
-	public uint ProfilerLoadCallbackThresholdError { get; set; }
+	public partial uint ProfilerLoadCallbackThresholdError { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(1500u)]
-	public uint ProfilerCallbackThresholdWarn { get; set; }
+	public partial uint ProfilerCallbackThresholdWarn { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(5000u)]
-	public uint ProfilerCallbackThresholdError { get; set; }
+	public partial uint ProfilerCallbackThresholdError { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(1000u)]
-	public uint ProfilerClientCallbackThresholdWarn { get; set; }
+	public partial uint ProfilerClientCallbackThresholdWarn { get; set; }
 
 	[Reactive]
 	[DataMember]
 	[DefaultValue(2000u)]
-	public uint ProfilerClientCallbackThresholdError { get; set; }
+	public partial uint ProfilerClientCallbackThresholdError { get; set; }
 
 	[SettingsEntry(nameof(Resources.Settings_Extender_ProfilerLoadThreshold), nameof(Resources.Settings_Extender_ProfilerLoadThreshold_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	public ScriptExtenderProfilerThreshold ProfilerLoadThreshold { get; }

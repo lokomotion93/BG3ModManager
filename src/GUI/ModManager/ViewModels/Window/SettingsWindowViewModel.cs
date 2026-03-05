@@ -268,6 +268,8 @@ public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewMode
 		}
 
 		AppServices.Settings.TrySaveAll(out _);
+
+		CanSaveSettings = false;
 	}
 
 	public SettingsWindowViewModel(IInteractionsService interactions, ISettingsService settingsService, IFileSystemService fileSystemService, IScreen? host = null)
@@ -341,29 +343,12 @@ public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewMode
 		});
 
 		var whenExePath = Settings.WhenAnyValue(x => x.GameExecutablePath);
+		var whenVisible = this.WhenAnyValue(x => x.IsVisible, (b) => b == true);
 
 		_extenderSettingsFilePathHelper = whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderSettingsFilePath);
 		_extenderUpdaterSettingsFilePathHelper = whenExePath.Select(x => _fs.Path.Join(_fs.Path.GetDirectoryName(x), DivinityApp.EXTENDER_UPDATER_CONFIG_FILE)).ToUIProperty(this, x => x.ExtenderUpdaterSettingsFilePath);
 
-		var settingsProperties = new HashSet<string>();
-		settingsProperties.UnionWith(Settings.GetSettingsAttributes().Select(x => x.Property.Name));
-		settingsProperties.UnionWith(ExtenderSettings.GetSettingsAttributes().Select(x => x.Property.Name));
-		settingsProperties.UnionWith(ExtenderUpdaterSettings.GetSettingsAttributes().Select(x => x.Property.Name));
-
-		var whenVisible = this.WhenAnyValue(x => x.IsVisible, (b) => b == true);
-		var propertyChanged = nameof(ReactiveObject.PropertyChanged);
-		var whenSettings = Observable.FromEventPattern<PropertyChangedEventArgs>(Settings, propertyChanged);
-		var whenExtenderSettings = Observable.FromEventPattern<PropertyChangedEventArgs>(ExtenderSettings, propertyChanged);
-		var whenExtenderUpdaterSettings = Observable.FromEventPattern<PropertyChangedEventArgs>(ExtenderUpdaterSettings, propertyChanged);
-
 		SaveSettingsCommand = ReactiveCommand.Create(SaveSettings, whenVisible);
-		Observable.Merge(whenSettings, whenExtenderSettings, whenExtenderUpdaterSettings)
-			.Where(e => settingsProperties.Contains(e.EventArgs.PropertyName))
-			.SkipUntil(whenVisible)
-			.Throttle(TimeSpan.FromMilliseconds(100))
-			.Do(x => DivinityApp.Log($"Autosaving due to {x.EventArgs.PropertyName} changing"))
-			.Select(x => Unit.Default)
-			.InvokeCommand(SaveSettingsCommand);
 
 		OpenSettingsFolderCommand = ReactiveCommand.Create(() =>
 		{
@@ -498,5 +483,11 @@ public partial class SettingsWindowViewModel : ReactiveObject, IClosableViewMode
 			ExtenderSettings.ProfilerClientCallbackThresholdWarn = x.Item1;
 			ExtenderSettings.ProfilerClientCallbackThresholdError = x.Item2;
 		});
+
+		this.WhenAnyValue(x => x.CanSaveSettings, b => b == true)
+		.SkipUntil(whenVisible)
+		.Throttle(TimeSpan.FromMilliseconds(100))
+		.Select(x => Unit.Default)
+		.InvokeCommand(SaveSettingsCommand);
 	}
 }

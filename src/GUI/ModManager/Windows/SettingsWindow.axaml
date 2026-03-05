@@ -67,19 +67,19 @@
 			    ScrollViewer.VerticalScrollBarVisibility="Auto"
 			    SelectedIndex="{Binding SelectedTabIndex}">
 				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_General}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_General_ToolTip}">
-					<genview:ModManagerSettingsView Name="GeneralSettingsView" DataContext="{Binding Settings}" />
+					<genview:ModManagerSettingsView Name="GeneralSettingsView" DataContext="{x:Null}" />
 				</TabItem>
 				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_ModUpdating}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_ModUpdating_ToolTip}">
-					<genview:ModManagerUpdateSettingsView Name="UpdateSettingsView" DataContext="{Binding UpdateSettings}" />
+					<genview:ModManagerUpdateSettingsView Name="UpdateSettingsView" DataContext="{x:Null}" />
 				</TabItem>
 				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtender}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtender_ToolTip}">
-					<genview:ScriptExtenderSettingsView Name="ExtenderSettingsView" DataContext="{Binding ExtenderSettings}" />
+					<genview:ScriptExtenderSettingsView Name="ExtenderSettingsView" DataContext="{x:Null}" />
 				</TabItem>
 				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtenderUpdater}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_ScriptExtenderUpdater_ToolTip}">
-					<genview:ScriptExtenderUpdateConfigView Name="ExtenderUpdateSettingsView" DataContext="{Binding ExtenderUpdaterSettings}" />
+					<genview:ScriptExtenderUpdateConfigView Name="ExtenderUpdateSettingsView" DataContext="{x:Null}" />
 				</TabItem>
 				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_Keybindings}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_Keybindings_ToolTip}">
-					<view:KeybindingsView Name="KeybindingsView" DataContext="{Binding Source={x:Static manager:ViewModelLocator.Keybindings}}" />
+					<view:KeybindingsView Name="KeybindingsView" DataContext="{x:Null}" />
 				</TabItem>
 				<TabItem Header="{manager:LocaleKey Window_SettingsWindow_Tab_Advanced}" ToolTip.Tip="{manager:LocaleKey Window_SettingsWindow_Tab_Advanced_ToolTip}">
 					<controls:AutoGrid RowCount="5" RowHeight="auto">

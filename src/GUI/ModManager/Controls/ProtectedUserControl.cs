@@ -16,10 +16,8 @@ public class ProtectedUserControl<TViewModel> : ReactiveUserControl<TViewModel> 
 
 	protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
 	{
-		if ((e.Property == ViewModelProperty || e.Property == DataContextProperty) && e.NewValue?.GetType() != _vmType)
+		if ((e.Property == ViewModelProperty || e.Property == DataContextProperty) && e.NewValue != null && e.NewValue?.GetType() != _vmType)
 		{
-			DivinityApp.Log($"{DataContext}");
-			DivinityApp.Log($"{ViewModel}");
 			return;
 		}
 		base.OnPropertyChanged(e);

@@ -24,61 +24,61 @@ public partial class ScriptExtenderUpdateConfig : ReactiveObject, ISerializableS
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_UpdateChannel), nameof(Resources.Settings_ExtenderUpdater_UpdateChannel_ToolTip), bindTo: nameof(UpdateChannelIndex))]
 	[DataMember]
 	[DefaultValue(ExtenderUpdateChannel.Release)]
-	public ExtenderUpdateChannel UpdateChannel { get; set; }
+	public partial ExtenderUpdateChannel UpdateChannel { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_TargetVersion), nameof(Resources.Settings_ExtenderUpdater_TargetVersion_ToolTip))]
 	[DataMember]
 	[DefaultValue(null)]
-	public string? TargetVersion { get; set; }
+	public partial string? TargetVersion { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_TargetResourceDigest), nameof(Resources.Settings_ExtenderUpdater_TargetResourceDigest_ToolTip), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(null)]
-	public string? TargetResourceDigest { get; set; }
+	public partial string? TargetResourceDigest { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_DisableUpdates), nameof(Resources.Settings_ExtenderUpdater_DisableUpdates_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool DisableUpdates { get; set; }
+	public partial bool DisableUpdates { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_IPv4Only), nameof(Resources.Settings_ExtenderUpdater_IPv4Only_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool IPv4Only { get; set; }
+	public partial bool IPv4Only { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_Debug), nameof(Resources.Settings_ExtenderUpdater_Debug_ToolTip))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool Debug { get; set; }
+	public partial bool Debug { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_ManifestURL), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(null)]
-	public string? ManifestURL { get; set; }
+	public partial string? ManifestURL { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_ManifestName), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(null)]
-	public string? ManifestName { get; set; }
+	public partial string? ManifestName { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_CachePath), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(null)]
-	public string? CachePath { get; set; }
+	public partial string? CachePath { get; set; }
 
 	[Reactive]
 	[SettingsEntry(nameof(Resources.Settings_ExtenderUpdater_ValidateSignature), BindVisibilityTo = nameof(DevOptionsEnabled))]
 	[DataMember]
 	[DefaultValue(false)]
-	public bool ValidateSignature { get; set; }
+	public partial bool ValidateSignature { get; set; }
 
 	[Reactive] public partial int UpdateChannelIndex { get; set; }
 

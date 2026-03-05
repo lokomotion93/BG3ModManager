@@ -46,6 +46,15 @@ public partial class SettingsWindow : HideWindowBase<SettingsWindowViewModel>
 				this.GetObservable(IsVisibleProperty).BindTo(ViewModel, x => x.IsVisible);
 				SettingsTabControl.GetObservable(TabIndexProperty).Select(ValidateIndex).BindTo(ViewModel, x => x.SelectedTabIndex);
 				ViewModel.WhenAnyValue(x => x.SelectedTabIndex).Select(x => (int)x).BindTo(SettingsTabControl, x => x.TabIndex);
+
+				/* Required due to DataContext not working for some reason
+				DataContext is set to null in the axaml to avoid the context being set to SettingsWindowViewModel, and then
+				we update it here. */
+				GeneralSettingsView.ViewModel = ViewModel.Settings;
+				UpdateSettingsView.ViewModel = ViewModel.UpdateSettings;
+				ExtenderSettingsView.ViewModel = ViewModel.ExtenderSettings;
+				ExtenderUpdateSettingsView.ViewModel = ViewModel.ExtenderUpdaterSettings;
+				KeybindingsView.ViewModel = ViewModelLocator.Keybindings;
 			}
 		});
 	}

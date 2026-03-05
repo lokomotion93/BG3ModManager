@@ -13,49 +13,49 @@ public partial class ModManagerUpdateSettings : ReactiveObject
 	[DefaultValue(true)]
 	[SettingsEntry(nameof(Resources.Settings_UpdateScriptExtender), nameof(Resources.Settings_UpdateScriptExtender_ToolTip))]
 	[DataMember]
-	public bool UpdateScriptExtender { get; set; }
+	public partial bool UpdateScriptExtender { get; set; }
 
 	[Reactive]
 	[DefaultValue(true)]
 	[SettingsEntry(nameof(Resources.Settings_UpdateGitHubMods), nameof(Resources.Settings_UpdateGitHubMods_ToolTip))]
 	[DataMember]
-	public bool UpdateGitHubMods { get; set; }
+	public partial bool UpdateGitHubMods { get; set; }
 
 	[Reactive]
 	[DefaultValue(true)]
 	[SettingsEntry(nameof(Resources.Settings_UpdateNexusMods), nameof(Resources.Settings_UpdateNexusMods_ToolTip))]
 	[DataMember]
-	public bool UpdateNexusMods { get; set; }
+	public partial bool UpdateNexusMods { get; set; }
 
 	[Reactive]
 	[DefaultValue(true)]
 	[SettingsEntry(nameof(Resources.Settings_UpdateModioMods), nameof(Resources.Settings_UpdateModioMods_ToolTip))]
 	[DataMember]
-	public bool UpdateModioMods { get; set; }
+	public partial bool UpdateModioMods { get; set; }
 
 	[Reactive]
 	[DefaultValue("")]
 	[SettingsEntry(nameof(Resources.Settings_NexusModsAPIKey), nameof(Resources.Settings_NexusModsAPIKey_ToolTip))]
 	[DataMember]
-	public string? NexusModsAPIKey { get; set; }
+	public partial string? NexusModsAPIKey { get; set; }
 
 	[Reactive]
 	[DefaultValue("")]
 	[SettingsEntry(nameof(Resources.Settings_ModioAPIKey), nameof(Resources.Settings_ModioAPIKey_ToolTip))]
 	[DataMember]
-	public string? ModioAPIKey { get; set; }
+	public partial string? ModioAPIKey { get; set; }
 
 	[Reactive]
 	[DefaultValue(typeof(TimeSpan), "00:30:00")] // 30 minutes
 	[SettingsEntry(nameof(Resources.Settings_MinimumUpdateTimePeriod), nameof(Resources.Settings_MinimumUpdateTimePeriod_ToolTip))]
 	[DataMember]
-	public TimeSpan MinimumUpdateTimePeriod { get; set; }
+	public partial TimeSpan MinimumUpdateTimePeriod { get; set; }
 
 	[Reactive]
 	[DefaultValue(false)]
 	[SettingsEntry(nameof(Resources.Settings_AllowAdultContent), nameof(Resources.Settings_AllowAdultContent_ToolTip))]
 	[DataMember]
-	public bool AllowAdultContent { get; set; }
+	public partial bool AllowAdultContent { get; set; }
 
 	[Reactive] public partial bool IsAssociatedWithNXM { get; set; }
 
