@@ -666,7 +666,7 @@ public partial class ModListView : ReactiveUserControl<ModListViewModel>
 
 		ModsTreeDataGrid.RowPrepared += (o,e) => { };
 
-		_modContext = this.FindResource("ModContextFlyout");
+		_modContext = Application.Current?.FindResource("ModContextFlyout");
 		_modContainerContext = this.FindResource("ModContainerMenuFlyout");
 
 		this.WhenActivated(d =>
