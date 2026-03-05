@@ -1856,24 +1856,24 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		ColumnOptions<IModEntry> columnOpts = new() { CanUserSortColumn = true, CanUserResizeColumn = true };
 
-		var indexHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Index), "Index");
-		var nameHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Name), "Name");
-		var versionHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Version), "Version");
-		var authorHeader = cf.LocalizedTextBlock(nameof(Loca.Column_Author), "Author");
-		var lastUpdatedHeader = cf.LocalizedTextBlock(nameof(Loca.Column_LastUpdated), "Last Updated");
+		TextBlock indexHeader() => cf.LocalizedTextBlock(nameof(Loca.Column_Index), "Index");
+		TextBlock nameHeader() => cf.LocalizedTextBlock(nameof(Loca.Column_Name), "Name");
+		TextBlock versionHeader() => cf.LocalizedTextBlock(nameof(Loca.Column_Version), "Version");
+		TextBlock authorHeader() => cf.LocalizedTextBlock(nameof(Loca.Column_Author), "Author");
+		TextBlock lastUpdatedHeader() => cf.LocalizedTextBlock(nameof(Loca.Column_LastUpdated), "Last Updated");
 
 		ActiveModsView = new(new HierarchicalTreeDataGridSource<IModEntry>(ActiveMods)
 		{
 			Columns =
 			{
 				//Avalonia.Controls.Models.TreeDataGrid.
-				new TextColumn<IModEntry, int>(indexHeader, x => x.Index, GridLength.Auto),
+				new TextColumn<IModEntry, int>(indexHeader(), x => x.Index, GridLength.Auto),
 				new HierarchicalExpanderColumn<IModEntry>(
-					new ModEntryColumn<string>(x => x.DisplayName, nameHeader, GridLength.Star, columnOpts),
+					new ModEntryColumn<string>(x => x.DisplayName, nameHeader(), GridLength.Star, columnOpts),
 					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
-				new TextColumn<IModEntry, string>(versionHeader, x => x.Version, GridLength.Auto),
-				new TextColumn<IModEntry, string>(authorHeader, x => x.Author, GridLength.Auto),
-				new TextColumn<IModEntry, string>(lastUpdatedHeader, x => x.LastUpdated, GridLength.Auto),
+				new TextColumn<IModEntry, string>(versionHeader(), x => x.Version, GridLength.Auto),
+				new TextColumn<IModEntry, string>(authorHeader(), x => x.Author, GridLength.Auto),
+				new TextColumn<IModEntry, string>(lastUpdatedHeader(), x => x.LastUpdated, GridLength.Auto),
 			}
 		}, ActiveMods, activeModsConnection, locaService.EntryToObservable(nameof(Loca.ModList_Active_Title), "Active"))
 		{
@@ -1885,11 +1885,11 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			Columns =
 			{
 				new HierarchicalExpanderColumn<IModEntry>(
-					new ModEntryColumn<string>(x => x.DisplayName, nameHeader, GridLength.Star, columnOpts),
+					new ModEntryColumn<string>(x => x.DisplayName, nameHeader(), GridLength.Star, columnOpts),
 					x => x.Children, x => x.Children != null && x.Children.Count > 0, x => x.IsExpanded),
-				new TextColumn<IModEntry, string>(versionHeader, x => x.Version, new GridLength(80d)),
-				new TextColumn<IModEntry, string>(authorHeader, x => x.Author, new GridLength(100d)),
-				new TextColumn<IModEntry, string>(lastUpdatedHeader, x => x.LastUpdated, new GridLength(200d)),
+				new TextColumn<IModEntry, string>(versionHeader(), x => x.Version, new GridLength(80d)),
+				new TextColumn<IModEntry, string>(authorHeader(), x => x.Author, new GridLength(100d)),
+				new TextColumn<IModEntry, string>(lastUpdatedHeader(), x => x.LastUpdated, new GridLength(200d)),
 			}
 		}, InactiveMods, inactiveModsConnection, locaService.EntryToObservable(nameof(Loca.ModList_Inactive_Title), "Inactive"))
 		{
