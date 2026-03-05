@@ -23,16 +23,32 @@ public partial class MessageBoxView : ReactiveUserControl<MessageBoxViewModel>
 			ViewModel ??= ViewModelLocator.MessageBox;
 			if (ViewModel != null)
 			{
-				this.GetObservable(IsVisibleProperty).BindTo(ViewModel, x => x.IsVisible);
+				d(this.GetObservable(IsVisibleProperty).BindTo(ViewModel, x => x.IsVisible));
 
-				ViewModel.WhenAnyValue(x => x.IsInput).Subscribe(b =>
+				d(ViewModel.WhenAnyValue(x => x.IsInput).Subscribe(b =>
 				{
 					if(ViewModel.IsVisible)
 					{
 						InputTextBox.Focus(NavigationMethod.Pointer);
 						InputTextBox.SelectAll();
 					}
-				});
+				}));
+
+				d(Observable.FromEventPattern<KeyEventArgs>(this, nameof(KeyDown)).Subscribe(e =>
+				{
+					if(ViewModel.IsVisible && ViewModel.IsInput)
+					{
+						var key = e.EventArgs.Key;
+						if (ViewModel.InputText.IsValid() && (key == Key.Return || key == Key.Enter))
+						{
+							ViewModel.ConfirmCommand.Execute().Subscribe();
+						}
+						else if (key == Key.Escape)
+						{
+							ViewModel.CancelCommand.Execute().Subscribe();
+						}
+					}
+				}));
 			}
 		});
 	}
