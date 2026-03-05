@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Reactive.Subjects;
 using System.Runtime.Serialization.DataContracts;
 
 using TextCopy;
@@ -58,11 +59,18 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	private readonly ReadOnlyObservableCollection<ProfileData> _uiprofiles;
 	public ReadOnlyObservableCollection<ProfileData> Profiles => _uiprofiles;
 
+	private readonly SourceCache<IModEntry, string> _allEntries = new(x => x.UUID);
+
 	public ObservableCollectionExtended<IModEntry> ActiveMods { get; }
 	public ObservableCollectionExtended<IModEntry> InactiveMods { get; }
 
 	private readonly ReadOnlyObservableCollection<ModData> _adventureMods;
 	public ReadOnlyObservableCollection<ModData> AdventureMods => _adventureMods;
+
+
+	private readonly ReadOnlyObservableCollection<ModEntry> _selectedPakMods;
+	public ReadOnlyObservableCollection<ModEntry> SelectedPakMods => _selectedPakMods;
+
 
 	public ModListViewModel ActiveModsView { get; }
 	public ModListViewModel InactiveModsView { get; }
@@ -84,6 +92,9 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	[Reactive] public partial ProfileData? SelectedProfile { get; set; }
 	[Reactive] public partial ModOrder? SelectedModOrder { get; set; }
 	[Reactive] public partial ModData? SelectedAdventureMod { get; set; }
+
+	[Reactive] public partial int ActiveSelected { get; private set; }
+	[Reactive] public partial int InactiveSelected { get; private set; }
 
 	[ObservableAsProperty] public partial string? SelectedModOrderName { get; }
 	[ObservableAsProperty] public partial string? SelectedModOrderFilePath { get; }
@@ -109,6 +120,21 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 	public ReactiveCommand<ModOrder, Unit> DeleteOrderCommand { get; }
 	public RxCommandUnit CopyOrderToClipboardCommand { get; }
 	public ReactiveCommand<ModOrder, Unit> OrderJustLoadedCommand { get; }
+
+	public void DeselectAllMods()
+	{
+		RxApp.MainThreadScheduler.Schedule(() =>
+		{
+			foreach (var mod in ActiveMods)
+			{
+				mod.IsSelected = false;
+			}
+			foreach (var mod in InactiveMods)
+			{
+				mod.IsSelected = false;
+			}
+		});
+	}
 
 	private static string GetLaunchGameTooltip(ValueTuple<string?, bool, bool, bool> x)
 	{
@@ -1098,6 +1124,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 
 		var entry = mod.ToModInterface();
+		_allEntries.AddOrUpdate(entry);
 		if (FindNestedMod(ActiveMods, mod.UUID, out var existing, out var fromList))
 		{
 			mod.IsActive = true;
@@ -1277,7 +1304,9 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 						if (_manager.TryGetMod(child.Id, out var mod))
 						{
 							addedEntries.Add(child.Id);
-							targetList.Add(mod.ToModInterface());
+							var entry = mod.ToModInterface();
+							_allEntries.AddOrUpdate(entry);
+							targetList.Add(entry);
 						}
 					}
 					else if (child.Type == ModEntryType.Container && child is ModOrderContainer childContainer)
@@ -1291,6 +1320,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		{
 			//TODO fetch from some central container settings location
 			var uiContainer = new ModContainer(container.Id, container.Name ?? string.Empty);
+			_allEntries.AddOrUpdate(uiContainer);
 			if (container.Settings != null)
 			{
 				uiContainer.Settings.SetFromDataMember(container.Settings);
@@ -1310,7 +1340,10 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 						if (_manager.TryGetMod(entry.Id, out var mod) && canAddMod(mod))
 						{
 							addedEntries.Add(entry.Id);
-							uiContainer.Children.Add(mod.ToModInterface());
+
+							var listEntry = mod.ToModInterface();
+							_allEntries.AddOrUpdate(listEntry);
+							uiContainer.Children.Add(listEntry);
 						}
 					}
 					else if (entry.Type == ModEntryType.Container && entry is ModOrderContainer subContainer)
@@ -1349,7 +1382,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			mod.Index = -1;
 		}
 
-		modManager.DeselectAllMods();
+		DeselectAllMods();
 
 		DivinityApp.Log($"Loading mod order '{order.Name}':\n{string.Join(";", order.Entries.Select(x => x.Name))}");
 		var missingResults = new MissingModsResults();
@@ -1406,6 +1439,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 
 		bool WasAdded(string uuid) => addedActiveMods.Contains(uuid) || addedInactiveMods.Contains(uuid);
 
+		_allEntries.Clear();
 		ActiveMods.Clear();
 
 		foreach (var entry in order.Entries)
@@ -1875,7 +1909,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, string>(authorHeader(), x => x.Author, GridLength.Auto),
 				new TextColumn<IModEntry, string>(lastUpdatedHeader(), x => x.LastUpdated, GridLength.Auto),
 			}
-		}, ActiveMods, activeModsConnection, locaService.EntryToObservable(nameof(Loca.ModList_Active_Title), "Active"))
+		}, ActiveMods, activeModsConnection, _allEntries, locaService.EntryToObservable(nameof(Loca.ModList_Active_Title), "Active"))
 		{
 			ListType = ModListType.Active
 		};
@@ -1891,7 +1925,7 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 				new TextColumn<IModEntry, string>(authorHeader(), x => x.Author, new GridLength(100d)),
 				new TextColumn<IModEntry, string>(lastUpdatedHeader(), x => x.LastUpdated, new GridLength(200d)),
 			}
-		}, InactiveMods, inactiveModsConnection, locaService.EntryToObservable(nameof(Loca.ModList_Inactive_Title), "Inactive"))
+		}, InactiveMods, inactiveModsConnection, _allEntries, locaService.EntryToObservable(nameof(Loca.ModList_Inactive_Title), "Inactive"))
 		{
 			ListType = ModListType.Inactive
 		};
@@ -1920,12 +1954,6 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 		_selectedProfileSavesPathHelper = whenProfileNotNull
 			.Select(x => _fs.Path.Join(x.FilePath, "Savegames", "Story"))
 			.ToUIProperty(this, x => x.SelectedProfileSavesPath);
-
-		_hasAnySelectedPakModsHelper = _manager.SelectedPakMods
-			.ToObservableChangeSet()
-			.CountChanged()
-			.Select(_ => _manager.SelectedPakMods.Count > 0)
-			.ToUIPropertyImmediate(this, x => x.HasAnySelectedPakMods);
 
 		_totalActiveModsHelper = ActiveMods.ToObservableChangeSet().CountChanged().Select(_ => ActiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalActiveMods);
 		_totalInactiveModsHelper = InactiveMods.ToObservableChangeSet().CountChanged().Select(_ => InactiveMods.Count).ToUIPropertyImmediate(this, x => x.TotalInactiveMods);
@@ -2199,6 +2227,59 @@ public partial class ModOrderViewModel : ReactiveObject, IRoutableViewModel
 			}, RxApp.MainThreadScheduler);
 
 			req.SetOutput(true);
+		});
+
+
+		var selectedEntriesConnection = _allEntries.Connect().AutoRefresh(x => x.IsSelected).Filter(x => x.IsSelected);
+		var pakModsConnection = selectedEntriesConnection.Filter(x => x.EntryType == ModEntryType.Mod && !((ModEntry)x).Data.IsLooseMod);
+		pakModsConnection.Transform(x => (ModEntry)x).Bind(out _selectedPakMods).Subscribe();
+
+		_hasAnySelectedPakModsHelper = SelectedPakMods
+			.ToObservableChangeSet()
+			.CountChanged()
+			.Select(_ => SelectedPakMods.Count > 0)
+			.ToUIPropertyImmediate(this, x => x.HasAnySelectedPakMods);
+
+		selectedEntriesConnection.CountChanged().Throttle(TimeSpan.FromMilliseconds(50)).ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ =>
+		{
+			var totalActive = 0;
+			var totalInactive = 0;
+			foreach(var entry in _allEntries.Items)
+			{
+				if(entry.IsSelected)
+				{
+					if(entry.IsActive)
+					{
+						totalActive += 1;
+					}
+					else
+					{
+						totalInactive += 1;
+					}
+				}
+			}
+			ActiveSelected = totalActive;
+			InactiveSelected = totalInactive;
+		});
+
+		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, (a, b) => a > 0 || b > 0).Subscribe(b => AppServices.Commands.HasAnySelectedMods = b);
+		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, (a, b) => (a + b) > 1).Subscribe(b => AppServices.Commands.HasMultipleSelectedMods = b);
+
+		_interactions.GetSelectedPakMods.RegisterHandler(request =>
+		{
+			var mods = request.Input switch
+			{
+				ModStatusRequestType.Any => SelectedPakMods,
+				ModStatusRequestType.Active => SelectedPakMods.Where(x => x.IsActive),
+				ModStatusRequestType.Inactive => SelectedPakMods.Where(x => !x.IsActive),
+				_ => throw new NotImplementedException()
+			};
+			request.SetOutput(mods.Select(x => x.Data));
+		});
+
+		activeModsConnection.WhenPropertyChanged(x => x.IsSelected).Subscribe(x =>
+		{
+			DivinityApp.Log($"{ActiveSelected}{InactiveSelected}{SelectedPakMods}");
 		});
 	}
 }

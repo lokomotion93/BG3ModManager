@@ -196,20 +196,8 @@ public partial class GlobalCommandsService : ReactiveObject, IGlobalCommandsServ
 	[ReactiveCommand(CanExecute = nameof(_canExecuteSelectedObs))]
 	private async Task ExploreSelectedModFiles()
 	{
-		List<ModData> selectedMods = [];
-		var modManager = AppLocator.Current.GetService<IModManagerService>();
-		if (modManager != null)
-		{
-			selectedMods.AddRange(modManager.AllMods.Where(x => x.IsSelected));
-		}
-		if(selectedMods.Count > 0)
-		{
-			await _interactions.ViewModFiles.Handle(new(selectedMods));
-		}
-		else
-		{
-			throw new ArgumentException("No mods are selected");
-		}
+		var mods = await _interactions.GetSelectedPakMods.Handle(ModStatusRequestType.Any);
+		await _interactions.ViewModFiles.Handle(new(mods));
 	}
 
 	public void ShowAlert(string message, AlertType alertType = AlertType.Info, int timeout = 0, string? title = "")

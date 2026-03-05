@@ -110,7 +110,6 @@ public partial class ModData : ReactiveObject, IModuleShortDesc
 
 	[Reactive] public partial bool HasScriptExtenderSettings { get; set; }
 	[Reactive] public partial bool IsActive { get; set; }
-	[Reactive] public partial bool IsSelected { get; set; }
 
 	[Reactive] public partial bool IsLooseMod { get; set; }
 	[Reactive] public partial bool IsToolkitProject { get; set; }

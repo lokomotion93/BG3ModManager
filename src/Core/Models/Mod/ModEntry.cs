@@ -397,11 +397,6 @@ public partial class ModEntry : ReactiveObject, IModEntry
 			if (b) IsSelected = false;
 		});
 
-		this.WhenAnyValue(x => x.IsSelected).Subscribe(b =>
-		{
-			Data?.IsSelected = b;
-		});
-
 		this.WhenAnyValue(x => x.IsActive).Subscribe(b =>
 		{
 			Data?.IsActive = b;

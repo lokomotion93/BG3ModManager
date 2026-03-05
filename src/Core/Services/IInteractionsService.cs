@@ -95,4 +95,9 @@ public interface IInteractionsService
 	/// Open the mod container settings view.
 	/// </summary>
 	Interaction<ModContainer, bool> OpenModContainerSettings { get; }
+
+	/// <summary>
+	/// Open the mod container settings view.
+	/// </summary>
+	Interaction<ModStatusRequestType, IEnumerable<ModData>> GetSelectedPakMods { get; }
 }

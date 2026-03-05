@@ -114,6 +114,25 @@ public partial class ModListViewModel : ReactiveObject
 		}
 	}
 
+	private HashSet<string> GetAllEntryGuids()
+	{
+		var guids = new HashSet<string>();
+
+		foreach (var topEntry in _mods)
+		{
+			guids.Add(topEntry.UUID);
+			if (topEntry.EntryType == ModEntryType.Container && topEntry is ModContainer container)
+			{
+				foreach (var child in container.ForEachNested())
+				{
+					guids.Add(child.UUID);
+				}
+			}
+		}
+		return guids;
+	}
+
+
 	private void UpdateSelection(TreeSelectionModelSelectionChangedEventArgs<IModEntry> e)
 	{
 #if DEBUG
@@ -129,12 +148,14 @@ public partial class ModListViewModel : ReactiveObject
 		}
 
 		//Need a _mods.Contains check since the entry may have been moved via drag&drop
+		//Hash all current uuids since the mod may be nested in a container
+		var guids = GetAllEntryGuids();
 
 		if (e.SelectedItems != null)
 		{
 			foreach (var item in e.SelectedItems)
 			{
-				if(item != null && _mods.Contains(item))
+				if(item != null && guids.Contains(item.UUID))
 				{
 					item.IsSelected = true;
 				}
@@ -145,7 +166,7 @@ public partial class ModListViewModel : ReactiveObject
 		{
 			foreach (var item in e.DeselectedItems)
 			{
-				if (item != null && _mods.Contains(item))
+				if (item != null && guids.Contains(item.UUID))
 				{
 					item.IsSelected = false;
 				}
@@ -189,7 +210,7 @@ public partial class ModListViewModel : ReactiveObject
 
 	public ModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
 		ObservableCollectionExtended<IModEntry> backingCollection,
-		IObservable<IChangeSet<IModEntry>> connection, IObservable<string?>? titleObs = null)
+		IObservable<IChangeSet<IModEntry>> connection, SourceCache<IModEntry, string> allEntries, IObservable<string?>? titleObs = null)
 	{
 		_mods = backingCollection;
 		Mods = treeGridSource;
@@ -282,6 +303,7 @@ public partial class ModListViewModel : ReactiveObject
 					IsActive = ListType == ModListType.Active,
 					EnableAutosaving = true
 				};
+				allEntries.AddOrUpdate(container);
 				container.Settings.DisplayName = result.Input ?? string.Empty;
 				AppServices.Settings.ContainerSettings.Containers.AddOrUpdate(container.Settings);
 				if(insertAt != -2)
@@ -402,11 +424,24 @@ public class DesignModListViewModel : ModListViewModel
 		public static ObservableCollectionExtended<IModEntry> Mods { get; }
 		public static HierarchicalTreeDataGridSource<IModEntry> DataSource { get; }
 		public static IObservable<IChangeSet<IModEntry>> ModsConnection { get; }
+		public static SourceCache<IModEntry, string> AllEntries { get; } = new(x => x.UUID);
 
 		static DesignModListViewModelDataSource()
 		{
 			Mods = [];
 			Mods.AddRange(ModelGlobals.TestMods);
+
+			foreach(var entry in ModelGlobals.TestMods)
+			{
+				AllEntries.AddOrUpdate(entry);
+				if(entry.EntryType == ModEntryType.Container && entry is ModContainer container)
+				{
+					foreach(var child in container.ForEachNested())
+					{
+						AllEntries.AddOrUpdate(child);
+					}
+				}
+			}
 
 			ModsConnection = Mods.ToObservableChangeSet().ObserveOn(RxApp.MainThreadScheduler);
 
@@ -429,7 +464,7 @@ public class DesignModListViewModel : ModListViewModel
 
 	public DesignModListViewModel() : base(DesignModListViewModelDataSource.DataSource,
 		DesignModListViewModelDataSource.Mods,
-		DesignModListViewModelDataSource.ModsConnection)
+		DesignModListViewModelDataSource.ModsConnection, DesignModListViewModelDataSource.AllEntries)
 	{
 		Title = "Active";
 	}
@@ -437,7 +472,7 @@ public class DesignModListViewModel : ModListViewModel
 	public DesignModListViewModel(HierarchicalTreeDataGridSource<IModEntry> treeGridSource,
 		ObservableCollectionExtended<IModEntry> collection,
 		IObservable<IChangeSet<IModEntry>> connection,
-		string title = "") : base(treeGridSource, collection, connection)
+		string title = "") : base(treeGridSource, collection, connection, new(x => x.UUID))
 	{
 		Title = title;
 	}

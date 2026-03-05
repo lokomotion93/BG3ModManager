@@ -15,11 +15,8 @@ public interface IModManagerService
 	ReadOnlyObservableCollection<ModData> AdventureMods { get; }
 	ReadOnlyObservableCollection<ModData> OverridePakMods { get; }
 	ReadOnlyObservableCollection<ModData> UserMods { get; }
-	ReadOnlyObservableCollection<ModData> SelectedPakMods { get; }
 	string MainCampaignGuid { get; set; }
 
-	int ActiveSelected { get; }
-	int InactiveSelected { get; }
 	IObservable<IChangeSet<ModData, string>> ModsConnection { get; }
 	bool ModExists(string uuid);
 	void Add(ModData mod);
@@ -28,7 +25,6 @@ public interface IModManagerService
 	bool TryGetMod(string? guid, [NotNullWhen(true)] out ModData? mod);
 	string GetModType(string guid);
 	bool ModIsAvailable(IModuleShortDesc divinityModData);
-	void DeselectAllMods();
 	void Refresh();
 	void ApplyUserModConfig();
 	void SetLoadedMods(IEnumerable<ModData> loadedMods, bool githubEnabled, bool nexusModsEnabled, bool modioEnabled);

@@ -19,7 +19,6 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 	private readonly ReadOnlyObservableCollection<ModData> _addonMods;
 	private readonly ReadOnlyObservableCollection<ModData> _adventureMods;
 	private readonly ReadOnlyObservableCollection<ModData> _overridePaks;
-	private readonly ReadOnlyObservableCollection<ModData> _selectedPakMods;
 	private readonly ReadOnlyObservableCollection<ModData> _userMods;
 
 	public IEnumerable<ModData> AllMods => mods.Items;
@@ -27,13 +26,9 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 	public ReadOnlyObservableCollection<ModData> AdventureMods => _adventureMods;
 	public ReadOnlyObservableCollection<ModData> OverridePakMods => _overridePaks;
 	public ReadOnlyObservableCollection<ModData> UserMods => _userMods;
-	public ReadOnlyObservableCollection<ModData> SelectedPakMods => _selectedPakMods;
 
 	//GustavX, as of patch 8
 	[Reactive] private string _mainCampaignGuid = "cb555efe-2d9e-131f-8195-a89329d218ea";
-
-	[Reactive] public partial int ActiveSelected { get; private set; }
-	[Reactive] public partial int InactiveSelected { get; private set; }
 
 	private readonly IObservable<IChangeSet<ModData, string>> _modsConnection;
 	public IObservable<IChangeSet<ModData, string>> ModsConnection => _modsConnection;
@@ -65,17 +60,6 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 	public bool ModIsAvailable(IModuleShortDesc divinityModData)
 	{
 		return ModExists(divinityModData.UUID) || ModDataLoader.IgnoreModDependency(divinityModData.UUID);
-	}
-
-	public void DeselectAllMods()
-	{
-		RxApp.MainThreadScheduler.Schedule(() =>
-		{
-			foreach (var mod in AddonMods)
-			{
-				mod.IsSelected = false;
-			}
-		});
 	}
 
 	public void Refresh()
@@ -267,33 +251,6 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 		var forceLoadedObs = _modsConnection.Filter(x => x.HasOverrideFiles && !x.HasMetadata).ObserveOn(RxApp.MainThreadScheduler);
 		forceLoadedObs.Bind(out _overridePaks).Subscribe();
 
-		var selectedModsConnection = _modsConnection.AutoRefresh(x => x.IsSelected, TimeSpan.FromMilliseconds(100))
-			.AutoRefresh(x => x.IsActive, TimeSpan.FromMilliseconds(25));
-
-		selectedModsConnection.Filter(x => x.IsSelected && !x.IsLooseMod && File.Exists(x.FilePath)).Bind(out _selectedPakMods).Subscribe();
-
-		selectedModsConnection.Subscribe(_ =>
-		{
-			var totalActive = 0;
-			var totalInactive = 0;
-			foreach(var mod in mods.Items)
-			{
-				if(mod.IsSelected)
-				{
-					if (mod.IsActive)
-					{
-						totalActive += 1;
-					}
-					else
-					{
-						totalInactive += 1;
-					}
-				}
-			}
-			ActiveSelected = totalActive;
-			InactiveSelected = totalInactive;
-		});
-
 		_interactions.ToggleModFileNameDisplay.RegisterHandler(interaction =>
 		{
 			foreach (var mod in mods.Items)
@@ -302,8 +259,5 @@ public partial class ModManagerService : ReactiveObject, IModManagerService
 			}
 			interaction.SetOutput(true);
 		});
-
-		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, (a, b) => a > 0 || b > 0).BindTo(_commands, x => x.HasAnySelectedMods);
-		this.WhenAnyValue(x => x.ActiveSelected, x => x.InactiveSelected, (a, b) => (a + b) > 1).BindTo(_commands, x => x.HasMultipleSelectedMods);
 	}
 }

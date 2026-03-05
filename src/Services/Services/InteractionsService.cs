@@ -47,6 +47,8 @@ public class InteractionsService : IInteractionsService
 	public Interaction<ViewModFilesRequest, bool> ViewModFiles { get; }
 	/// <inheritdoc/>
 	public Interaction<ModContainer, bool> OpenModContainerSettings { get; }
+	/// <inheritdoc/>
+	public Interaction<ModStatusRequestType, IEnumerable<ModData>> GetSelectedPakMods { get; }
 
 	public InteractionsService()
 	{
@@ -68,5 +70,6 @@ public class InteractionsService : IInteractionsService
 		ValidateModStats = new();
 		ViewModFiles = new();
 		OpenModContainerSettings = new();
+		GetSelectedPakMods = new();
 	}
 }

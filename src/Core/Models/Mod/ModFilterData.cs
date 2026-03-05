@@ -143,10 +143,10 @@ public struct ModFilterData
 			if (ValueContains(mod.UUID)) return true;
 		}
 
-		if (PropertyContains("Selected") && mod.IsSelected)
-		{
-			return true;
-		}
+		//if (PropertyContains("Selected") && mod.IsSelected)
+		//{
+		//	return true;
+		//}
 
 		if (PropertyContains("Depend"))
 		{

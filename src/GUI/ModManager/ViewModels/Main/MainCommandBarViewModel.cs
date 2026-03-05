@@ -720,17 +720,17 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		ExtractAllSelectedModsCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
-			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods);
+			await main.ExtractSelectedModsAsync(modOrder.SelectedPakMods.Select(x => x.Data));
 		}, canExtract);
 
 		ExtractSelectedActiveModsCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
-			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods.Where(x => x.IsActive));
+			await main.ExtractSelectedModsAsync(modOrder.SelectedPakMods.Where(x => x.IsActive).Select(x => x.Data));
 		}, canExtract);
 
 		ExtractSelectedInactiveModsCommand = ReactiveCommand.CreateFromTask(async () =>
 		{
-			await main.ExtractSelectedModsAsync(AppServices.Mods.SelectedPakMods.Where(x => !x.IsActive));
+			await main.ExtractSelectedModsAsync(modOrder.SelectedPakMods.Where(x => !x.IsActive).Select(x => x.Data));
 		}, canExtract);
 
 

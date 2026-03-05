@@ -1470,7 +1470,8 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 
 		_fs.Directory.CreateDirectory(outputDirectory);
 
-		var targetMods = _manager.SelectedPakMods.ToImmutableList();
+
+		var targetMods = ViewModelLocator.ModOrder.SelectedPakMods.ToImmutableList();
 
 		var totalWork = targetMods.Count;
 		var taskStepAmount = 100d / totalWork;
@@ -1564,7 +1565,7 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 			Settings.LastExtractOutputPath = outputDir;
 			SaveSettings();
 
-			if (_manager.SelectedPakMods.Count == 1)
+			if (ViewModelLocator.ModOrder.SelectedPakMods.Count == 1)
 			{
 				await ExtractSelectedModsRunAsync(mods, outputDir);
 			}
