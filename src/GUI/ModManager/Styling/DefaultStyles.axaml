@@ -6,13 +6,11 @@
     xmlns:labs="using:Avalonia.Labs.Controls"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:rxui="using:Avalonia.ReactiveUI"
-    xmlns:sukiBase="using:SukiUI"
-    xmlns:suki="using:SukiUI.Controls"
-    xmlns:theme="using:SukiUI.Theme"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
     xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
 	<!--  Default EnhancedTextBox styles, derived from SukiUI  -->
-	<Style Selector="controls|EnhancedTextBox">
+	<Style Selector="controls|EnhancedTextBox.default">
 		<Setter Property="ContextFlyout" Value="{StaticResource EnhancedTextBoxContextFlyout}" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="BorderThickness" Value="1" />
@@ -24,57 +22,39 @@
 		<Setter Property="SelectionBrush" Value="{DynamicResource SukiPrimaryColor75}" />
 		<Setter Property="MinHeight" Value="36" />
 		<Setter Property="Padding" Value="6,8,5,6" />
-		<Setter Property="theme:TextBoxExtensions.AddDeleteButton" Value="True" />
-		<!--<Setter Property="Template">
-			<ControlTemplate>
-				<Panel Name="PART_RootPanel">
-					<suki:GlassCard Name="border"
-					    Padding="0"
-					    BorderBrush="{TemplateBinding BorderBrush}"
-					    BorderThickness="{TemplateBinding BorderThickness}"
-					    CornerRadius="{TemplateBinding CornerRadius}">
-						<suki:GlassCard.Transitions>
-							<Transitions>
-								<BrushTransition Property="BorderBrush" Duration="0:0:0.2" />
-							</Transitions>
-						</suki:GlassCard.Transitions>
-					</suki:GlassCard>
-					<DataValidationErrors />
-				</Panel>
-			</ControlTemplate>
-		</Setter>-->
+		<Setter Property="suki:TextBoxExtensions.AddDeleteButton" Value="True" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox:pointerover /template/ suki|GlassCard#border">
+	<Style Selector="controls|EnhancedTextBox.default:pointerover /template/ suki|GlassCard#border">
 		<Setter Property="BorderBrush" Value="{DynamicResource SukiBorderBrush}" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox:pointerover /template/ Border#borderbottom">
+	<Style Selector="controls|EnhancedTextBox.default:pointerover /template/ Border#borderbottom">
 		<Setter Property="BorderBrush" Value="{DynamicResource SukiBorderBrush}" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox:focus /template/ Border#borderbottom">
+	<Style Selector="controls|EnhancedTextBox.default:focus /template/ Border#borderbottom">
 		<Setter Property="BorderBrush" Value="{DynamicResource SukiPrimaryColor}" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox:focus /template/ suki|GlassCard#border">
+	<Style Selector="controls|EnhancedTextBox.default:focus /template/ suki|GlassCard#border">
 		<Setter Property="BorderBrush" Value="{DynamicResource SukiPrimaryColor}" />
 		<Setter Property="BorderThickness" Value="1.2" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox:error /template/ suki|GlassCard#border">
+	<Style Selector="controls|EnhancedTextBox.default:error /template/ suki|GlassCard#border">
 		<Setter Property="BorderBrush" Value="{DynamicResource ErrorBrush}" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox /template/ DockPanel">
+	<Style Selector="controls|EnhancedTextBox.default /template/ DockPanel">
 		<Setter Property="Cursor" Value="IBeam" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox:disabled /template/ suki|GlassCard#border">
+	<Style Selector="controls|EnhancedTextBox.default:disabled /template/ suki|GlassCard#border">
 		<Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
 	</Style>
 
-	<Style Selector="controls|EnhancedTextBox:disabled">
+	<Style Selector="controls|EnhancedTextBox.default:disabled">
 		<Setter Property="Foreground" Value="{DynamicResource SukiDisabledText}" />
 	</Style>
 	<!--  EnhancedTextBox end  -->

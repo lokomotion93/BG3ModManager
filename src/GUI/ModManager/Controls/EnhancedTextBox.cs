@@ -1,7 +1,7 @@
 ﻿namespace ModManager.Controls;
 public class EnhancedTextBox : TextBox
 {
-	//protected override Type StyleKeyOverride => typeof(TextBox);
+	protected override Type StyleKeyOverride => typeof(TextBox);
 
 	public static KeyGesture? SelectAllGesture => Application.Current?.PlatformSettings?.HotkeyConfiguration.SelectAll.FirstOrDefault();
 	public static KeyGesture ClearGesture { get; } = new KeyGesture(Key.Delete, KeyModifiers.Control);
@@ -47,5 +47,7 @@ public class EnhancedTextBox : TextBox
 			h => ContextRequested += h,
 			h => ContextRequested -= h
 		).SkipUntil(hasContextFlyout).Subscribe(OnContextRequested);
+
+		Classes.Add("default");
 	}
 }
