@@ -1688,62 +1688,6 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		}
 	}
 
-	private async Task ImportDownloadsAsync(IScheduler sch, CancellationToken token)
-	{
-		var files = _nexusMods.DownloadResults.ToList();
-		_nexusMods.DownloadResults.Clear();
-
-		var result = new ImportOperationResults()
-		{
-			TotalFiles = files.Count
-		};
-		var builtinMods = DivinityApp.IgnoredMods.Items.ToSafeDictionary(x => x.Folder);
-		foreach (var filePath in files)
-		{
-			if (token.IsCancellationRequested) return;
-			await _importer.ImportModFromFile(builtinMods, result, filePath, token, false);
-		}
-
-		if (result.Mods.Count > 0 && result.Mods.Any(x => x.NexusModsData.ModId >= DivinityApp.NEXUSMODS_MOD_ID_START))
-		{
-			await _updater.NexusMods.Update(result.Mods, token);
-			await _updater.NexusMods.SaveCacheAsync(false, Version, token);
-
-			await Observable.Start(() =>
-			{
-				var total = result.Mods.Count;
-				if (result.Success)
-				{
-					if (result.Mods.Count > 1)
-					{
-						_globalCommands.ShowAlert($"Successfully imported {total} downloaded mods", AlertType.Success, 20);
-					}
-					else if (total == 1)
-					{
-						var modFileName = result.Mods.First().FileName;
-						var fileNames = string.Join(", ", files.Select(x => _fs.Path.GetFileName(x)));
-						_globalCommands.ShowAlert($"Successfully imported '{modFileName}' from '{fileNames}'", AlertType.Success, 20);
-					}
-					else
-					{
-						_globalCommands.ShowAlert("Skipped importing mod - No .pak file found", AlertType.Success, 20);
-					}
-				}
-				else
-				{
-					if (total == 0)
-					{
-						_globalCommands.ShowAlert("No mods imported. Does the file contain a .pak?", AlertType.Warning, 60);
-					}
-					else
-					{
-						_globalCommands.ShowAlert($"Only imported {total}/{result.TotalPaks} mods - Check the log", AlertType.Danger, 60);
-					}
-				}
-			}, RxApp.MainThreadScheduler);
-		}
-	}
-
 	public MainWindowViewModel(
 		IPathwaysService pathwaysService,
 		ISettingsService settingsService,
@@ -1838,20 +1782,6 @@ public partial class MainWindowViewModel : ReactiveObject, IScreen
 		AppServices.AppUpdater.Configure(DivinityApp.GITHUB_USER, DivinityApp.GITHUB_REPO, DivinityApp.GITHUB_RELEASE_ASSET);
 
 		this.WhenAnyValue(x => x.Settings.UpdateSettings.NexusModsAPIKey).BindTo(nexusModsService, x => x.ApiKey);
-
-		IDisposable? importDownloadsTask = null;
-		_nexusMods.DownloadResults
-		.ToObservableChangeSet()
-		.CountChanged()
-		.Throttle(TimeSpan.FromMilliseconds(50))
-		.Subscribe(f =>
-		{
-			if(_nexusMods.DownloadResults.Count > 0)
-			{
-				importDownloadsTask?.Dispose();
-				importDownloadsTask = RxApp.TaskpoolScheduler.ScheduleAsync(TimeSpan.FromMilliseconds(250), ImportDownloadsAsync);
-			}
-		});
 
 		this.WhenAnyValue(x => x.AppSettings.Features.GitHub, x => x.Settings.UpdateSettings.UpdateGitHubMods).AllTrue()
 			.BindTo(_updater.GitHub, x => x.IsEnabled);

@@ -51,8 +51,15 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 		return ext == ".pak" || CommonFileTypes.ArchiveFormats.Extensions.Contains(ext) || CommonFileTypes.CompressedFormats.Extensions.Contains(ext);
 	}
 
-	public async Task<ImportOperationResults> ImportModFromFile(Dictionary<string, ModData> builtinMods, ImportOperationResults taskResult, string filePath, CancellationToken token, bool toActiveList = false)
+	private static Dictionary<string, ModData>? _fallbackBuiltinMods = null;
+
+	public async Task<ImportOperationResults> ImportModFromFile(ImportOperationResults taskResult, string filePath, CancellationToken token, bool toActiveList = false, Dictionary<string, ModData>? builtinMods = null)
 	{
+		if(builtinMods == null && _fallbackBuiltinMods == null)
+		{
+			_fallbackBuiltinMods = DivinityApp.IgnoredMods.Items.ToSafeDictionary(x => x.Folder);
+		}
+		builtinMods ??= _fallbackBuiltinMods;
 		var targetFolder = toActiveList ? Pathways.AppDataModsPath : Pathways.AppDataInactiveModsPath;
 		var ext = _fs.Path.GetExtension(filePath).ToLower();
 		if (ext.Equals(".pak", StringComparison.OrdinalIgnoreCase))
@@ -407,10 +414,12 @@ public class ModImportService(IDialogService dialogService, IFileSystemService f
 
 		ViewModel.Progress.StartAsync(async token =>
 		{
-			var builtinMods = DivinityApp.IgnoredMods.Items.ToSafeDictionary(x => x.Folder);
 			foreach (var f in files)
 			{
-				await ImportModFromFile(builtinMods, result, f, token, toActiveList);
+				if(f.IsValid())
+				{
+					await ImportModFromFile(result, f, token, toActiveList);
+				}
 			}
 
 			if (AppServices.Updater.NexusMods.IsEnabled && result.Mods.Count > 0 && result.Mods.Any(x => x.NexusModsData.ModId >= DivinityApp.NEXUSMODS_MOD_ID_START))

@@ -19,6 +19,7 @@ public static class AppServices
 	public static IModUpdaterService Updater => Get<IModUpdaterService>()!;
 	public static IAppUpdaterService AppUpdater => Get<IAppUpdaterService>()!;
 	public static ModImportService ModImporter => Get<ModImportService>()!;
+	public static IDownloadManagerService Downloads => Get<IDownloadManagerService>()!;
 
 	public static IGlobalCommandsService Commands => Get<IGlobalCommandsService>()!;
 	public static IInteractionsService Interactions => Get<IInteractionsService>()!;

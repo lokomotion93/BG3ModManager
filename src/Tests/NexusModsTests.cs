@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 using Xunit;
+using System.IO.Abstractions;
 
 namespace ModManager.Tests;
 
@@ -33,13 +34,18 @@ public class NexusModsTests : BaseTest
 		var version = assembly.GetName().Version.ToString();
 		var productName = Regex.Replace(appName.Trim(), @"\s+", String.Empty);
 
-		var envService = new EnvironmentService();
-		AppLocator.CurrentMutable.RegisterConstant(envService);
-		_service = new NexusModsService(new EnvironmentService())
+		var env = new EnvironmentService();
+		var fileSystem = new FileSystem();
+		var fileSystemService = new FileSystemService(fileSystem);
+		AppLocator.CurrentMutable.RegisterConstant<IEnvironmentService>(env);
+		AppLocator.CurrentMutable.RegisterConstant<IFileSystem>(fileSystem);
+		AppLocator.CurrentMutable.RegisterConstant<IFileSystemService>(fileSystemService);
+		AppLocator.CurrentMutable.RegisterConstant<HttpClient>(new AppHttpClient(env));
+
+		_service = new NexusModsService(new EnvironmentService(), new DownloadManagerService(fileSystemService), fileSystemService)
 		{
 			ApiKey = apiKey
 		};
-		AppLocator.CurrentMutable.RegisterConstant<HttpClient>(new AppHttpClient(envService));
 
 		_mods =
 		[

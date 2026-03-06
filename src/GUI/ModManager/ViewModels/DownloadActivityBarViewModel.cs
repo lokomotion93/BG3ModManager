@@ -63,7 +63,7 @@ public partial class DownloadActivityBarViewModel : ReactiveObject, IClosableVie
 		return Math.Min(max, Math.Max(0d, value));
 	}
 
-	public DownloadActivityBarViewModel(INexusModsService nexusModsService)
+	public DownloadActivityBarViewModel(IDownloadManagerService downloadManagerService)
 	{
 		CloseCommand = this.CreateCloseCommand(invokeAction: Cancel);
 
@@ -74,33 +74,14 @@ public partial class DownloadActivityBarViewModel : ReactiveObject, IClosableVie
 
 		this.WhenAnyValue(x => x.CurrentText, x => x.Value).Select(x => x.Item1.IsValid() || x.Item2 > 0).BindTo(this, x => x.IsActive);
 
-		nexusModsService.WhenAnyValue(x => x.DownloadProgressMax, x => x.CanCancel)
-		.ObserveOn(RxApp.MainThreadScheduler)
-		.Subscribe(x =>
-		{
-			SetProgress(x.Item1);
-			if (x.Item2)
-			{
-				CancelAction = () => nexusModsService.CancelDownloads();
-			}
-			else
-			{
-				CancelAction = null;
-			}
-		});
-
-		nexusModsService.WhenAnyValue(x => x.DownloadProgressCurrent, x => x.DownloadProgressText)
-		.ObserveOn(RxApp.MainThreadScheduler)
-		.Subscribe(x =>
-		{
-			UpdateProgress(x.Item1, x.Item2);
-		});
+		//downloadManagerService.WhenAnyValue(x => x.ActiveDownloads, x => x > 0);
+		//TODO display queued downloads
 	}
 }
 
 public class DesignDownloadActivityBarViewModel : DownloadActivityBarViewModel
 {
-	public DesignDownloadActivityBarViewModel() : base(AppServices.NexusMods)
+	public DesignDownloadActivityBarViewModel() : base(AppServices.Downloads)
 	{
 		//SetProgress(100, 50);
 		CurrentStep = 50;

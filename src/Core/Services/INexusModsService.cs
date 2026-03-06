@@ -1,5 +1,6 @@
 ﻿using DynamicData.Binding;
 
+using ModManager.Models.App;
 using ModManager.Models.Mod;
 using ModManager.Models.NexusMods;
 using ModManager.Models.Updates;
@@ -17,20 +18,15 @@ public interface INexusModsService
 	bool IsPremium { get; }
 	Uri? ProfileAvatarUrl { get; }
 
-	int DownloadProgressCurrent { get; }
-	int DownloadProgressMax { get; }
-	string? DownloadProgressText { get; }
 	bool CanCancel { get; }
 
 	NexusModsObservableApiLimits ApiLimits { get; }
 
 	IObservable<NexusModsObservableApiLimits?> WhenLimitsChange { get; }
 
-	ObservableCollectionExtended<string> DownloadResults { get; }
-
 	Task<Dictionary<string, NexusModsModDownloadLink>> GetLatestDownloadsForModsAsync(IEnumerable<ModData> mods, CancellationToken token);
 	Task<UpdateResult> FetchModInfoAsync(IEnumerable<ModData> mods, CancellationToken token);
-	Task<NexusModsDownloadResults> DownloadModFilesAsync(IEnumerable<NexusGraphModFile> files, CancellationToken token);
+	Task DownloadModFilesAsync(IEnumerable<NexusGraphModFile> files, Func<NexusGraphModFile, DownloadTask, Task> onDownloadFinished, CancellationToken token);
 	void ProcessNXMLinkBackground(string url);
 	void CancelDownloads();
 }

@@ -31,17 +31,19 @@ public partial class DownloadTask : ReactiveObject
 	[Reactive] public partial Exception? Error { get; set; }
 
 	[Reactive] public partial IDisposable? TaskDisposable { get; set; }
+	[Reactive] public partial Func<DownloadTask, Task>? TaskCompleteCallback { get; set; }
 
 	[ObservableAsProperty] public partial bool IsDownloading { get; }
 	[ObservableAsProperty] public partial bool IsFinished { get; }
 	[ObservableAsProperty] public partial bool IsError { get; }
 
-	public DownloadTask(Guid id, string name, Uri downloadUri, string outputPath)
+	public DownloadTask(Guid id, DownloadRequest request, string outputFilePath)
 	{
 		_id = id;
-		_name = name;
-		_downloadUri = downloadUri;
-		_outputPath = outputPath;
+		_name = request.FileName;
+		_downloadUri = request.DownloadUri;
+		_outputPath = outputFilePath;
+		TaskCompleteCallback = request.DownloadCompleteCallback;
 
 		var whenStatus = this.WhenAnyValue(x => x.Status);
 		_isDownloadingHelper = whenStatus.Select(x => x == DownloadTaskStatus.Downloading).ToUIProperty(this, x => x.IsDownloading);

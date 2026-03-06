@@ -1,7 +1,9 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using ModManager.Models.App;
 using ModManager.Models.NexusMods;
+using ModManager.ModUpdater.Cache;
 
 using NexusModsNET.DataModels.GraphQL.Types;
 
@@ -82,6 +84,45 @@ public partial class NexusModsCollectionDownloadWindowViewModel : ReactiveObject
 	[ReactiveCommand(OutputScheduler = "RxApp.MainThreadScheduler")]
 	private void DisableAll() => SelectAll(false);
 
+	private static async Task OnDownloadFinished(NexusGraphModFile nexusFile, DownloadTask task)
+	{
+		if(task.Status == DownloadTaskStatus.Finished)
+		{
+			var token = CancellationToken.None;
+			var result = new ImportOperationResults { TotalFiles = 1 };
+			await AppServices.ModImporter.ImportModFromFile(result, task.OutputPath, token);
+
+			if (result.Mods.Count > 0 && result.Mods.Any(x => x.NexusModsData.ModId >= DivinityApp.NEXUSMODS_MOD_ID_START))
+			{
+				await AppServices.Updater.NexusMods.Update(result.Mods, token);
+
+				var total = result.Mods.Count;
+				if (result.Success)
+				{
+					if (result.Mods.Count > 0)
+					{
+						AppServices.Commands.ShowAlert($"Downloaded and imported {nexusFile.Name}", AlertType.Success, 10);
+					}
+					else
+					{
+						AppServices.Commands.ShowAlert("Skipped importing mod - No .pak file found", AlertType.Success, 20);
+					}
+				}
+				else
+				{
+					if (total == 0)
+					{
+						AppServices.Commands.ShowAlert("No mods imported. Does the file contain a .pak?", AlertType.Warning, 60);
+					}
+					else
+					{
+						AppServices.Commands.ShowAlert($"Only imported {total}/{result.TotalPaks} mods - Check the log", AlertType.Danger, 60);
+					}
+				}
+			}
+		}
+	}
+
 	[ReactiveCommand(CanExecute = nameof(_anyEnabledObs), OutputScheduler = "RxApp.TaskpoolScheduler")]
 	private async Task Confirm()
 	{
@@ -91,7 +132,7 @@ public partial class NexusModsCollectionDownloadWindowViewModel : ReactiveObject
 		await progress.StartAsync(async token =>
 		{
 			var modFiles = Mods.Where(x => x.IsSelected && x.ModFileData != null).Select(x => x.ModFileData).ToList();
-			var results = await nexus.DownloadModFilesAsync(modFiles!, token);
+			await nexus.DownloadModFilesAsync(modFiles!, OnDownloadFinished, token);
 		}, true);
 	}
 

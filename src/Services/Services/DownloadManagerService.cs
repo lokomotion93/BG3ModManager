@@ -9,13 +9,17 @@ using System.Reactive.Disposables;
 
 using System.IO;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 
 namespace ModManager.Services;
 
 public class DownloadManagerService : IDownloadManagerService
 {
+	private readonly IFileSystemService _fs;
+
 	private readonly SourceCache<DownloadTask, Guid> _tasks = new(x => x.Id);
 
+	public string DownloadFolder { get; set; }
 	public int ActiveDownloads { get; private set; }
 	public int MaxSimultaneous { get; set; } = 2;
 
@@ -100,11 +104,21 @@ public class DownloadManagerService : IDownloadManagerService
 		{
 			disp.Dispose();
 		}
+
+		if (task.TaskCompleteCallback != null)
+		{
+			RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, t) =>
+			{
+				await task.TaskCompleteCallback(task);
+			});
+		}
 	}
 
-	public void StartNextDownload()
+	private IDisposable? _periodicDownloadStartDisp = null;
+
+	private void StartNextDownload()
 	{
-		if(ActiveDownloads < MaxSimultaneous && _downloadQueue.TryDequeue(out var task))
+		if(!_downloadQueue.IsEmpty && ActiveDownloads < MaxSimultaneous && _downloadQueue.TryDequeue(out var task))
 		{
 			task.TaskDisposable = RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, token) =>
 			{
@@ -113,18 +127,30 @@ public class DownloadManagerService : IDownloadManagerService
 				ActiveDownloads -= 1;
 			});
 		}
+		else if(_downloadQueue.IsEmpty)
+		{
+			_periodicDownloadStartDisp?.Dispose();
+		}
 	}
 
-	public void AddDownload(string name, Uri downloadUri, string outputFilePath)
+	public void AddDownload(DownloadRequest request)
 	{
-		var task = new DownloadTask(Guid.NewGuid(), name, downloadUri, outputFilePath);
+		var task = new DownloadTask(Guid.NewGuid(), request, _fs.Path.Join(DownloadFolder, request.FileName));
 		_tasks.AddOrUpdate(task);
 		_downloadQueue.Enqueue(task);
+
+		if (_periodicDownloadStartDisp == null)
+		{
+			_periodicDownloadStartDisp = RxApp.TaskpoolScheduler.SchedulePeriodic(TimeSpan.FromMilliseconds(50), StartNextDownload);
+		}
 	}
 
-	public DownloadManagerService()
+	public DownloadManagerService(IFileSystemService fs)
 	{
+		_fs = fs;
 		var conn = _tasks.Connect();
 		conn.SortAndBind(out _downloads, ByOldestStarted).Subscribe();
+
+		DownloadFolder = "Downloads";
 	}
 }

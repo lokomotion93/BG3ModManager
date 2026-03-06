@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 
+using ModManager.Models.App;
 using ModManager.Models.Mod;
 using ModManager.Models.NexusMods;
 using ModManager.Models.NexusMods.NXM;
@@ -27,24 +28,19 @@ namespace ModManager.Services;
 
 public partial class NexusModsService : ReactiveObject, INexusModsService
 {
+	private readonly IDownloadManagerService _downloadManager;
+	private readonly IFileSystemService _fs;
+
 	private INexusModsClient? _client;
 	private InfosInquirer? _dataLoader;
 
 	[Reactive] public partial string? ApiKey { get; set; }
 	[Reactive] public partial bool IsPremium { get; private set; }
 	[Reactive] public partial Uri? ProfileAvatarUrl { get; private set; }
-	[Reactive] public partial int DownloadProgressCurrent { get; private set; }
-	[Reactive] public partial int DownloadProgressMax { get; private set; }
-	[Reactive] public partial string? DownloadProgressText { get; private set; }
 	[Reactive] public partial bool CanCancel { get; private set; }
-
-	private readonly CompositeDisposable _downloadTasksCompositeDisposable = [];
 
 	private readonly NexusModsObservableApiLimits _apiLimits;
 	public NexusModsObservableApiLimits ApiLimits => _apiLimits;
-
-	protected ObservableCollectionExtended<string> _downloadResults = [];
-	public ObservableCollectionExtended<string> DownloadResults => _downloadResults;
 
 	public bool IsInitialized => _client != null;
 	public bool LimitExceeded => LimitExceededCheck();
@@ -205,125 +201,42 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 		return taskResult;
 	}
 
-	private static async Task ReadWriteContentStreamAsync(Stream contentStream, FileStream outputStream, CancellationToken token)
-	{
-		var totalRead = 0L;
-		var totalReads = 0L;
-		var buffer = new byte[8192];
-		var isMoreToRead = true;
-
-		while(isMoreToRead)
-		{
-			var read = await contentStream.ReadAsync(buffer, token);
-			if (read == 0)
-			{
-				isMoreToRead = false;
-			}
-			else
-			{
-				await outputStream.WriteAsync(buffer.AsMemory(0, read), token);
-
-				totalRead += read;
-				totalReads += 1;
-			}
-		}
-	}
-
-	private static async Task<Stream> DownloadUrlAsStreamAsync(string apiKey, Uri downloadUrl, CompositeDisposable disposables, CancellationToken token)
-	{
-		//var sanitizeduri = WebUtility.UrlEncode(downloadUrl.OriginalString);
-		var httpClient = new HttpClient();
-		disposables.Add(httpClient);
-#if DEBUG
-		httpClient.Timeout = TimeSpan.FromSeconds(10);
-#endif
-		//TODO refactor into format Nexus expects, i.e. NexusApiClient/0.7.3 (Windows_NT 10.0.17134; x64) Node/8.9.3
-		httpClient.DefaultRequestHeaders.Add("User-Agent", "BG3ModManagerTest");
-		httpClient.DefaultRequestHeaders.Add("apikey", apiKey);
-		try
-		{
-			DivinityApp.Log($"Opening stream to {downloadUrl}");
-			//var fileStream = await httpClient.GetStreamAsync(downloadUrl, token);
-			//return fileStream;
-			var resp = await httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, token);
-			disposables.Add(resp);
-			resp.EnsureSuccessStatusCode();
-			var contentStream = await resp.Content.ReadAsStreamAsync(token);
-			disposables.Add(contentStream);
-			return contentStream;
-		}
-		catch (Exception ex)
-		{
-			DivinityApp.Log($"Error downloading url ({downloadUrl}):\n{ex}");
-			return Stream.Null;
-		}
-	}
-
-	private async Task DownloadFileAsync(string game, string outputFolder, NexusGraphModFile file, int taskIncrement, ConcurrentBag<NexusModsDownloadedFile> resultFiles, CancellationToken token)
+	private async Task DownloadFileAsync(string game, NexusGraphModFile file, Func<NexusGraphModFile, DownloadTask, Task> onDownloadFinished, CancellationToken token)
 	{
 		var downloads = await _dataLoader!.ModFiles.GetModFileDownloadLinksAsync(game, file.ModId, file.FileId, token);
 		if (downloads != null)
 		{
 			var preferred = downloads.FirstOrDefault();
-			var fileName = Path.GetFileName(preferred.Name);
-			var filePath = Path.Join(outputFolder, fileName);
-			DivinityApp.Log($"Downloading {file.Uri} to {filePath}");
-			DownloadProgressText = $"Downloading {fileName}...";
-
-			var disp = new CompositeDisposable();
-			using var stream = await DownloadUrlAsStreamAsync(ApiKey, preferred.Uri, disp, token);
-			await using var outputStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 128000, FileOptions.Asynchronous);
-
-			try
+			if(preferred != null)
 			{
-				await ReadWriteContentStreamAsync(stream, outputStream, token);
-
-				DownloadResults.Add(filePath);
-				DivinityApp.Log("Download done.");
-				DownloadProgressText = $"Downloaded {fileName}";
-				resultFiles.Add(new(filePath, file));
+				var fileName = _fs.Path.GetFileName(WebUtility.UrlDecode(preferred.Uri.AbsolutePath));
+				var downloadComplete = async (DownloadTask download) => await onDownloadFinished(file, download);
+				_downloadManager.AddDownload(new(fileName, preferred.Uri, downloadComplete));
 			}
-			catch(Exception ex)
-			{
-				DivinityApp.Log($"Error downloading file: {ex}");
-			}
-			finally
-			{
-				disp.Dispose();
-			}
-			DownloadProgressCurrent += taskIncrement;
 		}
 	}
 
-	public async Task<NexusModsDownloadResults> DownloadModFilesAsync(IEnumerable<NexusGraphModFile> files, CancellationToken token)
+	public async Task DownloadModFilesAsync(IEnumerable<NexusGraphModFile> files, Func<NexusGraphModFile, DownloadTask, Task> onDownloadFinished, CancellationToken token)
 	{
-		if (!CanFetchData || _dataLoader == null) return new(false, []);
-
-		var downloadedMods = new ConcurrentBag<NexusModsDownloadedFile>();
+		if (!CanFetchData || _dataLoader == null) return;
 
 		try
 		{
-			DownloadProgressCurrent = 0;
-			DownloadProgressMax = files.Count();
 			var game = DivinityApp.NEXUSMODS_GAME_DOMAIN;
-			var outputFolder = DivinityApp.GetAppDirectory("Downloads");
-			Directory.CreateDirectory(outputFolder);
 
 			List<Task> downloadTasks = [];
 
 			foreach (var file in files)
 			{
-				downloadTasks.Add(DownloadFileAsync(game, outputFolder, file, 1, downloadedMods, token));
+				downloadTasks.Add(DownloadFileAsync(game, file, onDownloadFinished, token));
 			}
 
 			await Task.WhenAll(downloadTasks).WaitAsync(token);
-			return new(false, [.. downloadedMods]);
 		}
 		catch(Exception ex)
 		{
 			DivinityApp.Log($"Error downloading files: {ex}");
 		}
-		return new(false, [.. downloadedMods]);
 	}
 
 	private static INexusModsProtocol GetProtocolData(string url)
@@ -352,8 +265,7 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 				DivinityApp.Log($"Game ({data.GameDomain}) is not Baldur's Gate 3 ({DivinityApp.NEXUSMODS_GAME_DOMAIN}). Skipping.");
 				return false;
 			}
-			DownloadProgressCurrent = 0;
-			DownloadProgressMax = 1;
+
 			while (!token.IsCancellationRequested)
 			{
 				switch (data.ProtocolType)
@@ -367,37 +279,9 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 							var file = files.FirstOrDefault();
 							if (file != null)
 							{
-								var outputFolder = DivinityApp.GetAppDirectory("Downloads");
-								Directory.CreateDirectory(outputFolder);
 								var fileName = Path.GetFileName(WebUtility.UrlDecode(file.Uri.AbsolutePath));
-								var filePath = Path.Join(outputFolder, fileName);
-								DivinityApp.Log($"Downloading {file.Uri} to {filePath}");
-								DownloadProgressText = $"Downloading {fileName}...";
 
-								var disp = new CompositeDisposable();
-								using var stream = await DownloadUrlAsStreamAsync(ApiKey, file.Uri, disp, token);
-								await using var outputStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 128000, FileOptions.Asynchronous);
-
-								var result = false;
-								try
-								{
-									await ReadWriteContentStreamAsync(stream, outputStream, token);
-
-									DownloadResults.Add(filePath);
-									DivinityApp.Log("Download done.");
-									DownloadProgressText = $"Downloaded {fileName}";
-									result = true;
-								}
-								catch (Exception ex)
-								{
-									DivinityApp.Log($"Error downloading file: {ex}");
-								}
-								finally
-								{
-									disp.Dispose();
-								}
-								DownloadProgressCurrent += 1;
-								return result;
+								_downloadManager.AddDownload(new(fileName, file.Uri));
 							}
 						}
 						break;
@@ -418,8 +302,6 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 							if (modFiles != null && modFiles.Length > 0)
 							{
 								DivinityApp.Log($"Total mods in collection: {modFiles.Length}");
-								DownloadProgressCurrent = 0;
-								DownloadProgressMax = modFiles.Length;
 								var interactions = AppLocator.Current.GetService<IInteractionsService>();
 								if (interactions != null)
 								{
@@ -437,7 +319,6 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 				}
 				return false;
 			}
-			DownloadProgressText = $"Stopped downloading mod file.";
 			return false;
 		}
 		catch (Exception ex)
@@ -451,19 +332,17 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 
 	public void ProcessNXMLinkBackground(string url)
 	{
-		var task = RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, token) =>
+		RxApp.TaskpoolScheduler.ScheduleAsync(async (sch, token) =>
 		{
 			_scheduledClearTasks?.Dispose();
 			await ProcessNXMLinkAsync(url, sch, token);
 			_scheduledClearTasks = sch.Schedule(TimeSpan.FromMilliseconds(250), ClearTasks);
 		});
-		_downloadTasksCompositeDisposable.Add(task);
 		CanCancel = true;
 	}
 
 	private void ClearTasks()
 	{
-		_downloadTasksCompositeDisposable.Clear();
 		_scheduledClearTasks?.Dispose();
 		CanCancel = false;
 	}
@@ -493,12 +372,16 @@ public partial class NexusModsService : ReactiveObject, INexusModsService
 		}
 	}
 
-	public NexusModsService(IEnvironmentService environmentService)
+	public NexusModsService(IEnvironmentService environmentService, IDownloadManagerService downloadManager, IFileSystemService fs)
 	{
+		_downloadManager = downloadManager;
+		_fs = fs;
+
 		var appName = environmentService.AppFriendlyName;
 		var appVersion = environmentService.AppVersion.ToString();
 		_apiLimits = new NexusModsObservableApiLimits();
 		_whenLimitsChange = _apiLimits.WhenAnyPropertyChanged();
+
 
 		this.WhenAnyValue(x => x.ApiKey).Skip(1).Subscribe(key =>
 		{
