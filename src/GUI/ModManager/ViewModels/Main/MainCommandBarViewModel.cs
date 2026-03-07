@@ -343,6 +343,26 @@ public partial class MainCommandBarViewModel : ReactiveObject
 		}
 	}
 
+	private async Task HandleViewModFiles(IInteractionContext<ViewModFilesRequest, bool> input)
+	{
+		var mods = input.Input.Mods;
+		var result = false;
+		if (mods != null)
+		{
+			var pakFileExplorer = ViewModelLocator.PakFileExplorer;
+			await Observable.StartAsync(async () =>
+			{
+				await pakFileExplorer.LoadModsAsync(mods, CancellationToken.None);
+			}, RxApp.TaskpoolScheduler);
+			await Observable.Start(() =>
+			{
+				ToggleWindow<PakFileExplorerWindow>(true);
+			}, RxApp.MainThreadScheduler);
+			result = true;
+		}
+		input.SetOutput(result);
+	}
+
 	public MainCommandBarViewModel(MainWindowViewModel main, ModOrderViewModel modOrder, ModImportService modImporter, IFileSystemService fs, IInteractionsService interactions) : this()
 	{
 		ModOrder = modOrder;
@@ -448,25 +468,7 @@ public partial class MainCommandBarViewModel : ReactiveObject
 
 		TogglePakFileExplorerWindowCommand = ReactiveCommand.Create(ToggleWindow<PakFileExplorerWindow>, canExecuteCommands);
 
-		interactions.ViewModFiles.RegisterHandler(async input =>
-		{
-			var mods = input.Input.Mods;
-			var result = false;
-			if (mods != null)
-			{
-				var pakFileExplorer = ViewModelLocator.PakFileExplorer;
-				await Observable.StartAsync(async () =>
-				{
-					await pakFileExplorer.LoadModsAsync(mods, CancellationToken.None);
-				}, RxApp.TaskpoolScheduler);
-				await Observable.Start(() =>
-				{
-					ToggleWindow<PakFileExplorerWindow>(true);
-				}, RxApp.MainThreadScheduler);
-				result = true;
-			}
-			input.SetOutput(result);
-		});
+		interactions.ViewModFiles.RegisterHandler(HandleViewModFiles);
 
 		ToggleVersionGeneratorWindowCommand = ReactiveCommand.Create(ToggleWindow<VersionGeneratorWindow>, canExecuteCommands);
 		ToggleStatsValidatorWindowCommand = ReactiveCommand.Create(ToggleWindow<StatsValidatorWindow>, canExecuteCommands);

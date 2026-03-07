@@ -98,6 +98,85 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 		context.SetOutput(result);
 	}
 
+	private async Task HandlePickMods(IInteractionContext<ShowModPickerRequest, ModPickerResult> context)
+	{
+		var result = await Observable.StartAsync(async () =>
+		{
+			DismissLastDialog();
+			var data = context.Input;
+			var dialogVM = ViewModelLocator.ModPicker;
+			dialogVM.Open(data);
+
+			ShowSukiDialog(dialogVM, true, false);
+			return await dialogVM.WaitForResult();
+		}, RxApp.MainThreadScheduler);
+		context.SetOutput(result);
+	}
+
+	private async Task HandleShowAlert(IInteractionContext<ShowAlertRequest, bool> context)
+	{
+		var data = context.Input;
+		var title = data.Title;
+		var duration = data.Timeout <= 0 ? TimeSpan.FromSeconds(10) : TimeSpan.FromSeconds(data.Timeout);
+		if (!title.IsValid())
+		{
+			title = data.AlertType switch
+			{
+				AlertType.Danger => "Error",
+				AlertType.Warning => "Warning",
+				AlertType.Success => "Success",
+				AlertType.Info => "Info",
+				_ => "Info",
+			};
+		}
+		await Observable.Start(() =>
+		{
+			if (ViewModel?.Settings.DebugModeEnabled == true) DivinityApp.Log(data.Message);
+			var shortenedMessage = data.Message;
+			if (shortenedMessage.Length > 255)
+			{
+				shortenedMessage = string.Concat(shortenedMessage.AsSpan(0, 255), "...");
+			}
+			var content = new TextBlock()
+			{
+				Text = shortenedMessage,
+				TextWrapping = TextWrapping.Wrap,
+			};
+			var tooltipElement = new TextBlock()
+			{
+				Text = data.Message,
+				TextWrapping = TextWrapping.Wrap,
+				MaxWidth = 400
+			};
+			void OnKeyDown(object? sender, KeyEventArgs e)
+			{
+				if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.C)
+				{
+					ClipboardService.SetText(data.Message);
+				}
+			}
+			;
+
+			tooltipElement.AttachedToVisualTree += (o, e) =>
+			{
+				AddHandler(KeyDownEvent, OnKeyDown);
+			};
+
+			tooltipElement.DetachedFromVisualTree += (o, e) =>
+			{
+				RemoveHandler(KeyDownEvent, OnKeyDown);
+			};
+
+			ToolTip.SetTip(content, tooltipElement);
+			var toastBuilder = _toastManager.CreateToast().WithTitle(title).WithContent(content);
+			toastBuilder.SetCanDismissByClicking(true);
+			toastBuilder.SetDismissAfter(duration);
+			toastBuilder.SetType(data.AlertType.ToNotificationType());
+			toastBuilder.Queue();
+		}, RxApp.MainThreadScheduler);
+		context.SetOutput(true);
+	}
+
 	public MainWindow()
 	{
 		InitializeComponent();
@@ -118,83 +197,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 			var interactions = AppServices.Interactions;
 
 			interactions.ShowMessageBox.RegisterHandler(HandleShowMessageBox);
-
-			interactions.PickMods.RegisterHandler(context =>
-			{
-				return Observable.StartAsync(async () =>
-				{
-					DismissLastDialog();
-					var data = context.Input;
-					var dialogVM = ViewModelLocator.ModPicker;
-					dialogVM.Open(data);
-
-					ShowSukiDialog(dialogVM, true, false);
-					var result = await dialogVM.WaitForResult();
-					context.SetOutput(result);
-				}, RxApp.MainThreadScheduler);
-			});
-
-			interactions.ShowAlert.RegisterHandler(async context =>
-			{
-				var data = context.Input;
-				var title = data.Title;
-				var duration = data.Timeout <= 0 ? TimeSpan.FromSeconds(10) : TimeSpan.FromSeconds(data.Timeout);
-				if (!title.IsValid())
-				{
-					title = data.AlertType switch
-					{
-						AlertType.Danger => "Error",
-						AlertType.Warning => "Warning",
-						AlertType.Success => "Success",
-						AlertType.Info => "Info",
-						_ => "Info",
-					};
-				}
-				await Observable.Start(() =>
-				{
-					if (ViewModel?.Settings.DebugModeEnabled == true) DivinityApp.Log(data.Message);
-					var shortenedMessage = data.Message;
-					if(shortenedMessage.Length > 255)
-					{
-						shortenedMessage = string.Concat(shortenedMessage.AsSpan(0, 255), "...");
-					}
-					var content = new TextBlock() {
-						Text = shortenedMessage,
-						TextWrapping = TextWrapping.Wrap,
-					};
-					var tooltipElement = new TextBlock()
-					{
-						Text = data.Message,
-						TextWrapping = TextWrapping.Wrap,
-						MaxWidth = 400
-					};
-					void OnKeyDown(object? sender, KeyEventArgs e)
-					{
-						if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.C)
-						{
-							ClipboardService.SetText(data.Message);
-						}
-					};
-
-					tooltipElement.AttachedToVisualTree += (o, e) =>
-					{
-						AddHandler(KeyDownEvent, OnKeyDown);
-					};
-
-					tooltipElement.DetachedFromVisualTree += (o, e) =>
-					{
-						RemoveHandler(KeyDownEvent, OnKeyDown);
-					};
-
-					ToolTip.SetTip(content, tooltipElement);
-					var toastBuilder = _toastManager.CreateToast().WithTitle(title).WithContent(content);
-					toastBuilder.SetCanDismissByClicking(true);
-					toastBuilder.SetDismissAfter(duration);
-					toastBuilder.SetType(data.AlertType.ToNotificationType());
-					toastBuilder.Queue();
-				}, RxApp.MainThreadScheduler);
-				context.SetOutput(true);
-			});
+			interactions.PickMods.RegisterHandler(HandlePickMods);
+			interactions.ShowAlert.RegisterHandler(HandleShowAlert);
 		});
 	}
 }
