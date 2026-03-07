@@ -41,7 +41,7 @@ public static class SplatContainerExtensions
 		SplatRegistrations.RegisterLazySingleton<HttpClient, AppHttpClient>();
 
 		var downloadManager = new DownloadManagerService(fileSystemService);
-		SplatRegistrations.RegisterConstant(downloadManager);
+		SplatRegistrations.RegisterConstant<IDownloadManagerService>(downloadManager);
 
 		SplatRegistrations.RegisterConstant<INexusModsService>(new NexusModsService(env, downloadManager, fileSystemService));
 		SplatRegistrations.RegisterConstant<IGitHubService>(new GitHubService(env));
