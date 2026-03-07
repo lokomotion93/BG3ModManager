@@ -20,8 +20,8 @@ namespace ModManager.Windows;
 
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
-	private readonly SukiToastManager _toastManager = new();
-	private readonly SukiDialogManager _dialogManager = new();
+	private readonly SukiToastManager _toastManager;
+	private readonly SukiDialogManager _dialogManager;
 
 	private ISukiDialog? _lastDialog = null;
 
@@ -38,35 +38,35 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 	{
 		DismissLastDialog();
 
-		if (content is string message)
+		RxApp.MainThreadScheduler.Schedule(() =>
 		{
-			var dialogContent = new TextBlock { Text = message };
-			var dialog = _dialogManager.CreateDialog().WithContent(dialogContent);
-			_lastDialog = dialog.Dialog;
-			dialog.SetCanDismissWithBackgroundClick(allowBackgroundClose);
-			dialog.TryShow();
-		}
-		else if (content is ReactiveObject viewModel)
-		{
-			var dialog = _dialogManager.CreateDialog().WithViewModel(x =>
+			if (content is string message)
 			{
-				x.CanDismissWithBackgroundClick = allowBackgroundClose;
-				x.ViewModel = content;
-				if (content is IDialogViewModel dialogVM)
+				var dialogContent = new TextBlock { Text = message };
+				var dialog = _dialogManager.CreateDialog().WithContent(dialogContent);
+				_lastDialog = dialog.Dialog;
+				dialog.SetCanDismissWithBackgroundClick(allowBackgroundClose);
+				dialog.TryShow();
+			}
+			else if (content is ReactiveObject viewModel)
+			{
+				var dialog = _dialogManager.CreateDialog().WithViewModel(x =>
 				{
-					dialogVM.Dialog = x;
-				}
-				return content;
-			});
-			_lastDialog = dialog.Dialog;
-			dialog.TryShow();
-		}
+					x.CanDismissWithBackgroundClick = allowBackgroundClose;
+					x.ViewModel = content;
+					if (content is IDialogViewModel dialogVM)
+					{
+						dialogVM.Dialog = x;
+					}
+					return content;
+				});
+				_lastDialog = dialog.Dialog;
+				dialog.TryShow();
+			}
 
-		var borderDialog = DialogHost.GetTemplateChildren().FirstOrDefault(x => x.GetType() == typeof(Border));
-		if (borderDialog != null)
-		{
-			borderDialog.Opacity = (showCardBehind ? 1 : 0);
-		}
+			var borderDialog = DialogHost.GetTemplateChildren().FirstOrDefault(x => x.GetType() == typeof(Border));
+			borderDialog?.Opacity = (showCardBehind ? 1 : 0);
+		});
 	}
 
 	public void BringToFront()
@@ -74,9 +74,36 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 		Dispatcher.UIThread.Post(Activate);
 	}
 
+	private async Task HandleShowMessageBox(IInteractionContext<ShowMessageBoxRequest, MessageBoxResult> context)
+	{
+		var result = await Observable.StartAsync(async () =>
+		{
+			DismissLastDialog();
+			var data = context.Input;
+			var dialogVM = ViewModelLocator.MessageBox;
+			dialogVM.Open(data);
+
+			var isConfirmation = data.MessageBoxType.IsConfirmation();
+
+			ShowSukiDialog(dialogVM, true, !isConfirmation);
+			if (!isConfirmation)
+			{
+				return new(true, null);
+			}
+			else
+			{
+				return await dialogVM.WaitForResult();
+			}
+		}, RxApp.MainThreadScheduler);
+		context.SetOutput(result);
+	}
+
 	public MainWindow()
 	{
 		InitializeComponent();
+
+		_toastManager = new();
+		_dialogManager = new();
 
 		this.WhenActivated(d =>
 		{
@@ -90,30 +117,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
 			var interactions = AppServices.Interactions;
 
-			interactions.ShowMessageBox.RegisterHandler(context =>
-			{
-				return Observable.StartAsync(async () =>
-				{
-					DismissLastDialog();
-					var data = context.Input;
-					var dialogVM = ViewModelLocator.MessageBox;
-					dialogVM.Open(data);
-
-					var isConfirmation = data.MessageBoxType.IsConfirmation();
-
-					ShowSukiDialog(dialogVM, true, !isConfirmation);
-					if (!isConfirmation)
-					{
-						context.SetOutput(new(true, null));
-					}
-					else
-					{
-						var result = await dialogVM.WaitForResult();
-						context.SetOutput(result);
-					}
-					//SukiHost.ShowDialog(dialogVM, true, !data.MessageBoxType.HasFlag(InteractionMessageBoxType.YesNo));
-				}, RxApp.MainThreadScheduler);
-			});
+			interactions.ShowMessageBox.RegisterHandler(HandleShowMessageBox);
 
 			interactions.PickMods.RegisterHandler(context =>
 			{
