@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34031.279
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11925.98 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DivinityModManagerCore", "src\Core\DivinityModManagerCore.csproj", "{E24CFB13-F468-4B1D-BC4D-245CD4BD1A23}"
 EndProject
